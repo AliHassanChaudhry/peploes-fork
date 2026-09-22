@@ -35,5 +35,8 @@ The GitHub workflow provisions its own database for that check.
 | [`docs/architecture.md`](docs/architecture.md) | Module placement, dependency direction, and source conventions |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Branch, commit, review, and contribution workflow |
 | [`AGENTS.md`](AGENTS.md) | Agent authorization and repository-specific operating rules |
+| [`docs/guides/quality-guide.md`](docs/guides/quality-guide.md) | Verification, CI, hooks and review |
+| [`docs/guides/html-report-guide.md`](docs/guides/html-report-guide.md) | Standalone HTML reports |
+| [`docs/guides/project-adoption-guide.md`](docs/guides/project-adoption-guide.md) | Replacing inherited template defaults |
 | [`docs/guides/testing-guide.md`](docs/guides/testing-guide.md) | Test selection and test-suite policy |
 | [`docs/guides/`](docs/guides) | Error handling, logging, analytics, Sentry, performance, and SEO |

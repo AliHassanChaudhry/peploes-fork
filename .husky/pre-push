@@ -1,30 +1,18 @@
-[ -n "$CI" ] && exit 0
+set -eu
 
-PROTECTED="main|dev"
-BRANCH=$(git symbolic-ref HEAD --short 2>/dev/null)
+[ -n "${CI:-}" ] && exit 0
 
-if echo "$BRANCH" | grep -qE "^($PROTECTED)$"; then
-  if [ "$ALLOW_PROTECTED_PUSH" != "true" ]; then
-    echo ""
-    echo "  Direct pushes to '$BRANCH' are not allowed."
-    echo "  Create a Pull Request instead:"
-    echo ""
-    echo "    feature/*  ->  PR  ->  dev  ->  PR  ->  main"
-    echo ""
-    echo "  Emergency override:"
-    echo "    ALLOW_PROTECTED_PUSH=true git push"
-    echo ""
-    exit 1
-  fi
-fi
-
-STAGED_FILES=$(git diff --cached --diff-filter=ACMR --name-only -z)
-if [ -n "$STAGED_FILES" ] && echo "$STAGED_FILES" | xargs -0 grep -lE '<<<<<<< |=======|>>>>>>>' -- 2>/dev/null; then
-  echo ""
-  echo "  Unresolved merge conflict markers found. Aborting push."
-  echo ""
-  exit 1
-fi
+while read -r local_ref local_oid remote_ref remote_oid; do
+  case "$remote_ref" in
+    refs/heads/dev|refs/heads/main)
+      if [ "${ALLOW_PROTECTED_PUSH:-}" != "true" ]; then
+        echo "Push to '$remote_ref' rejected. Use a PR."
+        echo "For an explicitly authorized exception, use ALLOW_PROTECTED_PUSH=true."
+        exit 1
+      fi
+      ;;
+  esac
+done
 
 bun run lint
 bun run type-check

@@ -46,7 +46,10 @@ has three groups in `AI_CRAWLER_POLICY`:
 Review the mixed-use choice with the product owner. Blocking it may reduce AI
 discovery; allowing it permits uses beyond search. Keep provider tokens in the
 constant rather than repeating them in documentation. Robots rules are public
-guidance, not authentication or authorization.
+guidance, not authentication or authorization. When a project adds private
+routes, enforce access on the server, prevent shared caching, and exclude those
+routes from public discovery. Use non-indexing response headers and metadata
+where appropriate; crawler directives alone do not protect private content.
 
 `src/app/sitemap.ts` contains only the home page. Add public canonical pages when
 they exist. Use a content update time for `lastModified`; omit it when the

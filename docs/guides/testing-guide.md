@@ -18,17 +18,9 @@ bun run test:coverage
 The integration command requires a PostgreSQL database with the repository
 migrations already applied. Unit tests do not require a running database.
 
-The current suite covers:
-
-- fail-closed action authentication and handler ordering;
-- example mutation rejection before authentication exists;
-- form schema trimming and database-length limits;
-- error-code to HTTP-status mapping;
-- transient network error detection;
-- fail-closed analytics consent;
-- production and development security-header policy;
-- public crawler, agent-index, and structured-data contracts;
-- baseline migration behavior against PostgreSQL.
+The test files describe current coverage. The
+[quality guide](quality-guide.md#required-checks) defines when to run each gate
+and how to report checks that could not run.
 
 ## Test selection
 
@@ -44,6 +36,17 @@ Use the lowest layer that catches the real failure.
 
 Do not repeat a unit test through every higher layer. One regression belongs at
 the lowest layer that still observes the failure.
+
+Use the approved interface named by the ticket. For a bug, first reproduce it
+with a focused failing check, then make the smallest fix and rerun that check.
+For a feature, work one behavior at a time. Include denied access, invalid input,
+empty results, dependency failure or competing writes when those cases affect
+the changed contract. A happy-path test alone does not prove a protected write.
+
+Hook regression tests invoke the shell hook in a temporary Git repository and
+observe its exit status, index and working tree. Stub package-manager commands
+at the process boundary; run the actual quality tools separately. Tests must
+not commit, push or change the contributor's real repository state.
 
 ## A useful test
 
@@ -83,9 +86,10 @@ service-policy tests at the SQL layer.
 ## Browser tests
 
 Add Playwright when the app has a critical user journey such as sign-in,
-checkout, permission enforcement, or a destructive workflow. Test the
-production build, locate controls by accessible role or label, and give each
-test isolated data.
+checkout, permission enforcement or a destructive workflow. Test the production
+build, locate controls by accessible role or label, and give each test isolated
+data. Add the browser command and CI job when that journey exists; the generic
+starter does not install a browser suite for a homepage smoke check.
 
 Start with a few Chromium tests in pull requests. Add browsers when the support
 policy requires them. A homepage heading assertion alone does not justify a

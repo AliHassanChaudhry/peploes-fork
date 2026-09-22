@@ -166,6 +166,9 @@
         "useFragmentSyntax": {
           "level": "error"
         }
+      },
+      "nursery": {
+        "useImportsFirst": "error"
       }
     }
   },
@@ -227,6 +230,160 @@
           },
           "style": {
             "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/services/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "next",
+                      "next/**",
+                      "react",
+                      "react/**",
+                      "**/db",
+                      "**/db/**",
+                      "**/actions/**",
+                      "**/app/**",
+                      "**/components/**",
+                      "**/actions",
+                      "**/app",
+                      "**/components",
+                      "postgres",
+                      "postgres/**",
+                      "drizzle-orm",
+                      "drizzle-orm/**"
+                    ],
+                    "message": "Services own domain rules. Use the DAL or a concrete provider adapter; keep framework and SDK configuration outside services."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/dal/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/services/**",
+                      "**/actions/**",
+                      "**/app/**",
+                      "**/components/**",
+                      "next",
+                      "next/**",
+                      "react",
+                      "react/**",
+                      "**/services",
+                      "**/actions",
+                      "**/app",
+                      "**/components"
+                    ],
+                    "message": "DAL dependencies point toward persistence, never services or framework entry points."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/src/actions/**",
+        "**/src/app/**",
+        "**/src/components/**",
+        "**/src/hooks/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/dal/**",
+                      "**/db",
+                      "**/db/**",
+                      "**/dal",
+                      "postgres",
+                      "postgres/**",
+                      "drizzle-orm",
+                      "drizzle-orm/**"
+                    ],
+                    "message": "Application entry points call domain services rather than querying persistence directly."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/lib/*-provider.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/services",
+                      "**/services/**",
+                      "**/actions",
+                      "**/actions/**",
+                      "**/app",
+                      "**/app/**",
+                      "**/components",
+                      "**/components/**"
+                    ],
+                    "message": "Concrete providers own integration details and must not depend on services or application entry points."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/src/actions/**",
+        "**/src/app/**",
+        "**/src/services/**",
+        "**/src/dal/**",
+        "**/src/components/**",
+        "**/src/hooks/**",
+        "**/scripts/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noProcessEnv": "error"
+          },
+          "suspicious": {
+            "noConsole": "error"
           }
         }
       }

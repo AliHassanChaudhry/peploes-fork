@@ -1,6 +1,6 @@
-[ -n "$CI" ] && exit 0
+set -eu
 
-# Format only staged files; null-delimited xargs handles filenames with spaces
-git diff --cached --name-only --diff-filter=ACMR -z |
-  xargs -0 -r bunx biome format --write --files-ignore-unknown=true --no-errors-on-unmatched --
-git update-index --again
+[ -n "${CI:-}" ] && exit 0
+
+git diff --cached --check
+bun run lint

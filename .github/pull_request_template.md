@@ -1,17 +1,20 @@
-## Why
+## Summary
 
-<!-- Link the issue or explain the problem and its impact. -->
+<!-- Explain the problem and resulting behavior. Include an approach or tradeoff
+only when it helps review. Follow CONTRIBUTING.md; remove unused sections. -->
 
-## What changed
-
-<!-- Describe the behavior changed, not a file-by-file inventory. -->
+<!-- Use Refs #number by default. Closing keywords require explicit closure
+authorization. Identify dependencies or partial acceptance when applicable. -->
 
 ## Verification
 
-- [ ] `bun run ci`
-- Additional evidence:
+<!-- List commands and outcomes actually observed. Distinguish local results,
+remote CI, manual checks and anything not run, with its reason. Include relevant
+database checks and browser checks when the project has that suite; bun run ci
+does not run those suites locally. -->
 
 ## Review notes
 
-<!-- Call out migrations, deployment or security effects, rollback needs, and
-visual evidence. Delete this section when there is nothing to add. -->
+<!-- Include material compatibility, schema, configuration, security, rollout or
+rollback effects. For UI changes, attach synthetic visual evidence and note the
+keyboard, locale/direction and responsive states checked. Delete if unused. -->
