@@ -1,0 +1,30 @@
+[ -n "$CI" ] && exit 0
+
+PROTECTED="main|dev"
+BRANCH=$(git symbolic-ref HEAD --short 2>/dev/null)
+
+if echo "$BRANCH" | grep -qE "^($PROTECTED)$"; then
+  if [ "$ALLOW_PROTECTED_PUSH" != "true" ]; then
+    echo ""
+    echo "  Direct pushes to '$BRANCH' are not allowed."
+    echo "  Create a Pull Request instead:"
+    echo ""
+    echo "    feature/*  ->  PR  ->  dev  ->  PR  ->  main"
+    echo ""
+    echo "  Emergency override:"
+    echo "    ALLOW_PROTECTED_PUSH=true git push"
+    echo ""
+    exit 1
+  fi
+fi
+
+STAGED_FILES=$(git diff --cached --diff-filter=ACMR --name-only -z)
+if [ -n "$STAGED_FILES" ] && echo "$STAGED_FILES" | xargs -0 grep -lE '<<<<<<< |=======|>>>>>>>' -- 2>/dev/null; then
+  echo ""
+  echo "  Unresolved merge conflict markers found. Aborting push."
+  echo ""
+  exit 1
+fi
+
+bun run lint
+bun run type-check

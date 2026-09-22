@@ -1,0 +1,21 @@
+{
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": "next.config.mjs",
+      "options": {
+        "printWidth": 1000
+      }
+    },
+    {
+      "files": "redirects.mjs",
+      "options": {
+        "printWidth": 1000
+      }
+    }
+  ]
+}

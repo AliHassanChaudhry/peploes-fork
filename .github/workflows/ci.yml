@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app
+  NEXT_PUBLIC_SITE_URL: http://localhost:3000
+  NEXT_PUBLIC_API_BASE_URL: http://localhost:3000
+  NODE_ENV: test
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install locked dependencies
+        run: bun ci
+
+      - name: Check formatting and lint
+        run: bun run lint
+
+      - name: Check types
+        run: bun run type-check
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Apply database migrations
+        run: bun run db:migrate
+
+      - name: Run database integration test
+        run: bun run test:integration
+
+      - name: Build production application
+        run: bun run build
+        env:
+          NODE_ENV: production
+
+      - name: Audit high-severity vulnerabilities
+        run: bun audit --audit-level high
