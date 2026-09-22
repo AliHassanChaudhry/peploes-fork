@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "Next js Template",
+      "name": "peploes",
       "dependencies": {
         "@radix-ui/react-slot": "^1.2.3",
         "@sentry/nextjs": "^10.72.0",

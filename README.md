@@ -1,50 +1,32 @@
-# Next.js starter
+# Peploe's
 
-A reusable base for full-stack Next.js projects. It provides shared tooling and
-integration points without pretending to know a product's authentication,
-privacy, content, or deployment policy.
+The Next.js website for [Peploe's](https://peploes.com/), a family-run restaurant
+on St Stephen's Green, Dublin. See the [product brief](docs/project/brief.md)
+for brand, content and visitor requirements.
 
-## Included
+## Development
 
-- Next.js 16, React 19, strict TypeScript, and typed routes
-- Tailwind CSS 4 and shadcn/ui
-- PostgreSQL with Drizzle ORM
-- Zod validation and `neverthrow` results
-- Optional Sentry, GA4, SEO, and AI-discovery helpers
-- Biome, Vitest, Husky, GitHub Actions, and Bun
-
-The example feature demonstrates the repository's data flow. Rename or remove
-it when the first real domain is introduced.
-
-## Start locally
-
-Install Bun 1.4 or newer and provide a disposable PostgreSQL database.
+Use the Bun version declared in [`package.json`](package.json).
 
 ```bash
-cp .env.example .env.local
-bun install
-bun run db:migrate
+bun install --frozen-lockfile
+test -f .env.local || cp .env.example .env.local
 bun run dev
 ```
 
-Open `http://localhost:3000`. Run the complete local gate with:
+Set the required values in `.env.local` before starting the application.
+Use `http://localhost:3000` for local public URLs and a disposable PostgreSQL
+database for `DATABASE_URL`. Optional integration values can remain empty.
 
-```bash
-bun run ci
-```
+The inherited example API requires the existing database migrations. Verify the
+database target before running `bun run db:migrate`. Protected example mutations
+remain disabled until a verified session is implemented.
 
-The remaining scripts are declared in [`package.json`](package.json). Database
-scripts can change schema or data; verify the target before running one.
+## Verification
 
-Pull-request CI also starts an empty PostgreSQL service, applies every migration,
-and runs the database integration test.
-
-## Before the first deployment
-
-Replace the fail-closed action context with a verified server-side session.
-Then review the project-specific security, consent, analytics, monitoring, and
-public-content decisions identified in the architecture review and the relevant
-guides below.
+Run `bun run format`, then `bun run ci`. Database integration tests run separately
+with `bun run test:integration` against a migrated disposable database.
+The GitHub workflow provisions its own database for that check.
 
 ## Documentation
 
@@ -55,7 +37,3 @@ guides below.
 | [`AGENTS.md`](AGENTS.md) | Agent authorization and repository-specific operating rules |
 | [`docs/guides/testing-guide.md`](docs/guides/testing-guide.md) | Test selection and test-suite policy |
 | [`docs/guides/`](docs/guides) | Error handling, logging, analytics, Sentry, performance, and SEO |
-| [`docs/reports/nextjs-starter-architecture-review.html`](docs/reports/nextjs-starter-architecture-review.html) | Dated audit findings and recommendations |
-
-The HTML report is a point-in-time review, not an instruction manual. Current
-working rules live in the Markdown documents above.

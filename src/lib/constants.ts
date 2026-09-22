@@ -42,11 +42,12 @@ export const CORS_HEADERS = {
 // ─── SEO ───────────────────────────────────────────────────────────────────
 
 export const DEFAULT_SEO = {
-  siteName: "Next.js Starter",
-  description: "A reusable base for full-stack Next.js projects.",
-  titleSuffix: " | Next.js Starter",
+  siteName: "Peploe's",
+  description:
+    "A family-run restaurant on St Stephen's Green, Dublin, since 2002.",
+  titleSuffix: " | Peploe's",
   twitterHandle: "",
-  locale: "en_US",
+  locale: "en_IE",
 } as const;
 
 // ─── Social Image ─────────────────────────────────────────────────────────

@@ -32,6 +32,7 @@ instead of weakening a check.
 
 | When the task changes | Read |
 | --- | --- |
+| Peploe's brand, content, booking, or CMS requirements | [`docs/project/brief.md`](docs/project/brief.md) |
 | Module placement, dependency direction, naming, server/client boundaries, environment access | [`docs/architecture.md`](docs/architecture.md) |
 | Tests, mocks, coverage, browser tests, or database tests | [`docs/guides/testing-guide.md`](docs/guides/testing-guide.md) |
 | Results, error mapping, retries, or action failures | [`docs/guides/error-handling-guide.md`](docs/guides/error-handling-guide.md) |
