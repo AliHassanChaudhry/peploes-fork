@@ -1,0 +1,2 @@
+# Match Biome's LF requirement on every platform.
+* text=auto eol=lf

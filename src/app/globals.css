@@ -4,6 +4,16 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-peploe-burgundy: var(--peploe-burgundy);
+  --color-awning-red: var(--awning-red);
+  --color-warm-cream: var(--warm-cream);
+  --color-soft-stone: var(--soft-stone);
+  --color-ink: var(--ink);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-interactive: var(--border-interactive);
+  --color-olive-green: var(--olive-green);
+  --color-warm-brass: var(--warm-brass);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -44,6 +54,17 @@
 }
 
 :root {
+  /* Figma: Foundations / Colour */
+  --peploe-burgundy: #7a1e24;
+  --awning-red: #b33a3a;
+  --warm-cream: #faf7f1;
+  --soft-stone: #d9d1c6;
+  --ink: #2e2a28;
+  --text-secondary: #595450;
+  --border-interactive: #6b6864;
+  --olive-green: #556044;
+  --warm-brass: #b08d4a;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
