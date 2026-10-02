@@ -38,6 +38,11 @@ framework alias resolution is available.
 Shared interfaces and type aliases live in `src/lib/types.ts`, enums in
 `src/lib/enums.ts`, and values that must agree across boundaries in
 `src/lib/constants.ts`. Keep a private value beside its only consumer.
+Homepage content blocks shorter than 15 formatted lines live in
+`src/lib/constants.ts`; larger section catalogs live under `src/lib/constants/`.
+Keep static data and reusable style constants outside component files, and define
+component prop types in `src/lib/types.ts`. Runtime state, refs, event handlers
+and values derived from props stay with their component or owning hook.
 
 ## Reuse and shared definitions
 

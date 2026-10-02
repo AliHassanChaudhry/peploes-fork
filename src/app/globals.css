@@ -3,8 +3,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility site-container {
+  width: calc(100% - 3rem);
+  margin-inline: auto;
+
+  @media (width >= 80rem) {
+    width: calc(100% - 9rem);
+  }
+}
+
+@utility site-container-inset {
+  width: calc(100% - 3rem);
+  margin-inline: auto;
+
+  @media (width >= 80rem) {
+    width: calc(100% - 10rem);
+  }
+}
+
 @theme inline {
   --color-peploe-burgundy: var(--peploe-burgundy);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-primary-pressed: var(--button-primary-pressed);
   --color-awning-red: var(--awning-red);
   --color-warm-cream: var(--warm-cream);
   --color-soft-stone: var(--soft-stone);
@@ -56,6 +76,8 @@
 :root {
   /* Figma: Foundations / Colour */
   --peploe-burgundy: #7a1e24;
+  --button-primary-hover: #68181e;
+  --button-primary-pressed: #5b141a;
   --awning-red: #b33a3a;
   --warm-cream: #faf7f1;
   --soft-stone: #d9d1c6;
@@ -134,6 +156,9 @@
 }
 
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -148,6 +173,7 @@
 
 :root {
   --duration-fast: 150ms;
+  --duration-interaction: 160ms;
   --duration-base: 300ms;
   --duration-slow: 500ms;
   --duration-crawl: 1200ms;

@@ -1,0 +1,29 @@
+.familyOverlay {
+  background: linear-gradient(
+    -161.49deg,
+    rgb(24 20 18 / 0%) 13.29%,
+    rgb(24 20 18) 92.29%
+  );
+}
+
+.produceOverlay {
+  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 60%);
+}
+
+.ginaOverlay {
+  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 71.34%);
+}
+
+.artOverlay {
+  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 100%);
+}
+
+@media (min-width: 40rem) {
+  .produceOverlay {
+    background: linear-gradient(
+      -90deg,
+      rgb(24 20 18) 36.64%,
+      rgb(24 20 18 / 0%) 100%
+    );
+  }
+}

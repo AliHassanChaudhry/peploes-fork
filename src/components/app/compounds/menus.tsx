@@ -1,0 +1,86 @@
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
+import { MENUS_CONTENT } from "@/lib/constants/menus";
+import { dmSans, ebGaramond } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
+
+export function Menus() {
+  return (
+    <section
+      aria-labelledby="menus-heading"
+      className={cn(dmSans.className, "bg-warm-cream text-ink")}
+    >
+      <div className="relative h-[220px] sm:h-[300px] lg:h-[370px]">
+        <Image
+          src={MENUS_CONTENT.image.src}
+          alt={MENUS_CONTENT.image.alt}
+          fill
+          sizes="(min-width: 1024px) max(100vw, 1440px), (min-width: 640px) 1168px, 857px"
+          className="object-cover"
+        />
+      </div>
+
+      <div className="site-container flex flex-col gap-7 pt-12 pb-20">
+        <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
+          <span aria-hidden="true" className="h-0.5 w-12 shrink-0 bg-current" />
+          {MENUS_CONTENT.eyebrow}
+        </p>
+
+        <div className="flex flex-col gap-4">
+          <h2
+            id="menus-heading"
+            className={cn(
+              ebGaramond.className,
+              "text-[40px] leading-11 font-medium text-peploe-burgundy sm:text-[52px] sm:leading-[56px] lg:text-[60px] lg:leading-[48px]",
+            )}
+          >
+            {MENUS_CONTENT.heading}
+          </h2>
+          <p className="text-lg leading-6 text-text-secondary">
+            {MENUS_CONTENT.description}
+          </p>
+        </div>
+
+        <ul
+          aria-label={MENUS_CONTENT.categoriesLabel}
+          className="grid grid-cols-2 gap-x-5 gap-y-6 sm:gap-x-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
+        >
+          {MENUS_CONTENT.categories.map((category) => (
+            <li key={category} className="min-w-0">
+              <Button
+                type="button"
+                variant="brand-nav"
+                aria-disabled="true"
+                className={cn(
+                  ebGaramond.className,
+                  "group h-[72px] w-full flex-col items-stretch justify-start gap-1.5 rounded-none p-0 pt-4 text-xl leading-[26px] font-medium hover:no-underline",
+                )}
+              >
+                <span className="flex items-center justify-between gap-2">
+                  {category}
+                  <ArrowRight aria-hidden="true" className="size-4" />
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="w-full border-t border-peploe-burgundy/60 group-hover:border-peploe-burgundy"
+                />
+              </Button>
+            </li>
+          ))}
+        </ul>
+
+        <Button
+          type="button"
+          variant="brand-primary"
+          aria-disabled="true"
+          className="h-11 w-[204px] self-start rounded-[4px] bg-peploe-burgundy px-5 has-[>svg]:px-5 text-base leading-6 font-medium text-warm-cream shadow-none"
+        >
+          {MENUS_CONTENT.ctaLabel}
+          <ArrowRight aria-hidden="true" className="size-4" />
+        </Button>
+      </div>
+    </section>
+  );
+}

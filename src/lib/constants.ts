@@ -1,3 +1,10 @@
+import type {
+  IBookingBannerContent,
+  IFormActionResponse,
+  INavbarContent,
+  IWineContent,
+} from "@/lib/types";
+
 export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -40,6 +47,12 @@ export const DEFAULT_SEO = {
   titleSuffix: " | Peploe's",
   twitterHandle: "",
   locale: "en_IE",
+} as const;
+
+export const RESTAURANT_CONTACT = {
+  phone: "+35316763144",
+  phoneLabel: "+353 1 676 3144",
+  email: "reception@peploes.ie",
 } as const;
 
 export const SOCIAL_IMAGE = {
@@ -180,3 +193,39 @@ export const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 export const MILLISECONDS_PER_DAY = 86_400_000;
+
+export const BOOKING_BANNER_CONTENT = {
+  heading: "Book your table and step down",
+  emphasizedHeading: "from the city.",
+  description:
+    "A warm welcome, a memorable meal and a room worth being in, waiting for you in St. Stephen's Green.",
+  ctaLabel: "Book a Table",
+  image: { src: "/peploes-booking-botanical.png", alt: "" },
+} as const satisfies IBookingBannerContent;
+
+export const NAVBAR_CONTENT = {
+  navigationLabel: "Main navigation",
+  homeLabel: "Peploe’s home",
+  navigationLabels: ["Menus", "Our Story", "Groups & Occasions", "What’s On"],
+  visitContactLabel: "Visit & Contact",
+  giftVouchersLabel: "Gift Vouchers",
+  bookingLabel: "Book a Table",
+  mobileBookingLabel: "Book",
+} as const satisfies INavbarContent;
+
+export const WINE_CONTENT = {
+  eyebrow: "Wine at Peploe's",
+  heading: "Bottles worth lingering over.",
+  description:
+    "Wine has always been part of the Peploe’s experience, from long lunches and pre-theatre dinners to evenings that stretch a little longer. We source many of our wines directly from small producers across Europe, alongside trusted estates and classic regions. The result is a list built for discovery, sharing and returning favourites.",
+  primaryCtaLabel: "Explore the Wine List",
+  secondaryCtaLabel: "Stories from the cellar",
+  image: { src: "/peploes-wine-dinner.jpg", alt: "" },
+} as const satisfies IWineContent;
+
+export const EXAMPLE_FORM_INITIAL_STATE = {
+  success: false,
+  error: undefined,
+} satisfies IFormActionResponse;
+
+export const READ_MORE_COLLAPSED_HEIGHT = "12.5em";

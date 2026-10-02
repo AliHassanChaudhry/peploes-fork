@@ -4,13 +4,13 @@ import { useActionState, useEffect, useRef } from "react";
 
 import { createExampleFormAction } from "@/actions/examples";
 
-const initialState = { success: false, error: undefined };
+import { EXAMPLE_FORM_INITIAL_STATE } from "@/lib/constants";
 
 export function ExampleForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(
     createExampleFormAction,
-    initialState,
+    EXAMPLE_FORM_INITIAL_STATE,
   );
 
   useEffect(() => {
