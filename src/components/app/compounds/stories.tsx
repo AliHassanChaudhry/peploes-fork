@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import styles from "@/components/app/compounds/stories.module.css";
 import { Button } from "@/components/ui/button";
+import { MOBILE_HOME_CONTENT } from "@/lib/constants";
 import { STORIES_CONTENT } from "@/lib/constants/stories";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import type { IStoryActionProps } from "@/lib/types";
@@ -18,7 +19,7 @@ function StoryAction({ label, filled = false }: IStoryActionProps) {
         "h-auto min-h-11 max-w-full self-start rounded-[4px] border border-warm-cream/70 px-4 has-[>svg]:px-4 text-base leading-6 font-medium whitespace-normal shadow-none sm:px-5 sm:has-[>svg]:px-5",
         filled
           ? "bg-warm-cream text-peploe-burgundy"
-          : "bg-transparent text-warm-cream",
+          : "bg-transparent text-warm-cream max-sm:rounded-none max-sm:border-0 max-sm:px-0 max-sm:has-[>svg]:px-0 max-sm:hover:bg-transparent max-sm:hover:underline",
       )}
     >
       {label}
@@ -33,9 +34,9 @@ export function Stories() {
       aria-labelledby="stories-heading"
       className={cn(dmSans.className, "bg-warm-cream text-ink")}
     >
-      <div className="site-container flex flex-col gap-12 py-14 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
+      <div className="site-container flex flex-col gap-8 pt-12 pb-14 sm:gap-12 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
         <div className="flex flex-col items-start gap-4">
-          <p className="mb-3 flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
+          <p className="flex items-center gap-2.5 text-[11px] leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:mb-3 sm:text-sm">
             <span
               aria-hidden="true"
               className="h-0.5 w-12 shrink-0 bg-current"
@@ -46,7 +47,7 @@ export function Stories() {
             id="stories-heading"
             className={cn(
               ebGaramond.className,
-              "text-[40px] leading-[44px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
+              "text-[42px] leading-[42px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
             )}
           >
             {STORIES_CONTENT.headingLines[0]}
@@ -54,7 +55,7 @@ export function Stories() {
             <span className="lg:hidden"> </span>
             {STORIES_CONTENT.headingLines[1]}
           </h2>
-          <p className="text-lg leading-6 text-text-secondary">
+          <p className="text-base leading-6 text-text-secondary sm:text-lg">
             {STORIES_CONTENT.description}
           </p>
           <Button
@@ -68,8 +69,8 @@ export function Stories() {
           </Button>
         </div>
 
-        <div className="grid items-start gap-7 text-warm-cream xl:w-[calc(100%+4px)] xl:grid-cols-[repeat(2,minmax(0,636px))]">
-          <article className="relative isolate flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:p-10 xl:min-h-[640px]">
+        <div className="grid items-start gap-[18px] text-warm-cream sm:gap-7 xl:w-[calc(100%+4px)] xl:grid-cols-[repeat(2,minmax(0,636px))]">
+          <article className="relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[520px] sm:p-10 xl:min-h-[640px]">
             <Image
               src={STORIES_CONTENT.family.image.src}
               alt={STORIES_CONTENT.family.image.alt}
@@ -81,31 +82,32 @@ export function Stories() {
               aria-hidden="true"
               className={cn(styles.familyOverlay, "absolute inset-0")}
             />
-            <div className="relative flex flex-col gap-4">
-              <p className="text-sm leading-5 font-medium tracking-[0.1em] uppercase">
+            <div className="relative flex flex-col gap-[9px] sm:gap-4">
+              <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-sm sm:leading-5 sm:tracking-[0.1em]">
                 {STORIES_CONTENT.family.eyebrow}
               </p>
               <h3
                 className={cn(
                   ebGaramond.className,
-                  "text-[32px] leading-[38px] font-normal sm:text-[38px] sm:leading-[44px]",
+                  "text-[30px] leading-[31px] font-normal sm:text-[38px] sm:leading-[44px]",
                 )}
               >
                 {STORIES_CONTENT.family.heading}
-                <br />
+                <br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>
                 {STORIES_CONTENT.family.headingContinuation}
               </h3>
-              <p className="text-[15px] leading-[22px] text-warm-cream/90">
+              <p className="text-sm leading-5 text-warm-cream/90 sm:text-[15px] sm:leading-[22px]">
                 {STORIES_CONTENT.family.description}
               </p>
-              <div className="pt-3">
+              <div className="sm:pt-3">
                 <StoryAction label={STORIES_CONTENT.family.ctaLabel} filled />
               </div>
             </div>
           </article>
 
-          <div className="grid min-w-0 gap-7">
-            <article className="relative isolate flex min-h-[420px] items-end justify-end overflow-hidden rounded-[4px] bg-ink sm:min-h-[308px] sm:items-center">
+          <div className="grid min-w-0 gap-[18px] sm:gap-7">
+            <article className="relative isolate flex min-h-[390px] items-end justify-end overflow-hidden rounded-[4px] bg-ink sm:min-h-[308px] sm:items-center">
               <Image
                 src={STORIES_CONTENT.produce.image.src}
                 alt={STORIES_CONTENT.produce.image.alt}
@@ -117,14 +119,14 @@ export function Stories() {
                 aria-hidden="true"
                 className={cn(styles.produceOverlay, "absolute inset-0")}
               />
-              <div className="relative flex w-full flex-col gap-3 p-6 sm:w-1/2 sm:p-8">
-                <p className="text-xs leading-[18px] font-medium tracking-[0.1em] uppercase">
+              <div className="relative flex w-full flex-col gap-[9px] p-6 sm:w-1/2 sm:gap-3 sm:p-8">
+                <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
                   {STORIES_CONTENT.produce.eyebrow}
                 </p>
                 <h3
                   className={cn(
                     ebGaramond.className,
-                    "text-2xl leading-[30px] font-normal",
+                    "text-[30px] leading-[31px] font-normal sm:text-2xl sm:leading-[30px]",
                   )}
                 >
                   {STORIES_CONTENT.produce.heading}
@@ -136,8 +138,8 @@ export function Stories() {
               </div>
             </article>
 
-            <div className="grid gap-7 sm:grid-cols-2">
-              <article className="relative isolate flex min-h-[308px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6">
+            <div className="grid gap-[18px] sm:grid-cols-2 sm:gap-7">
+              <article className="relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]">
                 <Image
                   src={STORIES_CONTENT.gina.image.src}
                   alt={STORIES_CONTENT.gina.image.alt}
@@ -149,25 +151,35 @@ export function Stories() {
                   aria-hidden="true"
                   className={cn(styles.ginaOverlay, "absolute inset-0")}
                 />
-                <div className="relative flex flex-col gap-2">
-                  <p className="text-xs leading-[18px] font-medium tracking-[0.1em] uppercase">
-                    {STORIES_CONTENT.gina.eyebrow}
+                <div className="relative flex flex-col gap-[9px] sm:gap-2">
+                  <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
+                    <span className="sm:hidden">
+                      {MOBILE_HOME_CONTENT.ginaEyebrow}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {STORIES_CONTENT.gina.eyebrow}
+                    </span>
                   </p>
                   <h3
                     className={cn(
                       ebGaramond.className,
-                      "text-xl leading-[26px] font-normal",
+                      "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
                     )}
                   >
-                    {STORIES_CONTENT.gina.heading}
+                    <span className="sm:hidden">
+                      {MOBILE_HOME_CONTENT.ginaHeading}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {STORIES_CONTENT.gina.heading}
+                    </span>
                   </h3>
-                  <div className="pt-2">
+                  <div className="sm:pt-2">
                     <StoryAction label={STORIES_CONTENT.gina.ctaLabel} />
                   </div>
                 </div>
               </article>
 
-              <article className="relative isolate flex min-h-[308px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6">
+              <article className="relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]">
                 <Image
                   src={STORIES_CONTENT.art.image.src}
                   alt={STORIES_CONTENT.art.image.alt}
@@ -179,22 +191,22 @@ export function Stories() {
                   aria-hidden="true"
                   className={cn(styles.artOverlay, "absolute inset-0")}
                 />
-                <div className="relative flex flex-col gap-2">
-                  <p className="text-xs leading-[18px] font-medium tracking-[0.1em] uppercase">
+                <div className="relative flex flex-col gap-[9px] sm:gap-2">
+                  <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
                     {STORIES_CONTENT.art.eyebrow}
                   </p>
                   <h3
                     className={cn(
                       ebGaramond.className,
-                      "text-xl leading-[26px] font-normal",
+                      "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
                     )}
                   >
                     {STORIES_CONTENT.art.heading}
                   </h3>
-                  <p className="text-[13px] leading-[18px] text-warm-cream/80">
+                  <p className="hidden text-[13px] leading-[18px] text-warm-cream/80 sm:block">
                     {STORIES_CONTENT.art.description}
                   </p>
-                  <div className="pt-2">
+                  <div className="sm:pt-2">
                     <StoryAction label={STORIES_CONTENT.art.ctaLabel} />
                   </div>
                 </div>

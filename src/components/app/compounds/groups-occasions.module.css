@@ -1,5 +1,15 @@
 .overlay {
-  background: rgb(18 14 12 / 80%);
+  background: linear-gradient(
+    180deg,
+    rgb(24 20 19 / 6.3%) 0%,
+    rgb(24 20 19 / 91%) 100%
+  );
+}
+
+@media (40rem <= width < 64rem) {
+  .overlay {
+    background: rgb(18 14 12 / 80%);
+  }
 }
 
 @media (min-width: 64rem) {

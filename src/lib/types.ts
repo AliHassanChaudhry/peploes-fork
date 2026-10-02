@@ -309,6 +309,7 @@ export interface IWhatsOnEvent {
   imageSrc: string;
   imageAlt: string;
   ctaLabel: string;
+  mobileCtaLabel?: string;
 }
 
 export interface IReadMoreProps {
@@ -532,6 +533,7 @@ export interface IStoriesContent {
 export interface IGroupOccasion {
   title: string;
   description: string;
+  mobileDescription?: string;
   image: string;
   imageAlt: string;
   minHeight: number;
@@ -561,6 +563,7 @@ export interface IStoryActionProps {
 
 export interface IEventActionProps {
   label: string;
+  mobileLabel?: string;
 }
 
 export interface IEventCardProps {

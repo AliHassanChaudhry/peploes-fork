@@ -74,6 +74,25 @@ the browser's available page width, excluding the scrollbar gutter, at the
 same zoom and pixel density. Check mobile, tablet, laptop and wide desktop
 layouts for horizontal overflow and undistorted images after width changes.
 
+## Mobile homepage reference
+
+The 390px Final Pages mobile homepage (`3395:17700`) owns the phone layout.
+Below 640px, use its 24px gutters, type sizes, vertical spacing, image frames
+and stacked full-width actions. Keep the existing tablet and desktop layouts.
+At the reference width the page is 11,526px tall, including the 72px header.
+Sections may grow when narrower screens or enlarged text need more room.
+
+Use the mobile entrance and dining-room photographs exported from Figma.
+The entrance and reception artwork reproduce the mobile frame's image scaling;
+the other photos retain their aspect ratio and crop to their frames. Event and
+occasion copy variants live beside their desktop content in the local catalogs.
+Mobile Stories uses the From the Cellar heading and omits the art description.
+The closing booking heading is upright on mobile and retains its desktop italic.
+
+Compare section positions, line breaks, crops and overlays at 390px, then check
+narrow phones, tablet and desktop for overflow. Keep the existing inactive
+actions, disabled newsletter and active telephone and email links.
+
 ## Homepage interaction previews
 
 Placeholder actions use inert `type="button"` controls with `aria-disabled="true"`
@@ -122,11 +141,12 @@ menu open and closed.
 
 ## Footer implementation
 
-The shared footer uses the Figma Footer / Production desktop and mobile
-variants (`3041:2359` and `3041:2444`). Desktop has brand, Explore, Contact and
-newsletter columns; mobile puts Contact before Explore and keeps every section
-expanded. It uses the existing local logo and brand tokens, DM Sans body text
-and EB Garamond headings.
+The shared footer uses Figma Footer / Production desktop (`3041:2359`) and the
+mobile homepage footer (`3395:17877`). Desktop has brand, Explore, Contact and
+newsletter columns. Mobile shows brand, newsletter, expanded Explore,
+Occasions and Peploe's navigation, then contact details, socials and legal links.
+It uses the existing local logo and brand tokens, DM Sans body text and
+EB Garamond headings.
 Footer dividers, mobile row borders and the email field rule use 1px thickness.
 The three burgundy heading underlines are 32px wide and 2px high, matching Figma.
 
@@ -144,13 +164,14 @@ phone and email targets, keyboard focus, 200% zoom and horizontal overflow.
 The homepage hero follows the Final Pages hero and entrance group (`3131:11100`).
 The desktop photo panel is 780px tall with EB Garamond headings and DM Sans
 supporting copy. Booking and telephone buttons remain placeholders.
-On narrow screens, the copy scales down and the buttons wrap without overflow.
+On phones, the panel is 660px tall with 48px headings and stacked full-width
+buttons. The 520px entrance photograph has a separate 74px caption below it.
 
 The restaurant photo and transparent entrance artwork were downloaded from
 Figma. The entrance uses its original Figma backdrop behind the cutout. Narrow
-screens use a darker hero overlay to preserve text contrast over the centre
-crop. The yellow note's gentle entrance fade and rise use the existing
-scroll-reveal component and reduced-motion styles.
+screens use the mobile design's vertical hero gradient over the centre crop.
+The desktop entrance retains the yellow note's gentle fade and rise through
+the existing scroll-reveal component and reduced-motion styles.
 
 When changing the hero, compare desktop line breaks, photo crop, overlays and
 the entrance overlap with Figma. Check image loading, narrow screens, sidebar
@@ -168,7 +189,7 @@ The four features directly below the entrance follow the Final Pages section
 `3131:11112`. They use the original 48px SVG illustrations exported from Figma,
 22px EB Garamond headings and 14px DM Sans descriptions on Warm Cream. The
 desktop row has 48px vertical spacing and a Soft Stone top border. It becomes
-two columns on tablet and one column on narrow screens.
+two columns on tablet and one column with 13px descriptions on phones.
 
 When changing this section, compare its copy, icon order and desktop spacing
 with Figma. Check that every illustration loads and that text wraps without
@@ -180,7 +201,8 @@ The homepage menus introduction follows Final Pages `3131:11245`. It uses the
 dining-room photograph exported with Figma's crop, a 370px desktop image band,
 the Our Menus eyebrow, and six categories in their design order. The content
 uses the shared brand fonts, colours and content container. The category grid
-adapts to three and then two columns on smaller screens.
+adapts to three and then two columns on tablet, and six full-width ruled rows
+on phones. Mobile uses its separate 238px-high dining-room photograph.
 
 The yellow note (`3131:11686`) specifies structured web menu categories and
 CMS-editable content. This section keeps the category actions and Explore Our
@@ -219,8 +241,9 @@ The section immediately after What's On follows Final Pages `3131:11325`:
 the wine-service photograph, a dark horizontal gradient, the Wine at Peploe's
 eyebrow and the heading "Bottles worth lingering over." It reuses the same
 photograph as the wine-dinner card, shared fonts and existing button component.
-Its text column is capped at 748px with 80px vertical padding. Narrow screens
-use a stronger, even overlay so text remains readable across the photograph.
+Its text column is capped at 748px with 80px desktop vertical padding. Phones
+use the mobile vertical gradient, 720px minimum height and stacked buttons;
+Stories from the cellar uses an outline on mobile.
 
 The yellow Wine journey note (`3131:11692`) sends Explore the Wine List to a
 structured wine menu and Stories from the cellar to related Journal content
@@ -237,8 +260,8 @@ The homepage section follows Final Pages `3131:11372`: a dining-room photo
 banner with a dark horizontal gradient, followed by three cards on Warm Cream.
 It uses the original Figma photographs, shared fonts and existing buttons. At
 1440px, the banner is 410px tall and the cards have 180px-wide images. The cards
-stack on smaller screens and the banner overlay darkens evenly to keep its
-copy readable.
+stack on smaller screens. Phones use a 560px banner with a vertical gradient
+and horizontal cards with 124px-wide photos, reduced further below 360px.
 
 The yellow Distinct commercial journeys note (`3131:11700`) requires separate
 pages and enquiry experiences for Groups & Celebrations, Corporate & Exclusive

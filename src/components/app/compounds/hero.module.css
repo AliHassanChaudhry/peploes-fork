@@ -21,12 +21,23 @@
     );
 }
 
-@media (width < 64rem) {
+@media (40rem <= width < 64rem) {
   .photoOverlay {
     background: linear-gradient(
       180deg,
       rgb(15 4 5 / 60%) 65%,
       var(--hero-shadow) 100%
+    );
+  }
+}
+
+@media (width < 40rem) {
+  .photoOverlay {
+    background: linear-gradient(
+      180deg,
+      rgb(24 20 19 / 3.14%) 0%,
+      rgb(24 20 19 / 85.1%) 72%,
+      #181413 100%
     );
   }
 }

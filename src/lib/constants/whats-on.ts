@@ -38,5 +38,6 @@ export const whatsOnEvents: readonly IWhatsOnEvent[] = [
     imageSrc: "/peploes-sunday.png",
     imageAlt: "Guests sharing lunch around a long table at Peploe’s.",
     ctaLabel: "See more",
+    mobileCtaLabel: "Find out more",
   },
 ];

@@ -20,7 +20,7 @@ export function HumanHospitality() {
     >
       <div className="relative isolate grid">
         <div className="site-container relative z-10">
-          <div className="flex min-w-0 flex-col items-start gap-7 py-14 sm:py-20 xl:max-w-[783px]">
+          <div className="flex min-w-0 flex-col items-start gap-5 pt-12 pb-9 sm:gap-7 sm:py-20 xl:max-w-[783px]">
             <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
               <span
                 aria-hidden="true"
@@ -29,22 +29,22 @@ export function HumanHospitality() {
               {HUMAN_HOSPITALITY_CONTENT.eyebrow}
             </p>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5 sm:gap-4">
               <h2
                 id="human-hospitality-heading"
                 className={cn(
                   ebGaramond.className,
-                  "text-[40px] leading-[44px] font-medium text-peploe-burgundy sm:text-[52px] sm:leading-[58px] xl:text-[60px] xl:leading-[66px]",
+                  "text-[42px] leading-[42px] font-medium text-peploe-burgundy sm:text-[52px] sm:leading-[58px] xl:text-[60px] xl:leading-[66px]",
                 )}
               >
                 {HUMAN_HOSPITALITY_CONTENT.heading}
               </h2>
-              <p className="text-base leading-[26px] text-ink/80">
+              <p className="text-base leading-[25px] text-ink/82 sm:leading-[26px] sm:text-ink/80">
                 {HUMAN_HOSPITALITY_CONTENT.description}
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4">
               <Button
                 asChild
                 variant="brand-contact"
@@ -77,14 +77,14 @@ export function HumanHospitality() {
           </div>
         </div>
 
-        <div className="relative aspect-[563/389] w-full max-w-[675px] self-end justify-self-end overflow-hidden xl:absolute xl:-right-8 xl:bottom-0 xl:w-[39.0972%] xl:max-w-[563px]">
+        <div className="relative h-[222px] w-full max-w-[675px] self-end justify-self-end overflow-hidden sm:aspect-[563/389] sm:h-auto xl:absolute xl:-right-8 xl:bottom-0 xl:w-[39.0972%] xl:max-w-[563px]">
           <Image
             src={HUMAN_HOSPITALITY_CONTENT.image.src}
             alt={HUMAN_HOSPITALITY_CONTENT.image.alt}
             width={1024}
             height={1024}
-            sizes="(min-width: 1440px) 704px, (min-width: 1280px) 49vw, (min-width: 675px) 844px, 125vw"
-            className="absolute -top-[30.4%] -left-[17%] h-auto w-[125%] max-w-none"
+            sizes="(min-width: 1440px) 704px, (min-width: 1280px) 49vw, (min-width: 675px) 844px, (min-width: 640px) 125vw, 138.5vw"
+            className="absolute -top-[29.7%] -left-[30.3%] h-[181.5%] w-[138.5%] max-w-none sm:-top-[30.4%] sm:-left-[17%] sm:h-auto sm:w-[125%]"
           />
         </div>
       </div>

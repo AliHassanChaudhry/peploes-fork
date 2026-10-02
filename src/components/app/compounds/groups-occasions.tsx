@@ -14,7 +14,7 @@ export function GroupsOccasions() {
       aria-labelledby="groups-occasions-heading"
       className={cn(dmSans.className, "scroll-mt-20 bg-warm-cream text-ink")}
     >
-      <div className="relative isolate bg-ink text-warm-cream">
+      <div className="relative isolate flex min-h-[560px] items-end bg-ink text-warm-cream sm:block sm:min-h-0">
         <Image
           src={GROUPS_OCCASIONS_CONTENT.image.src}
           alt={GROUPS_OCCASIONS_CONTENT.image.alt}
@@ -27,8 +27,8 @@ export function GroupsOccasions() {
           className={cn(styles.overlay, "absolute inset-0")}
         />
 
-        <div className="site-container relative pt-14 pb-12 sm:pt-20">
-          <div className="flex max-w-[720px] flex-col items-start gap-7">
+        <div className="site-container relative pt-[185px] pb-10 sm:pt-20 sm:pb-12">
+          <div className="flex max-w-[720px] flex-col items-start gap-4 sm:gap-7">
             <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase">
               <span
                 aria-hidden="true"
@@ -41,7 +41,7 @@ export function GroupsOccasions() {
               id="groups-occasions-heading"
               className={cn(
                 ebGaramond.className,
-                "text-[40px] leading-[44px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
+                "text-[42px] leading-[42px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
               )}
             >
               {GROUPS_OCCASIONS_CONTENT.heading}
@@ -64,11 +64,11 @@ export function GroupsOccasions() {
         </div>
       </div>
 
-      <ul className="site-container grid items-center gap-8 pt-12 pb-14 sm:pb-20 xl:grid-cols-3 xl:gap-25">
+      <ul className="site-container grid items-center gap-[18px] pt-8 pb-12 sm:gap-8 sm:pt-12 sm:pb-20 xl:grid-cols-3 xl:gap-25">
         {GROUPS_OCCASIONS_CONTENT.occasions.map((occasion) => (
           <li
             key={occasion.title}
-            className="relative grid min-w-0 grid-cols-[minmax(0,120px)_minmax(140px,1fr)] gap-5 sm:grid-cols-[minmax(0,180px)_minmax(140px,1fr)] xl:before:absolute xl:before:top-1/2 xl:before:-left-10 xl:before:h-[100px] xl:before:w-px xl:before:-translate-y-1/2 xl:before:bg-soft-stone xl:first:before:hidden"
+            className="relative grid min-w-0 grid-cols-[124px_minmax(0,1fr)] gap-5 pr-3 pl-5 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-soft-stone max-sm:min-h-[187px]! max-[360px]:grid-cols-[96px_minmax(0,1fr)] sm:grid-cols-[minmax(0,180px)_minmax(140px,1fr)] sm:px-0 sm:before:hidden xl:before:top-1/2 xl:before:-left-10 xl:before:block xl:before:h-[100px] xl:before:-translate-y-1/2 xl:first:before:hidden"
             style={{ minHeight: occasion.minHeight }}
           >
             <div className="relative overflow-hidden rounded-[2px]">
@@ -80,7 +80,7 @@ export function GroupsOccasions() {
                 className="object-cover"
               />
             </div>
-            <div className="flex min-w-0 flex-col gap-2.5">
+            <div className="relative flex min-w-0 flex-col pb-[33px] sm:gap-2.5 sm:pb-0">
               <div className="flex flex-col gap-2.5">
                 <h3
                   className={cn(
@@ -91,7 +91,18 @@ export function GroupsOccasions() {
                   {occasion.title}
                 </h3>
                 <p className="text-sm leading-[21px] text-text-secondary">
-                  {occasion.description}
+                  {occasion.mobileDescription ? (
+                    <>
+                      <span className="sm:hidden">
+                        {occasion.mobileDescription}
+                      </span>
+                      <span className="hidden sm:inline">
+                        {occasion.description}
+                      </span>
+                    </>
+                  ) : (
+                    occasion.description
+                  )}
                 </p>
               </div>
               <Button
@@ -99,7 +110,7 @@ export function GroupsOccasions() {
                 variant="brand-text"
                 aria-disabled="true"
                 aria-label={`${GROUPS_OCCASIONS_CONTENT.cardCtaLabel} ${occasion.title}`}
-                className="mt-auto h-11 self-start rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-peploe-burgundy"
+                className="absolute bottom-0 left-0 h-11 self-start rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-peploe-burgundy sm:static sm:mt-auto"
               >
                 {GROUPS_OCCASIONS_CONTENT.cardCtaLabel}
                 <ArrowRight aria-hidden="true" className="size-4" />

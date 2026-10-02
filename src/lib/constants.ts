@@ -213,7 +213,7 @@ export const NAVBAR_CONTENT = {
   mobileBookingLabel: "Book",
 } as const satisfies INavbarContent;
 
-export const WINE_CONTENT = {
+export const WINE_CONTENT: IWineContent = {
   eyebrow: "Wine at Peploe's",
   heading: "Bottles worth lingering over.",
   description:
@@ -221,7 +221,7 @@ export const WINE_CONTENT = {
   primaryCtaLabel: "Explore the Wine List",
   secondaryCtaLabel: "Stories from the cellar",
   image: { src: "/peploes-wine-dinner.jpg", alt: "" },
-} as const satisfies IWineContent;
+};
 
 export const EXAMPLE_FORM_INITIAL_STATE = {
   success: false,
@@ -229,3 +229,10 @@ export const EXAMPLE_FORM_INITIAL_STATE = {
 } satisfies IFormActionResponse;
 
 export const READ_MORE_COLLAPSED_HEIGHT = "12.5em";
+
+export const MOBILE_HOME_CONTENT = {
+  entranceImage: "/peploes-entrance-mobile.jpg",
+  menusImage: "/peploes-dining-room-mobile.png",
+  ginaEyebrow: "From the cellar",
+  ginaHeading: "Wine things just happen.",
+} as const;

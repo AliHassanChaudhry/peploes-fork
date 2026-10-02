@@ -30,7 +30,7 @@ export function Wine() {
       />
 
       <div className="site-container relative">
-        <div className="flex w-full max-w-[748px] flex-col gap-8 py-14 sm:py-20">
+        <div className="flex min-h-[720px] w-full max-w-[748px] flex-col justify-end gap-[18px] pt-[210px] pb-[52px] sm:min-h-0 sm:justify-start sm:gap-8 sm:py-20">
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase">
             <span
               aria-hidden="true"
@@ -43,22 +43,22 @@ export function Wine() {
             id="wine-heading"
             className={cn(
               ebGaramond.className,
-              "text-[40px] leading-[44px] font-medium tracking-[-0.5px] sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
+              "text-[42px] leading-[42px] font-medium sm:text-[52px] sm:leading-[58px] sm:tracking-[-0.5px] lg:text-[60px] lg:leading-[66px]",
             )}
           >
             {WINE_CONTENT.heading}
           </h2>
 
-          <p className="text-lg leading-6 text-warm-cream/85">
+          <p className="text-base leading-6 text-warm-cream/90 sm:text-lg sm:text-warm-cream/85">
             {WINE_CONTENT.description}
           </p>
 
-          <div className="flex flex-col items-start gap-6">
+          <div className="flex flex-col items-start gap-2.5 sm:gap-6">
             <Button
               type="button"
               variant="brand-primary"
               aria-disabled="true"
-              className="h-11 w-[220px] gap-2 rounded-[4px] bg-peploe-burgundy px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-warm-cream shadow-none"
+              className="h-11 w-full gap-2 rounded-[4px] bg-peploe-burgundy px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-warm-cream shadow-none sm:w-[220px]"
             >
               {WINE_CONTENT.primaryCtaLabel}
               <ArrowRight aria-hidden="true" className="size-4" />
@@ -67,7 +67,7 @@ export function Wine() {
               type="button"
               variant="brand-text"
               aria-disabled="true"
-              className="h-11 gap-2 rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-warm-cream"
+              className="h-11 w-full gap-2 rounded-[4px] border border-warm-cream/70 px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-warm-cream max-sm:hover:bg-peploe-burgundy max-sm:hover:no-underline sm:w-auto sm:rounded-none sm:border-0 sm:px-0 sm:has-[>svg]:px-0"
             >
               {WINE_CONTENT.secondaryCtaLabel}
               <ArrowRight aria-hidden="true" className="size-4" />

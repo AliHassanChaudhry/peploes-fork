@@ -1,6 +1,6 @@
 import type { IGroupsOccasionsContent } from "@/lib/types";
 
-export const GROUPS_OCCASIONS_CONTENT = {
+export const GROUPS_OCCASIONS_CONTENT: IGroupsOccasionsContent = {
   eyebrow: "Groups & Occasions",
   heading: "Life tastes better together.",
   description:
@@ -13,6 +13,8 @@ export const GROUPS_OCCASIONS_CONTENT = {
       title: "Groups & Celebrations",
       description:
         "Birthdays, family gatherings, long lunches and special occasions.",
+      mobileDescription:
+        "Private dining and relaxed celebrations, with menus shaped around your occasion.",
       image: "/peploes-celebrations.jpg",
       imageAlt: "Guests raising glasses of red wine over a candlelit table.",
       minHeight: 187,
@@ -35,4 +37,4 @@ export const GROUPS_OCCASIONS_CONTENT = {
       minHeight: 208,
     },
   ],
-} as const satisfies IGroupsOccasionsContent;
+};

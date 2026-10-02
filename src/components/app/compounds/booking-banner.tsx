@@ -16,27 +16,32 @@ export function BookingBanner() {
         "isolate scroll-mt-20 overflow-hidden bg-button-primary-pressed text-warm-cream",
       )}
     >
-      <div className="site-container-inset relative py-14 sm:py-[72px]">
+      <div className="site-container-inset relative min-h-[410px] py-[54px] sm:min-h-0 sm:py-[72px]">
         <Image
           src={BOOKING_BANNER_CONTENT.image.src}
           alt={BOOKING_BANNER_CONTENT.image.alt}
           width={472}
           height={472}
           sizes="472px"
-          className="pointer-events-none absolute -top-6 -right-[104px] h-[472px] w-[472px] max-w-none opacity-15 lg:opacity-35"
+          className="pointer-events-none absolute -right-[120px] -bottom-20 h-[310px] w-[310px] max-w-none opacity-24 sm:-top-6 sm:-right-[104px] sm:bottom-auto sm:h-[472px] sm:w-[472px] sm:opacity-15 lg:opacity-35"
         />
 
-        <div className="relative flex flex-col items-start gap-7">
-          <div className="flex flex-col gap-6">
+        <div className="relative flex flex-col items-start gap-6 sm:gap-7">
+          <div className="flex flex-col gap-4 sm:gap-6">
             <h2
               id="booking-banner-heading"
               className={cn(
                 ebGaramond.className,
-                "text-[36px] leading-[42px] font-normal sm:text-[48px] sm:leading-[54px]",
+                "text-[38px] leading-[41px] font-normal sm:text-[48px] sm:leading-[54px]",
               )}
             >
               {BOOKING_BANNER_CONTENT.heading}{" "}
-              <em className={ebGaramondItalic.className}>
+              <span className="sm:hidden">
+                {BOOKING_BANNER_CONTENT.emphasizedHeading}
+              </span>
+              <em
+                className={cn(ebGaramondItalic.className, "hidden sm:inline")}
+              >
                 {BOOKING_BANNER_CONTENT.emphasizedHeading}
               </em>
             </h2>
@@ -49,7 +54,7 @@ export function BookingBanner() {
             type="button"
             variant="brand-primary-inverse"
             aria-disabled="true"
-            className="h-11 w-[156px] rounded-[4px] bg-warm-cream px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-peploe-burgundy shadow-none"
+            className="h-11 w-full rounded-[4px] bg-warm-cream px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-peploe-burgundy shadow-none sm:w-[156px]"
           >
             {BOOKING_BANNER_CONTENT.ctaLabel}
             <ArrowRight aria-hidden="true" className="size-4" />
