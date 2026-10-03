@@ -6,18 +6,16 @@ import { useEffect, useId, useRef, useState } from "react";
 import { CloseButton } from "@/components/app/atoms/close-button";
 import { NavbarBookingButton } from "@/components/app/atoms/navbar-booking-button";
 import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
+import styles from "@/components/app/molecules/mobile-navigation.module.css";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { FOCUS_RING } from "@/lib/constants";
+import { DESKTOP_NAVIGATION_QUERY, FOCUS_RING } from "@/lib/constants";
 import { MOBILE_NAVIGATION_CONTENT } from "@/lib/constants/mobile-navigation";
-
 import type {
   IMobileNavigationItem,
   IMobileNavigationProps,
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-import styles from "./mobile-navigation.module.css";
 
 export function MobileNavigation({
   brandPhraseClassName,
@@ -28,7 +26,7 @@ export function MobileNavigation({
   const titleId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
-  const isDesktop = useMediaQuery("(min-width: 80rem)");
+  const isDesktop = useMediaQuery(DESKTOP_NAVIGATION_QUERY);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -117,83 +115,82 @@ export function MobileNavigation({
             <nav aria-label={MOBILE_NAVIGATION_CONTENT.navigationLabel}>
               <ul className="flex flex-col gap-1">
                 {MOBILE_NAVIGATION_CONTENT.items.map(
-                  (item: IMobileNavigationItem) => (
-                    <li
-                      key={item.id}
-                      className="not-last:after:mt-1 not-last:after:block not-last:after:h-px not-last:after:bg-soft-stone"
-                    >
-                      <Button
-                        type="button"
-                        variant="brand-nav"
-                        aria-disabled={item.children ? undefined : true}
-                        aria-expanded={
-                          item.children
-                            ? expandedSection === item.id
-                            : undefined
-                        }
-                        aria-controls={
-                          item.children ? `${dialogId}-${item.id}` : undefined
-                        }
-                        onClick={
-                          item.children
-                            ? () =>
-                                setExpandedSection(
-                                  expandedSection === item.id ? null : item.id,
-                                )
-                            : undefined
-                        }
-                        className={cn(
-                          FOCUS_RING,
-                          "h-auto min-h-12 w-full justify-between gap-4 rounded-none px-2 py-2.5 text-left text-base leading-6 font-medium whitespace-normal hover:no-underline focus-visible:ring-peploe-burgundy",
-                          expandedSection === item.id &&
-                            "text-peploe-burgundy shadow-[inset_0_-1px_0_var(--peploe-burgundy)]",
-                        )}
+                  (item: IMobileNavigationItem) => {
+                    const isExpanded = expandedSection === item.id;
+                    const panelId = `${dialogId}-${item.id}`;
+
+                    return (
+                      <li
+                        key={item.id}
+                        className="not-last:after:mt-1 not-last:after:block not-last:after:h-px not-last:after:bg-soft-stone"
                       >
-                        <span>{item.label}</span>
-                        {item.children && (
-                          <span
-                            aria-hidden="true"
-                            className="size-6 shrink-0 text-center text-xl leading-6 font-normal"
-                          >
-                            {expandedSection === item.id ? "−" : "+"}
-                          </span>
-                        )}
-                      </Button>
-                      {item.children && (
-                        <div
-                          id={`${dialogId}-${item.id}`}
-                          aria-hidden={expandedSection !== item.id}
-                          inert={expandedSection !== item.id}
+                        <Button
+                          type="button"
+                          variant="brand-nav"
+                          aria-disabled={item.children ? undefined : true}
+                          aria-expanded={item.children ? isExpanded : undefined}
+                          aria-controls={item.children ? panelId : undefined}
+                          onClick={
+                            item.children
+                              ? () =>
+                                  setExpandedSection((currentSection) =>
+                                    currentSection === item.id ? null : item.id,
+                                  )
+                              : undefined
+                          }
                           className={cn(
-                            "grid transition-[grid-template-rows,visibility] duration-200 motion-reduce:transition-none",
-                            expandedSection === item.id
-                              ? "visible mt-1 grid-rows-[1fr]"
-                              : "invisible grid-rows-[0fr]",
+                            FOCUS_RING,
+                            "h-auto min-h-12 w-full justify-between gap-4 rounded-none px-2 py-2.5 text-left text-base leading-6 font-medium whitespace-normal hover:no-underline focus-visible:ring-peploe-burgundy",
+                            isExpanded &&
+                              "text-peploe-burgundy shadow-[inset_0_-1px_0_var(--peploe-burgundy)]",
                           )}
                         >
-                          <div className="min-h-0 overflow-hidden">
-                            <ul className="flex flex-col gap-1 pt-1 pb-2 pl-6">
-                              {item.children.map((label) => (
-                                <li key={label}>
-                                  <Button
-                                    type="button"
-                                    variant="brand-nav"
-                                    aria-disabled="true"
-                                    className={cn(
-                                      FOCUS_RING,
-                                      "h-auto min-h-11 w-full justify-start rounded-none p-0 text-left text-sm leading-[21px] font-normal whitespace-normal focus-visible:ring-peploe-burgundy",
-                                    )}
-                                  >
-                                    {label}
-                                  </Button>
-                                </li>
-                              ))}
-                            </ul>
+                          <span>{item.label}</span>
+                          {item.children && (
+                            <span
+                              aria-hidden="true"
+                              className="size-6 shrink-0 text-center text-xl leading-6 font-normal"
+                            >
+                              {isExpanded ? "−" : "+"}
+                            </span>
+                          )}
+                        </Button>
+                        {item.children && (
+                          <div
+                            id={panelId}
+                            aria-hidden={!isExpanded}
+                            inert={!isExpanded}
+                            className={cn(
+                              "grid transition-[grid-template-rows,visibility] duration-200 motion-reduce:transition-none",
+                              isExpanded
+                                ? "visible mt-1 grid-rows-[1fr]"
+                                : "invisible grid-rows-[0fr]",
+                            )}
+                          >
+                            <div className="min-h-0 overflow-hidden">
+                              <ul className="flex flex-col gap-1 pt-1 pb-2 pl-6">
+                                {item.children.map((label) => (
+                                  <li key={label}>
+                                    <Button
+                                      type="button"
+                                      variant="brand-nav"
+                                      aria-disabled="true"
+                                      className={cn(
+                                        FOCUS_RING,
+                                        "h-auto min-h-11 w-full justify-start rounded-none p-0 text-left text-sm leading-[21px] font-normal whitespace-normal focus-visible:ring-peploe-burgundy",
+                                      )}
+                                    >
+                                      {label}
+                                    </Button>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </li>
-                  ),
+                        )}
+                      </li>
+                    );
+                  },
                 )}
               </ul>
             </nav>

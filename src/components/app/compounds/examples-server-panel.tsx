@@ -1,7 +1,7 @@
-import { EXAMPLE_SERVER_DATE_FORMATTER } from "@/lib/dates";
+import { ExampleForm } from "@/components/app/compounds/example-form";
+import { EXAMPLE_DATE_FORMATTER } from "@/lib/dates";
 import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/examples";
-import { ExampleForm } from "./example-form";
 
 export async function ExamplesServerPanel() {
   let examples: IExampleDto[] = [];
@@ -43,9 +43,7 @@ export async function ExamplesServerPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {EXAMPLE_SERVER_DATE_FORMATTER.format(
-                    new Date(example.createdAt),
-                  )}
+                  {EXAMPLE_DATE_FORMATTER.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

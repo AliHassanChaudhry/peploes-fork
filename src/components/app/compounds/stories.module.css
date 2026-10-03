@@ -6,10 +6,6 @@
   );
 }
 
-.produceOverlay {
-  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 60%);
-}
-
 .ginaOverlay {
   background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 71.34%);
 }

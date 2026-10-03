@@ -1,3 +1,4 @@
+import { RESTAURANT_OPENING_HOURS } from "@/lib/constants";
 import type { IFooterContent } from "@/lib/types";
 
 export const FOOTER_CONTENT = {
@@ -6,11 +7,7 @@ export const FOOTER_CONTENT = {
   tagline: "A Dublin Restaurant",
   contactHeading: "Contact",
   openingHoursHeading: "Opening Hours",
-  openingHours: [
-    { days: "Monday – Wednesday", hours: "12pm to 10pm" },
-    { days: "Thursday – Saturday", hours: "12pm to Late" },
-    { days: "Sunday", hours: "Closed" },
-  ],
+  openingHours: RESTAURANT_OPENING_HOURS,
   exploreHeading: "Explore",
   exploreLabels: [
     "Menus",
@@ -31,12 +28,7 @@ export const FOOTER_CONTENT = {
   },
   copyright: "© 2026 Peploe’s",
   legalNavigationLabel: "Legal and accessibility",
-  legalItems: [
-    { label: "Privacy", mobileLabel: null },
-    { label: "Terms", mobileLabel: null },
-    { label: "Cookie Preferences", mobileLabel: "Cookies" },
-    { label: "Accessibility", mobileLabel: null },
-  ],
+  legalLabels: ["Privacy", "Terms", "Cookie Preferences", "Accessibility"],
   instagramLabel: "Peploe’s on Instagram",
   facebookLabel: "Peploe’s on Facebook",
 } as const satisfies IFooterContent;

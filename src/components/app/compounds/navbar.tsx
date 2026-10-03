@@ -1,5 +1,8 @@
 import { NavbarBookingButton } from "@/components/app/atoms/navbar-booking-button";
 import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
+import { DesktopGroups } from "@/components/app/molecules/desktop-groups";
+import { DesktopMenus } from "@/components/app/molecules/desktop-menus";
+import { DesktopNavigation } from "@/components/app/molecules/desktop-navigation";
 import { MobileNavigation } from "@/components/app/molecules/mobile-navigation";
 import { Button } from "@/components/ui/button";
 import { NAVBAR_CONTENT } from "@/lib/constants";
@@ -18,20 +21,22 @@ export function Navbar() {
         aria-label={NAVBAR_CONTENT.navigationLabel}
         className="site-container flex h-[72px] items-center justify-between gap-2 xl:h-[76px] xl:gap-6"
       >
-        <ul className="hidden flex-1 items-center gap-[30px] xl:flex">
-          {NAVBAR_CONTENT.navigationLabels.map((label) => (
-            <li key={label}>
-              <Button
-                type="button"
-                variant="brand-nav"
-                aria-disabled="true"
-                className="h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-ink"
-              >
-                {label}
-              </Button>
-            </li>
-          ))}
-        </ul>
+        <DesktopNavigation
+          items={[
+            {
+              id: "menus",
+              label: NAVBAR_CONTENT.menusLabel,
+              content: <DesktopMenus />,
+            },
+            { id: "our-story", label: NAVBAR_CONTENT.ourStoryLabel },
+            {
+              id: "groups-occasions",
+              label: NAVBAR_CONTENT.groupsLabel,
+              content: <DesktopGroups />,
+            },
+            { id: "whats-on", label: NAVBAR_CONTENT.whatsOnLabel },
+          ]}
+        />
         <NavbarBrand />
         <div className="flex shrink-0 items-center gap-3 xl:flex-1 xl:justify-end xl:gap-7">
           <Button

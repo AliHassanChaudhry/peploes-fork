@@ -6,10 +6,6 @@
   display: none;
 }
 
-html:has(.dialog[open]) {
-  scrollbar-gutter: auto;
-}
-
 .dialog[open] {
   animation: menu-appear 240ms ease-out;
 }

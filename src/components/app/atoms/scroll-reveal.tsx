@@ -1,6 +1,6 @@
 "use client";
 
-import { useReveal } from "@/hooks";
+import { useReveal } from "@/hooks/use-reveal";
 import type { IRevealProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -10,11 +10,11 @@ export function Reveal({
   threshold,
   stagger,
 }: IRevealProps) {
-  const ref = useReveal(threshold);
+  const ref = useReveal<HTMLDivElement>(threshold);
 
   return (
     <div
-      ref={ref as React.RefObject<HTMLDivElement>}
+      ref={ref}
       className={cn(stagger ? "reveal-stagger" : undefined, className)}
     >
       {children}

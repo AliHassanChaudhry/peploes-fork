@@ -125,6 +125,27 @@ The logo artwork comes from the [existing website](https://peploes.com/), stored
 locally and tinted with the Ink token using a CSS mask. Preserve its aspect
 ratio; replace it with the exact Figma vector when that export is available.
 
+The desktop Menus dropdown follows Nav / Shelf / Menus / Light (`3041:2013`).
+It opens on mouse hover or button activation and overlays the page below the
+76px header without moving the logo or page content. The Warm Cream panel has
+an editorial introduction and six destinations in three columns. Reuse the
+homepage menu category order; destination actions remain inactive placeholders.
+Verify pointer travel into the panel, keyboard activation and tab order, Escape
+with focus restoration, outside-click and focus-leave dismissal, short-viewport
+scrolling, reduced motion and dismissal when switching to mobile navigation.
+The desktop Groups & Occasions dropdown follows Nav / Shelf / Groups / Light
+(`3041:1933`): a 320px introduction, 56px column gap and three photo destinations
+with 132px images. The local shelf catalog owns its copy and the crops exported
+from Figma. Destination titles turn burgundy with a 32px underline on hover;
+retain visible keyboard focus and the shared reduced-motion-aware duration.
+Destinations remain inactive until their pages are built.
+
+Both desktop shelves share one open state so switching triggers replaces the
+visible panel. Verify switching by pointer and keyboard as well as dismissal.
+The navbar renders shelf content and fonts on the server and passes the result
+to the interactive navigation. Check font compilation in the dev server as well
+as the production build.
+
 Below the desktop breakpoint, navigation follows the Design System's light
 mobile variants: closed (`3041:1863`), menu open (`3041:1812`) and Menus expanded
 (`3041:1718`). The header is 72px tall with 24px gutters, the logo and a compact

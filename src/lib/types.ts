@@ -1,12 +1,12 @@
 import type { VariantProps } from "class-variance-authority";
 import type { Result as NeverthrowResult } from "neverthrow";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import type { z } from "zod/v4";
 
 import type { examples } from "@/db/schema";
 import type { buttonVariants } from "@/lib/constants/button";
-import type { ErrorCode, HttpVerb, LogLevel } from "./enums";
-import type { createExampleSchema } from "./examples-schema";
+import type { ErrorCode, HttpVerb, LogLevel } from "@/lib/enums";
+import type { createExampleSchema } from "@/lib/examples-schema";
 
 // ─── Core Framework Types ─────────────────────────────────────────────────
 
@@ -23,6 +23,17 @@ export interface IFetchResponse<T = unknown> {
   ok: boolean;
   status: number;
   error: string | null;
+}
+
+export interface IBatchProcessInput<T, R> {
+  items: T[];
+  processor: (item: T, index: number) => Promise<R>;
+  concurrency?: number;
+}
+
+export interface IBatchProcessResult<R> {
+  results: R[];
+  errors: Array<{ index: number; error: unknown }>;
 }
 
 export interface ISuccess<T> {
@@ -167,7 +178,6 @@ export interface IRevealObserverRegistry {
 
 export interface IRevealProps {
   children: React.ReactNode;
-  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
   threshold?: number;
   stagger?: boolean;
@@ -306,8 +316,7 @@ export interface IWhatsOnEvent {
   category: string;
   title: string;
   description: string;
-  imageSrc: string;
-  imageAlt: string;
+  image: ISectionImage;
   ctaLabel: string;
   mobileCtaLabel?: string;
 }
@@ -386,12 +395,17 @@ export interface IHeroContent {
   entranceCaption: string;
 }
 
+export interface IMenuCategory {
+  label: string;
+  description: string;
+}
+
 export interface IMenusContent {
   eyebrow: string;
   heading: string;
   description: string;
   categoriesLabel: string;
-  categories: readonly string[];
+  categories: readonly IMenuCategory[];
   ctaLabel: string;
   image: ISectionImage;
 }
@@ -429,11 +443,42 @@ export interface INavbarBrandProps {
 export interface INavbarContent {
   navigationLabel: string;
   homeLabel: string;
-  navigationLabels: readonly string[];
+  menusLabel: string;
+  ourStoryLabel: string;
+  groupsLabel: string;
+  whatsOnLabel: string;
   visitContactLabel: string;
   giftVouchersLabel: string;
   bookingLabel: string;
   mobileBookingLabel: string;
+}
+
+export interface IDesktopNavigationItem {
+  id: string;
+  label: string;
+  content?: ReactNode;
+}
+
+export interface IDesktopNavigationProps {
+  items: readonly IDesktopNavigationItem[];
+}
+
+export interface IOpenDesktopNavigation {
+  id: string;
+  source: "hover" | "activation";
+}
+
+export interface INavigationShelfProps {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  introClassName: string;
+  children: ReactNode;
+}
+
+export interface INavigationShelfLinkProps {
+  label: string;
+  description: string;
 }
 
 export interface IMobileNavigationProps {
@@ -446,7 +491,7 @@ export interface IMobileNavigationItem {
   children?: readonly string[];
 }
 
-export interface IMobileNavigationOpeningHours {
+export interface IOpeningHours {
   days: string;
   hours: string;
 }
@@ -459,21 +504,11 @@ export interface IMobileNavigationContent {
   items: readonly IMobileNavigationItem[];
   giftVouchersLabel: string;
   openingHoursHeading: string;
-  openingHours: readonly IMobileNavigationOpeningHours[];
+  openingHours: readonly IOpeningHours[];
   address: string;
   phoneAction: INavLink;
   emailAction: INavLink;
   brandPhrase: string;
-}
-
-export interface IFooterOpeningHours {
-  days: string;
-  hours: string;
-}
-
-export interface IFooterLegalItem {
-  label: string;
-  mobileLabel: string | null;
 }
 
 export interface IFooterContent {
@@ -482,7 +517,7 @@ export interface IFooterContent {
   tagline: string;
   contactHeading: string;
   openingHoursHeading: string;
-  openingHours: readonly IFooterOpeningHours[];
+  openingHours: readonly IOpeningHours[];
   exploreHeading: string;
   exploreLabels: readonly string[];
   newsletter: {
@@ -494,7 +529,7 @@ export interface IFooterContent {
   };
   copyright: string;
   legalNavigationLabel: string;
-  legalItems: readonly IFooterLegalItem[];
+  legalLabels: readonly string[];
   instagramLabel: string;
   facebookLabel: string;
 }
@@ -534,8 +569,7 @@ export interface IGroupOccasion {
   title: string;
   description: string;
   mobileDescription?: string;
-  image: string;
-  imageAlt: string;
+  image: ISectionImage;
   minHeight: number;
 }
 

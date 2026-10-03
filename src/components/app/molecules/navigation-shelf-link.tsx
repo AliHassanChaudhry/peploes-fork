@@ -1,0 +1,28 @@
+import { Button } from "@/components/ui/button";
+import { FOCUS_RING } from "@/lib/constants";
+import { ebGaramond } from "@/lib/fonts";
+import type { INavigationShelfLinkProps } from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+export function NavigationShelfLink({
+  label,
+  description,
+}: INavigationShelfLinkProps) {
+  return (
+    <div className="flex min-h-[72px] min-w-0 flex-col gap-1.5">
+      <Button
+        type="button"
+        variant="brand-nav"
+        aria-disabled="true"
+        className={cn(
+          FOCUS_RING,
+          ebGaramond.className,
+          "relative -mt-1 min-h-11 h-auto w-fit max-w-full shrink-0 justify-start rounded-sm p-0 pb-2 text-left text-2xl leading-[30px] font-medium whitespace-normal after:absolute after:bottom-0.5 after:left-0 after:h-0.5 after:w-8 after:bg-peploe-burgundy after:opacity-0 after:transition-opacity after:duration-(--duration-interaction) hover:no-underline hover:after:opacity-100 focus-visible:ring-peploe-burgundy motion-reduce:after:transition-none",
+        )}
+      >
+        {label}
+      </Button>
+      <p className="text-sm leading-[21px]">{description}</p>
+    </div>
+  );
+}

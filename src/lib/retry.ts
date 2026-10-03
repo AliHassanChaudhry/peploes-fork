@@ -1,5 +1,7 @@
 import { err, ok, type Result } from "neverthrow";
-import type { IAppError } from "./types";
+
+import { ErrorCode } from "@/lib/enums";
+import type { IAppError } from "@/lib/types";
 
 export async function retry<R>(
   fn: () => Promise<Result<R, IAppError>>,
@@ -30,7 +32,7 @@ export async function retry<R>(
 
   return err(
     lastError ?? {
-      code: "INTERNAL_ERROR" as never,
+      code: ErrorCode.InternalError,
       message: "Retry failed but no error was captured",
     },
   );

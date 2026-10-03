@@ -32,10 +32,6 @@ export function formatLongDateTime(date?: Date): string {
   });
 }
 
-export const EXAMPLE_SERVER_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-});
-
-export const EXAMPLE_CLIENT_DATE_FORMATTER = new Intl.DateTimeFormat("en", {
+export const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
 });

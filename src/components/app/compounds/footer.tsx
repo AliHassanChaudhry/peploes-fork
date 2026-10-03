@@ -261,7 +261,7 @@ export function Footer() {
             </span>
             <nav aria-label={FOOTER_CONTENT.legalNavigationLabel}>
               <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 xl:gap-x-4">
-                {FOOTER_CONTENT.legalItems.map(({ label }, index) => (
+                {FOOTER_CONTENT.legalLabels.map((label, index) => (
                   <li key={label} className="flex items-center gap-3 xl:gap-4">
                     {index > 0 && (
                       <span aria-hidden="true">

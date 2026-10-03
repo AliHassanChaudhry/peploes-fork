@@ -1,4 +1,10 @@
-import { RESTAURANT_CONTACT } from "@/lib/constants";
+import {
+  NAVBAR_CONTENT,
+  RESTAURANT_CONTACT,
+  RESTAURANT_OPENING_HOURS,
+} from "@/lib/constants";
+import { GROUPS_SHELF_CONTENT } from "@/lib/constants/groups-shelf";
+import { MENUS_CONTENT } from "@/lib/constants/menus";
 import type { IMobileNavigationContent } from "@/lib/types";
 
 export const MOBILE_NAVIGATION_CONTENT = {
@@ -9,35 +15,21 @@ export const MOBILE_NAVIGATION_CONTENT = {
   items: [
     {
       id: "menus",
-      label: "Menus",
-      children: [
-        "Lunch",
-        "Dinner",
-        "Pre–Theatre",
-        "Wine",
-        "Cocktails",
-        "Seasonal",
-      ],
+      label: NAVBAR_CONTENT.menusLabel,
+      children: MENUS_CONTENT.categories.map(({ label }) => label),
     },
-    { id: "our-story", label: "Our Story" },
+    { id: "our-story", label: NAVBAR_CONTENT.ourStoryLabel },
     {
       id: "groups-occasions",
-      label: "Groups & Occasions",
-      children: [
-        "Groups & Celebrations",
-        "Corporate & Exclusive Hire",
-        "Weddings",
-      ],
+      label: NAVBAR_CONTENT.groupsLabel,
+      children: GROUPS_SHELF_CONTENT.destinations.map(({ label }) => label),
     },
-    { id: "whats-on", label: "What’s On" },
+    { id: "whats-on", label: NAVBAR_CONTENT.whatsOnLabel },
     { id: "visit-contact", label: "Visit & Contact" },
   ],
   giftVouchersLabel: "Gift Vouchers",
   openingHoursHeading: "Opening Hours",
-  openingHours: [
-    { days: "Monday – Wednesday", hours: "12pm to 10pm" },
-    { days: "Thursday – Saturday", hours: "12pm to Late" },
-  ],
+  openingHours: RESTAURANT_OPENING_HOURS,
   address: "16 St Stephen’s Green, Dublin 2",
   phoneAction: {
     href: `tel:${RESTAURANT_CONTACT.phone}`,

@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { WHATS_ON_CONTENT } from "@/lib/constants/whats-on";
+import { WHATS_ON_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import type {
   IEventActionProps,
@@ -51,8 +51,8 @@ function EventCard({ event, featured = false }: IEventCardProps) {
         )}
       >
         <Image
-          src={event.imageSrc}
-          alt={event.imageAlt}
+          src={event.image.src}
+          alt={event.image.alt}
           fill
           sizes={
             featured

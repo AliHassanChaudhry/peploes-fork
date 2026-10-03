@@ -2,6 +2,8 @@ import type {
   IBookingBannerContent,
   IFormActionResponse,
   INavbarContent,
+  IOpeningHours,
+  IWhatsOnContent,
   IWineContent,
 } from "@/lib/types";
 
@@ -54,6 +56,12 @@ export const RESTAURANT_CONTACT = {
   phoneLabel: "+353 1 676 3144",
   email: "reception@peploes.ie",
 } as const;
+
+export const RESTAURANT_OPENING_HOURS = [
+  { days: "Monday – Wednesday", hours: "12pm to 10pm" },
+  { days: "Thursday – Saturday", hours: "12pm to Late" },
+  { days: "Sunday", hours: "Closed" },
+] as const satisfies readonly IOpeningHours[];
 
 export const SOCIAL_IMAGE = {
   DEFAULT_WIDTH: 1200,
@@ -165,6 +173,7 @@ export const ANALYTICS = {
 
 export const MOTION = {
   FAST: "150ms",
+  INTERACTION: "160ms",
   BASE: "300ms",
   SLOW: "500ms",
   CRAWL: "1200ms",
@@ -206,12 +215,23 @@ export const BOOKING_BANNER_CONTENT = {
 export const NAVBAR_CONTENT = {
   navigationLabel: "Main navigation",
   homeLabel: "Peploe’s home",
-  navigationLabels: ["Menus", "Our Story", "Groups & Occasions", "What’s On"],
+  menusLabel: "Menus",
+  ourStoryLabel: "Our Story",
+  groupsLabel: "Groups & Occasions",
+  whatsOnLabel: "What’s On",
   visitContactLabel: "Visit & Contact",
   giftVouchersLabel: "Gift Vouchers",
   bookingLabel: "Book a Table",
   mobileBookingLabel: "Book",
 } as const satisfies INavbarContent;
+
+export const DESKTOP_NAVIGATION_QUERY = "(min-width: 80rem)";
+
+export const MENUS_SHELF_CONTENT = {
+  heading: "Great food brings people together.",
+  description:
+    "Seasonal dishes, exceptional wines and a warm welcome in the heart of Dublin.",
+} as const;
 
 export const WINE_CONTENT: IWineContent = {
   eyebrow: "Wine at Peploe's",
@@ -221,6 +241,14 @@ export const WINE_CONTENT: IWineContent = {
   primaryCtaLabel: "Explore the Wine List",
   secondaryCtaLabel: "Stories from the cellar",
   image: { src: "/peploes-wine-dinner.jpg", alt: "" },
+};
+
+export const WHATS_ON_CONTENT: IWhatsOnContent = {
+  eyebrow: "This season at Peploe’s",
+  heading: "What’s On",
+  description:
+    "From seasonal menus to special events, there’s always something to look forward to at Peploe’s.",
+  ctaLabel: "View what’s on",
 };
 
 export const EXAMPLE_FORM_INITIAL_STATE = {

@@ -47,8 +47,8 @@ function getRevealObserverRegistry(
   return nextRegistry;
 }
 
-export function useReveal(threshold = 0.15) {
-  const ref = useRef<HTMLElement>(null);
+export function useReveal<T extends HTMLElement>(threshold = 0.15) {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const el = ref.current;

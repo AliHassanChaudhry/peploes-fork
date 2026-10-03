@@ -73,14 +73,14 @@ export function GroupsOccasions() {
           >
             <div className="relative overflow-hidden rounded-[2px]">
               <Image
-                src={occasion.image}
-                alt={occasion.imageAlt}
+                src={occasion.image.src}
+                alt={occasion.image.alt}
                 fill
                 sizes="360px"
                 className="object-cover"
               />
             </div>
-            <div className="relative flex min-w-0 flex-col pb-[33px] sm:gap-2.5 sm:pb-0">
+            <div className="flex min-w-0 flex-col sm:gap-2.5">
               <div className="flex flex-col gap-2.5">
                 <h3
                   className={cn(
@@ -110,7 +110,7 @@ export function GroupsOccasions() {
                 variant="brand-text"
                 aria-disabled="true"
                 aria-label={`${GROUPS_OCCASIONS_CONTENT.cardCtaLabel} ${occasion.title}`}
-                className="absolute bottom-0 left-0 h-11 self-start rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-peploe-burgundy sm:static sm:mt-auto"
+                className="mt-auto h-11 self-start rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-peploe-burgundy"
               >
                 {GROUPS_OCCASIONS_CONTENT.cardCtaLabel}
                 <ArrowRight aria-hidden="true" className="size-4" />

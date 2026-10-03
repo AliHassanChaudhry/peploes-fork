@@ -15,25 +15,30 @@ export const GROUPS_OCCASIONS_CONTENT: IGroupsOccasionsContent = {
         "Birthdays, family gatherings, long lunches and special occasions.",
       mobileDescription:
         "Private dining and relaxed celebrations, with menus shaped around your occasion.",
-      image: "/peploes-celebrations.jpg",
-      imageAlt: "Guests raising glasses of red wine over a candlelit table.",
+      image: {
+        src: "/peploes-celebrations.jpg",
+        alt: "Guests raising glasses of red wine over a candlelit table.",
+      },
       minHeight: 187,
     },
     {
       title: "Corporate & Exclusive Hire",
       description:
         "From team dinners to full-room occasions, with bespoke menus and attentive service.",
-      image: "/peploes-corporate.jpg",
-      imageAlt:
-        "A table set for a group dinner with white flowers and wine glasses.",
+      image: {
+        src: "/peploes-corporate.jpg",
+        alt: "A table set for a group dinner with white flowers and wine glasses.",
+      },
       minHeight: 208,
     },
     {
       title: "Weddings",
       description:
         "Intimate celebrations in the heart of Dublin, with a setting that feels both special and relaxed.",
-      image: "/peploes-weddings.jpg",
-      imageAlt: "A wedding table with flowers, candles and champagne glasses.",
+      image: {
+        src: "/peploes-weddings.jpg",
+        alt: "A wedding table with flowers, candles and champagne glasses.",
+      },
       minHeight: 208,
     },
   ],

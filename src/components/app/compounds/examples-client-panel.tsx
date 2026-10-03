@@ -4,7 +4,8 @@ import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
-import { EXAMPLE_CLIENT_DATE_FORMATTER } from "@/lib/dates";
+import { ROUTES } from "@/lib/constants";
+import { EXAMPLE_DATE_FORMATTER } from "@/lib/dates";
 import { HttpVerb } from "@/lib/enums";
 import type { IExampleDto, IExamplesResponse } from "@/lib/types";
 
@@ -19,7 +20,7 @@ export function ExamplesClientPanel() {
 
     try {
       const response = await fetcher<null, IExamplesResponse>({
-        url: "/api/examples",
+        url: ROUTES.API.EXAMPLES,
         method: HttpVerb.Get,
       });
 
@@ -76,9 +77,7 @@ export function ExamplesClientPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {EXAMPLE_CLIENT_DATE_FORMATTER.format(
-                    new Date(example.createdAt),
-                  )}
+                  {EXAMPLE_DATE_FORMATTER.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

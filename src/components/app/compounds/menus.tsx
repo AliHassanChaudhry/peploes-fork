@@ -55,8 +55,8 @@ export function Menus() {
           aria-label={MENUS_CONTENT.categoriesLabel}
           className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
         >
-          {MENUS_CONTENT.categories.map((category) => (
-            <li key={category} className="min-w-0">
+          {MENUS_CONTENT.categories.map(({ label }) => (
+            <li key={label} className="min-w-0">
               <Button
                 type="button"
                 variant="brand-nav"
@@ -67,7 +67,7 @@ export function Menus() {
                 )}
               >
                 <span className="flex items-center justify-between gap-2">
-                  {category}
+                  {label}
                   <ArrowRight
                     aria-hidden="true"
                     className="size-4 text-peploe-burgundy sm:text-current"
