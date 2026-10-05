@@ -4,20 +4,20 @@
 @custom-variant dark (&:is(.dark *));
 
 @utility site-container {
-  width: calc(100% - 3rem);
+  width: min(calc(100% - 3rem), 1296px);
   margin-inline: auto;
 
   @media (width >= 80rem) {
-    width: calc(100% - 9rem);
+    width: min(calc(100% - 9rem), 1296px);
   }
 }
 
 @utility site-container-inset {
-  width: calc(100% - 3rem);
+  width: min(calc(100% - 3rem), 1280px);
   margin-inline: auto;
 
   @media (width >= 80rem) {
-    width: calc(100% - 10rem);
+    width: min(calc(100% - 10rem), 1280px);
   }
 }
 

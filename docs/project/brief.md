@@ -54,9 +54,9 @@ shared content maximum. At the desktop breakpoint, `site-container` in
 `src/app/globals.css` leaves 72px on each side; `site-container-inset` leaves
 80px for the closing booking banner and footer. Their content widths are
 therefore 1296px and 1280px only when the available page width is 1440px.
-Both containers grow with wider pages and retain 24px gutters below the
-desktop breakpoint. Stories additionally caps its content wrapper at 1296px so
-the fixed mosaic remains centered on wider screens. This preserves the frame's
+The content containers cap at 1296px and 1280px respectively, while section
+backgrounds and full-width photographs remain viewport-width. Below the
+desktop breakpoint they retain 24px gutters. This preserves the frame's
 padding and Fill constraints; Figma supplies a 1440px desktop reference, not
 additional wide-screen frames.
 
