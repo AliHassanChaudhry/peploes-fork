@@ -5,9 +5,12 @@ import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
 import { ROUTES } from "@/lib/constants";
-import { EXAMPLE_DATE_FORMATTER } from "@/lib/dates";
 import { HttpVerb } from "@/lib/enums";
 import type { IExampleDto, IExamplesResponse } from "@/lib/types";
+
+const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
 
 export function ExamplesClientPanel() {
   const [examples, setExamples] = useState<IExampleDto[]>([]);

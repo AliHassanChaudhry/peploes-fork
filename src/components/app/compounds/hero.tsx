@@ -20,7 +20,7 @@ export function Hero() {
           src={HERO_CONTENT.backgroundImage.src}
           alt={HERO_CONTENT.backgroundImage.alt}
           fill
-          sizes="(min-width: 1024px) max(100vw, 1170px), (min-width: 640px) 1080px, 990px"
+          sizes="(min-width: 1024px) 100vw, (min-width: 640px) 1080px, 990px"
           preload
           className="object-cover"
         />
@@ -86,7 +86,7 @@ export function Hero() {
           width={4000}
           height={2667}
           sizes="100vw"
-          className="h-[520px] w-full object-fill"
+          className="h-[520px] w-full object-cover"
         />
         <figcaption
           className={cn(

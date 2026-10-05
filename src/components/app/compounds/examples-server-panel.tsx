@@ -1,7 +1,10 @@
 import { ExampleForm } from "@/components/app/compounds/example-form";
-import { EXAMPLE_DATE_FORMATTER } from "@/lib/dates";
 import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/examples";
+
+const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
 
 export async function ExamplesServerPanel() {
   let examples: IExampleDto[] = [];

@@ -18,7 +18,7 @@ export function Menus() {
           src={MENUS_CONTENT.image.src}
           alt={MENUS_CONTENT.image.alt}
           fill
-          sizes="(min-width: 1024px) max(100vw, 1440px), (min-width: 640px) 1168px, 857px"
+          sizes="100vw"
           className="hidden object-cover sm:block"
         />
         <Image

@@ -21,7 +21,7 @@ export function Wine() {
         src={WINE_CONTENT.image.src}
         alt={WINE_CONTENT.image.alt}
         fill
-        sizes="(min-width: 1024px) 100vw, 1200px"
+        sizes="100vw"
         className="object-cover"
       />
       <div
