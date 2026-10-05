@@ -1,10 +1,10 @@
 import type { IBreadcrumbTrailProps } from "@/lib/types";
 
-export function BreadcrumbTrail({ items }: IBreadcrumbTrailProps) {
+export function BreadcrumbTrail({ items, className }: IBreadcrumbTrailProps) {
   if (!items.length) return null;
 
   return (
-    <nav aria-label="Breadcrumb">
+    <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

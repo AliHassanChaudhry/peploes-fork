@@ -3,7 +3,7 @@ import { BreadcrumbTrail } from "@/components/app/molecules/breadcrumb-trail";
 import { getBreadcrumbSchema } from "@/lib/seo";
 import type { IBreadcrumbsProps } from "@/lib/types";
 
-export function Breadcrumbs({ items }: IBreadcrumbsProps) {
+export function Breadcrumbs({ items, className }: IBreadcrumbsProps) {
   if (!items.length) return null;
 
   const breadcrumbSchema = getBreadcrumbSchema(items);
@@ -11,7 +11,7 @@ export function Breadcrumbs({ items }: IBreadcrumbsProps) {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <BreadcrumbTrail items={items} />
+      <BreadcrumbTrail items={items} className={className} />
     </>
   );
 }

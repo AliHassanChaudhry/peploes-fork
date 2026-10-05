@@ -1,0 +1,47 @@
+import { ROUTES } from "@/lib/constants";
+import { GROUP_SET_MENU } from "@/lib/constants/group-set-menu";
+import { SEASONAL_MENU } from "@/lib/constants/seasonal-menu";
+import type { IMenuPageContent } from "@/lib/types";
+
+export const MENU_PAGE_CONTENT = {
+  eyebrow: "Menus",
+  heading: "Food, wine and\ngood company.",
+  description:
+    "Seasonal Irish ingredients, familiar favourites and an exceptional wine list, served in a room worth being in.",
+  image: {
+    src: "/peploes-wine-dinner.jpg",
+    alt: "Wine being poured at a table in Peploe’s.",
+  },
+  navigationLabel: "Restaurant menus",
+  navigation: [
+    { label: "Lunch", href: ROUTES.LUNCH },
+    { label: "Dinner", href: ROUTES.DINNER },
+    { label: "Pre-Theatre", href: ROUTES.PRE_THEATRE },
+    { label: "Wine", href: ROUTES.WINE },
+    { label: "Cocktails", href: ROUTES.COCKTAILS },
+    {
+      label: "Group Set Menu",
+      href: ROUTES.GROUP_SET_MENU,
+      children: GROUP_SET_MENU.menus.map((menu) => ({
+        label: menu.title,
+        href: `${ROUTES.GROUP_SET_MENU}#${menu._key}`,
+      })),
+    },
+    {
+      label: "Seasonal",
+      href: ROUTES.SEASONAL,
+      children: SEASONAL_MENU.menus.map((menu) => ({
+        label: menu.title,
+        href: `${ROUTES.SEASONAL}#${menu._key}`,
+      })),
+    },
+  ],
+  booking: {
+    heading: "Good food deserves good company.",
+    label: "Book a Table",
+    image: {
+      src: "/peploes-menu-booking.jpg",
+      alt: "Candlelit tables and artwork in Peploe’s dining room.",
+    },
+  },
+} as const satisfies IMenuPageContent;

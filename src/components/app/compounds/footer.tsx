@@ -18,6 +18,7 @@ import {
   MOBILE_FOOTER_CONTENT,
 } from "@/lib/constants/footer";
 import { dmSans, ebGaramond } from "@/lib/fonts";
+import type { IMenuNavigationLink } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function Footer() {
@@ -114,22 +115,29 @@ export function Footer() {
               {FOOTER_CONTENT.exploreHeading}
             </h2>
             <ul className="mt-4 xl:mt-6 xl:space-y-[10px]">
-              {FOOTER_CONTENT.exploreLabels.map((label) => (
+              {FOOTER_CONTENT.exploreLinks.map(({ label, href }) => (
                 <li
                   key={label}
                   className="border-b border-soft-stone xl:border-0"
                 >
                   <Button
-                    type="button"
+                    asChild={Boolean(href)}
+                    type={href ? undefined : "button"}
                     variant="brand-nav"
-                    aria-disabled="true"
+                    aria-disabled={href ? undefined : true}
                     className="flex h-12 w-full justify-between rounded-none p-0 text-sm leading-[21px] font-normal text-ink has-[>svg]:px-0 xl:h-auto xl:justify-start"
                   >
-                    {label}
-                    <ChevronRight
-                      aria-hidden="true"
-                      className="size-4 text-peploe-burgundy xl:hidden"
-                    />
+                    {href ? (
+                      <Link href={href}>{label}</Link>
+                    ) : (
+                      <>
+                        {label}
+                        <ChevronRight
+                          aria-hidden="true"
+                          className="size-4 text-peploe-burgundy xl:hidden"
+                        />
+                      </>
+                    )}
                   </Button>
                 </li>
               ))}
@@ -137,7 +145,7 @@ export function Footer() {
           </nav>
 
           <div className={cn(FOOTER_STYLES.mobileDivider, "order-3 xl:hidden")}>
-            {MOBILE_FOOTER_CONTENT.navigation.map(({ heading, labels }) => (
+            {MOBILE_FOOTER_CONTENT.navigation.map(({ heading, links }) => (
               <nav
                 key={heading}
                 aria-label={heading}
@@ -156,15 +164,16 @@ export function Footer() {
                   />
                 </h2>
                 <ul className="pt-1 pb-3">
-                  {labels.map((label) => (
+                  {links.map(({ label, href }: IMenuNavigationLink) => (
                     <li key={label}>
                       <Button
-                        type="button"
+                        asChild={Boolean(href)}
+                        type={href ? undefined : "button"}
                         variant="brand-nav"
-                        aria-disabled="true"
+                        aria-disabled={href ? undefined : true}
                         className="h-11 w-full justify-start rounded-none p-0 text-base leading-[22px] font-normal text-text-secondary"
                       >
-                        {label}
+                        {href ? <Link href={href}>{label}</Link> : label}
                       </Button>
                     </li>
                   ))}

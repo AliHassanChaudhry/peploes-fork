@@ -1,8 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { MOBILE_HOME_CONTENT } from "@/lib/constants";
+import { MOBILE_HOME_CONTENT, ROUTES } from "@/lib/constants";
 import { MENUS_CONTENT } from "@/lib/constants/menus";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -55,17 +56,9 @@ export function Menus() {
           aria-label={MENUS_CONTENT.categoriesLabel}
           className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
         >
-          {MENUS_CONTENT.categories.map(({ label }) => (
-            <li key={label} className="min-w-0">
-              <Button
-                type="button"
-                variant="brand-nav"
-                aria-disabled="true"
-                className={cn(
-                  ebGaramond.className,
-                  "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
-                )}
-              >
+          {MENUS_CONTENT.categories.map(({ label, href }) => {
+            const content = (
+              <>
                 <span className="flex items-center justify-between gap-2">
                   {label}
                   <ArrowRight
@@ -77,19 +70,36 @@ export function Menus() {
                   aria-hidden="true"
                   className="hidden w-full border-t border-peploe-burgundy/60 group-hover:border-peploe-burgundy sm:block"
                 />
-              </Button>
-            </li>
-          ))}
+              </>
+            );
+            return (
+              <li key={label} className="min-w-0">
+                <Button
+                  asChild={Boolean(href)}
+                  type={href ? undefined : "button"}
+                  variant="brand-nav"
+                  aria-disabled={href ? undefined : true}
+                  className={cn(
+                    ebGaramond.className,
+                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
+                  )}
+                >
+                  {href ? <Link href={href}>{content}</Link> : content}
+                </Button>
+              </li>
+            );
+          })}
         </ul>
 
         <Button
-          type="button"
+          asChild
           variant="brand-primary"
-          aria-disabled="true"
           className="h-11 w-full self-start rounded-[4px] bg-peploe-burgundy px-5 has-[>svg]:px-5 text-base leading-6 font-medium text-warm-cream shadow-none sm:w-[204px]"
         >
-          {MENUS_CONTENT.ctaLabel}
-          <ArrowRight aria-hidden="true" className="size-4" />
+          <Link href={ROUTES.MENUS}>
+            {MENUS_CONTENT.ctaLabel}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
         </Button>
       </div>
     </section>

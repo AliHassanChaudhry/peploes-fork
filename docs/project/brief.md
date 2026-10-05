@@ -1,5 +1,8 @@
 # Peploe's website brief
 
+Menu implementations, approved Figma comments and the local Sanity-ready
+content contract are documented in [Menu pages](menus.md).
+
 ## Identity and audience
 
 Peploe's is an independent, family-run restaurant at 16 St Stephen's Green,

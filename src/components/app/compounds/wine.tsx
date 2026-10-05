@@ -1,9 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import styles from "@/components/app/compounds/wine.module.css";
 import { Button } from "@/components/ui/button";
-import { WINE_CONTENT } from "@/lib/constants";
+import { ROUTES, WINE_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
@@ -55,13 +56,14 @@ export function Wine() {
 
           <div className="flex flex-col items-start gap-2.5 sm:gap-6">
             <Button
-              type="button"
+              asChild
               variant="brand-primary"
-              aria-disabled="true"
               className="h-11 w-full gap-2 rounded-[4px] bg-peploe-burgundy px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-warm-cream shadow-none sm:w-[220px]"
             >
-              {WINE_CONTENT.primaryCtaLabel}
-              <ArrowRight aria-hidden="true" className="size-4" />
+              <Link href={ROUTES.WINE}>
+                {WINE_CONTENT.primaryCtaLabel}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
             </Button>
             <Button
               type="button"

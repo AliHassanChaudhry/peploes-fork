@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type { Result as NeverthrowResult } from "neverthrow";
-import type { ComponentProps, ReactNode } from "react";
+import type { Route } from "next";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { z } from "zod/v4";
 
 import type { examples } from "@/db/schema";
@@ -362,10 +363,12 @@ export interface INavGroup {
 
 export interface IBreadcrumbsProps {
   items: IBreadcrumbItem[];
+  className?: string;
 }
 
 export interface IBreadcrumbTrailProps {
   items: IBreadcrumbItem[];
+  className?: string;
 }
 
 // ─── Cookie Consent ────────────────────────────────────────────────────
@@ -398,6 +401,7 @@ export interface IHeroContent {
 export interface IMenuCategory {
   label: string;
   description: string;
+  href?: Route;
 }
 
 export interface IMenusContent {
@@ -479,6 +483,7 @@ export interface INavigationShelfProps {
 export interface INavigationShelfLinkProps {
   label: string;
   description: string;
+  href?: Route;
 }
 
 export interface IMobileNavigationProps {
@@ -488,7 +493,206 @@ export interface IMobileNavigationProps {
 export interface IMobileNavigationItem {
   id: string;
   label: string;
-  children?: readonly string[];
+  children?: readonly IMenuNavigationLink[];
+}
+
+export interface IMenuNavigationLink {
+  label: string;
+  href?: Route;
+  children?: readonly { label: string; href: Route }[];
+}
+
+export interface IMenuDish {
+  _key: string;
+  name: string;
+  description?: string | null;
+  price?: number | null;
+}
+
+export interface IMenuCourse {
+  _key: string;
+  heading: string;
+  columns: 1 | 2 | 3;
+  dishes: readonly IMenuDish[];
+  firstColumnCount?: number;
+}
+
+export interface IMenuContent extends IMenuEditorialContent, IMenuNotesContent {
+  serviceTimes: string;
+  courses: readonly IMenuCourse[];
+  introLayout?: "editorial";
+}
+
+export interface IMenuEditorialContent {
+  slug: string;
+  title: string;
+  description?: string;
+  aside?: string;
+  image?: IMenuImage | null;
+  imageBeforeAside?: boolean;
+  serviceTimes?: string;
+  offer?: string | null;
+  seoDescription: string;
+}
+
+export interface IMenuEditorialIntroProps {
+  menu: IMenuEditorialContent;
+  compact?: boolean;
+}
+
+export interface IMenuEditorialImageProps {
+  image: IMenuImage;
+  compact: boolean;
+  imageBeforeAside?: boolean;
+}
+
+export interface IMenuBooking {
+  heading: string;
+  description?: string;
+  label: string;
+  image: ISectionImage;
+}
+
+export interface IMenuBookingProps {
+  booking?: IMenuBooking;
+}
+
+export interface IMenuNotesContent {
+  offer?: string | null;
+  notes: readonly string[];
+  allergens?: { heading: string; description: string } | null;
+}
+
+export interface IMenuNotesProps {
+  menu: IMenuNotesContent;
+  compact?: boolean;
+}
+
+export interface ISetMenu {
+  _key: string;
+  title: string;
+  price: number;
+  summary: string;
+  cardDescription?: string;
+  serviceTimes?: string;
+  inclusions: readonly string[];
+  courses: readonly IMenuCourse[];
+}
+
+export interface ISetMenuCollection
+  extends IMenuEditorialContent,
+    IMenuNotesContent {
+  menus: readonly ISetMenu[];
+  booking: IMenuBooking;
+}
+
+export interface ISetMenuCollectionProps {
+  menu: ISetMenuCollection;
+}
+
+export interface IWine {
+  _key: string;
+  name: string;
+  region?: string;
+  vintage?: string;
+  glass?: number | null;
+  bottle?: number | null;
+  available?: boolean;
+}
+
+export interface IWineCategory {
+  _key: string;
+  heading: string;
+  showVintage: boolean;
+  showGlass: boolean;
+  wines: readonly IWine[];
+}
+
+export interface IWineSection {
+  _key: string;
+  heading: string;
+  description?: string;
+  highlighted?: boolean;
+  columns: readonly { _key: string; categories: readonly IWineCategory[] }[];
+}
+
+export interface IWineMenuContent
+  extends IMenuEditorialContent,
+    IMenuNotesContent {
+  indexLabel: string;
+  sections: readonly IWineSection[];
+  booking: IMenuBooking;
+}
+
+export interface IWineMenuProps {
+  menu: IWineMenuContent;
+}
+
+export interface IWineCategoryProps {
+  category: IWineCategory;
+  sectionKey: string;
+  column: number;
+  rowSpan: number;
+  continued: boolean;
+}
+
+export interface IWineCategoryStyle extends CSSProperties {
+  "--wine-column": number;
+  "--wine-row-span": number;
+}
+
+export interface IDrinksMenuContent
+  extends IMenuEditorialContent,
+    IMenuNotesContent {
+  cocktailSections: readonly IMenuCourse[];
+  spiritsHeading: string;
+  spiritsDescription?: string;
+  spirits: readonly IMenuCourse[];
+  booking: IMenuBooking;
+}
+
+export interface IDrinksMenuProps {
+  menu: IDrinksMenuContent;
+}
+
+export interface IMenuImage extends ISectionImage {
+  desktopScale?: number;
+  scale?: number;
+  fit?: "contain" | "cover";
+}
+
+export interface IMenuImageStyle extends CSSProperties {
+  "--menu-image-scale": number;
+}
+
+export interface IMenuPageContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  image: ISectionImage;
+  navigationLabel: string;
+  navigation: readonly IMenuNavigationLink[];
+  booking: IMenuBooking;
+}
+
+export interface IMenuContentProps {
+  menu: IMenuContent;
+}
+
+export interface IMenuCourseProps {
+  course: IMenuCourse;
+  idPrefix?: string;
+  compact?: boolean;
+}
+
+export interface IMenuDishProps {
+  dish: IMenuDish;
+}
+
+export interface IMenuNavigationProps {
+  items: readonly IMenuNavigationLink[];
+  label: string;
+  className?: string;
 }
 
 export interface IOpeningHours {
@@ -519,7 +723,7 @@ export interface IFooterContent {
   openingHoursHeading: string;
   openingHours: readonly IOpeningHours[];
   exploreHeading: string;
-  exploreLabels: readonly string[];
+  exploreLinks: readonly IMenuNavigationLink[];
   newsletter: {
     heading: string;
     description: string;

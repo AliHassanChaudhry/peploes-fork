@@ -1,7 +1,7 @@
-import { RESTAURANT_OPENING_HOURS } from "@/lib/constants";
+import { RESTAURANT_OPENING_HOURS, ROUTES } from "@/lib/constants";
 import type { IFooterContent } from "@/lib/types";
 
-export const FOOTER_CONTENT = {
+export const FOOTER_CONTENT: IFooterContent = {
   homeLabel: "Peploe’s home",
   address: "16 St Stephen's Green, Dublin 2",
   tagline: "A Dublin Restaurant",
@@ -9,14 +9,14 @@ export const FOOTER_CONTENT = {
   openingHoursHeading: "Opening Hours",
   openingHours: RESTAURANT_OPENING_HOURS,
   exploreHeading: "Explore",
-  exploreLabels: [
-    "Menus",
-    "Our Story",
-    "Groups & Occasions",
-    "What’s On",
-    "The Journal",
-    "Visit & Contact",
-    "Gift Vouchers",
+  exploreLinks: [
+    { label: "Menus", href: ROUTES.MENUS },
+    { label: "Our Story" },
+    { label: "Groups & Occasions" },
+    { label: "What’s On" },
+    { label: "The Journal" },
+    { label: "Visit & Contact" },
+    { label: "Gift Vouchers" },
   ],
   newsletter: {
     heading: "A Letter from Gina",
@@ -31,7 +31,7 @@ export const FOOTER_CONTENT = {
   legalLabels: ["Privacy", "Terms", "Cookie Preferences", "Accessibility"],
   instagramLabel: "Peploe’s on Instagram",
   facebookLabel: "Peploe’s on Facebook",
-} as const satisfies IFooterContent;
+};
 
 export const FOOTER_STYLES = {
   heading:
@@ -50,25 +50,29 @@ export const MOBILE_FOOTER_CONTENT = {
   navigation: [
     {
       heading: "Explore",
-      labels: [
-        "Menus",
-        "Our Story",
-        "What's On",
-        "Visit & Contact",
-        "The Journal",
+      links: [
+        { label: "Menus", href: ROUTES.MENUS },
+        { label: "Our Story" },
+        { label: "What's On" },
+        { label: "Visit & Contact" },
+        { label: "The Journal" },
       ],
     },
     {
       heading: "Occasions",
-      labels: [
-        "Groups & Celebrations",
-        "Corporate & Exclusive Hire",
-        "Weddings",
+      links: [
+        { label: "Groups & Celebrations" },
+        { label: "Corporate & Exclusive Hire" },
+        { label: "Weddings" },
       ],
     },
     {
       heading: "Peploe's",
-      labels: ["People & Produce", "Gift Vouchers", "Contact"],
+      links: [
+        { label: "People & Produce" },
+        { label: "Gift Vouchers" },
+        { label: "Contact" },
+      ],
     },
   ],
 } as const;

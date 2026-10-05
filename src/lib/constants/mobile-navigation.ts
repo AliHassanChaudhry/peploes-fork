@@ -16,13 +16,18 @@ export const MOBILE_NAVIGATION_CONTENT = {
     {
       id: "menus",
       label: NAVBAR_CONTENT.menusLabel,
-      children: MENUS_CONTENT.categories.map(({ label }) => label),
+      children: MENUS_CONTENT.categories.map(({ label, href }) => ({
+        label,
+        href,
+      })),
     },
     { id: "our-story", label: NAVBAR_CONTENT.ourStoryLabel },
     {
       id: "groups-occasions",
       label: NAVBAR_CONTENT.groupsLabel,
-      children: GROUPS_SHELF_CONTENT.destinations.map(({ label }) => label),
+      children: GROUPS_SHELF_CONTENT.destinations.map(({ label }) => ({
+        label,
+      })),
     },
     { id: "whats-on", label: NAVBAR_CONTENT.whatsOnLabel },
     { id: "visit-contact", label: "Visit & Contact" },

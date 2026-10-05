@@ -1,0 +1,155 @@
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+import { FOCUS_RING } from "@/lib/constants";
+import type { IMenuNavigationProps } from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+export function MenuNavigation({
+  items,
+  label,
+  className,
+}: IMenuNavigationProps) {
+  const pathname = usePathname();
+  const [openLabel, setOpenLabel] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const openItem = items.find((item) => item.label === openLabel);
+
+  useEffect(() => {
+    const scroll = scrollRef.current;
+    const active = Array.from(
+      scroll?.querySelectorAll<HTMLElement>("[data-menu-path]") ?? [],
+    ).find((item) => item.dataset.menuPath === pathname);
+    if (scroll && active)
+      scroll.scrollLeft +=
+        active.getBoundingClientRect().left -
+        scroll.getBoundingClientRect().left -
+        scroll.clientWidth / 2 +
+        active.clientWidth / 2;
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!openLabel) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !navRef.current?.contains(event.target)
+      )
+        setOpenLabel(null);
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [openLabel]);
+
+  return (
+    <nav
+      ref={navRef}
+      aria-label={label}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && openLabel) {
+          setOpenLabel(null);
+          triggerRef.current?.focus();
+        }
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setOpenLabel(null);
+      }}
+      className={cn(
+        className,
+        "sticky top-[72px] z-30 border-b border-soft-stone bg-warm-cream pt-4 shadow-[0_-4px_12px_rgb(46_42_40/6%)] xl:top-[76px]",
+      )}
+    >
+      <div
+        ref={scrollRef}
+        className="relative overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        <ul className="mx-2 flex h-12 min-w-max xl:site-container">
+          {items.map((item) => (
+            <li
+              key={item.label}
+              className={cn(
+                "flex shrink-0",
+                item.children &&
+                  "relative before:absolute before:top-3 before:left-0 before:h-6 before:w-px before:bg-soft-stone [&:nth-last-child(2)]:xl:ml-auto",
+              )}
+            >
+              {item.children?.length ? (
+                <button
+                  type="button"
+                  aria-expanded={openLabel === item.label}
+                  aria-controls="menu-subnavigation"
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  data-menu-path={item.href}
+                  onClick={(event) => {
+                    triggerRef.current = event.currentTarget;
+                    setOpenLabel(openLabel === item.label ? null : item.label);
+                  }}
+                  className={cn(
+                    FOCUS_RING,
+                    "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
+                  )}
+                >
+                  {item.label}
+                  <ChevronDown
+                    aria-hidden="true"
+                    className={cn(
+                      "size-4",
+                      openLabel === item.label && "rotate-180",
+                    )}
+                  />
+                </button>
+              ) : item.href ? (
+                <Link
+                  href={item.href}
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  data-menu-path={item.href}
+                  onClick={() => setOpenLabel(null)}
+                  className={cn(
+                    FOCUS_RING,
+                    "flex min-w-24 items-center justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="xl:site-container xl:relative">
+        {openItem?.children && (
+          <ul
+            id="menu-subnavigation"
+            aria-label={openItem.label}
+            className={cn(
+              "border border-soft-stone bg-[#f1e9e3] px-6 py-3 xl:absolute xl:top-0 xl:right-[72px] xl:min-w-[200px] xl:px-0 xl:py-1 xl:shadow-md",
+              openItem.href === items.at(-2)?.href && "xl:right-[255px]",
+            )}
+          >
+            {openItem.children.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setOpenLabel(null)}
+                  className={cn(
+                    FOCUS_RING,
+                    "block px-0 py-3 text-base hover:bg-peploe-burgundy/5 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy xl:px-6",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </nav>
+  );
+}

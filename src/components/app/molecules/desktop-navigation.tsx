@@ -1,11 +1,12 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
 import styles from "@/components/app/molecules/desktop-navigation.module.css";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { DESKTOP_NAVIGATION_QUERY, FOCUS_RING } from "@/lib/constants";
+import { DESKTOP_NAVIGATION_QUERY, FOCUS_RING, ROUTES } from "@/lib/constants";
 import type {
   IDesktopNavigationProps,
   IOpenDesktopNavigation,
@@ -18,6 +19,8 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const navigationId = useId();
   const isDesktop = useMediaQuery(DESKTOP_NAVIGATION_QUERY);
+  const pathname = usePathname();
+  const activeNavigationId = pathname.startsWith(ROUTES.MENUS) ? "menus" : null;
 
   useEffect(() => {
     if (!isDesktop) setOpenItem(null);
@@ -53,7 +56,13 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
   }, [openItem]);
 
   return (
-    <ul className="hidden h-full flex-1 items-center gap-[30px] xl:flex">
+    <ul
+      className="hidden h-full flex-1 items-center gap-[30px] xl:flex"
+      onClickCapture={(event) => {
+        if (event.target instanceof Element && event.target.closest("a[href]"))
+          setOpenItem(null);
+      }}
+    >
       {items.map(({ id, label, content }) => {
         const isOpen = openItem?.id === id;
         const panelId = `${navigationId}-${id}`;
@@ -85,6 +94,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
             <Button
               ref={isOpen ? triggerRef : undefined}
               type="button"
+              data-active={activeNavigationId === id}
               variant="brand-nav"
               aria-disabled={content ? undefined : true}
               aria-expanded={content ? isOpen : undefined}
@@ -104,7 +114,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
               }
               className={cn(
                 FOCUS_RING,
-                "h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-ink focus-visible:ring-peploe-burgundy",
+                "h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-ink focus-visible:ring-peploe-burgundy data-[active=true]:text-peploe-burgundy data-[active=true]:underline",
                 isOpen && "text-peploe-burgundy underline",
               )}
             >
