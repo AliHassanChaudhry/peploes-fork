@@ -3,6 +3,39 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility site-container {
+  width: min(calc(100% - 3rem), 1296px);
+  margin-inline: auto;
+
+  @media (width >= 80rem) {
+    width: min(calc(100% - 9rem), 1296px);
+  }
+}
+
+@utility site-container-inset {
+  width: min(calc(100% - 3rem), 1280px);
+  margin-inline: auto;
+
+  @media (width >= 80rem) {
+    width: min(calc(100% - 10rem), 1280px);
+  }
+}
+
+@theme {
+  --color-peploe-burgundy: var(--peploe-burgundy);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-primary-pressed: var(--button-primary-pressed);
+  --color-awning-red: var(--awning-red);
+  --color-warm-cream: var(--warm-cream);
+  --color-soft-stone: var(--soft-stone);
+  --color-ink: var(--ink);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-interactive: var(--border-interactive);
+  --color-olive-green: var(--olive-green);
+  --color-warm-brass: var(--warm-brass);
+}
+
+/* Keep aliases inline so scoped font and dark-mode variables resolve locally. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,6 +77,31 @@
 }
 
 :root {
+  /* Figma: Foundations / Colour */
+  --peploe-burgundy: #7a1e24;
+  --button-primary-hover: #68181e;
+  --button-primary-pressed: #5b141a;
+  --awning-red: #b33a3a;
+  --warm-cream: #faf7f1;
+  --soft-stone: #d9d1c6;
+  --ink: #2e2a28;
+  --text-secondary: #595450;
+  --border-interactive: #6b6864;
+  --olive-green: #556044;
+  --warm-brass: #b08d4a;
+
+  --hero-shadow-rgb: 15 4 5;
+  --black-rgb: 0 0 0;
+  --hero-overlay-light-rgb: 102 102 102;
+  --hero-overlay-soft-rgb: 82 82 82;
+  --hero-overlay-mid-rgb: 61 61 61;
+  --hero-overlay-dark-rgb: 41 41 41;
+  --hero-overlay-deep-rgb: 20 20 20;
+  --overlay-ink-rgb: 24 20 18;
+  --overlay-warm-ink-rgb: 24 20 19;
+  --overlay-dark-ink-rgb: 18 14 12;
+  --overlay-cream-rgb: 250 247 241;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -113,6 +171,9 @@
 }
 
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -127,6 +188,7 @@
 
 :root {
   --duration-fast: 150ms;
+  --duration-interaction: 160ms;
   --duration-base: 300ms;
   --duration-slow: 500ms;
   --duration-crawl: 1200ms;

@@ -1,0 +1,72 @@
+.photoOverlay {
+  background:
+    linear-gradient(
+      -101.1deg,
+      rgb(var(--hero-overlay-light-rgb) / 0%) 8.69%,
+      rgb(var(--hero-overlay-soft-rgb) / 16%) 20.59%,
+      rgb(var(--hero-overlay-mid-rgb) / 32%) 32.49%,
+      rgb(var(--hero-overlay-dark-rgb) / 48%) 44.4%,
+      rgb(var(--hero-overlay-deep-rgb) / 64%) 56.3%,
+      rgb(var(--black-rgb) / 80%) 68.2%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(var(--hero-shadow-rgb) / 0%) 84.12%,
+      rgb(var(--hero-shadow-rgb) / 70%) 91.04%,
+      rgb(var(--hero-shadow-rgb)) 98.88%
+    );
+}
+
+@media (40rem <= width < 64rem) {
+  .photoOverlay {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--hero-shadow-rgb) / 60%) 65%,
+      rgb(var(--hero-shadow-rgb)) 100%
+    );
+  }
+}
+
+@media (width < 40rem) {
+  .photoOverlay {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--overlay-warm-ink-rgb) / 3.14%) 0%,
+      rgb(var(--overlay-warm-ink-rgb) / 85.1%) 72%,
+      rgb(var(--overlay-warm-ink-rgb)) 100%
+    );
+  }
+}
+
+.entrance {
+  position: relative;
+  aspect-ratio: 1440 / 1307;
+  background-color: rgb(var(--hero-shadow-rgb));
+}
+
+.entranceOverlay {
+  background: linear-gradient(
+    rgb(var(--hero-shadow-rgb)),
+    rgb(var(--hero-shadow-rgb) / 50%)
+  );
+}
+
+.entranceArtwork {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  aspect-ratio: 1440 / 1407;
+}
+
+.entranceCaption {
+  height: clamp(100px, 14.653vw, 211px);
+  padding-bottom: clamp(16px, 2.639vw, 38px);
+  background: linear-gradient(
+    0deg,
+    var(--warm-cream) 0%,
+    rgb(var(--overlay-cream-rgb) / 95%) 30.29%,
+    rgb(var(--overlay-cream-rgb) / 75.3%) 56.73%,
+    rgb(var(--overlay-cream-rgb) / 0%) 86.06%
+  );
+}

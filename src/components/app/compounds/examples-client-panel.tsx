@@ -1,21 +1,21 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { fetcher } from "@/helpers/api";
+import { ROUTES } from "@/lib/constants";
 import { HttpVerb } from "@/lib/enums";
 import type { IExampleDto, IExamplesResponse } from "@/lib/types";
+
+const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
 
 export function ExamplesClientPanel() {
   const [examples, setExamples] = useState<IExampleDto[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const dateFormatter = useMemo(
-    () => new Intl.DateTimeFormat("en", { dateStyle: "medium" }),
-    [],
-  );
 
   const handleFetch = useCallback(async () => {
     setLoading(true);
@@ -23,7 +23,7 @@ export function ExamplesClientPanel() {
 
     try {
       const response = await fetcher<null, IExamplesResponse>({
-        url: "/api/examples",
+        url: ROUTES.API.EXAMPLES,
         method: HttpVerb.Get,
       });
 
@@ -80,7 +80,7 @@ export function ExamplesClientPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {dateFormatter.format(new Date(example.createdAt))}
+                  {EXAMPLE_DATE_FORMATTER.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

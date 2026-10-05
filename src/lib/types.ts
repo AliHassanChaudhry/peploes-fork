@@ -1,9 +1,12 @@
+import type { VariantProps } from "class-variance-authority";
 import type { Result as NeverthrowResult } from "neverthrow";
+import type { ComponentProps, ReactNode } from "react";
 import type { z } from "zod/v4";
 
 import type { examples } from "@/db/schema";
-import type { ErrorCode, HttpVerb, LogLevel } from "./enums";
-import type { createExampleSchema } from "./examples-schema";
+import type { buttonVariants } from "@/lib/constants/button";
+import type { ErrorCode, HttpVerb, LogLevel } from "@/lib/enums";
+import type { createExampleSchema } from "@/lib/examples-schema";
 
 // ─── Core Framework Types ─────────────────────────────────────────────────
 
@@ -20,6 +23,17 @@ export interface IFetchResponse<T = unknown> {
   ok: boolean;
   status: number;
   error: string | null;
+}
+
+export interface IBatchProcessInput<T, R> {
+  items: T[];
+  processor: (item: T, index: number) => Promise<R>;
+  concurrency?: number;
+}
+
+export interface IBatchProcessResult<R> {
+  results: R[];
+  errors: Array<{ index: number; error: unknown }>;
 }
 
 export interface ISuccess<T> {
@@ -164,7 +178,6 @@ export interface IRevealObserverRegistry {
 
 export interface IRevealProps {
   children: React.ReactNode;
-  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
   threshold?: number;
   stagger?: boolean;
@@ -298,6 +311,16 @@ export interface IFieldErrorProps {
   className?: string;
 }
 
+export interface IWhatsOnEvent {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  image: ISectionImage;
+  ctaLabel: string;
+  mobileCtaLabel?: string;
+}
+
 export interface IReadMoreProps {
   children: React.ReactNode;
   className?: string;
@@ -351,4 +374,243 @@ export interface ICookieConsentRecord {
   status: string;
   version: number;
   timestamp: string;
+}
+
+// ─── Homepage Content ───────────────────────────────────────────────────
+
+export interface ISectionImage {
+  src: string;
+  alt: string;
+}
+
+export interface IHeroContent {
+  eyebrow: string;
+  headingLines: readonly [string, string, string];
+  description: string;
+  bookingLabel: string;
+  callLabel: string;
+  backgroundImage: ISectionImage;
+  entranceBackground: ISectionImage;
+  entranceImage: ISectionImage;
+  entranceCaption: string;
+}
+
+export interface IMenuCategory {
+  label: string;
+  description: string;
+}
+
+export interface IMenusContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  categoriesLabel: string;
+  categories: readonly IMenuCategory[];
+  ctaLabel: string;
+  image: ISectionImage;
+}
+
+export interface IWineContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  primaryCtaLabel: string;
+  secondaryCtaLabel: string;
+  image: ISectionImage;
+}
+
+export interface IBookingBannerContent {
+  heading: string;
+  emphasizedHeading: string;
+  description: string;
+  ctaLabel: string;
+  image: ISectionImage;
+}
+
+export interface IHumanHospitalityContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  phoneAction: INavLink;
+  emailAction: INavLink;
+  image: ISectionImage;
+}
+
+export interface INavbarBrandProps {
+  onClick?: () => void;
+}
+
+export interface INavbarContent {
+  navigationLabel: string;
+  homeLabel: string;
+  menusLabel: string;
+  ourStoryLabel: string;
+  groupsLabel: string;
+  whatsOnLabel: string;
+  visitContactLabel: string;
+  giftVouchersLabel: string;
+  bookingLabel: string;
+  mobileBookingLabel: string;
+}
+
+export interface IDesktopNavigationItem {
+  id: string;
+  label: string;
+  content?: ReactNode;
+}
+
+export interface IDesktopNavigationProps {
+  items: readonly IDesktopNavigationItem[];
+}
+
+export interface IOpenDesktopNavigation {
+  id: string;
+  source: "hover" | "activation";
+}
+
+export interface INavigationShelfProps {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  introClassName: string;
+  children: ReactNode;
+}
+
+export interface INavigationShelfLinkProps {
+  label: string;
+  description: string;
+}
+
+export interface IMobileNavigationProps {
+  brandPhraseClassName: string;
+}
+
+export interface IMobileNavigationItem {
+  id: string;
+  label: string;
+  children?: readonly string[];
+}
+
+export interface IOpeningHours {
+  days: string;
+  hours: string;
+}
+
+export interface IMobileNavigationContent {
+  openLabel: string;
+  closeLabel: string;
+  title: string;
+  navigationLabel: string;
+  items: readonly IMobileNavigationItem[];
+  giftVouchersLabel: string;
+  openingHoursHeading: string;
+  openingHours: readonly IOpeningHours[];
+  address: string;
+  phoneAction: INavLink;
+  emailAction: INavLink;
+  brandPhrase: string;
+}
+
+export interface IFooterContent {
+  homeLabel: string;
+  address: string;
+  tagline: string;
+  contactHeading: string;
+  openingHoursHeading: string;
+  openingHours: readonly IOpeningHours[];
+  exploreHeading: string;
+  exploreLabels: readonly string[];
+  newsletter: {
+    heading: string;
+    description: string;
+    emailLabel: string;
+    submitLabel: string;
+    status: string;
+  };
+  copyright: string;
+  legalNavigationLabel: string;
+  legalLabels: readonly string[];
+  instagramLabel: string;
+  facebookLabel: string;
+}
+
+export interface IRestaurantFeature {
+  title: string;
+  description: string;
+  illustration: string;
+}
+
+export interface IRestaurantFeaturesContent {
+  sectionLabel: string;
+  items: readonly IRestaurantFeature[];
+}
+
+export interface IStoryContent {
+  eyebrow: string;
+  heading: string;
+  headingContinuation?: string;
+  description?: string;
+  ctaLabel: string;
+  image: ISectionImage;
+}
+
+export interface IStoriesContent {
+  eyebrow: string;
+  headingLines: readonly [string, string];
+  description: string;
+  ctaLabel: string;
+  family: IStoryContent;
+  produce: IStoryContent;
+  gina: IStoryContent;
+  art: IStoryContent;
+}
+
+export interface IGroupOccasion {
+  title: string;
+  description: string;
+  mobileDescription?: string;
+  image: ISectionImage;
+  minHeight: number;
+}
+
+export interface IGroupsOccasionsContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  ctaLabel: string;
+  cardCtaLabel: string;
+  image: ISectionImage;
+  occasions: readonly IGroupOccasion[];
+}
+
+export interface IWhatsOnContent {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  ctaLabel: string;
+}
+
+export interface IStoryActionProps {
+  label: string;
+  filled?: boolean;
+}
+
+export interface IEventActionProps {
+  label: string;
+  mobileLabel?: string;
+}
+
+export interface IEventCardProps {
+  event: IWhatsOnEvent;
+  featured?: boolean;
+}
+
+export interface IWhatsOnProps {
+  events: readonly IWhatsOnEvent[];
+}
+
+export interface IButtonProps
+  extends ComponentProps<"button">,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
 }

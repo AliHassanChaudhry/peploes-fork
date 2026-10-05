@@ -46,3 +46,311 @@ sequence, colour and storytelling. Gina presents this as a possible direction,
 not a requirement for an animation. Keep movement restrained and navigation
 usable. Obtain the original logo, colour values and image files before settling
 visual tokens or selecting final crops.
+
+## Homepage content width
+
+The Final Pages homepage (`3131:11098`) specifies desktop side padding, not a
+shared content maximum. At the desktop breakpoint, `site-container` in
+`src/app/globals.css` leaves 72px on each side; `site-container-inset` leaves
+80px for the closing booking banner and footer. Their content widths are
+therefore 1296px and 1280px only when the available page width is 1440px.
+The content containers cap at 1296px and 1280px respectively, while section
+backgrounds and full-width photographs remain viewport-width. Below the
+desktop breakpoint they retain 24px gutters. This preserves the frame's
+padding and Fill constraints; Figma supplies a 1440px desktop reference, not
+additional wide-screen frames.
+
+Backgrounds and full-width photographs fill the page. Wine keeps its 748px
+text column. Hospitality caps its text at 783px and reserves a separate artwork
+column on desktop, with a 32px gap and the shared left gutter. Stories follows the
+source frame's fixed 636px columns and 28px gap, shrinking those tracks on
+narrower desktops without stretching them on wider pages. At 1440px its
+desktop grid extends 4px beyond the 1296px content width. Its
+right-hand cards similarly extend 4px below the 640px left card; preserve this
+source geometry when comparing the design.
+
+The navigation and features use inset rules so strokes do not change their
+76px and 214px desktop heights or shift centered controls. Compare against
+the browser's available page width, excluding the scrollbar gutter, at the
+same zoom and pixel density. Check mobile, tablet, laptop and wide desktop
+layouts for horizontal overflow and undistorted images after width changes.
+
+## Mobile homepage reference
+
+The 390px Final Pages mobile homepage (`3395:17700`) owns the phone layout.
+Below 640px, use its 24px gutters, type sizes, vertical spacing, image frames
+and stacked full-width actions. Keep the existing tablet and desktop layouts.
+At the reference width the page is 11,526px tall, including the 72px header.
+Sections may grow when narrower screens or enlarged text need more room.
+
+Use the mobile entrance and dining-room photographs exported from Figma.
+The reception artwork reproduces the mobile frame's image scaling. Photographs,
+including the entrance, retain their aspect ratio and crop to their frames.
+Event and occasion copy variants live beside their desktop content in the local
+catalogs.
+Mobile Stories uses the From the cellar eyebrow over the “Wine things just
+happen.” heading and omits the art description.
+The closing booking heading is upright on mobile and retains its desktop italic.
+
+Compare section positions, line breaks, crops and overlays at 390px, then check
+narrow phones, tablet and desktop for overflow. Keep the existing inactive
+actions, disabled newsletter and active telephone and email links.
+
+## Homepage interaction previews
+
+Placeholder actions use inert `type="button"` controls with `aria-disabled="true"`
+and no click handlers. They remain focusable and show the Figma hover styles
+without navigating, booking or submitting. Keep the newsletter input natively
+disabled so it cannot collect an email address.
+
+The existing shared button owns the homepage's brand variants: primary,
+primary inverse, secondary inverse, editorial text, navigation and contact.
+Use the Figma primary hover colour `#68181E`, 90% cream for inverse buttons,
+burgundy fill for inverse outlines, underlines for text links, and a 6%
+burgundy fill with a 60% border for contact actions. Navigation text changes
+to burgundy with an underline. Interactions use the 160ms token and respect
+reduced motion; buttons and images do not scale on hover.
+
+Homepage action arrows use Lucide's 16px `ArrowRight`, matching the footer
+Subscribe button, including the menu category arrows. Keep existing button
+padding when adding direct SVG children; the shared Button's icon defaults
+otherwise change it. Mobile navigation chevrons remain separate glyphs.
+
+Verify hover and keyboard focus, unchanged layout, inactive placeholder clicks,
+and working contact destinations when changing these controls.
+
+## Navigation implementation
+
+The initial navbar follows the Final Pages desktop navigation in Figma
+(`3131:11099`), including the yellow note requiring a sticky header. It uses the
+existing brand colours, DM Sans, 44px control targets and a centered logo.
+The logo artwork comes from the [existing website](https://peploes.com/), stored
+locally and tinted with the Ink token using a CSS mask. Preserve its aspect
+ratio; replace it with the exact Figma vector when that export is available.
+
+The desktop Menus dropdown follows Nav / Shelf / Menus / Light (`3041:2013`).
+It opens on mouse hover or button activation and overlays the page below the
+76px header without moving the logo or page content. The Warm Cream panel has
+an editorial introduction and six destinations in three columns. Reuse the
+homepage menu category order; destination actions remain inactive placeholders.
+Verify pointer travel into the panel, keyboard activation and tab order, Escape
+with focus restoration, outside-click and focus-leave dismissal, short-viewport
+scrolling, reduced motion and dismissal when switching to mobile navigation.
+The desktop Groups & Occasions dropdown follows Nav / Shelf / Groups / Light
+(`3041:1933`): a 320px introduction, 56px column gap and three photo destinations
+with 132px images. The local shelf catalog owns its copy and the crops exported
+from Figma. Destination titles turn burgundy with a 32px underline on hover;
+retain visible keyboard focus and the shared reduced-motion-aware duration.
+Destinations remain inactive until their pages are built.
+
+Both desktop shelves share one open state so switching triggers replaces the
+visible panel. Verify switching by pointer and keyboard as well as dismissal.
+The navbar renders shelf content and fonts on the server and passes the result
+to the interactive navigation. Check font compilation in the dev server as well
+as the production build.
+
+Below the desktop breakpoint, navigation follows the Design System's light
+mobile variants: closed (`3041:1863`), menu open (`3041:1812`) and Menus expanded
+(`3041:1718`). The header is 72px tall with 24px gutters, the logo and a compact
+Book button. The full-screen menu expands Menus and Groups & Occasions inline,
+then shows Gift Vouchers, opening hours, address, telephone, email and the
+People make Peploe's brand line. Preserve the 44px minimum control targets.
+
+Page links, booking and Gift Vouchers remain inactive placeholders until their
+journeys are built. Home, telephone and email links work. Keep modal focus
+containment and restoration, Escape and close-button dismissal, scroll locking
+and automatic dismissal at the desktop breakpoint. Verify both accordion
+groups, narrow screens, short viewports, enlarged text and overflow with the
+menu open and closed.
+
+## Footer implementation
+
+The shared footer uses Figma Footer / Production desktop (`3041:2359`) and the
+mobile homepage footer (`3395:17877`). Desktop has brand, Explore, Contact and
+newsletter columns. Mobile shows brand, newsletter, expanded Explore,
+Occasions and Peploe's navigation, then contact details, socials and legal links.
+It uses the existing local logo and brand tokens, DM Sans body text and
+EB Garamond headings.
+Footer dividers, mobile row borders and the email field rule use 1px thickness.
+The three burgundy heading underlines are 32px wide and 2px high, matching Figma.
+
+Telephone and email links are active. Navigation, legal and social destinations
+remain inactive until approved destinations exist. The newsletter field stays
+disabled and Subscribe remains inactive pending the subscription integration.
+No email is collected or submitted. Opening hours and contact details follow
+the design and should be confirmed by the restaurant before launch.
+
+When changing the footer, verify the desktop columns, mobile reading order,
+phone and email targets, keyboard focus, 200% zoom and horizontal overflow.
+
+## Hero implementation
+
+The homepage hero follows the Final Pages hero and entrance group (`3131:11100`).
+The desktop photo panel is 780px tall with EB Garamond headings and DM Sans
+supporting copy. Booking and telephone buttons remain placeholders.
+On phones, the panel is 660px tall with 48px headings and stacked full-width
+buttons. The 520px entrance photograph has a separate 74px caption below it.
+
+The restaurant photo and transparent entrance artwork were downloaded from
+Figma. The entrance uses its original Figma backdrop behind the cutout. Narrow
+screens use the mobile design's vertical hero gradient over the centre crop.
+The desktop entrance retains the yellow note's gentle fade and rise through
+the existing scroll-reveal component and reduced-motion styles.
+
+When changing the hero, compare desktop line breaks, photo crop, overlays and
+the entrance overlap with Figma. Check image loading, narrow screens, sidebar
+overlap, scroll reveal and reduced-motion styling.
+
+The desktop hero, menu and wine backgrounds advertise the viewport width in
+their responsive image sizes. Event cards and booking artwork follow their
+responsive image boxes. The hero background retains larger mobile and tablet
+sources for its tall crop. The Gina and Sunday source photographs are only
+243px wide; larger originals are needed for sharper rendering on high-density
+screens.
+
+## Restaurant features implementation
+
+The four features directly below the entrance follow the Final Pages section
+`3131:11112`. They use the original 48px SVG illustrations exported from Figma,
+22px EB Garamond headings and 14px DM Sans descriptions on Warm Cream. The
+desktop row has 48px vertical spacing and a Soft Stone top border. It becomes
+two columns on tablet and one column with 13px descriptions on phones.
+
+When changing this section, compare its copy, icon order and desktop spacing
+with Figma. Check that every illustration loads and that text wraps without
+horizontal scrolling at narrow widths and enlarged text sizes.
+
+## Menus introduction implementation
+
+The homepage menus introduction follows Final Pages `3131:11245`. It uses the
+dining-room photograph exported with Figma's crop, a 370px desktop image band,
+the Our Menus eyebrow, and six categories in their design order. The content
+uses the shared brand fonts, colours and content container. The category grid
+adapts to three and then two columns on tablet, and six full-width ruled rows
+on phones. Mobile uses its separate 238px-high dining-room photograph.
+
+The yellow note (`3131:11686`) specifies structured web menu categories and
+CMS-editable content. This section keeps the category actions and Explore Our
+Menus button inactive, following the approved placeholder behaviour. Menu pages
+and CMS integration remain future work. No PDF destinations are introduced.
+
+When changing this section, compare the photograph's crop, heading, category
+spacing and button with Figma. Verify image loading, placeholder controls and
+text wrapping without horizontal overflow on narrow screens.
+
+## What's On implementation
+
+The homepage section follows Final Pages `3131:11285`: a dark burgundy
+background, one featured event and a column of smaller cards. It uses the
+original Figma photographs, EB Garamond headings and DM Sans supporting copy.
+The cards stack on narrow screens.
+
+The adjacent yellow note (`3131:11688`) calls for CMS-managed campaigns that
+can be published or removed without changing the homepage layout, with cards
+linking to their campaign pages. For this phase, the contributor requested
+local event data and inactive links. Edit the ordered `whatsOnEvents` array in
+`src/lib/constants/whats-on.ts` to add, remove or reorder cards; the first entry is
+featured. An empty list hides the section. The Figma entries are preview copy,
+not verified current events. CMS publishing and campaign destinations remain
+future work.
+
+When changing this section, compare its image crops, typography and desktop
+spacing with Figma. Check image loading, stacked cards, long text and horizontal
+overflow at narrow widths. Keep placeholder actions inactive until their
+destinations exist, and verify zero, one and multiple event layouts when the
+content source changes.
+
+## Wine introduction implementation
+
+The section immediately after What's On follows Final Pages `3131:11325`:
+the wine-service photograph, a dark horizontal gradient, the Wine at Peploe's
+eyebrow and the heading "Bottles worth lingering over." It reuses the same
+photograph as the wine-dinner card, shared fonts and existing button component.
+Its text column is capped at 748px with 80px desktop vertical padding. Phones
+use the mobile vertical gradient, 720px minimum height and stacked buttons;
+Stories from the cellar uses an outline on mobile.
+
+The yellow Wine journey note (`3131:11692`) sends Explore the Wine List to a
+structured wine menu and Stories from the cellar to related Journal content
+when available. Both actions remain inactive placeholders until those
+destinations are built, following the current homepage convention.
+
+When changing this section, compare the background crop, gradient, line breaks
+and stacked actions with Figma. Check image loading, mobile text contrast,
+horizontal overflow and the two inactive controls.
+
+## Groups and occasions implementation
+
+The homepage section follows Final Pages `3131:11372`: a dining-room photo
+banner with a dark horizontal gradient, followed by three cards on Warm Cream.
+It uses the original Figma photographs, shared fonts and existing buttons. At
+1440px, the banner is 410px tall and the cards have 180px-wide images. The cards
+stack on smaller screens. Phones use a 560px banner with a vertical gradient
+and horizontal cards with 124px-wide photos, reduced further below 360px.
+
+The yellow Distinct commercial journeys note (`3131:11700`) requires separate
+pages and enquiry experiences for Groups & Celebrations, Corporate & Exclusive
+Hire and Weddings. These remain distinct cards with local content. The banner
+button and three Explore actions stay inactive until their destinations exist,
+following the approved homepage placeholder behaviour. Dedicated pages and
+enquiry forms remain future work.
+
+When changing this section, compare the photograph crops, gradient, typography,
+card order and spacing with Figma. Verify image loading, four inactive actions,
+mobile reading order and wrapping without horizontal overflow.
+
+## Stories implementation
+
+The homepage Stories section follows Final Pages `3131:11334`, with the original
+Figma photographs, a large Our Story card, a People & Produce card and two smaller
+Journal cards. It uses the shared brand fonts, colours and content container,
+with the design's individual image gradients. The cards stack on narrow
+screens, with a vertical gradient behind the producer copy on mobile.
+
+The yellow Editorial gateway note (`3131:11698`) sends Our Story to its dedicated
+page, the other cards to Journal categories or articles, and Explore the Journal
+to the Journal hub. These actions remain inactive placeholders until those
+destinations are built, following the approved homepage behaviour.
+
+When changing this section, compare the card arrangement, image crops, line
+breaks and overlays with Figma. Check all four images, mobile text contrast,
+placeholder controls and horizontal overflow at narrow widths.
+
+## Human Hospitality implementation
+
+The homepage section follows Final Pages `3131:11401`, with the burgundy heading
+"Would you prefer to speak to us?", a faded Warm Cream background and the
+original transparent reception artwork from Figma. Its text column is capped
+at 783px with 80px vertical padding. From 1280px, the reception crop occupies a
+separate column capped at 563px, with a 32px gap so the copy cannot overlap it.
+The section grows with the text. The image crop keeps the lamp, telephone and
+reception sign in their design positions. Smaller screens stack the copy above
+the artwork and let the contact buttons wrap.
+
+The yellow Booking fallback note (`3131:11706`) requires functional phone and
+email actions on desktop and mobile. These use `tel:` and `mailto:` links, with
+the same shared contact details as the footer. They reuse the existing button
+component and contact icons, with 44px targets and visible keyboard focus.
+
+When changing this section, compare the heading sizes, image crop and spacing
+with Figma. Verify image loading, contact destinations, keyboard focus, enlarged
+text and horizontal overflow on narrow screens.
+
+## Closing booking banner implementation
+
+The banner immediately before the footer follows Final Pages `3131:11412`.
+It uses the dark burgundy background, original botanical illustration at 35%
+desktop opacity, 48px EB Garamond heading and 16px DM Sans supporting copy.
+The phrase "from the city." uses the font's regular italic style. At 1440px,
+the banner is 318px tall with 72px vertical padding.
+On narrow screens the text wraps, margins reduce and the illustration fades
+to keep the copy readable.
+
+Book a Table remains an inactive placeholder, consistent with the existing
+booking controls. The nearby Booking fallback note (`3131:11704`) requires
+working phone and email options when online availability is missing. The
+footer retains those active links; ResDiary integration remains future work.
+
+When changing the banner, compare the italic text, botanical crop, background,
+spacing and button with Figma. Check artwork and font loading, narrow-screen
+wrapping, horizontal overflow and the inactive booking action.

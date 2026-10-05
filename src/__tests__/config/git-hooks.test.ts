@@ -5,6 +5,13 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 const hookDirectory = path.resolve(".husky");
+const shell =
+  process.platform === "win32"
+    ? path.resolve(
+        execFileSync("git", ["--exec-path"], { encoding: "utf8" }).trim(),
+        "../../../bin/sh.exe",
+      )
+    : "sh";
 let checkout: string;
 
 function git(...args: string[]) {
@@ -16,7 +23,7 @@ function runHook(
   input = "",
   environment: Record<string, string> = {},
 ) {
-  return spawnSync("sh", [path.join(hookDirectory, hook)], {
+  const result = spawnSync(shell, [path.join(hookDirectory, hook)], {
     cwd: checkout,
     input,
     encoding: "utf8",
@@ -25,10 +32,13 @@ function runHook(
       CI: "",
       ALLOW_PROTECTED_PUSH: "",
       TEST_LINT_EXIT: "0",
-      PATH: `${checkout}:${process.env.PATH}`,
+      PATH: [checkout, process.env.PATH ?? ""].join(path.delimiter),
       ...environment,
     },
   });
+
+  if (result.error) throw result.error;
+  return result;
 }
 
 describe("Git hook safeguards", () => {

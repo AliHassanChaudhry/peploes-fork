@@ -1,14 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { READ_MORE_COLLAPSED_HEIGHT } from "@/lib/constants";
 import type { IReadMoreProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function ReadMore({ children, className }: IReadMoreProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const collapsedHeight = "12.5em";
 
   return (
     <div className={className}>
@@ -21,7 +20,7 @@ export function ReadMore({ children, className }: IReadMoreProps) {
         style={{
           maxHeight: isExpanded
             ? contentRef.current?.scrollHeight
-            : collapsedHeight,
+            : READ_MORE_COLLAPSED_HEIGHT,
         }}
       >
         {children}

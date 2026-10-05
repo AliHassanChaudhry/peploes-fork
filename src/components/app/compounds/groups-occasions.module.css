@@ -1,0 +1,24 @@
+.overlay {
+  background: linear-gradient(
+    180deg,
+    rgb(var(--overlay-warm-ink-rgb) / 6.3%) 0%,
+    rgb(var(--overlay-warm-ink-rgb) / 91%) 100%
+  );
+}
+
+@media (40rem <= width < 64rem) {
+  .overlay {
+    background: rgb(var(--overlay-dark-ink-rgb) / 80%);
+  }
+}
+
+@media (min-width: 64rem) {
+  .overlay {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--overlay-dark-ink-rgb) / 92.55%) 0%,
+      rgb(var(--overlay-dark-ink-rgb) / 56.47%) 50%,
+      rgb(var(--overlay-dark-ink-rgb) / 0%) 100%
+    );
+  }
+}

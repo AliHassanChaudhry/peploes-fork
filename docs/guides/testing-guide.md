@@ -47,6 +47,8 @@ Hook regression tests invoke the shell hook in a temporary Git repository and
 observe its exit status, index and working tree. Stub package-manager commands
 at the process boundary; run the actual quality tools separately. Tests must
 not commit, push or change the contributor's real repository state.
+On Windows, use the shell bundled with Git for Windows and the platform's PATH
+separator. Hook files must retain the LF line endings required by `.gitattributes`.
 
 ## A useful test
 

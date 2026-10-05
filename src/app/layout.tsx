@@ -5,6 +5,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 import { JsonLd } from "@/components/app/atoms/json-ld";
+import { Footer } from "@/components/app/compounds/footer";
+import { Navbar } from "@/components/app/compounds/navbar";
 import { DEFAULT_SEO, HTTP_CONTENT_TYPE, ROUTES } from "@/lib/constants";
 import { buildSeoMetadata, getSiteUrl, getWebsiteSchema } from "@/lib/seo";
 
@@ -53,7 +55,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

@@ -1,8 +1,8 @@
+import { ExampleForm } from "@/components/app/compounds/example-form";
 import type { IExampleDto } from "@/lib/types";
 import { listExamplesService } from "@/services/examples";
-import { ExampleForm } from "./example-form";
 
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
+const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
 });
 
@@ -46,7 +46,7 @@ export async function ExamplesServerPanel() {
               <li key={example.id} className="flex items-center gap-2">
                 <span className="font-medium">{example.name}</span>
                 <span className="text-xs text-slate-400">
-                  {dateFormatter.format(new Date(example.createdAt))}
+                  {EXAMPLE_DATE_FORMATTER.format(new Date(example.createdAt))}
                 </span>
               </li>
             ))}

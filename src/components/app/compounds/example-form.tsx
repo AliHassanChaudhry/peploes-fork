@@ -3,14 +3,13 @@
 import { useActionState, useEffect, useRef } from "react";
 
 import { createExampleFormAction } from "@/actions/examples";
-
-const initialState = { success: false, error: undefined };
+import { EXAMPLE_FORM_INITIAL_STATE, FORM_FIELDS } from "@/lib/constants";
 
 export function ExampleForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(
     createExampleFormAction,
-    initialState,
+    EXAMPLE_FORM_INITIAL_STATE,
   );
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export function ExampleForm() {
     <form ref={formRef} action={formAction} className="space-y-3">
       <div className="flex gap-2">
         <input
-          name="name"
+          name={FORM_FIELDS.example.NAME}
           placeholder="Example name"
           required
           disabled={isPending}
