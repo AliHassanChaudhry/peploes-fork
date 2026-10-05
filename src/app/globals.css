@@ -90,6 +90,18 @@
   --olive-green: #556044;
   --warm-brass: #b08d4a;
 
+  --hero-shadow-rgb: 15 4 5;
+  --black-rgb: 0 0 0;
+  --hero-overlay-light-rgb: 102 102 102;
+  --hero-overlay-soft-rgb: 82 82 82;
+  --hero-overlay-mid-rgb: 61 61 61;
+  --hero-overlay-dark-rgb: 41 41 41;
+  --hero-overlay-deep-rgb: 20 20 20;
+  --overlay-ink-rgb: 24 20 18;
+  --overlay-warm-ink-rgb: 24 20 19;
+  --overlay-dark-ink-rgb: 18 14 12;
+  --overlay-cream-rgb: 250 247 241;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

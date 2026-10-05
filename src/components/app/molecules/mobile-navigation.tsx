@@ -1,12 +1,13 @@
 "use client";
 
-import { Clock3, Mail, MapPin, Menu, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { CloseButton } from "@/components/app/atoms/close-button";
 import { NavbarBookingButton } from "@/components/app/atoms/navbar-booking-button";
 import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
 import styles from "@/components/app/molecules/mobile-navigation.module.css";
+import { MobileNavigationDetails } from "@/components/app/molecules/mobile-navigation-details";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { DESKTOP_NAVIGATION_QUERY, FOCUS_RING } from "@/lib/constants";
@@ -202,58 +203,9 @@ export function MobileNavigation({
             >
               {MOBILE_NAVIGATION_CONTENT.giftVouchersLabel}
             </Button>
-            <div className="flex flex-col gap-2 text-sm leading-[21px]">
-              <div className="flex min-h-12 items-start gap-3.5">
-                <Clock3 aria-hidden="true" className="size-5 shrink-0" />
-                <div className="min-w-0 flex-1 space-y-0.5">
-                  <p className="text-text-secondary">
-                    {MOBILE_NAVIGATION_CONTENT.openingHoursHeading}
-                  </p>
-                  <dl className="space-y-0.5">
-                    {MOBILE_NAVIGATION_CONTENT.openingHours.map((row) => (
-                      <div key={row.days} className="grid grid-cols-2 gap-1">
-                        <dt className="leading-5 font-medium">{row.days}</dt>
-                        <dd className="text-text-secondary">{row.hours}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              </div>
-              <div className="flex min-h-12 items-center gap-3.5">
-                <MapPin aria-hidden="true" className="size-5 shrink-0" />
-                <p>{MOBILE_NAVIGATION_CONTENT.address}</p>
-              </div>
-              <a
-                href={MOBILE_NAVIGATION_CONTENT.phoneAction.href}
-                className={cn(
-                  FOCUS_RING,
-                  "flex min-h-12 items-center gap-3.5 rounded-sm underline-offset-4 hover:underline focus-visible:ring-peploe-burgundy",
-                )}
-              >
-                <Phone aria-hidden="true" className="size-5 shrink-0" />
-                <span>{MOBILE_NAVIGATION_CONTENT.phoneAction.label}</span>
-              </a>
-              <a
-                href={MOBILE_NAVIGATION_CONTENT.emailAction.href}
-                className={cn(
-                  FOCUS_RING,
-                  "flex min-h-12 items-center gap-3.5 rounded-sm underline-offset-4 hover:underline focus-visible:ring-peploe-burgundy",
-                )}
-              >
-                <Mail aria-hidden="true" className="size-5 shrink-0" />
-                <span className="break-all">
-                  {MOBILE_NAVIGATION_CONTENT.emailAction.label}
-                </span>
-              </a>
-            </div>
-            <p
-              className={cn(
-                brandPhraseClassName,
-                "text-center text-lg leading-[26px] text-peploe-burgundy",
-              )}
-            >
-              {MOBILE_NAVIGATION_CONTENT.brandPhrase}
-            </p>
+            <MobileNavigationDetails
+              brandPhraseClassName={brandPhraseClassName}
+            />
           </div>
         </div>
       </dialog>

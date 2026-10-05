@@ -87,7 +87,8 @@ The reception artwork reproduces the mobile frame's image scaling. Photographs,
 including the entrance, retain their aspect ratio and crop to their frames.
 Event and occasion copy variants live beside their desktop content in the local
 catalogs.
-Mobile Stories uses the From the Cellar heading and omits the art description.
+Mobile Stories uses the From the cellar eyebrow over the “Wine things just
+happen.” heading and omits the art description.
 The closing booking heading is upright on mobile and retains its desktop italic.
 
 Compare section positions, line breaks, crops and overlays at 390px, then check

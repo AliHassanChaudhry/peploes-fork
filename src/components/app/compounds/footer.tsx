@@ -2,14 +2,13 @@ import {
   ArrowRight,
   ChevronRight,
   Clock3,
-  Facebook,
-  Instagram,
   Mail,
   MapPin,
   Phone,
 } from "lucide-react";
 import Link from "next/link";
-
+import { FooterMeta } from "@/components/app/compounds/footer-meta";
+import { MobileFooterNavigation } from "@/components/app/compounds/mobile-footer-navigation";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import {
@@ -136,42 +135,7 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className={cn(FOOTER_STYLES.mobileDivider, "order-3 xl:hidden")}>
-            {MOBILE_FOOTER_CONTENT.navigation.map(({ heading, labels }) => (
-              <nav
-                key={heading}
-                aria-label={heading}
-                className="not-first:shadow-[inset_0_1px_0_var(--soft-stone)]"
-              >
-                <h2
-                  className={cn(
-                    ebGaramond.className,
-                    "flex h-[52px] items-center justify-between border-b border-soft-stone text-xl leading-[26px] font-medium",
-                  )}
-                >
-                  {heading}
-                  <ChevronRight
-                    aria-hidden="true"
-                    className="size-4 text-peploe-burgundy"
-                  />
-                </h2>
-                <ul className="pt-1 pb-3">
-                  {labels.map((label) => (
-                    <li key={label}>
-                      <Button
-                        type="button"
-                        variant="brand-nav"
-                        aria-disabled="true"
-                        className="h-11 w-full justify-start rounded-none p-0 text-base leading-[22px] font-normal text-text-secondary"
-                      >
-                        {label}
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
-          </div>
+          <MobileFooterNavigation />
 
           <section
             aria-labelledby="footer-contact-heading"
@@ -253,56 +217,7 @@ export function Footer() {
           </section>
         </div>
 
-        <div className="relative mt-20 flex flex-col gap-10 text-xs leading-[18px] text-text-secondary xl:mt-16 xl:flex-row xl:items-center xl:justify-between xl:gap-6 xl:pt-[25px] xl:leading-5 xl:before:absolute xl:before:inset-x-0 xl:before:top-0 xl:before:h-px xl:before:bg-soft-stone">
-          <div className="order-2 flex flex-col gap-2 xl:order-1 xl:flex-row xl:items-center xl:gap-4">
-            <p className="order-2 xl:order-none">{FOOTER_CONTENT.copyright}</p>
-            <span aria-hidden="true" className="hidden xl:inline">
-              |
-            </span>
-            <nav aria-label={FOOTER_CONTENT.legalNavigationLabel}>
-              <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 xl:gap-x-4">
-                {FOOTER_CONTENT.legalLabels.map((label, index) => (
-                  <li key={label} className="flex items-center gap-3 xl:gap-4">
-                    {index > 0 && (
-                      <span aria-hidden="true">
-                        <span className="xl:hidden">·</span>
-                        <span className="hidden xl:inline">|</span>
-                      </span>
-                    )}
-                    <Button
-                      type="button"
-                      variant="brand-nav"
-                      aria-disabled="true"
-                      className="h-auto rounded-none p-0 text-xs leading-[18px] font-normal text-text-secondary xl:leading-5"
-                    >
-                      {label}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-          <div className="order-1 flex items-center gap-3 xl:order-2">
-            <Button
-              type="button"
-              variant="brand-nav"
-              aria-disabled="true"
-              aria-label={FOOTER_CONTENT.instagramLabel}
-              className="size-5 p-0 text-text-secondary has-[>svg]:px-0"
-            >
-              <Instagram aria-hidden="true" className="size-5" />
-            </Button>
-            <Button
-              type="button"
-              variant="brand-nav"
-              aria-disabled="true"
-              aria-label={FOOTER_CONTENT.facebookLabel}
-              className="size-5 p-0 text-text-secondary has-[>svg]:px-0"
-            >
-              <Facebook aria-hidden="true" className="size-5" />
-            </Button>
-          </div>
-        </div>
+        <FooterMeta />
       </div>
     </footer>
   );

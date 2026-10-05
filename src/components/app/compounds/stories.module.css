@@ -1,17 +1,23 @@
 .familyOverlay {
   background: linear-gradient(
     -161.49deg,
-    rgb(24 20 18 / 0%) 13.29%,
-    rgb(24 20 18) 92.29%
+    rgb(var(--overlay-ink-rgb) / 0%) 13.29%,
+    rgb(var(--overlay-ink-rgb)) 92.29%
   );
 }
 
 .ginaOverlay {
-  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 71.34%);
+  background: linear-gradient(
+    rgb(var(--overlay-ink-rgb) / 0%) 0%,
+    rgb(var(--overlay-ink-rgb)) 71.34%
+  );
 }
 
 .artOverlay {
-  background: linear-gradient(rgb(24 20 18 / 0%) 0%, rgb(24 20 18) 100%);
+  background: linear-gradient(
+    rgb(var(--overlay-ink-rgb) / 0%) 0%,
+    rgb(var(--overlay-ink-rgb)) 100%
+  );
 }
 
 @media (width < 40rem) {
@@ -19,7 +25,11 @@
   .produceOverlay,
   .ginaOverlay,
   .artOverlay {
-    background: linear-gradient(180deg, rgb(24 20 19 / 0%) 15%, #181413 100%);
+    background: linear-gradient(
+      180deg,
+      rgb(var(--overlay-warm-ink-rgb) / 0%) 15%,
+      rgb(var(--overlay-warm-ink-rgb)) 100%
+    );
   }
 }
 
@@ -27,8 +37,8 @@
   .produceOverlay {
     background: linear-gradient(
       -90deg,
-      rgb(24 20 18) 36.64%,
-      rgb(24 20 18 / 0%) 100%
+      rgb(var(--overlay-ink-rgb)) 36.64%,
+      rgb(var(--overlay-ink-rgb) / 0%) 100%
     );
   }
 }
