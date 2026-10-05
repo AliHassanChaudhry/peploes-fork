@@ -55,9 +55,10 @@ shared content maximum. At the desktop breakpoint, `site-container` in
 80px for the closing booking banner and footer. Their content widths are
 therefore 1296px and 1280px only when the available page width is 1440px.
 Both containers grow with wider pages and retain 24px gutters below the
-desktop breakpoint. This fluid extension follows the frame's padding and
-Fill constraints; Figma supplies a 1440px desktop reference, not additional
-wide-screen frames.
+desktop breakpoint. Stories additionally caps its content wrapper at 1296px so
+the fixed mosaic remains centered on wider screens. This preserves the frame's
+padding and Fill constraints; Figma supplies a 1440px desktop reference, not
+additional wide-screen frames.
 
 Backgrounds and full-width photographs fill the page. Wine keeps its 748px
 text column. Hospitality caps its text at 783px and reserves a separate artwork

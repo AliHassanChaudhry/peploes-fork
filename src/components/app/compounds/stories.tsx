@@ -34,7 +34,7 @@ export function Stories() {
       aria-labelledby="stories-heading"
       className={cn(dmSans.className, "bg-warm-cream text-ink")}
     >
-      <div className="site-container flex flex-col gap-8 pt-12 pb-14 sm:gap-12 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
+      <div className="site-container flex flex-col gap-8 pt-12 pb-14 sm:gap-12 sm:py-20 lg:gap-[72px] xl:max-w-[1296px] xl:pb-[76px]">
         <div className="flex flex-col items-start gap-4">
           <p className="flex items-center gap-2.5 text-[11px] leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:mb-3 sm:text-sm">
             <span
