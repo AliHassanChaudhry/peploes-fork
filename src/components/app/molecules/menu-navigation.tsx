@@ -71,56 +71,59 @@ export function MenuNavigation({
         className="relative overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         <ul className="mx-2 flex h-12 min-w-max xl:site-container">
-          {items.map((item) => (
-            <li
-              key={item.label}
-              className={cn(
-                "flex shrink-0",
-                item.children &&
-                  "relative before:absolute before:top-3 before:left-0 before:h-6 before:w-px before:bg-soft-stone [&:nth-last-child(2)]:xl:ml-auto",
-              )}
-            >
-              {item.children?.length ? (
-                <button
-                  type="button"
-                  aria-expanded={openLabel === item.label}
-                  aria-controls="menu-subnavigation"
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  data-menu-path={item.href}
-                  onClick={(event) => {
-                    triggerRef.current = event.currentTarget;
-                    setOpenLabel(openLabel === item.label ? null : item.label);
-                  }}
-                  className={cn(
-                    FOCUS_RING,
-                    "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
-                  )}
-                >
-                  {item.label}
-                  <ChevronDown
-                    aria-hidden="true"
+          {items.map((item) => {
+            const isOpen = openLabel === item.label;
+            const currentPage = pathname === item.href ? "page" : undefined;
+            const controlsId = isOpen ? "menu-subnavigation" : undefined;
+
+            return (
+              <li
+                key={item.label}
+                className={cn(
+                  "flex shrink-0",
+                  item.children &&
+                    "relative before:absolute before:top-3 before:left-0 before:h-6 before:w-px before:bg-soft-stone [&:nth-last-child(2)]:xl:ml-auto",
+                )}
+              >
+                {item.children?.length ? (
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={controlsId}
+                    aria-current={currentPage}
+                    data-menu-path={item.href}
+                    onClick={(event) => {
+                      triggerRef.current = event.currentTarget;
+                      setOpenLabel(isOpen ? null : item.label);
+                    }}
                     className={cn(
-                      "size-4",
-                      openLabel === item.label && "rotate-180",
+                      FOCUS_RING,
+                      "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
                     )}
-                  />
-                </button>
-              ) : item.href ? (
-                <Link
-                  href={item.href}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  data-menu-path={item.href}
-                  onClick={() => setOpenLabel(null)}
-                  className={cn(
-                    FOCUS_RING,
-                    "flex min-w-24 items-center justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ) : null}
-            </li>
-          ))}
+                  >
+                    {item.label}
+                    <ChevronDown
+                      aria-hidden="true"
+                      className={cn("size-4", isOpen && "rotate-180")}
+                    />
+                  </button>
+                ) : item.href ? (
+                  <Link
+                    href={item.href}
+                    aria-current={currentPage}
+                    data-menu-path={item.href}
+                    onClick={() => setOpenLabel(null)}
+                    className={cn(
+                      FOCUS_RING,
+                      "flex min-w-24 items-center justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="xl:site-container xl:relative">

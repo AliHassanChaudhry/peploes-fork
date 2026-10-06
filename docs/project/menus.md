@@ -75,13 +75,26 @@ The contributor selected local preview data. No Sanity project, Studio, SDK,
 credentials or remote fetching is configured. Figma menu copy is preview content;
 the restaurant must approve dishes, prices and service times before launch.
 
+The following preview content remains pending restaurant approval:
+
+- House White and House Red bottle prices differ between By the Glass and House Wines.
+- Two Grey Goose entries have the same label but different prices.
+- Lunch service ends at 4:30pm while last orders are shown as 4:45pm.
+- The three-course lunch offer has no dessert options or third-course explanation.
+
+Keep these as content questions until the restaurant supplies confirmed details;
+do not invent prices, service times or dishes.
+
 `src/lib/constants/menu-page.ts` owns the shared page content. The `*-menu.ts`
 catalogs in the same directory hold independently editable menu data.
 `IMenuContent` in `src/lib/types.ts` is the rendering contract. The UI receives
 this content as a server-rendered prop and has no dependency on Sanity transport
 objects. Course and dish arrays use stable `_key` values and preserve editor order.
 An empty course is omitted. Missing prices, descriptions, images, offers or allergen
-information do not create placeholders.
+information do not create placeholders. Lunch and Pre-Theatre offers appear
+once in the introduction. A course's optional `firstColumnCount` sets the first
+desktop column; remaining dishes are distributed across the later columns.
+A one-column course always includes every dish.
 
 When connecting Sanity, use these document fields:
 
@@ -107,9 +120,12 @@ which price columns appear. No country names are embedded in components.
 Cocktails uses `IDrinksMenuContent`: ordered cocktail sections and spirit
 categories, each with optional descriptions and prices. Group and Seasonal use
 `ISetMenuCollection`: ordered menus with stable keys, titles, prices per person,
-service dates, eligibility, inclusions and courses. These collections generate
-the navigation dropdowns and section cards. Store inclusions as editable text;
-do not infer them from prices or share one menu’s dishes with another document.
+inclusions and courses. Each `ISetMenu` carries optional `serviceTimes` text,
+a required `summary`, and an optional `cardDescription`. The preview catalogs
+put service dates in `serviceTimes` and group eligibility in descriptive text;
+there are no separate structured date or eligibility fields. These collections
+generate the navigation dropdowns and section cards. Store inclusions as editable
+text; do not infer them from prices or share one menu’s dishes with another document.
 
 For Sanity, model these as separate document shapes with reusable dish, course,
 image, notes and booking-banner objects. Validate unique, URL-safe section keys

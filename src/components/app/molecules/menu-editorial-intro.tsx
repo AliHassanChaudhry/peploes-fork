@@ -107,7 +107,7 @@ function MenuEditorialImage({
         src={image.src}
         alt={image.alt}
         fill
-        sizes="(min-width: 1280px) 280px, (min-width: 640px) 600px, calc(100vw - 48px)"
+        sizes="(min-width: 1280px) 280px, calc(100vw - 48px)"
         className={cn(
           "object-contain",
           image.fit === "cover" && "object-cover",

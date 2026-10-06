@@ -29,7 +29,7 @@ export function MenuHero() {
         <p className="text-sm leading-5 font-medium tracking-[0.08em] uppercase">
           {MENU_PAGE_CONTENT.eyebrow}
         </p>
-        <h2
+        <p
           id="menus-hero-heading"
           className={cn(
             ebGaramond.className,
@@ -37,7 +37,7 @@ export function MenuHero() {
           )}
         >
           {MENU_PAGE_CONTENT.heading}
-        </h2>
+        </p>
         <span
           aria-hidden="true"
           className="mt-5 block h-px w-[58px] bg-peploe-burgundy"

@@ -11,13 +11,23 @@ export function MenuCourse({
   if (!course.dishes.length) return null;
 
   const splitAt =
-    course.firstColumnCount ?? Math.ceil(course.dishes.length / course.columns);
-  const columns =
-    course.columns === 2
-      ? [course.dishes.slice(0, splitAt), course.dishes.slice(splitAt)]
-      : Array.from({ length: course.columns }, (_, index) =>
-          course.dishes.slice(index * splitAt, (index + 1) * splitAt),
-        );
+    course.columns === 1
+      ? course.dishes.length
+      : (course.firstColumnCount ??
+        Math.ceil(course.dishes.length / course.columns));
+  const remainingDishes = course.dishes.slice(splitAt);
+  const remainingColumnSize = Math.ceil(
+    remainingDishes.length / Math.max(1, course.columns - 1),
+  );
+  const columns = [
+    course.dishes.slice(0, splitAt),
+    ...Array.from({ length: course.columns - 1 }, (_, index) =>
+      remainingDishes.slice(
+        index * remainingColumnSize,
+        (index + 1) * remainingColumnSize,
+      ),
+    ),
+  ];
   const headingId = `${idPrefix}-${course._key}`;
 
   return (

@@ -65,7 +65,7 @@ export function WineCategory({
           <tbody key={wine._key}>
             <tr className="xl:hidden">
               <th
-                scope="row"
+                scope="rowgroup"
                 colSpan={columnCount}
                 className="pt-2 text-left text-base leading-6 font-normal"
               >

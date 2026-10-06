@@ -72,7 +72,7 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
           <MenuCourse key={course._key} course={course} />
         ))}
       </div>
-      <MenuNotes menu={menu} />
+      <MenuNotes menu={{ notes: menu.notes, allergens: menu.allergens }} />
       <MenuBooking />
     </article>
   );
