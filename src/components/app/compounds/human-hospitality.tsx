@@ -18,8 +18,8 @@ export function HumanHospitality() {
         "overflow-hidden bg-warm-cream bg-linear-to-b from-ink/10 to-transparent to-[66px] text-ink",
       )}
     >
-      <div className="relative isolate grid">
-        <div className="site-container relative z-10">
+      <div className="relative isolate grid xl:grid-cols-[minmax(0,1fr)_min(37.5%,563px)] xl:gap-8">
+        <div className="site-container relative z-10 xl:mx-0 xl:ml-[72px] xl:w-auto">
           <div className="flex min-w-0 flex-col items-start gap-5 pt-12 pb-9 sm:gap-7 sm:py-20 xl:max-w-[783px]">
             <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
               <span
@@ -77,13 +77,13 @@ export function HumanHospitality() {
           </div>
         </div>
 
-        <div className="relative h-[222px] w-full max-w-[675px] self-end justify-self-end overflow-hidden sm:aspect-[563/389] sm:h-auto xl:absolute xl:-right-8 xl:bottom-0 xl:w-[39.0972%] xl:max-w-[563px]">
+        <div className="relative h-[222px] w-full max-w-[675px] self-end justify-self-end overflow-hidden sm:aspect-[563/389] sm:h-auto xl:max-w-[563px]">
           <Image
             src={HUMAN_HOSPITALITY_CONTENT.image.src}
             alt={HUMAN_HOSPITALITY_CONTENT.image.alt}
             width={1024}
             height={1024}
-            sizes="(min-width: 1440px) 704px, (min-width: 1280px) 49vw, (min-width: 675px) 844px, (min-width: 640px) 125vw, 138.5vw"
+            sizes="(min-width: 1502px) 704px, (min-width: 1280px) 46.875vw, (min-width: 675px) 844px, (min-width: 640px) 125vw, 138.5vw"
             className="absolute -top-[29.7%] -left-[30.3%] h-[181.5%] w-[138.5%] max-w-none sm:-top-[30.4%] sm:-left-[17%] sm:h-auto sm:w-[125%]"
           />
         </div>

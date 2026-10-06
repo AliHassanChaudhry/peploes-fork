@@ -22,7 +22,7 @@ export function BookingBanner() {
           alt={BOOKING_BANNER_CONTENT.image.alt}
           width={472}
           height={472}
-          sizes="472px"
+          sizes="(min-width: 640px) 472px, 310px"
           className="pointer-events-none absolute -right-[120px] -bottom-20 h-[310px] w-[310px] max-w-none opacity-24 sm:-top-6 sm:-right-[104px] sm:bottom-auto sm:h-[472px] sm:w-[472px] sm:opacity-15 lg:opacity-35"
         />
 

@@ -1,23 +1,19 @@
-.hero {
-  --hero-shadow: #0f0405;
-}
-
 .photoOverlay {
   background:
     linear-gradient(
       -101.1deg,
-      rgb(102 102 102 / 0%) 8.69%,
-      rgb(82 82 82 / 16%) 20.59%,
-      rgb(61 61 61 / 32%) 32.49%,
-      rgb(41 41 41 / 48%) 44.4%,
-      rgb(20 20 20 / 64%) 56.3%,
-      rgb(0 0 0 / 80%) 68.2%
+      rgb(var(--hero-overlay-light-rgb) / 0%) 8.69%,
+      rgb(var(--hero-overlay-soft-rgb) / 16%) 20.59%,
+      rgb(var(--hero-overlay-mid-rgb) / 32%) 32.49%,
+      rgb(var(--hero-overlay-dark-rgb) / 48%) 44.4%,
+      rgb(var(--hero-overlay-deep-rgb) / 64%) 56.3%,
+      rgb(var(--black-rgb) / 80%) 68.2%
     ),
     linear-gradient(
       180deg,
-      rgb(15 4 5 / 0%) 84.12%,
-      rgb(15 4 5 / 70%) 91.04%,
-      var(--hero-shadow) 98.88%
+      rgb(var(--hero-shadow-rgb) / 0%) 84.12%,
+      rgb(var(--hero-shadow-rgb) / 70%) 91.04%,
+      rgb(var(--hero-shadow-rgb)) 98.88%
     );
 }
 
@@ -25,8 +21,8 @@
   .photoOverlay {
     background: linear-gradient(
       180deg,
-      rgb(15 4 5 / 60%) 65%,
-      var(--hero-shadow) 100%
+      rgb(var(--hero-shadow-rgb) / 60%) 65%,
+      rgb(var(--hero-shadow-rgb)) 100%
     );
   }
 }
@@ -35,9 +31,9 @@
   .photoOverlay {
     background: linear-gradient(
       180deg,
-      rgb(24 20 19 / 3.14%) 0%,
-      rgb(24 20 19 / 85.1%) 72%,
-      #181413 100%
+      rgb(var(--overlay-warm-ink-rgb) / 3.14%) 0%,
+      rgb(var(--overlay-warm-ink-rgb) / 85.1%) 72%,
+      rgb(var(--overlay-warm-ink-rgb)) 100%
     );
   }
 }
@@ -45,11 +41,14 @@
 .entrance {
   position: relative;
   aspect-ratio: 1440 / 1307;
-  background-color: var(--hero-shadow);
+  background-color: rgb(var(--hero-shadow-rgb));
 }
 
 .entranceOverlay {
-  background: linear-gradient(var(--hero-shadow), rgb(15 4 5 / 50%));
+  background: linear-gradient(
+    rgb(var(--hero-shadow-rgb)),
+    rgb(var(--hero-shadow-rgb) / 50%)
+  );
 }
 
 .entranceArtwork {
@@ -66,8 +65,8 @@
   background: linear-gradient(
     0deg,
     var(--warm-cream) 0%,
-    rgb(250 247 241 / 95%) 30.29%,
-    rgb(250 247 241 / 75.3%) 56.73%,
-    rgb(250 247 241 / 0%) 86.06%
+    rgb(var(--overlay-cream-rgb) / 95%) 30.29%,
+    rgb(var(--overlay-cream-rgb) / 75.3%) 56.73%,
+    rgb(var(--overlay-cream-rgb) / 0%) 86.06%
   );
 }

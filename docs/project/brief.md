@@ -57,14 +57,15 @@ shared content maximum. At the desktop breakpoint, `site-container` in
 `src/app/globals.css` leaves 72px on each side; `site-container-inset` leaves
 80px for the closing booking banner and footer. Their content widths are
 therefore 1296px and 1280px only when the available page width is 1440px.
-Both containers grow with wider pages and retain 24px gutters below the
-desktop breakpoint. This fluid extension follows the frame's padding and
-Fill constraints; Figma supplies a 1440px desktop reference, not additional
-wide-screen frames.
+The content containers cap at 1296px and 1280px respectively, while section
+backgrounds and full-width photographs remain viewport-width. Below the
+desktop breakpoint they retain 24px gutters. This preserves the frame's
+padding and Fill constraints; Figma supplies a 1440px desktop reference, not
+additional wide-screen frames.
 
 Backgrounds and full-width photographs fill the page. Wine keeps its 748px
-text column and Hospitality its 783px column. Hospitality shares the page
-gutters; only its artwork has an independent size limit. Stories follows the
+text column. Hospitality caps its text at 783px and reserves a separate artwork
+column on desktop, with a 32px gap and the shared left gutter. Stories follows the
 source frame's fixed 636px columns and 28px gap, shrinking those tracks on
 narrower desktops without stretching them on wider pages. At 1440px its
 desktop grid extends 4px beyond the 1296px content width. Its
@@ -86,10 +87,12 @@ At the reference width the page is 11,526px tall, including the 72px header.
 Sections may grow when narrower screens or enlarged text need more room.
 
 Use the mobile entrance and dining-room photographs exported from Figma.
-The entrance and reception artwork reproduce the mobile frame's image scaling;
-the other photos retain their aspect ratio and crop to their frames. Event and
-occasion copy variants live beside their desktop content in the local catalogs.
-Mobile Stories uses the From the Cellar heading and omits the art description.
+The reception artwork reproduces the mobile frame's image scaling. Photographs,
+including the entrance, retain their aspect ratio and crop to their frames.
+Event and occasion copy variants live beside their desktop content in the local
+catalogs.
+Mobile Stories uses the From the cellar eyebrow over the “Wine things just
+happen.” heading and omits the art description.
 The closing booking heading is upright on mobile and retains its desktop italic.
 
 Compare section positions, line breaks, crops and overlays at 390px, then check
@@ -201,11 +204,12 @@ When changing the hero, compare desktop line breaks, photo crop, overlays and
 the entrance overlap with Figma. Check image loading, narrow screens, sidebar
 overlap, scroll reveal and reduced-motion styling.
 
-For cropped photographs throughout the homepage, responsive image sizes account
-for the source width needed to fill the frame's height, not only the visible
-frame width. This keeps landscape photographs sharp in narrow cards without
-stretching them. The Gina and Sunday source photographs are only 243px wide;
-larger originals are needed for sharper rendering on high-density screens.
+The desktop hero, menu and wine backgrounds advertise the viewport width in
+their responsive image sizes. Event cards and booking artwork follow their
+responsive image boxes. The hero background retains larger mobile and tablet
+sources for its tall crop. The Gina and Sunday source photographs are only
+243px wide; larger originals are needed for sharper rendering on high-density
+screens.
 
 ## Restaurant features implementation
 
@@ -319,11 +323,12 @@ placeholder controls and horizontal overflow at narrow widths.
 
 The homepage section follows Final Pages `3131:11401`, with the burgundy heading
 "Would you prefer to speak to us?", a faded Warm Cream background and the
-original transparent reception artwork from Figma. At 1440px, the section is
-410px tall. Its text column is capped at 783px with 80px vertical padding, and the
-563px by 389px reception crop sits at the bottom right. The image crop keeps
-the lamp, telephone and reception sign in their design positions. Smaller
-screens stack the copy above the artwork and let the contact buttons wrap.
+original transparent reception artwork from Figma. Its text column is capped
+at 783px with 80px vertical padding. From 1280px, the reception crop occupies a
+separate column capped at 563px, with a 32px gap so the copy cannot overlap it.
+The section grows with the text. The image crop keeps the lamp, telephone and
+reception sign in their design positions. Smaller screens stack the copy above
+the artwork and let the contact buttons wrap.
 
 The yellow Booking fallback note (`3131:11706`) requires functional phone and
 email actions on desktop and mobile. These use `tel:` and `mailto:` links, with

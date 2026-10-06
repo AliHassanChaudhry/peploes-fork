@@ -31,7 +31,3 @@ export function formatLongDateTime(date?: Date): string {
     timeZoneName: "short",
   });
 }
-
-export const EXAMPLE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-});

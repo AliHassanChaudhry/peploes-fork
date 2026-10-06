@@ -57,7 +57,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
           sizes={
             featured
               ? "(min-width: 1280px) calc((100vw - 192px) * 635 / 1248), calc(100vw - 48px)"
-              : "(min-width: 640px) 240px, calc((100vw - 48px) * 1.2)"
+              : "(min-width: 640px) 200px, calc(100vw - 48px)"
           }
           className={cn("object-cover", featured && "sm:object-[center_60%]")}
         />
