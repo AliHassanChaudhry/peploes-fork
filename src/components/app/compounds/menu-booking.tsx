@@ -16,6 +16,7 @@ export function MenuBooking({
       className={cn(
         "relative isolate flex min-h-[330px] items-end overflow-hidden bg-ink text-warm-cream xl:min-h-[220px] xl:items-center",
         booking.description && "min-h-[360px] xl:min-h-64",
+        booking.tallOnMobile && "min-h-[390px]",
       )}
     >
       <Image
@@ -27,16 +28,23 @@ export function MenuBooking({
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,15,13,0.08),rgba(20,15,13,0.65))] xl:bg-[linear-gradient(90deg,rgba(20,15,13,0.1),rgba(20,15,13,0.65))]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(32,16,9,0),rgba(32,16,9,0.78))] xl:bg-[linear-gradient(90deg,rgba(32,16,9,0),rgb(32,16,9))]"
       />
-      <div className="site-container flex flex-col items-end gap-6 py-10 xl:py-12">
+      <div
+        className={cn(
+          "site-container flex flex-col items-end gap-6 py-[54px] xl:py-12",
+          !booking.description && "xl:gap-4",
+        )}
+      >
         <h2
           id="menu-booking-heading"
           className={cn(
             booking.description
               ? ebGaramond.className
               : ebGaramondItalic.className,
-            "max-w-[280px] text-right text-[29px] leading-[33px] xl:max-w-none xl:text-[28px] xl:leading-[34px]",
+            "max-w-[280px] text-right text-[29px] leading-[33px] xl:max-w-none xl:text-[28px] xl:leading-[1.2]",
+            booking.description &&
+              "max-w-[342px] text-[30px] leading-[31px] xl:text-[30px] xl:leading-9",
           )}
         >
           {booking.heading}

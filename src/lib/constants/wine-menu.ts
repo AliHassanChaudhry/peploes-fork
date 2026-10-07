@@ -10,6 +10,7 @@ export const WINE_MENU: IWineMenuContent = {
   image: {
     src: "/peploes-menu-wine-bottles.webp",
     scale: 1.5,
+    desktopScale: 1.56,
     alt: "A selection of wines from Peploe’s cellar.",
   },
   imageBeforeAside: true,
@@ -535,6 +536,8 @@ export const WINE_MENU: IWineMenuContent = {
             {
               _key: "peploes-ultimate-selection",
               heading: "Peploe’s Ultimate Selection",
+              shortHeading: "Ultimate Selection",
+              emphasized: true,
               showVintage: true,
               showGlass: false,
               wines: [
@@ -575,6 +578,7 @@ export const WINE_MENU: IWineMenuContent = {
             {
               _key: "sweet-wines-ports",
               heading: "Sweet Wines & Ports",
+              emphasized: true,
               showVintage: true,
               showGlass: true,
               wines: [
@@ -623,6 +627,7 @@ export const WINE_MENU: IWineMenuContent = {
             {
               _key: "magnums",
               heading: "Magnums",
+              emphasized: true,
               showVintage: true,
               showGlass: false,
               wines: [
@@ -663,6 +668,7 @@ export const WINE_MENU: IWineMenuContent = {
             {
               _key: "vintage-ports",
               heading: "Vintage Ports",
+              emphasized: true,
               showVintage: true,
               showGlass: false,
               wines: [
@@ -719,6 +725,7 @@ export const WINE_MENU: IWineMenuContent = {
   seoDescription:
     "Browse Peploe’s wine list, with wines by the glass, European producers and a selection of cellar bottles.",
   booking: {
+    tallOnMobile: true,
     heading: "Direct from small European producers",
     description:
       "We work closely with independent winemakers across France, Italy, Spain and beyond to bring you wines of place, authenticity and character — selected for their sense of origin and the people behind them.",

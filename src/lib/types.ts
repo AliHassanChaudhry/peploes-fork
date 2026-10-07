@@ -547,6 +547,7 @@ export interface IMenuEditorialImageProps {
 }
 
 export interface IMenuBooking {
+  tallOnMobile?: boolean;
   heading: string;
   description?: string;
   label: string;
@@ -603,6 +604,8 @@ export interface IWine {
 export interface IWineCategory {
   _key: string;
   heading: string;
+  shortHeading?: string;
+  emphasized?: boolean;
   showVintage: boolean;
   showGlass: boolean;
   wines: readonly IWine[];
@@ -656,6 +659,7 @@ export interface IDrinksMenuProps {
 }
 
 export interface IMenuImage extends ISectionImage {
+  rotation?: number;
   desktopScale?: number;
   scale?: number;
   fit?: "contain" | "cover";
@@ -663,6 +667,8 @@ export interface IMenuImage extends ISectionImage {
 
 export interface IMenuImageStyle extends CSSProperties {
   "--menu-image-scale": number;
+  "--menu-image-rotation"?: string;
+  "--menu-image-desktop-scale"?: number;
 }
 
 export interface IMenuPageContent {
@@ -733,7 +739,7 @@ export interface IFooterContent {
   };
   copyright: string;
   legalNavigationLabel: string;
-  legalLabels: readonly string[];
+  legalLabels: readonly { label: string; shortLabel?: string }[];
   instagramLabel: string;
   facebookLabel: string;
 }

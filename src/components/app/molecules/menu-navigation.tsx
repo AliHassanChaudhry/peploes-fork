@@ -63,14 +63,14 @@ export function MenuNavigation({
       }}
       className={cn(
         className,
-        "sticky top-[72px] z-30 border-b border-soft-stone bg-warm-cream pt-4 shadow-[0_-4px_12px_rgb(46_42_40/6%)] xl:top-[76px]",
+        "sticky top-[72px] z-30 bg-warm-cream pt-4 shadow-[inset_0_-1px_0_var(--soft-stone)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-2 before:bg-[linear-gradient(180deg,rgba(46,42,40,0.1),transparent)] xl:top-[76px]",
       )}
     >
       <div
         ref={scrollRef}
         className="relative overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        <ul className="mx-2 flex h-12 min-w-max xl:site-container">
+        <ul className="mx-2 flex h-12 min-w-max bg-[#fbf8f2] xl:site-container">
           {items.map((item) => {
             const isOpen = openLabel === item.label;
             const currentPage = pathname === item.href ? "page" : undefined;
@@ -82,7 +82,7 @@ export function MenuNavigation({
                 className={cn(
                   "flex shrink-0",
                   item.children &&
-                    "relative before:absolute before:top-3 before:left-0 before:h-6 before:w-px before:bg-soft-stone [&:nth-last-child(2)]:xl:ml-auto",
+                    "relative before:absolute before:top-3 before:left-0 before:h-6 before:w-px before:bg-soft-stone [&:nth-last-child(2)]:xl:ml-auto [&:nth-last-child(2)>button]:xl:w-[200px] [&:last-child>button]:xl:w-[183px]",
                 )}
               >
                 {item.children?.length ? (
@@ -98,7 +98,7 @@ export function MenuNavigation({
                     }}
                     className={cn(
                       FOCUS_RING,
-                      "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
+                      "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-[#8a1735] aria-[current=page]:text-[#8a1735]",
                     )}
                   >
                     {item.label}
@@ -115,7 +115,7 @@ export function MenuNavigation({
                     onClick={() => setOpenLabel(null)}
                     className={cn(
                       FOCUS_RING,
-                      "flex min-w-24 items-center justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy aria-[current=page]:border-peploe-burgundy aria-[current=page]:text-peploe-burgundy",
+                      "flex min-w-24 items-center xl:min-w-0 justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-[current=page]:border-[#8a1735] aria-[current=page]:text-[#8a1735]",
                     )}
                   >
                     {item.label}

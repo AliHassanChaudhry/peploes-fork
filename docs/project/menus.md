@@ -4,7 +4,8 @@ The menu routes are `/menus/lunch`, `/menus/dinner`, `/menus/pre-theatre`,
 `/menus/wine`, `/menus/cocktails`, `/menus/group-set-menu` and `/menus/seasonal`.
 `/menus` redirects to Lunch. The shared layout contains the hero and sticky menu
 navigation. Each page supplies its closing photograph and copy. The site header
-and footer remain shared with the homepage. Booking and enquiry actions remain
+and footer remain shared with the homepage. The footer's menu variant follows
+the menu frames' spacing and mobile section order; homepage styling is unchanged. Booking and enquiry actions remain
 inactive until their integration exists.
 
 ## Design and approved comments
@@ -92,8 +93,9 @@ this content as a server-rendered prop and has no dependency on Sanity transport
 objects. Course and dish arrays use stable `_key` values and preserve editor order.
 An empty course is omitted. Missing prices, descriptions, images, offers or allergen
 information do not create placeholders. Lunch and Pre-Theatre offers appear
-once in the introduction. A course's optional `firstColumnCount` sets the first
-desktop column; remaining dishes are distributed across the later columns.
+once in the notes panel, following the reviewer’s lower-panel screenshots.
+A course's optional `firstColumnCount` sets the first desktop column; remaining
+dishes are distributed across the later columns.
 A one-column course always includes every dish.
 
 When connecting Sanity, use these document fields:
@@ -104,7 +106,7 @@ When connecting Sanity, use these document fields:
 | Menu title and SEO description | Required strings on a `restaurantMenu` document |
 | Menu identifier | Required unique `slug`, projected as `slug.current` |
 | Service times and set-menu offer | String fields; offer optional |
-| Introductory image | Optional `image` with alt text and desktop crop scale |
+| Introductory image | Optional `image` with alt text, desktop crop scale and rotation |
 | Courses | Ordered object array: heading, one/two/three-column layout and dishes |
 | Dishes | Ordered object array: name, optional description and optional price |
 | Price | Optional non-negative number in euro, at most two decimal places |
@@ -115,7 +117,10 @@ Wine uses `IWineMenuContent`, with ordered sections, columns, categories and win
 entries. Columns control desktop grouping; categories read across rows on phones
 and in the index. An unavailable wine is omitted; absent availability means shown.
 Vintage, glass and bottle fields are independent, and category flags determine
-which price columns appear. No country names are embedded in components.
+which price columns appear. An optional `shortHeading` supplies the compact index
+label and `emphasized` selects the larger desktop category heading. Categories
+with origins use a second mobile row; categories without origins keep the wine
+name and prices together. No country names are embedded in components.
 
 Cocktails uses `IDrinksMenuContent`: ordered cocktail sections and spirit
 categories, each with optional descriptions and prices. Group and Seasonal use
@@ -132,6 +137,13 @@ image, notes and booking-banner objects. Validate unique, URL-safe section keys
 for anchors, non-negative prices, Pre-Theatre pricing restrictions and required
 image alt text. Preserve editor ordering when projecting content into these types.
 The local catalogs are preview inputs, not a configured Studio or CMS integration.
+The booking object also accepts `tallOnMobile` for the Wine and Cocktails banners.
+
+The Group and Seasonal desktop frames contain an older, shorter footer with
+different opening hours. These pages use the shared production footer and its
+confirmed hours. Frame parity must not replace approved content: removed Lunch
+and Pre-Theatre prices, included sides, euro prices and the single notes-panel
+offer follow the decisions above even where an older frame still differs.
 
 Keep price absent for set-menu dishes; do not use zero to mean missing. The
 content adapter should project Sanity slugs and image assets into the rendering

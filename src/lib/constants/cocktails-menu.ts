@@ -447,6 +447,7 @@ export const COCKTAILS_MENU: IDrinksMenuContent = {
   seoDescription:
     "Explore aperitifs, cocktails and spirits at Peploe’s, served at our bar on St Stephen’s Green.",
   booking: {
+    tallOnMobile: true,
     heading: "Classic cocktails, timeless company",
     label: "Book a Table",
     image: {

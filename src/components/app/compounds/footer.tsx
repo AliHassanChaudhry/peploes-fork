@@ -7,6 +7,7 @@ import {
   Phone,
 } from "lucide-react";
 import Link from "next/link";
+import { FooterFrame } from "@/components/app/compounds/footer-frame";
 import { FooterMeta } from "@/components/app/compounds/footer-meta";
 import { MobileFooterNavigation } from "@/components/app/compounds/mobile-footer-navigation";
 import { Button } from "@/components/ui/button";
@@ -21,10 +22,17 @@ import { cn } from "@/lib/utils";
 
 export function Footer() {
   return (
-    <footer className={cn(dmSans.className, "bg-warm-cream text-ink")}>
-      <div className="site-container-inset pt-14 pb-10 xl:pt-20">
-        <div className="grid gap-20 xl:grid-cols-[240fr_160fr_280fr_375fr] xl:gap-[75px] min-[1440px]:grid-cols-[240px_160px_280px_minmax(0,1fr)]">
+    <FooterFrame className={cn(dmSans.className, "bg-warm-cream text-ink")}>
+      <div
+        data-footer-container
+        className="site-container-inset pt-14 pb-10 xl:pt-20"
+      >
+        <div
+          data-footer-columns
+          className="grid gap-20 xl:grid-cols-[240fr_160fr_280fr_375fr] xl:gap-[75px] min-[1440px]:grid-cols-[240px_160px_280px_minmax(0,1fr)]"
+        >
           <div
+            data-footer-section="brand"
             className={cn(
               FOOTER_STYLES.mobileDivider,
               "order-1 flex flex-col gap-3 xl:gap-7",
@@ -54,6 +62,7 @@ export function Footer() {
           </div>
 
           <section
+            data-footer-section="newsletter"
             aria-labelledby="footer-newsletter-heading"
             className={cn(
               FOOTER_STYLES.mobileDivider,
@@ -103,6 +112,7 @@ export function Footer() {
           </section>
 
           <nav
+            data-footer-section="explore"
             aria-labelledby="footer-explore-heading"
             className="hidden xl:relative xl:order-2 xl:block xl:before:absolute xl:before:top-0 xl:before:-left-[37.5px] xl:before:h-[276px] xl:before:w-px xl:before:bg-soft-stone"
           >
@@ -145,6 +155,7 @@ export function Footer() {
           <MobileFooterNavigation />
 
           <section
+            data-footer-section="contact"
             aria-labelledby="footer-contact-heading"
             className={cn(
               FOOTER_STYLES.mobileDivider,
@@ -155,10 +166,10 @@ export function Footer() {
               id="footer-contact-heading"
               className={cn(ebGaramond.className, FOOTER_STYLES.heading)}
             >
-              <span className="xl:hidden">
+              <span data-footer-mobile-contact-label className="xl:hidden">
                 {MOBILE_FOOTER_CONTENT.contactHeading}
               </span>
-              <span className="hidden xl:inline">
+              <span data-footer-contact-label className="hidden xl:inline">
                 {FOOTER_CONTENT.contactHeading}
               </span>
             </h2>
@@ -195,13 +206,17 @@ export function Footer() {
                 type="button"
                 variant="brand-text"
                 aria-disabled="true"
+                data-footer-homepage-extra
                 className="mt-2.5 flex h-[18px] justify-start rounded-none p-0 has-[>svg]:px-0 text-[13px] leading-[18px] text-peploe-burgundy xl:hidden"
               >
                 {MOBILE_FOOTER_CONTENT.openingTimesLabel}
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Button>
             </div>
-            <div className="mt-4 flex flex-col items-start gap-1.5 xl:hidden">
+            <div
+              data-footer-homepage-extra
+              className="mt-4 flex flex-col items-start gap-1.5 xl:hidden"
+            >
               <Button
                 type="button"
                 variant="brand-contact"
@@ -226,6 +241,6 @@ export function Footer() {
 
         <FooterMeta />
       </div>
-    </footer>
+    </FooterFrame>
   );
 }

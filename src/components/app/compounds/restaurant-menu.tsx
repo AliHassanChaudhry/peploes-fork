@@ -23,7 +23,7 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
         ) : (
           <div
             className={cn(
-              "relative grid gap-4 pt-8 pb-7 xl:gap-6 xl:pt-10 xl:pb-10",
+              "relative grid gap-4 pt-8 pb-7 xl:gap-6 xl:pt-12 xl:pb-0",
               menu.image && "xl:min-h-72 xl:grid-cols-2",
             )}
           >
@@ -38,23 +38,18 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
               <h1
                 className={cn(
                   ebGaramond.className,
-                  "mt-3 text-[46px] leading-[56px] tracking-[-0.5px] after:mt-2 after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:text-[54px] xl:leading-[64px] xl:after:w-[72px]",
+                  "mt-2 text-[46px] leading-[56px] tracking-[-0.6px] after:mt-[10px] after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:mt-[14px] xl:text-[54px] xl:leading-none xl:tracking-[-1px] xl:after:mt-[14px] xl:after:w-[72px]",
                 )}
               >
                 {menu.title}
               </h1>
-              <p className="mt-3 text-xs leading-[19px] font-medium tracking-[0.06em] text-text-secondary uppercase xl:text-sm xl:leading-5">
+              <p className="mt-3 text-xs leading-[19px] font-medium tracking-[0.06em] text-text-secondary uppercase xl:mt-[14px] xl:whitespace-pre-wrap xl:text-sm xl:leading-5 xl:tracking-[0.1em]">
                 {menu.serviceTimes}
               </p>
-              {menu.offer && (
-                <p className="mt-3 text-[17px] leading-6 font-medium tracking-[0.06em] text-text-secondary uppercase xl:text-xl">
-                  {menu.offer}
-                </p>
-              )}
             </div>
             {menu.image && (
               <div
-                className="relative h-[214px] overflow-hidden sm:h-[320px] xl:absolute xl:top-12 xl:right-0 xl:bottom-0 xl:h-auto xl:w-[57%]"
+                className="relative h-[214px] overflow-hidden sm:h-[320px] xl:absolute xl:top-12 xl:right-0 xl:bottom-0 xl:h-auto xl:w-[56.1%]"
                 style={imageStyle}
               >
                 <Image
@@ -62,7 +57,7 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
                   alt={menu.image.alt}
                   fill
                   sizes="(min-width: 1280px) 57vw, (min-width: 640px) 100vw, calc(100vw - 48px)"
-                  className="object-contain xl:scale-(--menu-image-scale) xl:object-cover xl:object-[center_42%]"
+                  className="object-contain xl:origin-left xl:scale-(--menu-image-scale) xl:object-cover xl:object-[center_36%]"
                 />
               </div>
             )}
@@ -72,7 +67,7 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
           <MenuCourse key={course._key} course={course} />
         ))}
       </div>
-      <MenuNotes menu={{ notes: menu.notes, allergens: menu.allergens }} />
+      <MenuNotes menu={menu} />
       <MenuBooking />
     </article>
   );

@@ -17,22 +17,22 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
             <section
               key={section._key}
               aria-labelledby={section._key}
-              className="border-t border-soft-stone py-8 xl:py-10"
+              className="border-t border-soft-stone py-8 first-of-type:border-t-0 xl:py-10 xl:first-of-type:border-t"
             >
               <h2
                 id={section._key}
                 className={cn(
                   ebGaramond.className,
-                  "mb-6 text-[38px] leading-[44px] xl:text-[32px]",
+                  "mb-6 text-[38px] leading-[42px] tracking-[-0.4px] before:mb-2 before:block before:h-0.5 before:w-[42px] before:bg-peploe-burgundy xl:mb-5 xl:text-[32px] xl:leading-[38px] xl:before:hidden",
                 )}
               >
                 {section.heading}
               </h2>
-              <ul className="space-y-4 xl:space-y-3">
+              <ul className="space-y-4 xl:space-y-[14px]">
                 {section.dishes.map((dish) => (
                   <li
                     key={dish._key}
-                    className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 xl:grid-cols-[160px_1fr_auto]"
+                    className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 xl:grid-cols-[160px_1fr_auto]"
                   >
                     <h3 className="text-base leading-6">{dish.name}</h3>
                     {dish.description && (
@@ -64,7 +64,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
               id="spirits-heading"
               className={cn(
                 ebGaramond.className,
-                "text-[38px] leading-[44px] xl:text-[32px]",
+                "text-[38px] leading-[42px] tracking-[-0.4px] before:mb-2 before:block before:h-0.5 before:w-[42px] before:bg-peploe-burgundy xl:text-[32px] xl:leading-[38px] xl:before:hidden",
               )}
             >
               {menu.spiritsHeading}
@@ -82,13 +82,13 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                     key={section._key}
                     aria-labelledby={section._key}
                     className={cn(
-                      "border-soft-stone py-8 not-first:border-t xl:even:-ml-14 xl:even:border-l xl:even:pl-14 xl:nth-2:border-t-0",
+                      "border-soft-stone py-4 not-first:border-t xl:py-5 xl:even:-ml-14 xl:even:border-l xl:even:pl-14 xl:nth-2:border-t-0",
                       section.columns === 2 && "xl:col-span-2",
                     )}
                   >
                     <h3
                       id={section._key}
-                      className="mb-4 flex items-center gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:bg-peploe-burgundy"
+                      className="mb-4 flex items-center xl:mb-1 gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:bg-peploe-burgundy"
                     >
                       {section.heading}
                     </h3>
@@ -119,13 +119,13 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                               <tr className="text-[10px] font-medium tracking-[0.04em] text-peploe-burgundy uppercase xl:text-xs">
                                 <th
                                   scope="col"
-                                  className="pb-3 text-left font-medium"
+                                  className="pb-3 xl:pb-1.5 text-left font-medium"
                                 >
                                   <span className="xl:sr-only">Selection</span>
                                 </th>
                                 <th
                                   scope="col"
-                                  className="pb-3 text-right font-medium"
+                                  className="pb-3 xl:pb-1.5 text-right font-medium"
                                 >
                                   Price
                                 </th>
@@ -136,11 +136,11 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                                 <tr key={dish._key}>
                                   <th
                                     scope="row"
-                                    className="py-1 pr-4 text-left leading-[21px] font-normal"
+                                    className="py-1 pr-4 text-left leading-[21px] font-normal xl:leading-[22px]"
                                   >
                                     {dish.name}
                                   </th>
-                                  <td className="py-1 text-right align-top whitespace-nowrap">
+                                  <td className="py-1 text-right align-top whitespace-nowrap leading-[21px] xl:leading-[22px]">
                                     {formatMenuPrice(dish.price, 2)}
                                   </td>
                                 </tr>

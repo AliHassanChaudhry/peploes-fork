@@ -19,12 +19,12 @@ export function WineMenu({ menu }: IWineMenuProps) {
         {sections.length > 0 && (
           <details
             open
-            className="group mb-8 border border-soft-stone bg-[#f1e9e3] px-4 py-3 xl:p-0"
+            className="group mb-8 border border-soft-stone bg-[#f1e9e3] px-[17px] py-3 xl:relative xl:-translate-x-[9px] xl:mb-6 xl:border-0 xl:bg-transparent xl:p-0"
           >
             <summary
               className={cn(
                 FOCUS_RING,
-                "flex min-h-11 w-fit cursor-pointer list-none items-center gap-6 text-xs tracking-[0.06em] text-peploe-burgundy uppercase focus-visible:ring-peploe-burgundy [&::-webkit-details-marker]:hidden xl:bg-peploe-burgundy xl:px-5 xl:text-base xl:tracking-normal xl:text-warm-cream xl:normal-case",
+                "flex min-h-8 w-fit xl:min-h-12 cursor-pointer list-none items-center gap-6 text-xs tracking-[0.06em] text-peploe-burgundy uppercase focus-visible:ring-peploe-burgundy [&::-webkit-details-marker]:hidden xl:bg-peploe-burgundy xl:rounded-t-[4px] xl:px-6 xl:gap-2 xl:text-lg xl:tracking-normal xl:text-warm-cream xl:normal-case",
               )}
             >
               {menu.indexLabel}
@@ -35,18 +35,18 @@ export function WineMenu({ menu }: IWineMenuProps) {
             </summary>
             <nav
               aria-label={menu.indexLabel}
-              className="grid xl:grid-cols-5 xl:gap-5 xl:p-5"
+              className="grid xl:grid-cols-5 xl:border xl:border-soft-stone xl:bg-[#f1e9e3] xl:py-[15px]"
             >
               {sections.map((section) => (
                 <div
                   key={section._key}
-                  className="border-t border-soft-stone py-4 xl:border-t-0 xl:border-r xl:py-0 xl:last:border-r-0"
+                  className="border-t border-soft-stone py-[11px] first:border-t-0 xl:flex xl:flex-col xl:border-t-0 xl:px-7 xl:py-0 xl:last:[&_ul]:before:hidden"
                 >
                   <a
                     href={`#wine-${section._key}`}
                     className={cn(
                       FOCUS_RING,
-                      "text-sm text-peploe-burgundy focus-visible:ring-peploe-burgundy xl:text-xs xl:tracking-[0.08em] xl:uppercase",
+                      "block text-sm leading-5 text-peploe-burgundy focus-visible:ring-peploe-burgundy xl:text-[13px] xl:tracking-[0.16em] xl:uppercase",
                     )}
                   >
                     {section.heading}
@@ -54,19 +54,27 @@ export function WineMenu({ menu }: IWineMenuProps) {
                   <ul
                     className={cn(
                       ebGaramond.className,
-                      "mt-1 flex flex-wrap gap-x-2 xl:mt-2 xl:block xl:space-y-2",
+                      "text-sm leading-[19px] xl:relative xl:mt-3 xl:flex-1 xl:space-y-[11px] xl:text-[18.5px] xl:leading-6 xl:before:absolute xl:before:-top-4 xl:before:-right-7 xl:before:bottom-[3px] xl:before:w-px xl:before:bg-soft-stone",
                     )}
                   >
                     {getWineCategories(section).map((category) => (
-                      <li key={category._key}>
+                      <li
+                        key={category._key}
+                        className="inline not-first:before:mx-1 xl:block xl:before:mx-0 not-first:before:content-['·'] xl:before:hidden"
+                      >
                         <a
                           href={`#${section._key}-${category._key}`}
                           className={cn(
                             FOCUS_RING,
-                            "text-[15px] leading-6 hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy xl:text-lg",
+                            "text-sm leading-[19px] hover:text-peploe-burgundy focus-visible:ring-peploe-burgundy xl:text-[18.5px]",
                           )}
                         >
-                          {category.heading}
+                          <span className="xl:hidden">
+                            {category.shortHeading ?? category.heading}
+                          </span>
+                          <span className="hidden xl:inline">
+                            {category.heading}
+                          </span>
                         </a>
                       </li>
                     ))}
@@ -85,19 +93,19 @@ export function WineMenu({ menu }: IWineMenuProps) {
           className={cn("scroll-mt-40", section.highlighted && "bg-[#f1e9e3]")}
         >
           <div className="site-container">
-            <div className="border-t border-soft-stone py-8 xl:py-9">
+            <div className="border-t border-soft-stone py-8 xl:py-9 [section:first-of-type_&]:border-t-0">
               <h2
                 id={`wine-${section._key}-heading`}
-                className="mb-7 flex items-center gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:bg-peploe-burgundy"
+                className="mb-7 flex items-center xl:mb-3 gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:bg-peploe-burgundy"
               >
                 {section.heading}
               </h2>
               {section.description && (
-                <p className="mb-8 text-base leading-6 text-text-secondary xl:text-lg">
+                <p className="mb-8 text-base leading-6 text-text-secondary xl:text-[18.5px]">
                   {section.description}
                 </p>
               )}
-              <div className="grid gap-8 xl:grid-cols-2 xl:gap-x-28">
+              <div className="grid xl:grid-cols-2 xl:gap-x-28">
                 {getWineCategories(section).map((category) => {
                   const columnIndex = section.columns.findIndex((column) =>
                     column.categories.some(

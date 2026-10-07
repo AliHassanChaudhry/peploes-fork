@@ -150,7 +150,7 @@ export const DINNER_MENU: IMenuContent = {
   allergens: {
     heading: "Allergen Information",
     description:
-      "Please inform your server of any allergies or dietary requirements. While we take great care, we cannot guarantee the absence of allergens in our dishes.",
+      "Please inform your server of any allergies or dietary requirements.\nWhile we take great care, we cannot guarantee the absence of allergens in our dishes.",
   },
   seoDescription:
     "Explore the Dinner menu at Peploe’s on St Stephen’s Green, with seasonal starters, main courses and sides, served from 5pm.",

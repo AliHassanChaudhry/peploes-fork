@@ -4,7 +4,10 @@ import { describe, expect, it, vi } from "vitest";
 import { MenuNotes } from "@/components/app/molecules/menu-notes";
 import type { IMenuNotesContent } from "@/lib/types";
 
-vi.mock("@/lib/fonts", () => ({ ebGaramond: { className: "" } }));
+vi.mock("@/lib/fonts", () => ({
+  ebGaramond: { className: "" },
+  ebGaramondItalic: { className: "" },
+}));
 
 const menu: IMenuNotesContent = {
   notes: ["Ask our team about the menu."],

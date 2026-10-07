@@ -17,7 +17,7 @@ export function SetMenuCollection({ menu }: ISetMenuCollectionProps) {
         <MenuEditorialIntro menu={menu} compact />
         <nav
           aria-label={`${menu.title} sections`}
-          className="mb-10 grid gap-3 xl:mb-8 xl:grid-cols-2 xl:gap-9"
+          className="mb-10 grid gap-3 xl:mb-8 xl:grid-cols-2 xl:gap-6"
         >
           {menu.menus.map((set) => (
             <a
@@ -25,7 +25,7 @@ export function SetMenuCollection({ menu }: ISetMenuCollectionProps) {
               href={`#${set._key}`}
               className={cn(
                 FOCUS_RING,
-                "flex items-center justify-between gap-5 border border-soft-stone bg-white/20 px-4 py-4 hover:border-peploe-burgundy focus-visible:ring-peploe-burgundy xl:px-6",
+                "flex items-center justify-between gap-5 border border-soft-stone bg-[#fcfaf6] px-4 py-4 hover:border-peploe-burgundy focus-visible:ring-peploe-burgundy xl:px-6",
               )}
             >
               <div>
