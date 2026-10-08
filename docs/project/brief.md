@@ -50,20 +50,28 @@ not a requirement for an animation. Keep movement restrained and navigation
 usable. Obtain the original logo, colour values and image files before settling
 visual tokens or selecting final crops.
 
-## Homepage content width
+## Page backgrounds and content width
 
-The Final Pages homepage (`3131:11098`) specifies desktop side padding, not a
-shared content maximum. At the desktop breakpoint, `site-container` in
-`src/app/globals.css` leaves 72px on each side; `site-container-inset` leaves
-80px for the closing booking banner and footer. Their content widths are
-therefore 1296px and 1280px only when the available page width is 1440px.
-The content containers cap at 1296px and 1280px respectively, while section
-backgrounds and full-width photographs remain viewport-width. Below the
-desktop breakpoint they retain 24px gutters. This preserves the frame's
-padding and Fill constraints; Figma supplies a 1440px desktop reference, not
-additional wide-screen frames.
+The Figma desktop reference is 1440px wide. Section backgrounds, hero photographs,
+navigation rules and booking banners reach the page edges. Keep the root layout
+full-width.
 
-Backgrounds and full-width photographs fill the page. Wine keeps its 748px
+The shared `site-container` utility in `src/app/globals.css` leaves 72px on each
+side at the desktop breakpoint. `site-container-inset` leaves 80px for the
+homepage's closing banner and footer; the menu footer uses 72px. These containers
+grow with the page width until their content reaches a 1440px maximum, then
+remain centered. Their 1296px and 1280px widths at the 1440px reference are the
+space remaining after padding. Below the desktop breakpoint, both utilities
+retain 24px gutters.
+
+Verify the navbar, hero copy, section content and footer at both the 1440px Figma
+reference and a wider desktop viewport. At a 1520px page width, standard content
+is 1376px wide with 72px side gaps; inset content is 1360px wide with 80px gaps.
+At 1920px, both content containers are 1440px wide with 240px side gaps.
+Keep intentional widths on individual text columns and artwork separate from
+the shared page gutters.
+
+Wine keeps its 748px
 text column. Hospitality caps its text at 783px and reserves a separate artwork
 column on desktop, with a 32px gap and the shared left gutter. Stories follows the
 source frame's fixed 636px columns and 28px gap, shrinking those tracks on

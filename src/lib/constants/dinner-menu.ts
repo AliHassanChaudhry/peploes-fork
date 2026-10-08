@@ -7,7 +7,13 @@ export const DINNER_MENU: IMenuContent = {
   image: {
     src: "/peploes-dinner-flatlay.webp",
     alt: "A selection of Peploe’s dinner dishes arranged on white plates.",
-    desktopScale: 1.4,
+    desktopCrop: {
+      widthPercent: 72.662253,
+      aspectRatio: 1.666666608,
+      leftPercent: 43.6941,
+      topPx: -207.6,
+      rotationDegrees: 10.7862,
+    },
   },
   courses: [
     {

@@ -12,7 +12,7 @@ export const FOOTER_CONTENT: IFooterContent = {
   exploreLinks: [
     { label: "Menus", href: ROUTES.MENUS },
     { label: "Our Story" },
-    { label: "Groups & Occasions" },
+    { label: "Private Dining & Events" },
     { label: "What’s On" },
     { label: "The Journal" },
     { label: "Visit & Contact" },

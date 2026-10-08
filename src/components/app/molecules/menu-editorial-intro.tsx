@@ -22,6 +22,7 @@ export function MenuEditorialIntro({
         (menu.image || menu.aside) && "xl:grid-cols-2",
         hasImageAndAside && "xl:grid-cols-[minmax(0,1fr)_352px_220px]",
         compact && "xl:min-h-40 xl:py-[26px]",
+        compact && menu.description && "xl:pb-[21px]",
         compact &&
           hasImageAndAside &&
           "xl:grid-cols-[minmax(0,1fr)_134px_220px]",
@@ -60,6 +61,8 @@ function MenuEditorialImage({
     "--menu-image-scale": image.scale ?? 1,
     "--menu-image-desktop-scale": image.desktopScale ?? image.scale ?? 1,
     "--menu-image-rotation": `${image.rotation ?? 0}deg`,
+    "--menu-image-position": image.mobilePosition ?? "center",
+    "--menu-image-desktop-position": image.desktopPosition ?? "center",
   };
   return (
     <div
@@ -68,7 +71,7 @@ function MenuEditorialImage({
         compact && "h-[170px] xl:h-[108px]",
         image.rotation && "xl:h-60",
         image.fit === "cover" &&
-          "xl:-my-6 xl:h-60 xl:w-[260px] xl:justify-self-end",
+          "xl:-my-6 xl:mr-[23px] xl:h-60 xl:w-[258px] xl:justify-self-end",
         !imageBeforeAside && "order-3",
         image.scale &&
           "h-[206px] xl:-my-6 xl:h-[250px] xl:translate-y-11 xl:overflow-visible",
@@ -79,11 +82,15 @@ function MenuEditorialImage({
         src={image.src}
         alt={image.alt}
         fill
-        sizes="(min-width: 1280px) 528px, calc(100vw - 48px)"
+        sizes={
+          image.fit === "cover"
+            ? "(min-width: 1280px) 258px, calc(100vw - 48px)"
+            : "(min-width: 1280px) 528px, calc(100vw - 48px)"
+        }
         className={cn(
           "object-contain rotate-(--menu-image-rotation) xl:scale-(--menu-image-desktop-scale)",
           image.fit === "cover" &&
-            "object-cover object-[center_61.5%] xl:object-bottom",
+            "object-cover object-(--menu-image-position) xl:object-(--menu-image-desktop-position)",
           image.scale &&
             "origin-bottom scale-(--menu-image-scale) object-cover",
         )}
@@ -93,6 +100,7 @@ function MenuEditorialImage({
 }
 
 function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
+  const hasCompactDescription = compact && Boolean(menu.description);
   return (
     <div>
       <Breadcrumbs
@@ -106,13 +114,18 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
             url: `${ROUTES.MENUS}/${menu.slug}`,
           },
         ]}
-        className="[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:leading-5 [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy"
+        className={cn(
+          "[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:leading-5 [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy",
+          hasCompactDescription &&
+            "xl:[&_ol]:gap-2.5 xl:[&_ol]:text-[10px] xl:[&_ol]:leading-[14px] xl:[&_ol]:tracking-[0.1em] xl:[&_li]:gap-2.5",
+        )}
       />
       <h1
         className={cn(
           ebGaramond.className,
           "mt-2 whitespace-pre-line text-[46px] leading-none tracking-[-1px] after:mt-5 after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:mt-[14px] xl:text-[54px] xl:leading-[52px] xl:tracking-[-1px] xl:after:hidden",
           compact && "xl:text-[46px]",
+          hasCompactDescription && "xl:mt-0.5 xl:tracking-normal",
           menu.serviceTimes &&
             "leading-[56px] after:mt-[10px] xl:leading-none xl:after:mt-[14px] xl:after:block xl:after:w-[72px]",
         )}
@@ -124,7 +137,8 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
           className={cn(
             !compact && ebGaramond.className,
             "mt-4 text-lg leading-6 text-text-secondary",
-            compact && "text-sm leading-[21px]",
+            compact &&
+              "text-sm leading-[21px] xl:mt-3.5 xl:max-w-[600px] xl:leading-5",
           )}
         >
           {menu.description}

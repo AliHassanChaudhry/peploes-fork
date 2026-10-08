@@ -136,7 +136,13 @@ export function Footer() {
                     className="flex h-12 w-full justify-between rounded-none p-0 text-sm leading-[21px] font-normal text-ink has-[>svg]:px-0 xl:h-auto xl:justify-start"
                   >
                     {href ? (
-                      <Link href={href}>{label}</Link>
+                      <Link href={href}>
+                        {label}
+                        <ChevronRight
+                          aria-hidden="true"
+                          className="size-4 text-peploe-burgundy xl:hidden"
+                        />
+                      </Link>
                     ) : (
                       <>
                         {label}

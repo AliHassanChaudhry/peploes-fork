@@ -4,7 +4,7 @@ import type { IMenuDishProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function MenuDish({ dish }: IMenuDishProps) {
-  const price = formatMenuPrice(dish.price);
+  const price = formatMenuPrice(dish.price, dish.priceDecimalPlaces);
 
   return (
     <li>

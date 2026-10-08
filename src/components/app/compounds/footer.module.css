@@ -1,5 +1,6 @@
 .menuFooter [data-footer-container] {
-  width: min(calc(100% - 48px), 1296px);
+  width: calc(100% - 48px);
+  padding-top: 40px;
   padding-bottom: 36px;
 }
 
@@ -8,16 +9,20 @@
 }
 
 .menuFooter [data-footer-section="brand"] {
-  gap: 8px;
+  gap: 16px;
+}
+
+.menuFooter [data-footer-section="brand"] address {
+  margin-bottom: 3px;
 }
 
 .menuFooter [data-footer-section="brand"] > a {
-  height: 60px;
-  width: 134px;
+  height: 72px;
+  width: 132px;
 }
 
 .menuFooter [data-footer-section="brand"] > a > span {
-  mask-size: 100% 100%;
+  mask-size: 103.58% 101.86%;
 }
 
 .menuFooter [data-footer-section="brand"]::after,
@@ -26,7 +31,7 @@
 }
 
 .menuFooter [data-footer-section="newsletter"]::after {
-  display: none;
+  bottom: -24px;
 }
 
 .menuFooter [data-footer-section="contact"] {
@@ -108,22 +113,28 @@
 
 @media (width >= 80rem) {
   .menuFooter [data-footer-container] {
-    width: min(calc(100% - 144px), 1296px);
+    width: calc(100% - 144px);
     padding-top: 40px;
     padding-bottom: 40px;
   }
 
   .menuFooter [data-footer-columns] {
-    grid-template-columns: 240fr 160fr 280fr 424fr;
-    gap: 64px;
+    grid-template-columns: 243fr 160fr 286fr 391fr;
+    gap: 72px;
   }
 
   .menuFooter [data-footer-section="brand"] {
     gap: 28px;
+    padding-right: 3px;
+  }
+
+  .menuFooter [data-footer-section="brand"] address {
+    margin-bottom: 12px;
   }
 
   .menuFooter [data-footer-section="brand"] > a {
     height: 72px;
+    width: 132px;
   }
 
   .menuFooter [data-footer-section="explore"] {
@@ -132,6 +143,7 @@
 
   .menuFooter [data-footer-section="contact"] {
     order: 3;
+    padding-right: 6px;
   }
 
   .menuFooter [data-footer-section="newsletter"] {
@@ -139,7 +151,15 @@
   }
 
   .menuFooter [data-footer-section]::before {
-    left: -32px;
+    left: -36px;
+  }
+
+  .menuFooter [data-footer-section="explore"]::before {
+    left: -39px;
+  }
+
+  .menuFooter [data-footer-section="newsletter"]::before {
+    left: -42px;
   }
 
   .menuFooter [data-footer-section="explore"] ul {

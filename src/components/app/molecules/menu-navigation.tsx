@@ -20,6 +20,9 @@ export function MenuNavigation({
   const scrollRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const openItem = items.find((item) => item.label === openLabel);
+  const compactDesktop = items.find(
+    (item) => item.href === pathname,
+  )?.compactDesktop;
 
   useEffect(() => {
     const scroll = scrollRef.current;
@@ -63,14 +66,15 @@ export function MenuNavigation({
       }}
       className={cn(
         className,
-        "sticky top-[72px] z-30 bg-warm-cream pt-4 shadow-[inset_0_-1px_0_var(--soft-stone)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-2 before:bg-[linear-gradient(180deg,rgba(46,42,40,0.1),transparent)] xl:top-[76px]",
+        "sticky top-[72px] z-30 bg-warm-cream pt-4 text-[#221a17] shadow-[inset_0_-1px_0_var(--soft-stone)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-2 before:bg-[linear-gradient(180deg,rgba(46,42,40,0.1),transparent)] xl:top-[76px]",
+        compactDesktop && "xl:pt-2",
       )}
     >
       <div
         ref={scrollRef}
         className="relative overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        <ul className="mx-2 flex h-12 min-w-max bg-[#fbf8f2] xl:site-container">
+        <ul className="mx-2 flex h-12 min-w-max bg-[#fbf8f2] shadow-[inset_0_-1px_0_var(--soft-stone)] xl:site-container">
           {items.map((item) => {
             const isOpen = openLabel === item.label;
             const currentPage = pathname === item.href ? "page" : undefined;
@@ -132,8 +136,8 @@ export function MenuNavigation({
             id="menu-subnavigation"
             aria-label={openItem.label}
             className={cn(
-              "border border-soft-stone bg-[#f1e9e3] px-6 py-3 xl:absolute xl:top-0 xl:right-[72px] xl:min-w-[200px] xl:px-0 xl:py-1 xl:shadow-md",
-              openItem.href === items.at(-2)?.href && "xl:right-[255px]",
+              "border border-soft-stone bg-[#f1e9e3] px-6 py-3 xl:absolute xl:top-0 xl:right-0 xl:min-w-[200px] xl:px-0 xl:py-1 xl:shadow-md",
+              openItem.href === items.at(-2)?.href && "xl:right-[183px]",
             )}
           >
             {openItem.children.map((item) => (

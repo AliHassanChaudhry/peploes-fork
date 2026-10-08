@@ -7,7 +7,13 @@ export const LUNCH_MENU: IMenuContent = {
   offer: "2 Courses €42 / 3 Courses €48",
   image: {
     src: "/peploes-lunch-flatlay.webp",
-    desktopScale: 1.111,
+    desktopCrop: {
+      widthPercent: 62.372685,
+      aspectRatio: 1.498581784,
+      leftPercent: 43.9136,
+      topPx: -114.92,
+      rotationDegrees: 0,
+    },
     alt: "A selection of Peploe’s lunch dishes, with fish, steak and dessert.",
   },
   courses: [

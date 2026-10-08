@@ -5,21 +5,41 @@ import { ebGaramond, ebGaramondItalic } from "@/lib/fonts";
 import type { IMenuNotesProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function MenuNotes({ menu, compact = false }: IMenuNotesProps) {
+export function MenuNotes({
+  menu,
+  compact = false,
+  collection = false,
+  allergenHeadingClassName,
+}: IMenuNotesProps) {
   const hasNotes = Boolean(menu.offer) || menu.notes.length > 0;
   if (!hasNotes && !menu.allergens) return null;
 
-  const notes = hasNotes && <MenuNotesText menu={menu} compact={compact} />;
+  const notes = hasNotes && (
+    <MenuNotesText menu={menu} compact={compact} collection={collection} />
+  );
 
-  const allergens = <MenuAllergenInformation menu={menu} compact={compact} />;
+  const allergens = (
+    <MenuAllergenInformation
+      menu={menu}
+      compact={compact}
+      collection={collection}
+      allergenHeadingClassName={allergenHeadingClassName}
+    />
+  );
 
   return (
-    <div className="bg-peploe-burgundy text-warm-cream">
+    <div
+      className={cn(
+        "bg-peploe-burgundy text-warm-cream",
+        collection && "xl:bg-[#891827]",
+      )}
+    >
       <div
         className={cn(
           "site-container grid gap-8 py-8 xl:gap-0 xl:py-[38px]",
           menu.allergens && hasNotes && "xl:grid-cols-2",
           !compact && "xl:min-h-[194px]",
+          collection && "xl:min-h-[186px] xl:py-9",
           compact && "xl:gap-8 xl:py-3",
           compact && menu.allergens && hasNotes && "xl:grid-cols-[1fr_360px]",
         )}
@@ -31,7 +51,7 @@ export function MenuNotes({ menu, compact = false }: IMenuNotesProps) {
   );
 }
 
-function MenuNotesText({ menu, compact }: IMenuNotesProps) {
+function MenuNotesText({ menu, compact, collection }: IMenuNotesProps) {
   return (
     <div
       className={cn(
@@ -45,6 +65,7 @@ function MenuNotesText({ menu, compact }: IMenuNotesProps) {
           className={cn(
             ebGaramond.className,
             "text-[27px] leading-[35px] after:mt-4 after:block after:h-px after:w-9 after:bg-warm-cream/60 xl:text-[30px] xl:leading-[38px]",
+            collection && "text-[30px] leading-8",
           )}
         >
           {menu.offer}
@@ -70,7 +91,12 @@ function MenuNotesText({ menu, compact }: IMenuNotesProps) {
   );
 }
 
-function MenuAllergenInformation({ menu, compact }: IMenuNotesProps) {
+function MenuAllergenInformation({
+  menu,
+  compact,
+  collection,
+  allergenHeadingClassName,
+}: IMenuNotesProps) {
   if (!menu.allergens) return null;
   const hasNotes = Boolean(menu.offer) || menu.notes.length > 0;
   return (
@@ -88,17 +114,17 @@ function MenuAllergenInformation({ menu, compact }: IMenuNotesProps) {
         className={cn(
           ebGaramond.className,
           FOCUS_RING,
-          "flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-xl leading-6 focus-visible:ring-warm-cream [&::-webkit-details-marker]:hidden xl:justify-start xl:min-h-6 xl:gap-3 xl:text-lg",
-          compact && "xl:absolute xl:top-0 xl:left-0 xl:text-base",
+          "flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-xl leading-6 text-[#f1f1f1] focus-visible:ring-warm-cream [&::-webkit-details-marker]:hidden xl:justify-start xl:min-h-6 xl:gap-3 xl:text-lg",
+          compact &&
+            "gap-[14px] xl:absolute xl:top-0 xl:left-0 xl:gap-3 xl:text-base",
+          collection && "xl:text-[19px]",
+          allergenHeadingClassName,
         )}
       >
-        {compact && (
-          <Info
-            aria-hidden="true"
-            className="hidden size-4 shrink-0 xl:block"
-          />
-        )}
-        {menu.allergens.heading}
+        {compact && <Info aria-hidden="true" className="size-4 shrink-0" />}
+        <span className={compact ? "flex-1" : undefined}>
+          {menu.allergens.heading}
+        </span>
         <ChevronDown
           aria-hidden="true"
           className={cn(

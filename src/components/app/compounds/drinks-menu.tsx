@@ -8,7 +8,12 @@ import { cn } from "@/lib/utils";
 
 export function DrinksMenu({ menu }: IDrinksMenuProps) {
   return (
-    <article className={cn(dmSans.className, "bg-warm-cream text-ink")}>
+    <article
+      className={cn(
+        dmSans.className,
+        "bg-warm-cream text-ink xl:text-[#282828]",
+      )}
+    >
       <div className="site-container pb-12">
         <MenuEditorialIntro menu={menu} />
         {menu.cocktailSections
@@ -39,7 +44,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                       <p
                         className={cn(
                           ebGaramond.className,
-                          "col-start-1 row-start-2 text-[15px] leading-[23px] text-text-secondary xl:col-start-2 xl:row-start-1",
+                          "col-start-1 row-start-2 text-[15px] leading-[23px] text-text-secondary xl:col-start-2 xl:row-start-1 xl:text-sm xl:text-[#505050]",
                         )}
                       >
                         {dish.description}
@@ -47,7 +52,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                     )}
                     {dish.price != null && (
                       <span className="col-start-2 row-start-1 text-sm leading-6 xl:col-start-3">
-                        {formatMenuPrice(dish.price)}
+                        {formatMenuPrice(dish.price, dish.priceDecimalPlaces)}
                       </span>
                     )}
                   </li>
@@ -70,11 +75,11 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
               {menu.spiritsHeading}
             </h2>
             {menu.spiritsDescription && (
-              <p className="mt-4 text-[15px] leading-6 text-text-secondary xl:text-base">
+              <p className="mt-4 text-[15px] leading-6 text-text-secondary xl:text-base xl:text-[#505050]">
                 {menu.spiritsDescription}
               </p>
             )}
-            <div className="mt-8 grid xl:grid-cols-2 xl:gap-x-28">
+            <div className="mt-5 grid border-t border-soft-stone pt-3 xl:mt-8 xl:grid-cols-2 xl:gap-x-28 xl:border-t-0 xl:pt-0">
               {menu.spirits
                 .filter((section) => section.dishes.length > 0)
                 .map((section) => (
@@ -88,7 +93,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                   >
                     <h3
                       id={section._key}
-                      className="mb-4 flex items-center xl:mb-1 gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:bg-peploe-burgundy"
+                      className="mb-4 flex items-center xl:mb-1 gap-2.5 text-sm tracking-[0.08em] text-peploe-burgundy uppercase xl:text-[#242424] before:h-0.5 before:w-12 before:bg-peploe-burgundy"
                     >
                       {section.heading}
                     </h3>
@@ -116,12 +121,14 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                               {section.heading} prices in euro
                             </caption>
                             <thead>
-                              <tr className="text-[10px] font-medium tracking-[0.04em] text-peploe-burgundy uppercase xl:text-xs">
+                              <tr className="text-[10px] font-medium tracking-[0.04em] text-peploe-burgundy uppercase xl:text-xs xl:text-[#242424]">
                                 <th
                                   scope="col"
                                   className="pb-3 xl:pb-1.5 text-left font-medium"
                                 >
-                                  <span className="xl:sr-only">Selection</span>
+                                  <span className="text-text-secondary xl:sr-only">
+                                    Selection
+                                  </span>
                                 </th>
                                 <th
                                   scope="col"
@@ -140,8 +147,11 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                                   >
                                     {dish.name}
                                   </th>
-                                  <td className="py-1 text-right align-top whitespace-nowrap leading-[21px] xl:leading-[22px]">
-                                    {formatMenuPrice(dish.price, 2)}
+                                  <td className="py-1 text-right align-top whitespace-nowrap text-sm leading-[21px] xl:leading-[22px]">
+                                    {formatMenuPrice(
+                                      dish.price,
+                                      dish.priceDecimalPlaces ?? 2,
+                                    )}
                                   </td>
                                 </tr>
                               ))}

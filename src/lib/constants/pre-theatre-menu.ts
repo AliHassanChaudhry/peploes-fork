@@ -71,7 +71,7 @@ export const PRE_THEATRE_MENU: IMenuContent = {
       dishes: [
         {
           _key: "peploes-chicken-milanese-1",
-          name: "Peploe’s Chicken Milanese",
+          name: "Peploe's Chicken Milanese",
           description: "Rocket, Heritage Tomatoes, Parmesan",
         },
         {

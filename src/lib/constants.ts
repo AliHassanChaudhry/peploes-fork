@@ -225,7 +225,7 @@ export const NAVBAR_CONTENT = {
   homeLabel: "Peploe’s home",
   menusLabel: "Menus",
   ourStoryLabel: "Our Story",
-  groupsLabel: "Groups & Occasions",
+  groupsLabel: "Private Dining & Events",
   whatsOnLabel: "What’s On",
   visitContactLabel: "Visit & Contact",
   giftVouchersLabel: "Gift Vouchers",
