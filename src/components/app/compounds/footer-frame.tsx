@@ -1,0 +1,20 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import type { ComponentProps } from "react";
+
+import styles from "@/components/app/compounds/footer.module.css";
+import { ROUTES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+
+export function FooterFrame({ children, className }: ComponentProps<"footer">) {
+  const pathname = usePathname();
+  const isMenuPage =
+    pathname === ROUTES.MENUS || pathname.startsWith(`${ROUTES.MENUS}/`);
+
+  return (
+    <footer className={cn(className, isMenuPage && styles.menuFooter)}>
+      {children}
+    </footer>
+  );
+}

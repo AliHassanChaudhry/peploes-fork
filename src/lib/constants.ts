@@ -90,6 +90,14 @@ export const AI_CRAWLER_POLICY = {
 
 export const ROUTES = {
   HOME: "/",
+  MENUS: "/menus",
+  LUNCH: "/menus/lunch",
+  DINNER: "/menus/dinner",
+  PRE_THEATRE: "/menus/pre-theatre",
+  WINE: "/menus/wine",
+  COCKTAILS: "/menus/cocktails",
+  GROUP_SET_MENU: "/menus/group-set-menu",
+  SEASONAL: "/menus/seasonal",
   LLMS: "/llms.txt",
   ROBOTS: "/robots.txt",
   SITEMAP: "/sitemap.xml",
@@ -217,7 +225,7 @@ export const NAVBAR_CONTENT = {
   homeLabel: "Peploe’s home",
   menusLabel: "Menus",
   ourStoryLabel: "Our Story",
-  groupsLabel: "Groups & Occasions",
+  groupsLabel: "Private Dining & Events",
   whatsOnLabel: "What’s On",
   visitContactLabel: "Visit & Contact",
   giftVouchersLabel: "Gift Vouchers",

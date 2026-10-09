@@ -51,7 +51,7 @@ routes, enforce access on the server, prevent shared caching, and exclude those
 routes from public discovery. Use non-indexing response headers and metadata
 where appropriate; crawler directives alone do not protect private content.
 
-`src/app/sitemap.ts` contains only the home page. Add public canonical pages when
+`src/app/sitemap.ts` contains the home page and all seven menu pages. Add public canonical pages when
 they exist. Use a content update time for `lastModified`; omit it when the
 application has no trustworthy value.
 

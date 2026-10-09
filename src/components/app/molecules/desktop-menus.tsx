@@ -15,9 +15,13 @@ export function DesktopMenus() {
         aria-label={MENUS_CONTENT.categoriesLabel}
         className="grid min-w-0 flex-1 grid-cols-3 gap-x-10 gap-y-9"
       >
-        {MENUS_CONTENT.categories.map(({ label, description }) => (
+        {MENUS_CONTENT.categories.map(({ label, description, href }) => (
           <li key={label} className="min-w-0">
-            <NavigationShelfLink label={label} description={description} />
+            <NavigationShelfLink
+              label={label}
+              description={description}
+              href={href}
+            />
           </li>
         ))}
       </ul>

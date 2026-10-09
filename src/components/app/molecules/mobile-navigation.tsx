@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { CloseButton } from "@/components/app/atoms/close-button";
@@ -170,18 +171,25 @@ export function MobileNavigation({
                           >
                             <div className="min-h-0 overflow-hidden">
                               <ul className="flex flex-col gap-1 pt-1 pb-2 pl-6">
-                                {item.children.map((label) => (
+                                {item.children.map(({ label, href }) => (
                                   <li key={label}>
                                     <Button
-                                      type="button"
+                                      asChild={Boolean(href)}
+                                      type={href ? undefined : "button"}
                                       variant="brand-nav"
-                                      aria-disabled="true"
+                                      aria-disabled={href ? undefined : true}
                                       className={cn(
                                         FOCUS_RING,
                                         "h-auto min-h-11 w-full justify-start rounded-none p-0 text-left text-sm leading-[21px] font-normal whitespace-normal focus-visible:ring-peploe-burgundy",
                                       )}
                                     >
-                                      {label}
+                                      {href ? (
+                                        <Link href={href} onClick={closeMenu}>
+                                          {label}
+                                        </Link>
+                                      ) : (
+                                        label
+                                      )}
                                     </Button>
                                   </li>
                                 ))}

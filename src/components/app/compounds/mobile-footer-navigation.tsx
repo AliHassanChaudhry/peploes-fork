@@ -1,14 +1,19 @@
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { FOOTER_STYLES, MOBILE_FOOTER_CONTENT } from "@/lib/constants/footer";
 import { ebGaramond } from "@/lib/fonts";
+import type { IMenuNavigationLink } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function MobileFooterNavigation() {
   return (
-    <div className={cn(FOOTER_STYLES.mobileDivider, "order-3 xl:hidden")}>
-      {MOBILE_FOOTER_CONTENT.navigation.map(({ heading, labels }) => (
+    <div
+      data-footer-homepage-extra
+      className={cn(FOOTER_STYLES.mobileDivider, "order-3 xl:hidden")}
+    >
+      {MOBILE_FOOTER_CONTENT.navigation.map(({ heading, links }) => (
         <nav
           key={heading}
           aria-label={heading}
@@ -27,15 +32,16 @@ export function MobileFooterNavigation() {
             />
           </h2>
           <ul className="pt-1 pb-3">
-            {labels.map((label) => (
+            {links.map(({ label, href }: IMenuNavigationLink) => (
               <li key={label}>
                 <Button
-                  type="button"
+                  asChild={Boolean(href)}
+                  type={href ? undefined : "button"}
                   variant="brand-nav"
-                  aria-disabled="true"
+                  aria-disabled={href ? undefined : true}
                   className="h-11 w-full justify-start rounded-none p-0 text-base leading-[22px] font-normal text-text-secondary"
                 >
-                  {label}
+                  {href ? <Link href={href}>{label}</Link> : label}
                 </Button>
               </li>
             ))}
