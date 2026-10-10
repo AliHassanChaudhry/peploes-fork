@@ -1,3 +1,4 @@
+import { ROUTES } from "@/lib/constants";
 import type { ISetMenuCollection } from "@/lib/types";
 
 export const GROUP_SET_MENU: ISetMenuCollection = {
@@ -251,6 +252,7 @@ export const GROUP_SET_MENU: ISetMenuCollection = {
     description:
       "From family celebrations to business dinners, our team can help you plan the right menu and setting.",
     label: "Enquire About a Group Booking",
+    href: `${ROUTES.PRIVATE_DINING}#enquire`,
     image: {
       src: "/peploes-group-menu-booking.webp",
       desktopPosition: "50% 57.7%",

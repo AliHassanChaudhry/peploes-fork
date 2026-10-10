@@ -5,8 +5,10 @@ The menu routes are `/menus/lunch`, `/menus/dinner`, `/menus/pre-theatre`,
 `/menus` redirects to Lunch. The shared layout contains the hero and sticky menu
 navigation. Each page supplies its closing photograph and copy. The site header
 and footer remain shared with the homepage. The footer's menu variant follows
-the menu frames' spacing and mobile section order; homepage styling is unchanged. Booking and enquiry actions remain
-inactive until their integration exists.
+the menu frames' spacing and mobile section order; homepage styling is unchanged.
+The Group Set Menu enquiry action opens the private-dining enquiry section.
+Booking actions and enquiry submission remain inactive until their integrations
+exist.
 
 ## Design and approved comments
 

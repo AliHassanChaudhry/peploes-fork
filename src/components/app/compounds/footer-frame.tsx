@@ -13,7 +13,17 @@ export function FooterFrame({ children, className }: ComponentProps<"footer">) {
     pathname === ROUTES.MENUS || pathname.startsWith(`${ROUTES.MENUS}/`);
 
   return (
-    <footer className={cn(className, isMenuPage && styles.menuFooter)}>
+    <footer
+      className={cn(
+        className,
+        isMenuPage && styles.menuFooter,
+        (pathname === ROUTES.PRIVATE_DINING ||
+          pathname === ROUTES.CORPORATE_EVENTS) &&
+          styles.privateDiningFooter,
+        pathname === ROUTES.CORPORATE_EVENTS && styles.corporateFooter,
+        pathname === ROUTES.CELEBRATIONS && styles.celebrationFooter,
+      )}
+    >
       {children}
     </footer>
   );

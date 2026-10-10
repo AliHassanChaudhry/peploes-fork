@@ -82,18 +82,24 @@ export function Footer() {
             <p className="mt-4 text-sm leading-[21px] text-text-secondary xl:mt-6">
               {FOOTER_CONTENT.newsletter.description}
             </p>
-            <div className="mt-4 flex flex-col gap-3 xl:mt-6 xl:flex-row xl:items-end">
+            <div
+              data-footer-newsletter-controls
+              className="mt-4 flex flex-col gap-3 xl:mt-6 xl:flex-row xl:items-end"
+            >
               <label htmlFor="footer-newsletter-email" className="sr-only">
                 {FOOTER_CONTENT.newsletter.emailLabel}
               </label>
               <input
                 id="footer-newsletter-email"
+                name="email"
                 type="email"
-                disabled
                 autoComplete="email"
                 placeholder={FOOTER_CONTENT.newsletter.emailLabel}
                 aria-describedby="footer-newsletter-status"
-                className="h-[30px] min-w-0 rounded-none border-b border-border-interactive bg-transparent text-sm leading-[21px] text-ink placeholder:text-text-secondary disabled:opacity-100 xl:h-11 xl:flex-1"
+                className={cn(
+                  FOCUS_RING,
+                  "h-[30px] min-w-0 rounded-none border-b border-border-interactive bg-transparent text-sm leading-[21px] text-ink placeholder:text-text-secondary focus-visible:ring-peploe-burgundy focus-visible:ring-offset-warm-cream xl:h-11 xl:flex-1",
+                )}
               />
               <Button
                 type="button"
@@ -209,10 +215,10 @@ export function Footer() {
                 ))}
               </dl>
               <Button
+                data-footer-homepage-extra
                 type="button"
                 variant="brand-text"
                 aria-disabled="true"
-                data-footer-homepage-extra
                 className="mt-2.5 flex h-[18px] justify-start rounded-none p-0 has-[>svg]:px-0 text-[13px] leading-[18px] text-peploe-burgundy xl:hidden"
               >
                 {MOBILE_FOOTER_CONTENT.openingTimesLabel}
