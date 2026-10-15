@@ -241,7 +241,7 @@ from Figma. Destination titles turn burgundy with a 32px underline on hover;
 retain visible keyboard focus and the shared reduced-motion-aware duration.
 The destinations now open their dedicated pages. Clicking Private Dining & Events
 opens the overview; hover and Arrow Down still open the shelf. On mobile, the
-label is an overview link with a separate submenu toggle. See
+entire row toggles the submenu like Menus; its first link opens the overview. See
 [Private dining and events](private-dining.md) for the shared page sections.
 
 Both desktop shelves share one open state so switching triggers replaces the
@@ -275,9 +275,26 @@ EB Garamond headings.
 Footer dividers, mobile row borders and the email field rule use 1px thickness.
 The three burgundy heading underlines are 32px wide and 2px high, matching Figma.
 
-Telephone and email links are active. Navigation, legal and social destinations
-remain inactive until approved destinations exist. The newsletter email field is
-editable, with an accessible label, email autocomplete and visible keyboard focus.
+Telephone and email links are active. Footer legal links open Privacy & Cookies,
+Terms & Conditions, Booking & Cancellation Terms, and Accessibility. Booking &
+Cancellation Terms replaces Cookie Preferences at the contributor's request.
+All four policies use the shared `src/app/[slug]/page.tsx` route and the
+[Terms & Conditions template](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3837-20047),
+as requested in Rabia's Figma comment #68. Hero geometry, typography, the
+"On this page" contents navigation, section layout and help panel are shared.
+The desktop reading column stays within the template's 936px section width,
+leaving 824px for copy after the number column and gap. Section headings use
+32px type with 38px line-height and an 8px gap above body copy; section dividers
+use the 1px soft-stone token. Paragraphs wrap naturally without forced breaks.
+On mobile, the contents navigation is expandable, numbered headings sit above
+full-width paragraphs, and contact links stack as outlined touch targets. The
+24px side gutters and existing fonts match the other mobile pages. Tablet
+reading content is capped at 720px; the desktop template remains unchanged.
+Only policy content, metadata and photograph crops vary, with local content in
+`src/lib/constants/policies.ts`. Existing policy URLs are preserved; unknown
+slugs return 404. Other navigation and social
+destinations remain inactive until approved destinations exist. The newsletter
+email field is editable, with an accessible label, email autocomplete and visible keyboard focus.
 Subscribe remains inactive pending the subscription integration; no email is
 sent or stored by the application. Opening hours and contact details follow
 the design and should be confirmed by the restaurant before launch.
