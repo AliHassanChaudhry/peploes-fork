@@ -419,6 +419,79 @@ When changing this section, compare the card arrangement, image crops, line
 breaks and overlays with Figma. Check all four images, mobile text contrast,
 placeholder controls and horizontal overflow at narrow widths.
 
+## Seasonal / What’s On implementation
+
+`/seasonal` follows Final Pages `3821:14668`: the cocktail hero, monthly event
+diary, terrace feature and closing invitation. It is separate from the existing
+seasonal menu at `/menus/seasonal`. At the 1440px reference width, the sections
+are 437, 1729, 256 and 444px high. The diary uses 72px gutters, 45px month bars,
+224px event rows and 1px Soft Stone dividers. Its empty right column and the
+absence of decorative eyebrow rules are intentional.
+
+Comment #65 approves this hub and asks for rugby fixtures to be added during
+the year. Comment #63 describes future Campaign, Event and Menu Moment CMS
+variants. This frontend keeps Figma’s example programme in a static catalog;
+the dates are not a live schedule and do not produce Event structured data.
+The six diary actions open the individual event template. Booking actions
+remain inactive until the booking flow is built.
+Contact Us opens Visit & Contact. Navigation and footer links, plus the homepage’s
+“View what’s on” action, open the new hub.
+
+Use the three original Figma photos. The terrace source is only 243×244px;
+it needs an approved larger source for a sharp desktop image. Preserve its
+natural proportions when cropping. No separate mobile frame is supplied. Below
+640px, follow the homepage and menu pages: 24px gutters, 48px hero type, 42px
+section headings, 16px body copy and stacked full-width invitation buttons.
+Photo banners use vertical overlays with room above the text; their height grows
+with the content. The diary retains its date column, 1px horizontal row dividers
+and a 1px Soft Stone vertical rule beside each date. Use compact month headings
+and 44px minimum action targets. The terrace photo uses a 3:2 crop.
+The shared invitation follows these phone styles on individual events too;
+tablet and desktop layouts retain their existing sizing. Check the desktop
+line breaks, image placement, mobile navigation,
+image loading and horizontal overflow when changing this page.
+
+### Individual event template
+
+`/seasonal/[slug]` follows Final Pages `3889:13660`, “Peploe’s luxury dining
+campaign.” Comment #69 identifies it as the page for individual events. The
+approved implementation keeps the exact Figma placeholder copy, including
+“Campaign/Event Title,” for all six diary destinations. Unknown slugs return
+404. These placeholders use `noindex` and stay out of the sitemap and
+`llms.txt` until real event content is approved.
+
+The template includes optional event information, menu cards, a story block,
+gallery and related content, followed by the existing invitation banner.
+At 1440px, the eight section heights are 416, 166, 704, 470, 522.674, 372,
+262 and 444px. Use 72px desktop gutters, 48px information icons, 2px eyebrow
+rules and the original Figma photography. Keep image proportions natural;
+the hero uses a uniform cover crop instead of the source design’s slight
+vertical stretch. Two gallery sources are only 243px wide and need approved
+larger originals for sharper desktop rendering.
+
+The Menu & Experience container is capped at 1296px. Its heading is 64px/65px,
+with 20px gaps between the eyebrow, heading and body, then 48px before the cards.
+At the 1440px design width, the story has a 704px content column, a 48px gap and
+a 688px image. Its text block is 600px wide, with 54px top and 48px bottom padding,
+a 72px/73px heading and 22px/31px paragraphs. Both headings use -1px letter spacing.
+Keep desktop type sizes fixed; allow narrower columns to wrap and the section
+to grow beyond its 470px minimum rather than shrinking or clipping the copy.
+
+Make an Inquiry and Contact Us open Visit & Contact. Menu, related-content
+and booking actions remain inactive until their destinations are approved.
+At tablet widths, the related row scrolls with touch or its arrow controls.
+No separate mobile design is supplied. Below 640px, use the established 24px
+gutters, 42px/44px section headings, 16px/24px body copy and 12px eyebrows.
+Stack the menu cards, story and gallery; use 3:2 menu and story photos with
+40px section padding. Keep information icons at 40px and invitation buttons
+stacked at full width with at least 44px touch targets. Related cards form a
+single vertical column, with a full-width 3:2 photo above the copy on each
+card and 32px between cards. Hide carousel controls on phones.
+Tablet and desktop sizing stays unchanged. Check the six routes, unknown-route 404,
+image loading, navigation, carousel controls and horizontal overflow when
+changing this template. No CMS integration or Event structured data is added
+for the placeholder programme.
+
 ## Our Story implementation
 
 `/our-story` follows Final Pages `3609:5115`: the dining-room hero, history
