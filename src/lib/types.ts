@@ -315,6 +315,7 @@ export interface IFieldErrorProps {
 
 export interface IWhatsOnEvent {
   id: string;
+  href: Route<`/seasonal/${string}`>;
   category: string;
   title: string;
   description: string;
@@ -493,15 +494,16 @@ export interface IOpenDesktopNavigation {
 export interface INavigationShelfProps {
   eyebrow: string;
   heading: string;
-  description: string;
+  action?: ReactNode;
   introClassName: string;
   children: ReactNode;
 }
 
 export interface INavigationShelfLinkProps {
   label: string;
-  description: string;
+  description?: string;
   href?: Route;
+  className?: string;
 }
 
 export interface IMobileNavigationProps {
@@ -822,7 +824,9 @@ export interface IFooterContent {
     shortLabel?: string;
     href: TPolicyPath;
   }[];
+  instagramHref: string;
   instagramLabel: string;
+  facebookHref: string;
   facebookLabel: string;
 }
 
@@ -991,7 +995,7 @@ export interface IStoryActionProps {
 export interface IEventActionProps {
   label: string;
   mobileLabel?: string;
-  href?: Route;
+  href?: Route<`/seasonal/${string}`>;
 }
 
 export interface IEventCardProps {
