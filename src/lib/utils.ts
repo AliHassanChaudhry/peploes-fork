@@ -1,6 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import {
+  HTML_ENTITIES,
+  HTML_TEXT_PATTERNS,
+  UNICODE_MAX_CODE_POINT,
+} from "@/lib/constants";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -27,16 +33,29 @@ export function trimTrailingSlash(url: string): string {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
-export function extractFieldErrors(
-  issues: Array<{ path: (string | number)[]; message: string }>,
-): Record<string, string[]> {
-  const result: Record<string, string[]> = {};
-  for (const issue of issues) {
-    const fieldName = String(issue.path[0] ?? "");
-    if (!result[fieldName]) {
-      result[fieldName] = [];
-    }
-    result[fieldName].push(issue.message);
+function decodeEntity(entity: string, name: string): string {
+  if (!name.startsWith("#")) {
+    return HTML_ENTITIES[name] ?? entity;
   }
-  return result;
+  const hex = name[1] === "x" || name[1] === "X";
+  const code = Number.parseInt(name.slice(hex ? 2 : 1), hex ? 16 : 10);
+  return code > 0 && code <= UNICODE_MAX_CODE_POINT
+    ? String.fromCodePoint(code)
+    : entity;
+}
+
+export function htmlToParagraphs(html: string): string[] {
+  return html
+    .replace(HTML_TEXT_PATTERNS.hidden, "")
+    .replace(HTML_TEXT_PATTERNS.space, " ")
+    .replace(HTML_TEXT_PATTERNS.blockEnd, "\n")
+    .replace(HTML_TEXT_PATTERNS.tag, "")
+    .split("\n")
+    .map((paragraph) =>
+      paragraph
+        .replace(HTML_TEXT_PATTERNS.entity, decodeEntity)
+        .replace(HTML_TEXT_PATTERNS.space, " ")
+        .trim(),
+    )
+    .filter(Boolean);
 }

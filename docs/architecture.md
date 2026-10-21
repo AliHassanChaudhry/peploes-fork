@@ -25,8 +25,8 @@ never imports an action or route handler.
 ## Module boundaries and names
 
 The directory states the technical role; the filename states the domain. Use
-`src/dal/examples.ts`, not `src/dal/example-dal.ts`, and apply the same rule to
-services and actions. Component and hook filenames use kebab-case.
+`src/services/bookings/`, not `src/services/booking-service/`, and apply the
+same rule to the DAL and actions. Component and hook filenames use kebab-case.
 
 Use `index.ts` only as a deliberate public entry point with consumers outside
 its directory. Do not create empty barrels or barrels that only duplicate
@@ -117,7 +117,7 @@ creates the shared Postgres client from validated environment values.
 deployments.
 
 DAL modules live in `src/dal/` and are server-only. Name them for the domain,
-such as `examples.ts`. Every query should:
+such as `bookings.ts`. Every query should:
 
 - select the columns its caller needs;
 - convert thrown database failures to an `IError`;
@@ -159,8 +159,9 @@ Avoid repeating the same session and permission queries in sibling components. A
 fresh request or mutation must verify authority again. This is request-local
 work reduction, not cross-request session caching.
 
-The example service validates with `createExampleSchema`, calls the examples
-DAL, and converts `Date` to an ISO string. That is enough work to justify the
+The bookings service (`src/services/bookings/`) checks input with the shared
+booking schema, applies Peploe's rules on top of the ResDiary provider, and
+maps its replies to screen-ready DTOs. That is enough work to justify the
 layer. A service that only forwards one call should be questioned.
 
 ## Server Actions
@@ -174,6 +175,47 @@ roles and account lifecycle for that application; the starter supplies none.
 The wrapper authenticates first, parses input, calls the handler, and converts
 unexpected failures to a safe internal error. Feature actions translate that
 result to the shape needed by `useActionState` and revalidate affected routes.
+
+`createPublicAction` is the one exception: the same catch without the sign-in
+check or a parse step, for guest flows such as booking a table. Its handler
+passes the raw input to a service, which validates it. Use it only when the
+flow limits its writes per visitor (booking rate-limits holds by IP) and never
+for data that belongs to an account. Next.js already refuses Server
+Actions posted from another origin.
+
+The booking hold limit fails open on purpose, so an Upstash outage does not
+stop guests booking. `allowHold` lets the hold through when Upstash is not
+configured (one warning per server instance), and when the request has no
+visitor IP or Redis errors or times out (an error log each time). While the
+limit cannot check, nothing caps how many holds one visitor makes; each hold
+without guest details still ends at its ResDiary expiry. The booking checks
+still run on every request: party size, dates, the signed hold token, guest
+details and the live-site Stripe key check. Do not reuse `createPublicAction`
+for a flow that is unsafe without a working limit.
+
+The hold limit keys on the first `x-forwarded-for` address. That is safe only
+on Vercel, which overwrites the header with the connecting client's address and
+does not forward addresses from a proxy in front of it. On another host a
+visitor could set the header and get a fresh limit with every request, and a
+proxy such as Cloudflare in front of Vercel would put every visitor behind the
+proxy's address and one shared limit. Review `allowHold` before changing host
+or adding a proxy.
+
+The booking actions (`src/actions/bookings.ts`) are called from a client
+transition, not a form, so they return plain `{ ok, data | error }` data
+through `toBookingResponse`, the same body as the booking routes. They do not
+revalidate: setting the hold cookie already re-renders the current page.
+
+Each hold has its own httpOnly cookie, named by its ResDiary reference. The
+server reads or deletes only the cookie named by the `holdReference` in the
+request, so a late reply about one tab's hold cannot delete another tab's hold.
+The booking page must send the `holdReference` it is working on with every
+hold, guest details and hold-status request. It keeps `holdReference` and
+`holdRevision` per tab in `sessionStorage`, so a reload or a return from
+Stripe still moves or completes the same hold instead of making a new one. The
+server treats a hold token as missing once its hold has ended plus the
+15-minute payment grace, the cookie's own lifetime, so a cookie kept beyond
+that never reaches ResDiary.
 
 ## Errors
 
@@ -216,7 +258,9 @@ and validation are available.
 
 The default CSP supports static rendering, so scripts and styles still allow
 inline content. It allows `unsafe-eval` only in development and adds monitoring
-or analytics origins only when their public configuration exists. Projects that
+or analytics origins only when their public configuration exists. The booking
+page (`/book-a-table`) gets the same policy plus Stripe.js and its 3-D Secure
+frames, from a later header rule that replaces the site-wide one on that path. Projects that
 need nonce-based CSP must accept dynamic rendering as described in the
 [Next.js CSP guide](https://nextjs.org/docs/app/guides/content-security-policy).
 

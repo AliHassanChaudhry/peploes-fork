@@ -120,16 +120,18 @@ for (const destination of [
   });
 }
 
-test("cold anchor links scroll to opening hours with a slower renderer", async ({
-  page,
-}) => {
-  const session = await page.context().newCDPSession(page);
-  await session.send("Emulation.setCPUThrottlingRate", { rate: 6 });
-  await page.goto("/visit-contact#opening-hours");
-  await expect
-    .poll(async () => (await page.locator("#opening-hours").boundingBox())?.y)
-    .toBeCloseTo(100, 0);
-});
+for (const targetId of ["opening-hours", "find-us"]) {
+  test(`cold anchor links scroll to ${targetId} with a slower renderer`, async ({
+    page,
+  }) => {
+    const session = await page.context().newCDPSession(page);
+    await session.send("Emulation.setCPUThrottlingRate", { rate: 6 });
+    await page.goto(`/visit-contact#${targetId}`);
+    await expect
+      .poll(async () => (await page.locator(`#${targetId}`).boundingBox())?.y)
+      .toBeCloseTo(100, 0);
+  });
+}
 
 test("contact and map links point to the restaurant's public destinations", async ({
   page,
@@ -141,10 +143,13 @@ test("contact and map links point to the restaurant's public destinations", asyn
       main.getByRole("link", { name: label, exact: true }),
     ).toHaveAttribute("href", "tel:+35316763144");
   }
-  for (const label of ["reception@peploes.ie", "Email reception@peploes.ie"]) {
+  for (const label of [
+    "reception@peploes.com",
+    "Email reception@peploes.com",
+  ]) {
     await expect(
       main.getByRole("link", { name: label, exact: true }),
-    ).toHaveAttribute("href", "mailto:reception@peploes.ie");
+    ).toHaveAttribute("href", "mailto:reception@peploes.com");
   }
   for (const label of [
     "Get Directions",
