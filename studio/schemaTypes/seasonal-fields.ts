@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
-import { SEASONAL_RELATED_PAGES } from "../../src/lib/constants";
+import { cardDescriptionSchema } from "../../src/lib/card-description";
+import { pageLinkSchema } from "../../src/lib/link-schema";
 
 export const seasonalHero = defineType({
   name: "seasonalHero",
@@ -64,7 +65,7 @@ export const seasonalDetail = defineType({
 });
 export const seasonalMenuCard = defineType({
   name: "seasonalMenuCard",
-  title: "Linked menu",
+  title: "Linked card",
   type: "object",
   fields: [
     defineField({
@@ -90,15 +91,20 @@ export const seasonalMenuCard = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
-      name: "menu",
-      type: "reference",
-      to: [
-        { type: "restaurantMenu" },
-        { type: "wineMenu" },
-        { type: "drinksMenu" },
-        { type: "setMenuCollection" },
-      ],
-      validation: (r) => r.required(),
+      name: "href",
+      title: "Button URL",
+      type: "string",
+      description:
+        "Required. Paste any page path (/menus/dinner) or full website URL (https://example.com).",
+      validation: (rule) =>
+        rule
+          .required()
+          .custom(
+            (value) =>
+              !value ||
+              pageLinkSchema.safeParse(value).success ||
+              "Enter a valid page path or http(s) URL.",
+          ),
     }),
   ],
 });
@@ -107,40 +113,31 @@ export const seasonalMenuHighlight = defineType({
   title: "On-page menu highlight",
   type: "object",
   fields: seasonalMenuCard.fields.filter(
-    (field) => field.name !== "menu" && field.name !== "action",
+    (field) => field.name !== "href" && field.name !== "action",
   ),
 });
 export const seasonalRelatedPage = defineType({
   name: "seasonalRelatedPage",
-  title: "Menu or group page",
+  title: "Linked card",
   type: "object",
-  fields: [
-    ...seasonalMenuCard.fields.filter((field) => field.name !== "menu"),
-    defineField({
-      name: "href",
-      title: "Destination page",
-      type: "string",
-      options: {
-        list: Object.entries(SEASONAL_RELATED_PAGES).map(([title, value]) => ({
-          title,
-          value,
-        })),
-      },
-      description:
-        "Choose an existing page. Journal destinations are pending until the Journal is built.",
-      validation: (rule) =>
-        rule
-          .required()
-          .custom(
-            (value) =>
-              !value ||
-              Object.values(SEASONAL_RELATED_PAGES).some(
-                (page) => page === value,
-              ) ||
-              "Choose an existing menu or group page.",
-          ),
-    }),
-  ],
+  fields: seasonalMenuCard.fields.map((field) =>
+    field.name === "description"
+      ? defineField({
+          name: "description",
+          type: "text",
+          description: "Maximum 12 words.",
+          validation: (rule) =>
+            rule
+              .required()
+              .custom(
+                (value) =>
+                  !value ||
+                  cardDescriptionSchema.safeParse(value).success ||
+                  "Use no more than 12 words.",
+              ),
+        })
+      : field,
+  ),
 });
 export const seasonalStory = defineType({
   name: "seasonalStory",
@@ -202,7 +199,7 @@ export const seasonalInvitation = defineType({
     }),
     defineField({
       name: "bookingAction",
-      title: "Booking button label (currently inactive)",
+      title: "Booking button label",
       type: "string",
       initialValue: "Book this Experience",
       validation: (r) => r.required(),

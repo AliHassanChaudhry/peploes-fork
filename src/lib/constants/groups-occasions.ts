@@ -21,7 +21,6 @@ export const GROUPS_OCCASIONS_CONTENT: IGroupsOccasionsContent = {
         src: "/peploes-celebrations.jpg",
         alt: "Guests raising glasses of red wine over a candlelit table.",
       },
-      minHeight: 187,
     },
     {
       title: "Corporate & Exclusive Hire",
@@ -32,18 +31,16 @@ export const GROUPS_OCCASIONS_CONTENT: IGroupsOccasionsContent = {
         src: "/peploes-corporate.jpg",
         alt: "A table set for a group dinner with white flowers and wine glasses.",
       },
-      minHeight: 208,
     },
     {
       title: "Weddings",
       href: ROUTES.WEDDINGS,
       description:
-        "Intimate celebrations in the heart of Dublin, with a setting that feels both special and relaxed.",
+        "Intimate celebrations with delicious food, warm hospitality and a truly special setting.",
       image: {
         src: "/peploes-weddings.jpg",
         alt: "A wedding table with flowers, candles and champagne glasses.",
       },
-      minHeight: 208,
     },
   ],
 };

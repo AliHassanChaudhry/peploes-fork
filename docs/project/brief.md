@@ -290,12 +290,19 @@ EB Garamond headings.
 Footer dividers, mobile row borders and the email field rule use 1px thickness.
 The three burgundy heading underlines are 32px wide and 2px high, matching Figma.
 
-Telephone and email links are active. Footer legal links open Privacy & Cookies,
-Terms & Conditions, Booking & Cancellation Terms, and Accessibility. Booking &
-Cancellation Terms replaces Cookie Preferences at the contributor's request.
-The homepage phone footer uses the compact Booking Terms label and tighter
-spacing below 360px to keep all four legal links on one row at standard phone
-widths, while allowing wrapping when text is enlarged.
+Telephone and email links are active. Per Figma comments #73 and #75, the footer
+lists Privacy, Terms, Accessibility and Cookie Settings in that order. The first
+three open their policy pages; Cookie Settings opens the Cookie Preferences
+modal. Booking & Cancellation Terms retains its existing URL. Legal links may
+wrap on narrow screens and when text is enlarged.
+The modal follows the desktop and mobile Cookie Preferences designs: necessary
+cookies are always active, optional Analytics, Performance and Marketing choices
+are saved individually, and Accept All or Reject non-essential saves and closes.
+Escape and the close control restore focus to Cookie Settings. Unavailable
+storage shows a save error and keeps optional tracking denied.
+On mobile, the modal uses a compact rounded card with space around it, smaller
+type and a 44px close target. Tapping outside the card also closes it and
+restores focus; touches inside the card keep its controls usable.
 All four policies use the shared `src/app/[slug]/page.tsx` route and the
 [Terms & Conditions template](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3837-20047),
 as requested in Rabia's Figma comment #68. Hero geometry, typography, the
@@ -429,10 +436,19 @@ The homepage section follows Final Pages `3131:11372`: a dining-room photo
 banner with a dark horizontal gradient, followed by three cards on Warm Cream.
 It uses the original Figma photographs, shared fonts and existing buttons. At
 1440px, the banner is 410px tall. The card row (`3338:682`) uses three 433px-wide
-cards with 28px gaps, 160 × 187px images, 213px text columns and full-height
-left dividers. The cards stack on smaller screens. Phones use a 560px banner
-with a vertical gradient
-and horizontal cards with 124px-wide photos, reduced further below 360px.
+cards with 28px gaps, 160 by 185px images, 213px text columns and
+full-height left dividers. The cards stack on smaller screens. Phones use a 560px banner
+with a vertical gradient and horizontal cards with 140px-wide photos
+(124px below 360px). Phone dividers and inline card padding are hidden.
+Descriptions contain at most 12 words. Desktop images are 160 by 185px from
+1280px. Below that, images use a 3:4 ratio minus 2px of height on tablets and
+4px on phones, with 40px between phone cards.
+Mobile card headings use 22px/28px; desktop stays 24px/30px.
+The three 1264 by 848 landscape source photos use crop-aware loading sizes so
+portrait cards retain enough decoded pixels on high-density displays.
+The fresh Figma row download confirms the celebrations original is unchanged;
+its corporate and wedding fills are flattened 160 by 187px images. Retain the
+matching larger source photos rather than replacing them with those thumbnails.
 
 The yellow Distinct commercial journeys note (`3131:11700`) requires separate
 pages and enquiry experiences for Groups & Celebrations, Corporate & Exclusive
@@ -485,7 +501,7 @@ The `whatsOnPage` singleton controls the hero, diary introduction, optional
 terrace feature and shared closing invitation. Until settings are first
 published, existing shared design copy is used. Invalid settings and API failures
 reach the error boundary instead of silently showing fallback events.
-Booking actions remain inactive. Contact Us opens Visit & Contact. Navigation and footer links, plus the homepage’s
+Book a Table opens the existing `/book-a-table` page. Contact Us opens Visit & Contact. Navigation and footer links, plus the homepage’s
 “View what’s on” action, open the new hub.
 
 Use the three original Figma photos. The terrace source is only 243×244px;
@@ -533,12 +549,13 @@ a 72px/73px heading and 22px/31px paragraphs. Both headings use -1px letter spac
 Keep desktop type sizes fixed; allow narrower columns to wrap and the section
 to grow beyond its 470px minimum rather than shrinking or clipping the copy.
 
-Make an Inquiry and Contact Us open Visit & Contact. Linked menu cards open the selected published menu. Related cards open their
-selected published event or an existing menu/group page; unpublished or disabled
-event references are omitted. Journal destinations remain pending until those
-pages are implemented. Each diary entry can override its link label; leaving
+Make an Inquiry and Contact Us open Visit & Contact. Both linked card sections
+open the editable URL entered for each card. Legacy event references still omit
+unpublished or disabled destinations; explicit URLs are not availability-checked.
+Each diary entry can override its link label; leaving
 it empty uses the shared diary label.
-Booking actions remain inactive. Invitation buttons grow to fit CMS labels and
+Book this Experience and Book a Table open the existing `/book-a-table` page.
+These links do not preselect an event or submit a reservation. Invitation buttons grow to fit CMS labels and
 wrap onto another row when needed. On phones they remain full-width; long labels
 wrap inside the button instead of overflowing its border.
 At tablet widths, the related row scrolls with touch or its arrow controls.
@@ -546,10 +563,27 @@ No separate mobile design is supplied. Below 640px, use the established 24px
 gutters, 42px/44px section headings, 16px/24px body copy and 12px eyebrows.
 Stack the menu cards, story and gallery; use 3:2 menu and story photos with
 40px section padding. Keep information icons at 40px and invitation buttons
-stacked at full width with at least 44px touch targets. Related cards form a
-single vertical column, with a full-width 3:2 photo above the copy on each
-card and 32px between cards. Hide carousel controls on phones.
-Tablet and desktop sizing stays unchanged. Check the six routes, unknown-route 404,
+stacked at full width with at least 44px touch targets. Hide carousel controls
+on phones.
+
+More to Explore now follows the homepage Groups & Occasions card layout: a
+160 by 185px image, 20px image-to-copy gap, vertical divider,
+24px/30px heading and 14px/21px description on desktop. Both sections share
+their card styles.
+Desktop images are 160 by 185px from 1280px. Below that, images use a 3:4 ratio
+minus 2px of height on tablets and 4px on phones, with 40px between phone cards;
+cards can grow with copy.
+Below 1280px the carousel shows one card at a time. Phones show a vertical list with
+horizontal image-and-copy cards and 140px-wide images (124px below 360px).
+Mobile card headings use 22px/28px; supporting text remains 14px/21px.
+Related-card actions use 15px text on phones and 16px from 640px. Homepage
+occasion actions retain 16px text.
+Phone dividers and inline padding are hidden to give images more room. Card
+descriptions have a 12-word maximum, enforced in Studio for related cards;
+legacy event references use only the first 12 words of their summary.
+Each image links to the same URL as its action and uses the homepage
+300ms zoom transition, disabled for reduced motion.
+Check published event routes, unknown-route 404,
 image loading, navigation, carousel controls and horizontal overflow when
 changing this template.
 
@@ -564,15 +598,31 @@ an optional story section, three to five gallery images, and related cards that
 can point to events, menus, Journal articles or group pages.
 
 The implementation keeps the fixed section order, typography, gutters, image
-crops and responsive CSS. A highlight card has no navigation action. Extra
+crops and responsive CSS. Legacy highlight cards still render without an action,
+but Studio only offers linked cards for new content. Extra
 gallery photos use the existing grid. Samsu's Sanity setup is a reference for
 editorial documents, references, singleton settings and mapping published data
 to fixed UI components; Peploe's keeps its existing provider, validation and
 service boundaries. It does not copy Samsu's project configuration or content.
 
-The development dataset currently contains one labelled test event. Its shorter
-diary is a content difference, not a change to the original six-row layout.
+The development diary currently shows the homepage’s three events: Lobster Week
+Returns, A Seasonal Wine Dinner and Sunday at Peploe’s. Each uses the same full
+template with dummy event information, two linked menu cards (View Menu and Find
+Out More), a story, three gallery photos, an invitation and three related cards.
+Earlier demo entries were removed after saving local recovery backups. All demos use
+`noIndex`. This is a content selection, not a three-event limit: new published
+entries get their own URL and appear in the diary without a code change.
 Real event dates and copy must be supplied and published before launch.
+
+Empty optional section objects and sections without any cards, paragraphs or
+photos are omitted. Empty information rows are omitted too. Non-empty sections
+still require valid text, photos and destinations. In Studio, unset an unused
+section; complete its required fields when adding content. Both Menu & Experience
+and More to Explore use editable cards with an image, title, description, button
+label and required Button URL. URLs accept site paths, anchors and full HTTP(S)
+website links; blank or unsafe destinations prevent publication. Clients are
+responsible for linking to an available page. Legacy menu/event references remain
+readable, but new cards use explicit URLs.
 
 ### Editing What’s On in development
 
@@ -583,10 +633,10 @@ Real event dates and copy must be supplied and published before launch.
 4. Use an end date for a campaign spanning several days. The dates control the
    diary; the optional Event information fields control the displayed details.
 5. Optional sections may be left unset. When adding one, complete its required
-   fields. In Menu & Experience, choose a linked menu, an on-page highlight, or
-   one of each. Linked menus and related events must be published first.
-   Galleries accept three to five photographs. More to Explore accepts event
-   references and cards linking to existing menu or group pages.
+   fields. Add linked cards in Menu & Experience or More to Explore and fill in
+   each card's Button URL, such as `/seasonal/lobster-season`, `/menus/dinner`
+   or `https://example.com/event`. Publish destination pages before linking to
+   them. Galleries accept three to five photographs.
 6. Keep **Keep out of search engines** on for testing. Click **Publish**, then
    refresh `/seasonal` and click the entry. Draft edits do not change the website.
 7. To remove an entry, unpublish it or turn **Show on website** off and publish.

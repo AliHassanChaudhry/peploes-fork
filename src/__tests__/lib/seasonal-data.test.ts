@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { publishedEvent } from "@/__tests__/fixtures/seasonal";
+import { GROUPS_OCCASIONS_CONTENT } from "@/lib/constants/groups-occasions";
 import {
   getSeasonalEventContent,
   groupSeasonalEntries,
@@ -8,6 +9,39 @@ import {
 import { seasonalEntrySchema } from "@/lib/seasonal-schema";
 
 describe("event presentation", () => {
+  it("caps legacy related summaries without shortening the event's own summary", () => {
+    const summary =
+      "One two three four five six seven eight nine ten eleven twelve thirteen";
+    const entry = seasonalEntrySchema.parse({
+      ...publishedEvent,
+      summary,
+      related: {
+        eyebrow: "More",
+        action: "Explore",
+        cards: [{ ...publishedEvent, summary }],
+      },
+    });
+    const content = getSeasonalEventContent(entry);
+    expect(entry.summary).toBe(summary);
+    expect(content.related?.cards[0].description).toBe(
+      "One two three four five six seven eight nine ten eleven twelve",
+    );
+  });
+
+  it("keeps homepage occasion descriptions within twelve words", () => {
+    for (const occasion of GROUPS_OCCASIONS_CONTENT.occasions) {
+      for (const description of [
+        occasion.description,
+        occasion.mobileDescription,
+      ]) {
+        if (description)
+          expect(description.trim().split(/\s+/).length).toBeLessThanOrEqual(
+            12,
+          );
+      }
+    }
+  });
+
   it("keeps the same month in different years separate and sorts by date", () => {
     const first = seasonalEntrySchema.parse({
       ...publishedEvent,
@@ -35,7 +69,7 @@ describe("event presentation", () => {
             title: "Dinner",
             description: "Dinner menu",
             action: "View Menu",
-            menu: "dinner",
+            href: "/menus/dinner",
             image: publishedEvent.hero.image,
           },
         ],
@@ -73,7 +107,7 @@ it("preserves identities for cards with duplicate editable titles", () => {
     title: "Menu",
     description: "Dinner menu",
     action: "View Menu",
-    menu: "dinner",
+    href: "/menus/dinner",
     image: publishedEvent.hero.image,
   };
   const entry = seasonalEntrySchema.parse({
@@ -167,12 +201,12 @@ it("mixes published events with existing menu and group pages in More to Explore
   ]);
 });
 
-it("rejects unsafe or unavailable related-page destinations", () => {
+it("rejects unsafe related-page destinations", () => {
   for (const href of [
     "javascript:alert(1)",
-    "https://example.com",
-    "/journal",
-    "/not-a-page",
+    "//example.com",
+    "/\\example.com",
+    "data:text/html,hello",
   ]) {
     const result = seasonalEntrySchema.safeParse({
       ...publishedEvent,

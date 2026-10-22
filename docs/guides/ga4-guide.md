@@ -33,9 +33,11 @@ public GA or GTM ID is configured. It does not load either provider script.
 
 ## Consent comes first
 
-`hasAnalyticsConsent()` returns `false` until a project replaces it with a real
-consent decision. Keep that fail-closed behavior until consent is available
-before the app loads provider scripts or sends events.
+`hasAnalyticsConsent()` reads the visitor's Analytics choice from the footer's
+Cookie Preferences modal. Missing, malformed or inaccessible browser storage
+denies tracking. Changing a switch saves that category immediately; Accept All
+and Reject non-essential save all categories and close the modal. No analytics
+or marketing provider scripts are loaded by the preferences UI.
 
 Consent requirements depend on the product, region, and data collected. Record
 that policy outside the analytics helper instead of hardcoding legal assumptions

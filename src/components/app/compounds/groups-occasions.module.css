@@ -1,3 +1,117 @@
+.card {
+  --card-image-width: 140px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--card-image-width) minmax(0, 1fr);
+  gap: 20px;
+  min-width: 0;
+  padding: 0;
+}
+
+.card::before {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  display: none;
+  width: 1px;
+  background: var(--soft-stone);
+  content: "";
+}
+
+.image {
+  position: relative;
+  display: block;
+  align-self: start;
+  overflow: hidden;
+  width: 100%;
+  height: calc(var(--card-image-width) * 4 / 3 - 4px);
+  border-radius: 2px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.introduction {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card .title {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.card .description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.card .action {
+  align-self: flex-start;
+  height: 44px;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0;
+  border-radius: 0;
+  color: var(--peploe-burgundy);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+@media (width < 360px) {
+  .card {
+    --card-image-width: 124px;
+  }
+}
+
+@media (width >= 40rem) {
+  .image {
+    height: calc(var(--card-image-width) * 4 / 3 - 2px);
+  }
+
+  .card {
+    --card-image-width: 180px;
+    grid-template-columns: var(--card-image-width) minmax(140px, 1fr);
+  }
+
+  .card .title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .copy {
+    gap: 10px;
+  }
+}
+
+@media (width >= 80rem) {
+  .image {
+    height: 185px;
+  }
+
+  .card {
+    --card-image-width: 160px;
+    grid-template-columns: var(--card-image-width) minmax(0, 1fr);
+    padding-inline: 20px;
+  }
+
+  .card::before {
+    display: block;
+  }
+
+  .card .action {
+    line-height: 24px;
+  }
+}
+
 .overlay {
   background: linear-gradient(
     180deg,

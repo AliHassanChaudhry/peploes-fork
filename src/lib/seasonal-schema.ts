@@ -1,9 +1,7 @@
 import { z } from "zod";
-import {
-  MENU_SLUGS,
-  SEASONAL_GALLERY_LIMITS,
-  SEASONAL_RELATED_PAGES,
-} from "@/lib/constants";
+import { cardDescriptionSchema } from "@/lib/card-description";
+import { SEASONAL_GALLERY_LIMITS } from "@/lib/constants";
+import { pageLinkSchema } from "@/lib/link-schema";
 import {
   keyedMenuArray,
   menuImageSchema,
@@ -51,14 +49,14 @@ const menuCard = z.object({
   description: text,
   action: text,
   image,
-  menu: z.enum(MENU_SLUGS),
+  href: pageLinkSchema,
 });
-const menuHighlight = menuCard.omit({ action: true, menu: true }).extend({
+const menuHighlight = menuCard.omit({ action: true, href: true }).extend({
   _type: z.literal("seasonalMenuHighlight"),
 });
-const relatedPage = menuCard.omit({ menu: true }).extend({
+const relatedPage = menuCard.extend({
+  description: cardDescriptionSchema,
   _type: z.literal("seasonalRelatedPage"),
-  href: z.nativeEnum(SEASONAL_RELATED_PAGES),
 });
 const relatedCard = z.object({
   _id: text,
@@ -67,32 +65,77 @@ const relatedCard = z.object({
   slug: seasonalSlugSchema,
   hero,
 });
+
+function hasSectionContent(value: unknown): boolean {
+  if (typeof value === "string") return value.trim().length > 0;
+  if (Array.isArray(value)) return value.some(hasSectionContent);
+  if (value && typeof value === "object")
+    return Object.entries(value).some(
+      ([key, item]) =>
+        key !== "_type" && key !== "_key" && hasSectionContent(item),
+    );
+  return value !== null && value !== undefined;
+}
+
+function optionalSection<Schema extends z.ZodTypeAny>(
+  schema: Schema,
+  collection?: string,
+) {
+  return z.preprocess((value) => {
+    if (!hasSectionContent(value)) return undefined;
+    if (
+      collection &&
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    ) {
+      const items: unknown = Object.entries(value).find(
+        ([key]) => key === collection,
+      )?.[1];
+      if (
+        items == null ||
+        (Array.isArray(items) && !items.some(hasSectionContent))
+      )
+        return undefined;
+    }
+    return value;
+  }, schema.nullish());
+}
+
 export const seasonalEntrySchema = seasonalCardSchema
   .extend({
     seoDescription: text,
-    details: keyedMenuArray(
-      z.object({
-        _key: menuKeySchema,
-        label: text,
-        description: text,
-        icon: z.enum(["date", "time", "price", "menu"]),
-      }),
+    details: z.preprocess(
+      (value) =>
+        Array.isArray(value) ? value.filter(hasSectionContent) : value,
+      keyedMenuArray(
+        z.object({
+          _key: menuKeySchema,
+          label: text,
+          description: text,
+          icon: z.enum(["date", "time", "price", "menu"]),
+        }),
+      ),
     ),
-    menu: introduction
-      .extend({ cards: keyedMenuArray(z.union([menuHighlight, menuCard])) })
-      .nullish(),
-    story: z
-      .object({
+    menu: optionalSection(
+      introduction.extend({
+        cards: keyedMenuArray(z.union([menuHighlight, menuCard])),
+      }),
+      "cards",
+    ),
+    story: optionalSection(
+      z.object({
         eyebrow: text,
         heading: text,
         paragraphs: keyedMenuArray(
           z.object({ _key: menuKeySchema, text }),
         ).refine((items) => items.length > 0, "Add at least one paragraph."),
         image,
-      })
-      .nullish(),
-    gallery: z
-      .object({
+      }),
+      "paragraphs",
+    ),
+    gallery: optionalSection(
+      z.object({
         eyebrow: text,
         heading: text,
         images: keyedMenuArray(image.extend({ _key: menuKeySchema })).refine(
@@ -101,16 +144,18 @@ export const seasonalEntrySchema = seasonalCardSchema
             images.length <= SEASONAL_GALLERY_LIMITS.MAX_IMAGES,
           "Use three to five photos.",
         ),
-      })
-      .nullish(),
-    invitation: invitation.nullish(),
-    related: z
-      .object({
+      }),
+      "images",
+    ),
+    invitation: optionalSection(invitation),
+    related: optionalSection(
+      z.object({
         eyebrow: text,
         action: text,
         cards: z.array(z.union([relatedPage, relatedCard])),
-      })
-      .nullish(),
+      }),
+      "cards",
+    ),
   })
   .refine((entry) => !entry.endDate || entry.endDate >= entry.date, {
     message: "End date must be on or after the start.",
@@ -122,6 +167,8 @@ export const whatsOnPageSchema = z.object({
   seoDescription: text,
   hero,
   diary: introduction.extend({ emptyMessage: text, action: text }),
-  terrace: z.object({ heading: text, description: text, image }).nullish(),
+  terrace: optionalSection(
+    z.object({ heading: text, description: text, image }),
+  ),
   join: hero.extend({ bookingAction: text, contactAction: text }),
 });

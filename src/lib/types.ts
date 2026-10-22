@@ -23,6 +23,7 @@ import type {
   BOOKING_UNSUPPORTED_SETTINGS,
 } from "@/lib/constants/booking";
 import type { buttonVariants } from "@/lib/constants/button";
+import type { cookiePreferencesSchema } from "@/lib/cookie-consent";
 import type { ErrorCode, HttpVerb, LogLevel } from "@/lib/enums";
 import type { createResDiaryProvider } from "@/lib/resdiary-provider";
 import type {
@@ -859,6 +860,8 @@ export interface ICookieConsentRecord {
   timestamp: string;
 }
 
+export type ICookiePreferences = InferSchema<typeof cookiePreferencesSchema>;
+
 // ─── Homepage Content ───────────────────────────────────────────────────
 
 export interface ISectionImage {
@@ -1347,7 +1350,6 @@ export interface IGroupOccasion {
   description: string;
   mobileDescription?: string;
   image: ISectionImage;
-  minHeight: number;
 }
 
 export interface IGroupsOccasionsContent {
@@ -1537,7 +1539,7 @@ export interface ISeasonalEventCard {
   description: string;
   action: string;
   image: ISectionImage;
-  href?: Route;
+  href?: string;
 }
 
 export interface ISeasonalEventContent {
@@ -1586,8 +1588,9 @@ export interface ISeasonalEventContent {
 }
 
 export interface ISeasonalEventActionProps {
+  className?: string;
   label: string;
-  href?: Route;
+  href?: string;
 }
 
 export interface ISeasonalEventRelatedProps {

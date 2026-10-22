@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { MenuBooking } from "@/components/app/compounds/menu-booking";
 import { MenuCourse } from "@/components/app/molecules/menu-course";
@@ -46,7 +46,7 @@ export function SetMenuCollection({ menu }: ISetMenuCollectionProps) {
                 </p>
               </div>
               <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-peploe-burgundy">
-                <ArrowDown aria-hidden="true" className="size-5" />
+                <ArrowRight aria-hidden="true" className="size-4" />
               </span>
             </a>
           ))}
