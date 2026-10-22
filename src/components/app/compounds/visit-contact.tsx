@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ function VisitBookingButton() {
     >
       <Link href={ROUTES.BOOK_A_TABLE}>
         {VISIT_CONTACT_CONTENT.bookingLabel}
-        <span aria-hidden="true">→</span>
+        <ArrowRight aria-hidden="true" className="size-4" />
       </Link>
     </Button>
   );

@@ -424,19 +424,7 @@ export const SEASONAL_DETAIL_ICONS = {
   menu: { src: "/peploes-events-menu.svg", width: 48, height: 48 },
 } as const;
 
-export const SEASONAL_RELATED_PAGES = {
-  "Lunch menu": ROUTES.LUNCH,
-  "Dinner menu": ROUTES.DINNER,
-  "Pre-Theatre menu": ROUTES.PRE_THEATRE,
-  "Wine menu": ROUTES.WINE,
-  Cocktails: ROUTES.COCKTAILS,
-  "Group Set Menu": ROUTES.GROUP_SET_MENU,
-  "Seasonal menus": ROUTES.SEASONAL,
-  "Private Dining & Events": ROUTES.PRIVATE_DINING,
-  "Groups & Celebrations": ROUTES.CELEBRATIONS,
-  "Corporate & Exclusive Hire": ROUTES.CORPORATE_EVENTS,
-  Weddings: ROUTES.WEDDINGS,
-} as const;
+export const CARD_DESCRIPTION_MAX_WORDS = 12;
 
 export const SEASONAL_GALLERY_LIMITS = {
   MIN_IMAGES: 3,

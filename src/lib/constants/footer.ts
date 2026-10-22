@@ -35,11 +35,6 @@ export const FOOTER_CONTENT: IFooterContent = {
   legalLabels: [
     { label: "Privacy", href: ROUTES.PRIVACY_COOKIES },
     { label: "Terms", href: ROUTES.TERMS_CONDITIONS },
-    {
-      label: "Booking & Cancellation",
-      shortLabel: "Booking Terms",
-      href: ROUTES.BOOKING_CANCELLATION_TERMS,
-    },
     { label: "Accessibility", href: ROUTES.ACCESSIBILITY_POLICY },
   ],
   instagramHref: "https://www.instagram.com/peploesstephensgreen/",

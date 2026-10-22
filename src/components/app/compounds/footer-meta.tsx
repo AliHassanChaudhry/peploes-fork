@@ -1,6 +1,6 @@
 import { Facebook, Instagram } from "lucide-react";
 import Link from "next/link";
-
+import { CookiePreferences } from "@/components/app/molecules/cookie-preferences";
 import { Button } from "@/components/ui/button";
 import { FOOTER_CONTENT } from "@/lib/constants/footer";
 
@@ -54,6 +54,13 @@ export function FooterMeta() {
                 );
               },
             )}
+            <li className="flex items-center gap-3 xl:gap-4">
+              <span aria-hidden="true">
+                <span className="xl:hidden">·</span>
+                <span className="hidden xl:inline">|</span>
+              </span>
+              <CookiePreferences />
+            </li>
           </ul>
         </nav>
       </div>

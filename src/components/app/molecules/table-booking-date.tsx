@@ -11,12 +11,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-import {
-  CalendarDays,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 
 import styles from "@/components/app/compounds/table-booking-panel.module.css";
@@ -76,14 +71,14 @@ export function TableBookingDate({ value, onChange }: ITableBookingDateProps) {
               aria-label="Previous month"
               onClick={() => setMonth(addMonths(month, -1))}
             >
-              <ChevronLeft aria-hidden="true" />
+              <ArrowLeft aria-hidden="true" />
             </button>
             <button
               type="button"
               aria-label="Next month"
               onClick={() => setMonth(addMonths(month, 1))}
             >
-              <ChevronRight aria-hidden="true" />
+              <ArrowRight aria-hidden="true" />
             </button>
           </div>
           <div className={styles.calendarGrid}>

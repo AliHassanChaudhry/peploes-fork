@@ -13,6 +13,11 @@
   text-transform: uppercase;
 }
 
+.page h2.eyebrow {
+  font-family: inherit;
+  font-weight: 500;
+}
+
 .ruledEyebrow {
   display: flex;
   align-items: center;
@@ -297,7 +302,7 @@
 
 .relatedCards {
   display: flex;
-  gap: 40px;
+  gap: 32px;
   overflow-x: auto;
   margin-top: 12px;
   padding-block: 4px;
@@ -306,38 +311,8 @@
 }
 
 .relatedCard {
-  display: flex;
   flex: 0 0 100%;
-  gap: 16px;
-  min-width: 0;
   scroll-snap-align: start;
-}
-
-.relatedImage {
-  position: relative;
-  width: 112px;
-  min-height: 150px;
-  flex-shrink: 0;
-}
-
-.relatedCopy {
-  min-width: 0;
-}
-
-.relatedCard h3 {
-  font-size: 26px;
-  line-height: 30px;
-}
-
-.relatedCard p {
-  margin-top: 8px;
-  color: var(--text-secondary);
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.relatedCard .textAction {
-  margin-top: 4px;
 }
 
 @media (width < 40rem) {
@@ -418,8 +393,7 @@
     padding: 20px;
   }
 
-  .menuCard h3,
-  .relatedCard h3 {
+  .menuCard h3 {
     font-size: 28px;
     line-height: 30px;
   }
@@ -441,6 +415,10 @@
     padding-block: 28px 40px;
   }
 
+  .related .relatedCard .textAction {
+    font-size: 15px;
+  }
+
   .carouselControls {
     display: none;
   }
@@ -448,30 +426,10 @@
   .relatedCards {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: 40px;
     overflow: visible;
     margin-top: 24px;
     scroll-snap-type: none;
-  }
-
-  .relatedCard {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .relatedImage {
-    width: 100%;
-    min-height: 0;
-    aspect-ratio: 3 / 2;
-  }
-
-  .relatedCopy {
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--soft-stone);
-  }
-
-  .relatedCard .textAction {
-    margin-top: 12px;
   }
 }
 
@@ -499,14 +457,6 @@
 
   .galleryImages {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .relatedCard {
-    flex-basis: calc((100% - 40px) / 2);
-  }
-
-  .relatedImage {
-    width: 140px;
   }
 }
 
@@ -696,24 +646,19 @@
     margin-top: 12px;
     padding-block: 4px 0;
   }
-
-  .relatedCard {
-    flex-basis: calc((100% - 80px) / 3);
-    gap: 24px;
-  }
-
-  .relatedImage {
-    width: 42.927632%;
-    height: 150px;
-  }
-
-  .relatedCard p {
-    font-size: 18px;
-    line-height: 25px;
-  }
 }
 
 @media (width >= 80rem) {
+  .relatedCards {
+    width: calc(100% + 59px);
+    max-width: 1355px;
+    gap: 28px;
+  }
+
+  .relatedCard {
+    flex-basis: calc((100% - 56px) / 3);
+  }
+
   .story .storyContent {
     padding-left: max(72px, calc((100vw - var(--site-content-max-width)) / 2));
   }

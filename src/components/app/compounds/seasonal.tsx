@@ -43,15 +43,16 @@ export function SeasonalJoin({ join }: ISeasonalJoinProps) {
           <p className={styles.description}>{join.description}</p>
           <div className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-5">
             <Button
-              type="button"
-              aria-disabled="true"
+              asChild
               variant="brand-primary"
               className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-5 py-2.5 text-base leading-[22px] has-[>svg]:px-5 sm:w-auto sm:min-w-[156px] sm:gap-1 sm:leading-6"
             >
-              <span className="min-w-0 [overflow-wrap:anywhere]">
-                {join.bookingAction}
-              </span>
-              <ArrowRight aria-hidden="true" className="size-4" />
+              <Link href={ROUTES.BOOK_A_TABLE}>
+                <span className="min-w-0 [overflow-wrap:anywhere]">
+                  {join.bookingAction}
+                </span>
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
             </Button>
             <Button
               asChild

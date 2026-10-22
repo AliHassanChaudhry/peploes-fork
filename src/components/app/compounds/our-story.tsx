@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -121,7 +122,7 @@ function StoryBuilding() {
           >
             <Link href={`${ROUTES.VISIT_CONTACT}#find-us`}>
               {building.action}
-              <span aria-hidden="true">→</span>
+              <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </Button>
         </div>
@@ -222,7 +223,7 @@ function StoryMural() {
             className="mt-6 h-auto min-h-11 w-[249px] max-w-full gap-[5px] rounded-[4px] border-0 px-5 py-2.5 text-base leading-6 whitespace-normal shadow-[inset_0_0_0_1px_currentColor] hover:bg-warm-cream hover:text-ink hover:shadow-[inset_0_0_0_1px_var(--warm-cream)] focus-visible:ring-0 forced-colors:[&:not(:focus-visible)]:-outline-offset-1 forced-colors:[&:not(:focus-visible)]:[outline:1px_solid_CanvasText]"
           >
             {mural.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>
@@ -267,7 +268,7 @@ function StoryArchive() {
             className="mt-6 h-auto min-h-11 w-[210px] max-w-full gap-[5px] rounded-[4px] border-0 px-5 py-2.5 text-base leading-6 whitespace-normal shadow-[inset_0_0_0_1px_currentColor] hover:bg-peploe-burgundy hover:text-warm-cream hover:shadow-[inset_0_0_0_1px_var(--peploe-burgundy)] focus-visible:ring-0 lg:mt-5 forced-colors:[&:not(:focus-visible)]:-outline-offset-1 forced-colors:[&:not(:focus-visible)]:[outline:1px_solid_CanvasText]"
           >
             {archive.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>
@@ -343,7 +344,7 @@ function StoryToday() {
             className="mt-6 h-auto min-h-11 w-[156px] max-w-full gap-[5px] rounded-[4px] px-5 py-2.5 text-base leading-6 whitespace-nowrap lg:mt-5"
           >
             {today.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>

@@ -140,8 +140,8 @@ export const seasonalEntry = defineType({
           name: "cards",
           type: "array",
           description:
-            "Use a linked menu, an on-page highlight, or one of each.",
-          of: [{ type: "seasonalMenuCard" }, { type: "seasonalMenuHighlight" }],
+            "Add an image, title, description, button label and required URL for each card.",
+          of: [{ type: "seasonalMenuCard" }],
           validation: (r) => r.required().min(1).max(2),
         }),
       ],
@@ -204,10 +204,7 @@ export const seasonalEntry = defineType({
           name: "cards",
           title: "Cards",
           type: "array",
-          of: [
-            { type: "reference", to: [{ type: "seasonalEntry" }] },
-            { type: "seasonalRelatedPage" },
-          ],
+          of: [{ type: "seasonalRelatedPage" }],
           validation: (r) => r.required().min(1).max(6).unique(),
         }),
       ],

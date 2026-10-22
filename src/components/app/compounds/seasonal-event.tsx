@@ -171,15 +171,16 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
               <p>{invitation.description}</p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4">
                 <Button
-                  type="button"
-                  aria-disabled="true"
+                  asChild
                   variant="brand-primary"
                   className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-6 py-2.5 text-base leading-[22px] has-[>svg]:px-6 sm:min-h-12 sm:w-auto sm:text-lg sm:leading-[26px] lg:min-w-[249px] lg:px-5 lg:has-[>svg]:px-5"
                 >
-                  <span className="min-w-0 [overflow-wrap:anywhere]">
-                    {invitation.bookingAction}
-                  </span>
-                  <ArrowRight aria-hidden="true" className="size-4" />
+                  <Link href={ROUTES.BOOK_A_TABLE}>
+                    <span className="min-w-0 [overflow-wrap:anywhere]">
+                      {invitation.bookingAction}
+                    </span>
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </Link>
                 </Button>
                 <Button
                   asChild

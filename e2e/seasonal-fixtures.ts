@@ -31,7 +31,14 @@ export const seasonalFixtures = SEASONAL_CONTENT.diary.months
         cards: SEASONAL_EVENT_CONTENT.menu?.cards.map((card, index) => ({
           ...card,
           _key: `menu-${index}`,
-          menu: index === 0 ? "dinner" : "wine",
+          href:
+            index === 0
+              ? "/menus/dinner"
+              : event.slug === "sunday-at-peploes"
+                ? "/seasonal/lobster-season?from=card#event-menu"
+                : event.slug === "italian-wine-dinner"
+                  ? "https://example.com/events/wine"
+                  : "/menus/wine",
         })),
       },
       gallery: SEASONAL_EVENT_CONTENT.gallery
@@ -65,7 +72,7 @@ export const seasonalFixtures = SEASONAL_CONTENT.diary.months
     })),
   )
   .map((entry) =>
-    entry.slug !== "italian-wine-dinner"
+    entry.slug !== "new-years-eve"
       ? entry
       : {
           ...entry,
@@ -124,9 +131,31 @@ export const seasonalFixtures = SEASONAL_CONTENT.diary.months
                 href: "/private-dining/groups-celebrations",
                 image: entry.hero.image,
               },
+              {
+                _type: "seasonalRelatedPage",
+                _key: "external",
+                title: "A partner experience",
+                description: "A client-selected website.",
+                action: "Explore partner event",
+                href: "https://example.com/events/special?day=sunday#details",
+                image: entry.hero.image,
+              },
             ],
           },
         },
+  )
+  .map((entry) =>
+    entry.slug === "christmas-at-peploes"
+      ? {
+          ...entry,
+          details: [{ _type: "seasonalDetail", _key: "empty" }],
+          menu: {},
+          story: {},
+          gallery: {},
+          invitation: {},
+          related: {},
+        }
+      : entry,
   );
 
 export const seasonalPageFixture = {

@@ -1,5 +1,6 @@
 import type { Route } from "next";
-import { MENU_ROUTES, ROUTES, SEASONAL_DETAIL_ICONS } from "@/lib/constants";
+import { limitCardDescription } from "@/lib/card-description";
+import { ROUTES, SEASONAL_DETAIL_ICONS } from "@/lib/constants";
 import type {
   ISeasonalEventContent,
   ISeasonalMonth,
@@ -38,8 +39,8 @@ export function getSeasonalEventContent(
           cards: entry.menu.cards.map((card) => ({
             ...card,
             id: card._key,
-            action: "menu" in card ? card.action : "",
-            href: "menu" in card ? MENU_ROUTES[card.menu] : undefined,
+            action: "href" in card ? card.action : "",
+            href: "href" in card ? card.href : undefined,
           })),
         }
       : undefined,
@@ -55,7 +56,7 @@ export function getSeasonalEventContent(
               : {
                   id: card._id,
                   title: card.title,
-                  description: card.summary,
+                  description: limitCardDescription(card.summary),
                   image: card.hero.image,
                   action: entry.related?.action ?? card.title,
                   href: seasonalPath(card.slug),
