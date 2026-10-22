@@ -39,11 +39,7 @@ export function PrivateDiningHero({ hero, variant }: IPrivateDiningHeroProps) {
             <Button asChild variant="brand-primary" className={styles.action}>
               <a href="#enquire">
                 {hero.action}
-                {variant === "corporate" ? (
-                  <span aria-hidden="true">→</span>
-                ) : (
-                  <ArrowRight aria-hidden="true" className="size-4" />
-                )}
+                <ArrowRight aria-hidden="true" className="size-4" />
               </a>
             </Button>
           ) : (

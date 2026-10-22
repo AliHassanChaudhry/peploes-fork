@@ -35,7 +35,7 @@ export function VisitContactDetails() {
             >
               <Link href={ROUTES.BOOK_A_TABLE}>
                 {VISIT_CONTACT_DETAILS.reservation.bookingLabel}
-                <span aria-hidden="true">→</span>
+                <ArrowRight aria-hidden="true" className="size-4" />
               </Link>
             </Button>
             <Button
@@ -56,10 +56,8 @@ export function VisitContactDetails() {
             </Button>
             <Button asChild variant="brand-text" className={styles.emailLink}>
               <a href={`mailto:${RESTAURANT_CONTACT.email}`}>
-                <span>
-                  {VISIT_CONTACT_DETAILS.reservation.emailLabel}{" "}
-                  <span aria-hidden="true">→</span>
-                </span>
+                <span>{VISIT_CONTACT_DETAILS.reservation.emailLabel}</span>
+                <ArrowRight aria-hidden="true" className="size-4" />
               </a>
             </Button>
           </div>

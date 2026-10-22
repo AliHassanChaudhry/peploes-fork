@@ -1,11 +1,4 @@
-import {
-  ArrowRight,
-  ChevronRight,
-  Clock3,
-  Mail,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { ArrowRight, Clock3, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { FooterFrame } from "@/components/app/compounds/footer-frame";
 import { FooterMeta } from "@/components/app/compounds/footer-meta";
@@ -141,7 +134,7 @@ export function Footer() {
                     {href ? (
                       <Link href={href}>
                         {label}
-                        <ChevronRight
+                        <ArrowRight
                           aria-hidden="true"
                           className="size-4 text-peploe-burgundy xl:hidden"
                         />
@@ -149,7 +142,7 @@ export function Footer() {
                     ) : (
                       <>
                         {label}
-                        <ChevronRight
+                        <ArrowRight
                           aria-hidden="true"
                           className="size-4 text-peploe-burgundy xl:hidden"
                         />

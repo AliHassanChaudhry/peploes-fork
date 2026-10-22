@@ -64,6 +64,17 @@ describe("published events", () => {
     const result = await getSeasonalEntries();
     expect(result.isOk() ? result.value : null).toEqual([]);
   });
+  it("returns every published event without limiting the diary to the three homepage cards", async () => {
+    const entries = Array.from({ length: 12 }, (_, index) => ({
+      ...publishedEvent,
+      _id: `event-${index}`,
+      slug: `event-${index}`,
+    }));
+    vi.mocked(fetchSeasonalEntries).mockResolvedValue(ok(entries));
+    const result = await getSeasonalEntries();
+    expect(result.isOk() ? result.value.length : 0).toBe(12);
+    expect(result.isOk() ? result.value.at(-1)?.slug : null).toBe("event-11");
+  });
   it("rejects duplicate list URLs", async () => {
     vi.mocked(fetchSeasonalEntries).mockResolvedValue(
       ok([publishedEvent, { ...publishedEvent, _id: "second" }]),

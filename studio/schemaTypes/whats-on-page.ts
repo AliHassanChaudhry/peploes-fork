@@ -103,7 +103,7 @@ export const whatsOnPage = defineType({
         }),
         defineField({
           name: "bookingAction",
-          title: "Booking button label (currently inactive)",
+          title: "Booking button label",
           type: "string",
           validation: (r) => r.required(),
         }),
