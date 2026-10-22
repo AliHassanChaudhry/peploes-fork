@@ -1,13 +1,14 @@
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 
 import styles from "@/components/app/compounds/seasonal-event.module.css";
 import { Button } from "@/components/ui/button";
 import type { ISeasonalEventActionProps } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function SeasonalEventAction({
   label,
   href,
+  className,
 }: ISeasonalEventActionProps) {
   const content = (
     <>
@@ -17,15 +18,19 @@ export function SeasonalEventAction({
   );
 
   return href ? (
-    <Button asChild variant="brand-text" className={styles.textAction}>
-      <Link href={href}>{content}</Link>
+    <Button
+      asChild
+      variant="brand-text"
+      className={cn(styles.textAction, className)}
+    >
+      <a href={href}>{content}</a>
     </Button>
   ) : (
     <Button
       type="button"
       aria-disabled="true"
       variant="brand-text"
-      className={styles.textAction}
+      className={cn(styles.textAction, className)}
     >
       {content}
     </Button>

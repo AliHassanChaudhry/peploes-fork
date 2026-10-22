@@ -10,6 +10,10 @@ export const env = createEnv({
   },
 
   server: {
+    SANITY_PROJECT_ID: z.string().regex(/^[a-z0-9]+$/),
+    SANITY_DATASET: z.string().regex(/^[a-z0-9][a-z0-9_-]*$/),
+    SANITY_API_VERSION: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+
     DATABASE_URL: z.string().url(),
     DATABASE_POOL_SIZE: z.coerce.number().default(10),
     NODE_ENV: z
@@ -25,6 +29,24 @@ export const env = createEnv({
     GA_API_SECRET: z.string().optional(),
     ADMIN_EMAIL: z.string().email().optional(),
     ALLOWED_ORIGINS: z.string().optional(),
+
+    RESDIARY_API_URL: z
+      .string()
+      .url()
+      .refine((value) => value.startsWith("https://"), "Must use https")
+      .optional(),
+    RESDIARY_MICROSITE_NAME: z.string().min(1).optional(),
+    RESDIARY_CHANNEL_CODE: z.string().min(1).optional(),
+    RESDIARY_USERNAME: z.string().min(1).optional(),
+    RESDIARY_PASSWORD: z.string().min(1).optional(),
+    BOOKING_HOLD_SECRET: z.string().min(32).optional(),
+    UPSTASH_REDIS_REST_URL: z
+      .string()
+      .url()
+      .refine((value) => value.startsWith("https://"), "Must use https")
+      .optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
+    VERCEL_ENV: z.enum(["production", "preview", "development"]).optional(),
   },
 
   clientPrefix: "NEXT_PUBLIC_",
@@ -49,4 +71,8 @@ export const env = createEnv({
 export function isProduction(): boolean {
   const nodeEnv = env.NODE_ENV ?? process.env.NODE_ENV ?? "development";
   return nodeEnv === "production";
+}
+
+export function isLiveSite(): boolean {
+  return env.VERCEL_ENV ? env.VERCEL_ENV === "production" : isProduction();
 }

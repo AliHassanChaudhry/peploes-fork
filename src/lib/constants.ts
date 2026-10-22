@@ -1,6 +1,6 @@
+import { ErrorCode } from "@/lib/enums";
 import type {
   IBookingBannerContent,
-  IFormActionResponse,
   INavbarContent,
   IOpeningHours,
   IWhatsOnContent,
@@ -16,11 +16,32 @@ export const HTTP_STATUS = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   CONFLICT: 409,
+  GONE: 410,
   UNPROCESSABLE: 422,
   TOO_MANY_REQUESTS: 429,
   INTERNAL_ERROR: 500,
+  BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504,
 } as const;
+
+export const ERROR_HTTP_STATUS = {
+  [ErrorCode.Unauthorized]: HTTP_STATUS.UNAUTHORIZED,
+  [ErrorCode.Forbidden]: HTTP_STATUS.FORBIDDEN,
+  [ErrorCode.NotFound]: HTTP_STATUS.NOT_FOUND,
+  [ErrorCode.Conflict]: HTTP_STATUS.CONFLICT,
+  [ErrorCode.HoldExpired]: HTTP_STATUS.GONE,
+  [ErrorCode.ValidationError]: HTTP_STATUS.UNPROCESSABLE,
+  [ErrorCode.InvalidForm]: HTTP_STATUS.UNPROCESSABLE,
+  [ErrorCode.TooManyRequests]: HTTP_STATUS.TOO_MANY_REQUESTS,
+  [ErrorCode.OutcomeUnknown]: HTTP_STATUS.BAD_GATEWAY,
+  [ErrorCode.ServiceUnavailable]: HTTP_STATUS.SERVICE_UNAVAILABLE,
+  [ErrorCode.DatabaseError]: HTTP_STATUS.INTERNAL_ERROR,
+  [ErrorCode.DbListFailed]: HTTP_STATUS.INTERNAL_ERROR,
+  [ErrorCode.DbCreateFailed]: HTTP_STATUS.INTERNAL_ERROR,
+  [ErrorCode.InternalError]: HTTP_STATUS.INTERNAL_ERROR,
+  [ErrorCode.NotImplemented]: HTTP_STATUS.INTERNAL_ERROR,
+} as const satisfies Record<ErrorCode, number>;
 
 export const ACTION_MESSAGES = {
   UNEXPECTED_FAILURE_LOG: "Server action failed unexpectedly.",
@@ -35,6 +56,8 @@ export const HTTP_CONTENT_TYPE = {
   XML: "application/xml",
   FORM: "application/x-www-form-urlencoded",
 } as const;
+
+export const NO_STORE_HEADERS = { "Cache-Control": "no-store" } as const;
 
 export const CORS_HEADERS = {
   ORIGIN: "origin",
@@ -54,7 +77,7 @@ export const DEFAULT_SEO = {
 export const RESTAURANT_CONTACT = {
   phone: "+35316763144",
   phoneLabel: "+353 1 676 3144",
-  email: "reception@peploes.ie",
+  email: "reception@peploes.com",
 } as const;
 
 export const RESTAURANT_OPENING_HOURS = [
@@ -113,17 +136,6 @@ export const ROUTES = {
   LLMS: "/llms.txt",
   ROBOTS: "/robots.txt",
   SITEMAP: "/sitemap.xml",
-  API: {
-    EXAMPLES: "/api/examples",
-    EXAMPLE_BY_ID: (id: number | string) => `/api/examples/${id}`,
-  },
-} as const;
-
-export const FORM_FIELDS = {
-  example: {
-    NAME: "name",
-    EMAIL: "email",
-  },
 } as const;
 
 export const EXAMPLE_LIMITS = {
@@ -222,6 +234,103 @@ export const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 export const MILLISECONDS_PER_DAY = 86_400_000;
+export const MILLISECONDS_PER_SECOND = 1000;
+
+export const HTML_TEXT_PATTERNS = {
+  hidden: /<!--[\s\S]*?-->|<(style|script)\b[\s\S]*?<\/\1\s*>/gi,
+  blockEnd: /<\/(?:p|div|li|h[1-6]|tr)>|<br\s*\/?>/gi,
+  tag: /<[^>]*>/g,
+  entity: /&(#x[\da-f]+|#\d+|[a-z][a-z\d]*);/gi,
+  space: /\s+/g,
+} as const;
+
+export const HTML_ENTITIES: Readonly<Record<string, string>> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  lsquo: "‘",
+  rsquo: "’",
+  ldquo: "“",
+  rdquo: "”",
+  ndash: "–",
+  mdash: "—",
+  hellip: "…",
+  bull: "•",
+  middot: "·",
+  euro: "€",
+  pound: "£",
+  copy: "©",
+  reg: "®",
+  trade: "™",
+};
+
+export const UNICODE_MAX_CODE_POINT = 0x10_ff_ff;
+
+export const IP_ADDRESS = {
+  ipv6Groups: 8,
+  ipv6NetworkGroups: 4,
+  mappedIpv4Marker: 0xff_ff,
+  mappedIpv4MarkerIndex: 5,
+  byteValues: 256,
+} as const;
+
+export const RESTAURANT_TIME_ZONE = "Europe/Dublin";
+
+export const CALENDAR_NAMES = {
+  weekdays: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  weekdaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  months: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  monthsShort: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
+} as const;
+
+export const CALENDAR_FORMAT = {
+  partsLocale: "en-CA",
+  utcMidnightSuffix: "T00:00:00Z",
+  datePattern: /^\d{4}-\d{2}-\d{2}$/,
+  clockPattern: /^([01]\d|2[0-3]):[0-5]\d$/,
+  hoursPerHalfDay: 12,
+  morning: "am",
+  afternoon: "pm",
+} as const;
+
+export const GUEST_WORDS = { one: "guest", many: "guests" } as const;
 
 export const BOOKING_BANNER_CONTENT = {
   heading: "Book your table and step down",
@@ -270,11 +379,6 @@ export const WHATS_ON_CONTENT: IWhatsOnContent = {
   ctaLabel: "View what’s on",
 };
 
-export const EXAMPLE_FORM_INITIAL_STATE = {
-  success: false,
-  error: undefined,
-} satisfies IFormActionResponse;
-
 export const READ_MORE_COLLAPSED_HEIGHT = "12.5em";
 
 export const MOBILE_HOME_CONTENT = {
@@ -282,4 +386,47 @@ export const MOBILE_HOME_CONTENT = {
   menusImage: "/peploes-dining-room-mobile.png",
   ginaEyebrow: "From the cellar",
   ginaHeading: "Wine things just happen.",
+} as const;
+
+export const MENU_DOCUMENT_TYPES = {
+  lunch: "restaurantMenu",
+  dinner: "restaurantMenu",
+  "pre-theatre": "restaurantMenu",
+  wine: "wineMenu",
+  cocktails: "drinksMenu",
+  "group-set-menu": "setMenuCollection",
+  seasonal: "setMenuCollection",
+} as const;
+export const MENU_ROUTES = {
+  lunch: ROUTES.LUNCH,
+  dinner: ROUTES.DINNER,
+  "pre-theatre": ROUTES.PRE_THEATRE,
+  wine: ROUTES.WINE,
+  cocktails: ROUTES.COCKTAILS,
+  "group-set-menu": ROUTES.GROUP_SET_MENU,
+  seasonal: ROUTES.SEASONAL,
+} as const;
+
+export const MENU_SLUGS = [
+  "lunch",
+  "dinner",
+  "pre-theatre",
+  "wine",
+  "cocktails",
+  "group-set-menu",
+  "seasonal",
+] as const;
+
+export const SEASONAL_DETAIL_ICONS = {
+  date: { src: "/peploes-event-calendar.svg", width: 48, height: 48 },
+  time: { src: "/peploes-visit-clock.svg", width: 48, height: 48 },
+  price: { src: "/peploes-events-deposit.svg", width: 48, height: 48 },
+  menu: { src: "/peploes-events-menu.svg", width: 48, height: 48 },
+} as const;
+
+export const CARD_DESCRIPTION_MAX_WORDS = 12;
+
+export const SEASONAL_GALLERY_LIMITS = {
+  MIN_IMAGES: 3,
+  MAX_IMAGES: 5,
 } as const;

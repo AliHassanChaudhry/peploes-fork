@@ -37,9 +37,9 @@ test("policy email links reach the reception address", async ({ page }) => {
       for (const link of await emailLinks.all()) {
         await expect(link).toHaveAttribute(
           "href",
-          "mailto:reception@peploes.ie",
+          "mailto:reception@peploes.com",
         );
-        await expect(link).toHaveText(/^reception@peploes\.ie\.?$/);
+        await expect(link).toHaveText(/^reception@peploes\.com\.?$/);
       }
     });
   }
@@ -200,9 +200,8 @@ test("all four policies share the responsive contents and reading layout", async
   expect(new Set(headingStyles).size).toBe(1);
 });
 
-test("footer legal links open all four policies", async ({
+test("footer legal links open the policies requested in Figma", async ({
   page,
-  isMobile,
 }) => {
   await page.goto("/");
 
@@ -216,11 +215,6 @@ test("footer legal links open all four policies", async ({
       label: "Terms",
       path: "/terms-conditions",
       heading: "Our terms and conditions.",
-    },
-    {
-      label: isMobile ? "Booking Terms" : "Booking & Cancellation",
-      path: "/booking-cancellation-terms",
-      heading: "Before you book.",
     },
     {
       label: "Accessibility",
@@ -251,8 +245,10 @@ test("footer legal links open all four policies", async ({
   }
 
   await expect(
-    page.getByRole("contentinfo").getByText(/^(Cookie Preferences|Cookies)$/),
-  ).toHaveCount(0);
+    page
+      .getByRole("contentinfo")
+      .getByRole("button", { name: "Cookie Settings" }),
+  ).toBeVisible();
 });
 
 test("an unknown policy slug returns a not-found page", async ({ page }) => {

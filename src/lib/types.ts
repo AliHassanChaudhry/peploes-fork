@@ -2,13 +2,45 @@ import type { VariantProps } from "class-variance-authority";
 import type { Result as NeverthrowResult } from "neverthrow";
 import type { Route } from "next";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { infer as InferSchema } from "zod";
 import type { z } from "zod/v4";
 
-import type { examples } from "@/db/schema";
-import type { ROUTES } from "@/lib/constants";
+import type {
+  calendarQuerySchema,
+  guestDetailsSchema,
+  holdInputSchema,
+  timesQuerySchema,
+} from "@/lib/booking-schema";
+import type { holdTokenSchema } from "@/lib/booking-token";
+import type {
+  cmsMenuSchema,
+  menuCollectionNavigationSchema,
+  menusPageSchema,
+} from "@/lib/cms-menu-schema";
+import type { MENU_SLUGS, ROUTES } from "@/lib/constants";
+import type {
+  BOOKING_SKIP_REASONS,
+  BOOKING_UNSUPPORTED_SETTINGS,
+} from "@/lib/constants/booking";
 import type { buttonVariants } from "@/lib/constants/button";
+import type { cookiePreferencesSchema } from "@/lib/cookie-consent";
 import type { ErrorCode, HttpVerb, LogLevel } from "@/lib/enums";
-import type { createExampleSchema } from "@/lib/examples-schema";
+import type { createResDiaryProvider } from "@/lib/resdiary-provider";
+import type {
+  closedDatesReplySchema,
+  dateRangeReplySchema,
+  guestReplySchema,
+  holdReplySchema,
+  holdStatusReplySchema,
+  setupReplySchema,
+  signInReplySchema,
+  timeSlotReplySchema,
+} from "@/lib/resdiary-schema";
+import type {
+  seasonalCardSchema,
+  seasonalEntrySchema,
+  whatsOnPageSchema,
+} from "@/lib/seasonal-schema";
 
 // ─── Core Framework Types ─────────────────────────────────────────────────
 
@@ -62,12 +94,6 @@ export interface IAppError {
   context?: Record<string, unknown>;
 }
 
-export interface IFormActionResponse {
-  success: boolean;
-  error?: string;
-  fieldErrors?: Record<string, string[]>;
-}
-
 // ─── Action Framework ────────────────────────────────────────────────────
 
 export interface IActionDefinition<
@@ -78,6 +104,15 @@ export interface IActionDefinition<
   parse: (rawInput: unknown) => NeverthrowResult<TInput, IError<TCode>>;
   handler: (
     payload: IActionPayload<TInput>,
+  ) => Promise<NeverthrowResult<TOutput, IError<TCode>>>;
+}
+
+export interface IPublicActionDefinition<
+  TOutput,
+  TCode extends ErrorCode = ErrorCode,
+> {
+  handler: (
+    payload: IPublicActionPayload,
   ) => Promise<NeverthrowResult<TOutput, IError<TCode>>>;
 }
 
@@ -96,6 +131,10 @@ export interface IAuthenticatedContext {
   role: string | null;
 }
 
+export interface IPublicActionPayload {
+  input: unknown;
+}
+
 export interface IActionPayload<TInput> {
   input: TInput;
   context: IAuthenticatedContext;
@@ -104,31 +143,6 @@ export interface IActionPayload<TInput> {
 // ─── Auth ─────────────────────────────────────────────────────────────────
 
 export type TAuthErrorCodes = ErrorCode.Unauthorized;
-
-// ─── Example Domain ───────────────────────────────────────────────────────
-
-export type TExampleRecord = typeof examples.$inferSelect;
-
-export type TCreateExampleInput = z.infer<typeof createExampleSchema>;
-
-export interface IExampleDto {
-  id: number;
-  name: string;
-  createdAt: string;
-}
-
-export type TExampleActionErrorCodes =
-  | ErrorCode.InvalidForm
-  | ErrorCode.ValidationError
-  | ErrorCode.DbCreateFailed;
-
-export interface IExamplesResponse {
-  data: IExampleDto[];
-}
-
-export interface IListExamplesOptions {
-  limit?: number;
-}
 
 // ─── SEO Types ────────────────────────────────────────────────────────────
 
@@ -306,6 +320,471 @@ export interface ILoggerConfig {
   metadata?: Record<string, unknown>;
 }
 
+export interface IRestaurantNow {
+  date: string;
+  time: string;
+}
+
+export interface IDatePeriod {
+  from: string;
+  to: string;
+}
+
+export type TResDiaryOperation =
+  | "getRules"
+  | "getAvailableDates"
+  | "searchTimes"
+  | "createHold"
+  | "changeHold"
+  | "submitHoldGuest"
+  | "getHoldStatus"
+  | "getClosedDates";
+
+interface IResDiaryFailureBase {
+  operation: TResDiaryOperation;
+  httpStatus?: number;
+  requestId?: string;
+  detail?: string;
+}
+
+export type TResDiaryFailure = IResDiaryFailureBase &
+  (
+    | {
+        kind:
+          | "not_configured"
+          | "unavailable"
+          | "not_found"
+          | "outcome_unknown"
+          | "payment_unsupported";
+      }
+    | { kind: "rejected"; fields: string[] }
+  );
+
+export interface IResDiaryClock {
+  time: string;
+  nextDay: boolean;
+}
+
+export interface IResDiaryRules {
+  minPartySize: number;
+  maxPartySize: number;
+  defaultPartySize: number;
+  maxDaysAhead: number | null;
+  services: { id: number; name: string; start: string | null }[];
+  currency: string;
+  termsHtml: string;
+  privacyHtml: string;
+  noAvailability: { message: string | null; phone: string | null };
+  membership: { label: string | null; required: boolean } | null;
+  customField: {
+    label: string | null;
+    required: boolean;
+    type: "text" | "url";
+  } | null;
+  stripe: { publishableKey: string; accountId: string; live: boolean } | null;
+  paymentProvider: "stripe" | "guestpay" | null;
+}
+
+export interface IResDiaryDateRangeInput {
+  from: string;
+  to: string;
+  partySize: number;
+}
+
+export interface IResDiaryTimeSearchInput {
+  date: string;
+  partySize: number;
+}
+
+export interface IResDiaryDateRange {
+  dates: { date: string; times: IResDiaryClock[] }[];
+  missing: IDatePeriod | null;
+}
+
+export interface IResDiarySlot {
+  date: string;
+  time: string;
+  serviceId: number;
+  standard: boolean;
+  feeCents: number;
+  leaveTimeRequired: boolean;
+  leaveTime: IResDiaryClock | null;
+}
+
+export interface IResDiaryTimes {
+  mayRequireCard: boolean;
+  slots: IResDiarySlot[];
+}
+
+export interface IResDiaryHoldInput {
+  date: string;
+  time: string;
+  partySize: number;
+}
+
+export interface IResDiaryHold {
+  holdId: number;
+  reference: string;
+  expiresAt: number;
+  expiresInMs: number;
+}
+
+export interface IResDiaryChangeHoldInput extends IResDiaryHoldInput {
+  holdId: number;
+}
+
+export interface IResDiaryHoldExpiry {
+  expiresAt: number | null;
+}
+
+export interface IResDiaryGuest {
+  firstName: string;
+  surname: string;
+  email: string;
+  mobile?: string;
+  mobileCountryCode?: number;
+}
+
+export interface IResDiaryGuestInput {
+  holdId: number;
+  guest: IResDiaryGuest;
+  specialRequests?: string;
+  returnUrl: string;
+  cancelUrl: string;
+}
+
+export interface IResDiaryStripeStep {
+  publishableKey: string;
+  accountId: string;
+  clientSecret: string;
+}
+
+export type TResDiaryGuestOutcome =
+  | { kind: "confirmed"; reference: string }
+  | {
+      kind: "payment";
+      amountCents: number;
+      amountText: string;
+      stripe: IResDiaryStripeStep;
+    }
+  | { kind: "card"; amountText: string; stripe: IResDiaryStripeStep }
+  | { kind: "table_taken" }
+  | { kind: "guest_blocked" };
+
+export interface IResDiaryHoldStatus {
+  status: "pending" | "confirmed" | "failed" | "cancelled" | "unknown";
+  reference: string | null;
+}
+
+export interface IResDiaryClosedDates {
+  closedWeekdays: number[];
+  closedPeriods: IDatePeriod[];
+}
+
+export interface IResDiaryWeekdays {
+  weekdays: number[];
+  skipped: number;
+}
+
+export type TResDiaryProvider = ReturnType<typeof createResDiaryProvider>;
+
+export interface IResDiaryCallOptions {
+  deadlineAt?: number;
+}
+
+export interface IResDiaryConfig {
+  apiUrl: string;
+  micrositeName: string;
+  channelCode: string;
+  username: string;
+  password: string;
+}
+
+export interface IResDiaryReply {
+  status: number;
+  headers: Headers;
+  text: () => Promise<string>;
+}
+
+export type TResDiaryFetch = (
+  url: string,
+  init: RequestInit,
+) => Promise<IResDiaryReply>;
+
+export interface IResDiaryDeps {
+  config?: IResDiaryConfig | null;
+  fetch?: TResDiaryFetch;
+}
+
+export type TResDiaryResult<T> = Promise<NeverthrowResult<T, TResDiaryFailure>>;
+
+export type TResDiarySignInReply = z.infer<typeof signInReplySchema>;
+export type TResDiarySetupReply = z.infer<typeof setupReplySchema>;
+export type TResDiaryDateRangeReply = z.infer<typeof dateRangeReplySchema>;
+export type TResDiaryTimeSlotReply = z.infer<typeof timeSlotReplySchema>;
+export type TResDiaryClosedDatesReply = z.infer<typeof closedDatesReplySchema>;
+export type TResDiaryHoldReply = z.infer<typeof holdReplySchema>;
+export type TResDiaryGuestReply = z.infer<typeof guestReplySchema>;
+export type TResDiaryHoldStatusReply = z.infer<typeof holdStatusReplySchema>;
+
+export type TBookingProvider = Pick<
+  TResDiaryProvider,
+  | "getRules"
+  | "getClosedDates"
+  | "getAvailableDates"
+  | "searchTimes"
+  | "createHold"
+  | "changeHold"
+  | "submitHoldGuest"
+  | "getHoldStatus"
+>;
+
+export type TBookingOperation =
+  | "getFindTableData"
+  | "getCalendarDays"
+  | "getTimes"
+  | "holdTable"
+  | "submitGuestDetails"
+  | "getHoldStatus";
+
+export type TBookingSkipReason =
+  (typeof BOOKING_SKIP_REASONS)[keyof typeof BOOKING_SKIP_REASONS];
+
+export interface ISkippedSlot {
+  date: string;
+  time: string;
+  reason: TBookingSkipReason;
+}
+
+export type TUnsupportedSetting =
+  (typeof BOOKING_UNSUPPORTED_SETTINGS)[keyof typeof BOOKING_UNSUPPORTED_SETTINGS];
+
+export interface IBookingServiceDeps {
+  provider?: TBookingProvider;
+  holdSecret?: string | null;
+  liveSite?: boolean;
+}
+
+export type TBookingErrorCode =
+  | ErrorCode.ServiceUnavailable
+  | ErrorCode.TooManyRequests
+  | ErrorCode.ValidationError
+  | ErrorCode.Conflict
+  | ErrorCode.Forbidden
+  | ErrorCode.NotFound
+  | ErrorCode.HoldExpired
+  | ErrorCode.OutcomeUnknown;
+
+export type THoldInput = z.infer<typeof holdInputSchema>;
+
+export type THoldToken = z.infer<typeof holdTokenSchema>;
+
+export type TGuestDetails = z.infer<typeof guestDetailsSchema>;
+
+export type TBookingField =
+  | keyof z.infer<typeof timesQuerySchema>
+  | keyof z.infer<typeof calendarQuerySchema>
+  | keyof THoldInput
+  | keyof TGuestDetails;
+
+export interface IBookingError extends IError<TBookingErrorCode> {
+  fieldErrors?: Partial<Record<TBookingField, string>>;
+  clearHold?: true;
+  holdCookie?: IHoldCookie;
+}
+
+export type TBookingResult<T> = Promise<NeverthrowResult<T, IBookingError>>;
+
+export interface IBookingWindow {
+  rules: IResDiaryRules;
+  lastDate: string | null;
+  closed: IResDiaryClosedDates;
+}
+
+export interface IBookingVisit {
+  today: string;
+  now: string;
+  closed: boolean;
+  serviceStarts: ReadonlyMap<number, string>;
+}
+
+export interface IFindTableData {
+  partySize: { min: number; max: number; default: number };
+  calendar: {
+    today: string;
+    lastDate: string | null;
+    defaultDate: string;
+    closedWeekdays: number[];
+    closedPeriods: IDatePeriod[];
+  };
+  terms: string[];
+}
+
+export interface ICalendarDays {
+  from: string;
+  to: string;
+  partySize: number;
+  openDates: string[];
+}
+
+export interface IReturnBy {
+  time: string;
+  label: string;
+  nextDay: boolean;
+  required: boolean;
+}
+
+export type TBookingOffer =
+  | {
+      kind: "standard";
+      feeCents: number;
+      mayRequireCard: boolean;
+      returnBy: IReturnBy | null;
+    }
+  | {
+      kind: "promotion";
+      promotionId: number;
+      name: string;
+      description: string;
+      feeCents: number;
+      mayRequireCard: boolean;
+      mayRequireDeposit: boolean;
+      returnBy: IReturnBy | null;
+    };
+
+export type TStandardOffer = Extract<TBookingOffer, { kind: "standard" }>;
+
+export interface ICurrentOffer {
+  time: IBookingTime;
+  offer: TStandardOffer;
+}
+
+export interface IBookingGuestContext {
+  provider: TBookingProvider;
+  secret: string;
+  liveSite: boolean;
+}
+
+export interface IBookingTime {
+  searchDate: string;
+  date: string;
+  time: string;
+  label: string;
+  offers: TBookingOffer[];
+}
+
+export type TTimesEmptyReason = "closed" | "none_online" | "all_passed";
+
+export interface ITimesData {
+  date: string;
+  dateLabel: string;
+  partySize: number;
+  guestsLabel: string;
+  times: IBookingTime[];
+  emptyReason: TTimesEmptyReason | null;
+}
+
+export interface IPartyLimits {
+  min: number;
+  max: number;
+}
+
+export interface ICheckedOffer extends ICurrentOffer {
+  visit: IBookingVisit;
+}
+
+export interface IHoldSummary {
+  reference: string;
+  date: string;
+  dateLabel: string;
+  time: string;
+  timeLabel: string;
+  partySize: number;
+  guestsLabel: string;
+  offer: TStandardOffer;
+  revision: number;
+}
+
+export interface IHoldCookie {
+  token: string;
+  maxAgeSeconds: number;
+}
+
+export type TGuestDetailsView =
+  | { kind: "confirmed"; reference: string; summary: IHoldSummary }
+  | {
+      kind: "payment";
+      amountCents: number;
+      amountText: string;
+      stripe: IResDiaryStripeStep;
+      summary: IHoldSummary;
+    }
+  | {
+      kind: "card";
+      amountText: string;
+      stripe: IResDiaryStripeStep;
+      summary: IHoldSummary;
+    };
+
+export type TGuestDetailsResult =
+  | Extract<TGuestDetailsView, { kind: "confirmed" }>
+  | (Exclude<TGuestDetailsView, { kind: "confirmed" }> & {
+      holdCookie: IHoldCookie;
+    });
+
+export type THoldState = "pending" | "confirmed" | "expired" | "failed";
+
+export interface IHoldStatusResult {
+  status: THoldState;
+  reference: string;
+  summary: IHoldSummary;
+  clearHold: boolean;
+}
+
+export interface IHoldCookieOptions {
+  httpOnly: boolean;
+  secure: boolean;
+  sameSite: "lax";
+  path: string;
+  maxAge: number;
+}
+
+export interface IHoldCookieStore {
+  get(name: string): { value: string } | undefined;
+  set(name: string, value: string, options: IHoldCookieOptions): unknown;
+  delete(cookie: { name: string; path: string }): unknown;
+}
+
+export interface IRateLimitWindow {
+  limit(identifier: string): Promise<{ success: boolean; reason?: string }>;
+}
+
+export type THoldGate = () => Promise<boolean>;
+
+export interface IHoldLimiterDeps {
+  windows: readonly IRateLimitWindow[];
+  secret: string;
+}
+
+export type TBookingResponse<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: IBookingResponseError };
+
+export interface IBookingResponseError {
+  code: TBookingErrorCode | ErrorCode.InternalError;
+  message: string;
+  fieldErrors?: IBookingError["fieldErrors"];
+}
+
+export type THeldTable = Pick<IHoldResult, "expiresInMs" | "summary">;
+
+export interface IHoldResult {
+  holdToken: string;
+  cookieMaxAgeSeconds: number;
+  expiresInMs: number;
+  summary: IHoldSummary;
+}
+
 // ─── Component Prop Types ──────────────────────────────────────────────
 
 export interface IFieldErrorProps {
@@ -315,7 +794,7 @@ export interface IFieldErrorProps {
 
 export interface IWhatsOnEvent {
   id: string;
-  href: Route<`/seasonal/${string}`>;
+  href: Route<"/seasonal" | `/seasonal/${string}`>;
   category: string;
   title: string;
   description: string;
@@ -381,9 +860,12 @@ export interface ICookieConsentRecord {
   timestamp: string;
 }
 
+export type ICookiePreferences = InferSchema<typeof cookiePreferencesSchema>;
+
 // ─── Homepage Content ───────────────────────────────────────────────────
 
 export interface ISectionImage {
+  _key?: string;
   src: string;
   alt: string;
 }
@@ -552,6 +1034,7 @@ export interface IMenuContent extends IMenuEditorialContent, IMenuNotesContent {
   serviceTimes: string;
   courses: readonly IMenuCourse[];
   introLayout?: "editorial";
+  booking?: IMenuBooking;
 }
 
 export interface IMenuEditorialContent {
@@ -867,7 +1350,6 @@ export interface IGroupOccasion {
   description: string;
   mobileDescription?: string;
   image: ISectionImage;
-  minHeight: number;
 }
 
 export interface IGroupsOccasionsContent {
@@ -1052,11 +1534,12 @@ export interface IPolicyPageProps {
 }
 
 export interface ISeasonalEventCard {
+  id?: string;
   title: string;
   description: string;
   action: string;
   image: ISectionImage;
-  href?: Route;
+  href?: string;
 }
 
 export interface ISeasonalEventContent {
@@ -1069,6 +1552,7 @@ export interface ISeasonalEventContent {
     image: ISectionImage;
   };
   details?: readonly {
+    _key?: string;
     label: string;
     description: string;
     icon: { src: string; width: number; height: number };
@@ -1082,7 +1566,7 @@ export interface ISeasonalEventContent {
   story?: {
     eyebrow: string;
     heading: string;
-    paragraphs: readonly string[];
+    paragraphs: readonly { _key: string; text: string }[];
     image: ISectionImage;
   };
   gallery?: {
@@ -1090,7 +1574,7 @@ export interface ISeasonalEventContent {
     heading: string;
     images: readonly ISectionImage[];
   };
-  invitation: {
+  invitation?: {
     heading: string;
     description: string;
     bookingAction: string;
@@ -1104,8 +1588,9 @@ export interface ISeasonalEventContent {
 }
 
 export interface ISeasonalEventActionProps {
+  className?: string;
   label: string;
-  href?: Route;
+  href?: string;
 }
 
 export interface ISeasonalEventRelatedProps {
@@ -1159,4 +1644,45 @@ export interface ITableBookingTimesProps {
   onReturnChange: (accepted: boolean) => void;
   onBack: () => void;
   onContinue: () => void;
+}
+
+export type TMenuSlug = (typeof MENU_SLUGS)[number];
+export type TCmsMenu = InferSchema<typeof cmsMenuSchema>;
+export type TMenusPageDocument = InferSchema<typeof menusPageSchema>;
+export type TMenuCollections = InferSchema<
+  typeof menuCollectionNavigationSchema
+>;
+export interface ICmsMenuPageProps {
+  slug: TMenuSlug;
+}
+export interface IMenuHeroProps {
+  content: TMenusPageDocument;
+}
+export interface IMenuLayoutProps {
+  children: ReactNode;
+}
+
+// ─── What’s On CMS ───────────────────────────────────────────────────────
+export type TSeasonalCard = InferSchema<typeof seasonalCardSchema>;
+export type TSeasonalEntry = InferSchema<typeof seasonalEntrySchema>;
+export type TWhatsOnPage = InferSchema<typeof whatsOnPageSchema>;
+export interface ISeasonalMonth {
+  key: string;
+  name: string;
+  abbreviation: string;
+  events: (TSeasonalCard & { day: string })[];
+}
+export interface ISeasonalProps {
+  content: TWhatsOnPage;
+  months: ISeasonalMonth[];
+}
+export interface ISeasonalJoinProps {
+  join: TWhatsOnPage["join"];
+}
+export interface ISeasonalEventProps {
+  content: ISeasonalEventContent;
+  join: TWhatsOnPage["join"];
+}
+export interface ISeasonalRouteProps {
+  params: Promise<{ slug: string }>;
 }
