@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -121,7 +122,7 @@ function StoryBuilding() {
           >
             <Link href={`${ROUTES.VISIT_CONTACT}#find-us`}>
               {building.action}
-              <span aria-hidden="true">→</span>
+              <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </Button>
         </div>
@@ -202,7 +203,7 @@ function StoryMural() {
         />
       </div>
       <div className="site-container">
-        <div className="relative z-1 py-12 lg:min-h-[444px] lg:w-[470px] lg:pb-9">
+        <div className="relative z-1 py-12 lg:min-h-[444px] lg:w-[470px]">
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {mural.eyebrow}
           </p>
@@ -222,7 +223,7 @@ function StoryMural() {
             className="mt-6 h-auto min-h-11 w-[249px] max-w-full gap-[5px] rounded-[4px] border-0 px-5 py-2.5 text-base leading-6 whitespace-normal shadow-[inset_0_0_0_1px_currentColor] hover:bg-warm-cream hover:text-ink hover:shadow-[inset_0_0_0_1px_var(--warm-cream)] focus-visible:ring-0 forced-colors:[&:not(:focus-visible)]:-outline-offset-1 forced-colors:[&:not(:focus-visible)]:[outline:1px_solid_CanvasText]"
           >
             {mural.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>
@@ -267,7 +268,7 @@ function StoryArchive() {
             className="mt-6 h-auto min-h-11 w-[210px] max-w-full gap-[5px] rounded-[4px] border-0 px-5 py-2.5 text-base leading-6 whitespace-normal shadow-[inset_0_0_0_1px_currentColor] hover:bg-peploe-burgundy hover:text-warm-cream hover:shadow-[inset_0_0_0_1px_var(--peploe-burgundy)] focus-visible:ring-0 lg:mt-5 forced-colors:[&:not(:focus-visible)]:-outline-offset-1 forced-colors:[&:not(:focus-visible)]:[outline:1px_solid_CanvasText]"
           >
             {archive.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>
@@ -314,7 +315,7 @@ function StoryToday() {
       aria-labelledby="story-today"
     >
       {/* Keep the wrist beneath “dining” as the desktop photograph widens. */}
-      <div className="absolute inset-0 min-[90rem]:top-[264px] min-[90rem]:right-auto min-[90rem]:bottom-auto min-[90rem]:left-(--wrist-x) min-[90rem]:aspect-[3/2] min-[90rem]:w-[max(calc(var(--wrist-x)*30/11),calc((100%_-_var(--wrist-x))*30/19))] min-[90rem]:[--wrist-x:calc(var(--story-gutter)_+_456px)] min-[90rem]:[transform:translate(-36.666667%,-57.1875%)]">
+      <div className="absolute inset-0 min-[90rem]:top-[274px] min-[90rem]:right-auto min-[90rem]:bottom-auto min-[90rem]:left-(--wrist-x) min-[90rem]:aspect-[3/2] min-[90rem]:w-[max(calc(var(--wrist-x)*30/11),calc((100%_-_var(--wrist-x))*30/19))] min-[90rem]:[--wrist-x:calc(var(--story-gutter)_+_456px)] min-[90rem]:[transform:translate(-36.666667%,-57.1875%)]">
         <Image
           {...today.image}
           fill
@@ -323,7 +324,7 @@ function StoryToday() {
         />
       </div>
       <div className="site-container">
-        <div className="relative z-1 py-12 lg:min-h-[390px] lg:w-[520px] lg:pt-[38px] lg:pb-5">
+        <div className="relative z-1 py-12 lg:min-h-[390px] lg:w-[520px]">
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {today.eyebrow}
           </p>
@@ -343,7 +344,7 @@ function StoryToday() {
             className="mt-6 h-auto min-h-11 w-[156px] max-w-full gap-[5px] rounded-[4px] px-5 py-2.5 text-base leading-6 whitespace-nowrap lg:mt-5"
           >
             {today.action}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </div>
       </div>

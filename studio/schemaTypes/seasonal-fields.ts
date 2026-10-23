@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
-import { SEASONAL_RELATED_PAGES } from "../../src/lib/constants";
+import { cardDescriptionSchema } from "../../src/lib/card-description";
+import { pageLinkSchema } from "../../src/lib/link-schema";
 
 export const seasonalHero = defineType({
   name: "seasonalHero",
@@ -64,7 +65,7 @@ export const seasonalDetail = defineType({
 });
 export const seasonalMenuCard = defineType({
   name: "seasonalMenuCard",
-  title: "Linked menu",
+  title: "Linked card",
   type: "object",
   fields: [
     defineField({
@@ -91,6 +92,7 @@ export const seasonalMenuCard = defineType({
     }),
     defineField({
       name: "menu",
+      title: "Previous menu link",
       type: "reference",
       to: [
         { type: "restaurantMenu" },
@@ -98,7 +100,38 @@ export const seasonalMenuCard = defineType({
         { type: "drinksMenu" },
         { type: "setMenuCollection" },
       ],
-      validation: (r) => r.required(),
+      readOnly: true,
+      hidden: ({ value }) => !value,
+      description:
+        "Kept for existing cards. Set Button URL to replace this link.",
+    }),
+    defineField({
+      name: "href",
+      title: "Button URL",
+      type: "string",
+      description:
+        "Paste any page path (/menus/dinner) or full website URL (https://example.com). Required unless this card has a previous menu link.",
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          if (value !== undefined)
+            return (
+              pageLinkSchema.safeParse(value).success ||
+              "Enter a valid page path or http(s) URL."
+            );
+          const parent = context.parent;
+          if (
+            parent &&
+            typeof parent === "object" &&
+            "menu" in parent &&
+            parent.menu &&
+            typeof parent.menu === "object" &&
+            "_ref" in parent.menu &&
+            typeof parent.menu._ref === "string" &&
+            parent.menu._ref.length > 0
+          )
+            return true;
+          return "Enter a Button URL.";
+        }),
     }),
   ],
 });
@@ -107,40 +140,34 @@ export const seasonalMenuHighlight = defineType({
   title: "On-page menu highlight",
   type: "object",
   fields: seasonalMenuCard.fields.filter(
-    (field) => field.name !== "menu" && field.name !== "action",
+    (field) =>
+      field.name !== "href" && field.name !== "action" && field.name !== "menu",
   ),
 });
 export const seasonalRelatedPage = defineType({
   name: "seasonalRelatedPage",
-  title: "Menu or group page",
+  title: "Linked card",
   type: "object",
-  fields: [
-    ...seasonalMenuCard.fields.filter((field) => field.name !== "menu"),
-    defineField({
-      name: "href",
-      title: "Destination page",
-      type: "string",
-      options: {
-        list: Object.entries(SEASONAL_RELATED_PAGES).map(([title, value]) => ({
-          title,
-          value,
-        })),
-      },
-      description:
-        "Choose an existing page. Journal destinations are pending until the Journal is built.",
-      validation: (rule) =>
-        rule
-          .required()
-          .custom(
-            (value) =>
-              !value ||
-              Object.values(SEASONAL_RELATED_PAGES).some(
-                (page) => page === value,
-              ) ||
-              "Choose an existing menu or group page.",
-          ),
-    }),
-  ],
+  fields: seasonalMenuCard.fields
+    .filter((field) => field.name !== "menu")
+    .map((field) =>
+      field.name === "description"
+        ? defineField({
+            name: "description",
+            type: "text",
+            description: "Maximum 12 words.",
+            validation: (rule) =>
+              rule
+                .required()
+                .custom(
+                  (value) =>
+                    !value ||
+                    cardDescriptionSchema.safeParse(value).success ||
+                    "Use no more than 12 words.",
+                ),
+          })
+        : field,
+    ),
 });
 export const seasonalStory = defineType({
   name: "seasonalStory",
@@ -202,7 +229,7 @@ export const seasonalInvitation = defineType({
     }),
     defineField({
       name: "bookingAction",
-      title: "Booking button label (currently inactive)",
+      title: "Booking button label",
       type: "string",
       initialValue: "Book this Experience",
       validation: (r) => r.required(),

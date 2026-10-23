@@ -68,40 +68,30 @@ export function GroupsOccasions() {
       </div>
 
       <div className="site-container">
-        <ul className="grid items-center gap-[18px] pt-8 pb-12 sm:gap-8 sm:pt-12 sm:pb-20 xl:w-[calc(100%+59px)] xl:max-w-[1355px] xl:grid-cols-3 xl:items-stretch xl:gap-7">
+        <ul className="grid items-center gap-10 pt-8 pb-12 sm:gap-8 sm:pt-12 sm:pb-20 xl:w-[calc(100%+59px)] xl:max-w-[1355px] xl:grid-cols-3 xl:items-stretch xl:gap-7">
           {GROUPS_OCCASIONS_CONTENT.occasions.map((occasion) => (
-            <li
-              key={occasion.title}
-              className="relative grid min-w-0 grid-cols-[124px_minmax(0,1fr)] gap-5 pr-3 pl-5 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-soft-stone max-sm:min-h-[187px]! max-[360px]:grid-cols-[96px_minmax(0,1fr)] sm:grid-cols-[minmax(0,180px)_minmax(140px,1fr)] sm:px-0 sm:before:hidden xl:min-h-[187px]! xl:grid-cols-[160px_minmax(0,1fr)] xl:px-5 xl:before:block"
-              style={{ minHeight: occasion.minHeight }}
-            >
+            <li key={occasion.title} className={styles.card} data-image-card>
               <Link
+                data-card-image
                 href={occasion.href}
                 aria-label={occasion.title}
-                className={cn(
-                  FOCUS_RING,
-                  "group relative block overflow-hidden rounded-[2px]",
-                )}
+                className={cn(FOCUS_RING, styles.image, "group")}
               >
+                {/* Landscape sources need enough pixels for their portrait crop. */}
                 <Image
                   src={occasion.image.src}
                   alt={occasion.image.alt}
                   fill
-                  sizes="(min-width: 1280px) 160px, (min-width: 640px) 180px, (max-width: 359px) 96px, 124px"
+                  sizes="(min-width: 1280px) 280px, (min-width: 640px) 360px, (max-width: 359px) 244px, 280px"
                   className="object-cover transition-transform duration-(--duration-base) ease-out motion-safe:group-hover:scale-105 motion-safe:group-focus-visible:scale-105 motion-reduce:transition-none"
                 />
               </Link>
-              <div className="flex min-w-0 flex-col sm:gap-2.5">
-                <div className="flex flex-col gap-2.5">
-                  <h3
-                    className={cn(
-                      ebGaramond.className,
-                      "text-2xl leading-[30px] font-medium",
-                    )}
-                  >
+              <div className={styles.copy}>
+                <div className={styles.introduction}>
+                  <h3 className={cn(ebGaramond.className, styles.title)}>
                     {occasion.title}
                   </h3>
-                  <p className="text-sm leading-[21px] text-text-secondary">
+                  <p className={styles.description}>
                     {occasion.mobileDescription ? (
                       <>
                         <span className="sm:hidden">
@@ -117,10 +107,11 @@ export function GroupsOccasions() {
                   </p>
                 </div>
                 <Button
+                  data-card-action
                   asChild
                   variant="brand-text"
                   aria-label={`${GROUPS_OCCASIONS_CONTENT.cardCtaLabel} ${occasion.title}`}
-                  className="mt-auto h-11 self-start rounded-none px-0 has-[>svg]:px-0 text-base leading-[22px] font-medium text-peploe-burgundy xl:leading-6"
+                  className={styles.action}
                 >
                   <Link href={occasion.href}>
                     {GROUPS_OCCASIONS_CONTENT.cardCtaLabel}

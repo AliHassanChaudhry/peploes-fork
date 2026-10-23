@@ -1,12 +1,17 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { Route } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import cardStyles from "@/components/app/compounds/groups-occasions.module.css";
 import styles from "@/components/app/compounds/seasonal-event.module.css";
 import { SeasonalEventAction } from "@/components/app/molecules/seasonal-event-action";
+import { FOCUS_RING } from "@/lib/constants";
 import type { ISeasonalEventRelatedProps } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function SeasonalEventRelated({ content }: ISeasonalEventRelatedProps) {
   const listRef = useRef<HTMLUListElement>(null);
@@ -86,19 +91,35 @@ export function SeasonalEventRelated({ content }: ISeasonalEventRelatedProps) {
           className={styles.relatedCards}
         >
           {content.cards.map((card) => (
-            <li key={card.id ?? card.title} className={styles.relatedCard}>
-              <div className={styles.relatedImage}>
+            <li
+              data-image-card
+              key={card.id ?? card.title}
+              className={cn(styles.relatedCard, cardStyles.card)}
+            >
+              <Link
+                data-card-image
+                href={card.href as Route}
+                aria-label={card.title}
+                className={cn(FOCUS_RING, cardStyles.image, "group")}
+              >
+                {/* Landscape photos need enough pixels for the full portrait crop. */}
                 <Image
                   {...card.image}
                   fill
-                  sizes="(min-width: 1024px) 174px, (min-width: 640px) 140px, calc(100vw - 48px)"
-                  className={styles.cover}
+                  sizes="(min-width: 1280px) 400px, (min-width: 640px) 360px, 280px"
+                  className="object-cover transition-transform duration-(--duration-base) ease-out motion-safe:group-hover:scale-105 motion-safe:group-focus-visible:scale-105 motion-reduce:transition-none"
                 />
-              </div>
-              <div className={styles.relatedCopy}>
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
-                <SeasonalEventAction label={card.action} href={card.href} />
+              </Link>
+              <div className={cardStyles.copy}>
+                <div className={cardStyles.introduction}>
+                  <h3 className={cardStyles.title}>{card.title}</h3>
+                  <p className={cardStyles.description}>{card.description}</p>
+                </div>
+                <SeasonalEventAction
+                  label={card.action}
+                  href={card.href}
+                  className={cardStyles.action}
+                />
               </div>
             </li>
           ))}

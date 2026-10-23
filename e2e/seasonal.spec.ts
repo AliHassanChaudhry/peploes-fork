@@ -107,8 +107,8 @@ test("the Seasonal menu remains a separate destination from What's On", async ({
     await expect(menu).not.toBeVisible();
   } else {
     await navigation
-      .getByRole("button", { name: "Menus", exact: true })
-      .click();
+      .getByRole("link", { name: "Menus", exact: true })
+      .press("ArrowDown");
     await navigation
       .getByRole("link", { name: "Seasonal", exact: true })
       .click();
@@ -120,7 +120,7 @@ test("the Seasonal menu remains a separate destination from What's On", async ({
   ).toBeVisible();
 });
 
-test("diary entries link to their individual event pages while booking remains unavailable", async ({
+test("diary entries and booking actions open their respective pages", async ({
   page,
 }) => {
   await page.goto("/seasonal");
@@ -140,16 +140,20 @@ test("diary entries link to their individual event pages while booking remains u
     await expect(eventLinks.nth(index)).toHaveAttribute("href", destination);
   }
 
-  const booking = main.getByRole("button", {
+  const booking = main.getByRole("link", {
     name: seasonalPageFixture.join.bookingAction,
     exact: true,
   });
-  await expect(booking).toHaveAttribute("type", "button");
-  await expect(booking).toHaveAttribute("aria-disabled", "true");
-  await booking.focus();
-  await page.keyboard.press("Enter");
-  await expect(page).toHaveURL("/seasonal");
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(booking).toHaveAttribute("href", "/book-a-table");
+  await booking.click();
+  await expect(page).toHaveURL("/book-a-table");
+  await expect(
+    page.getByRole("heading", { name: "A table at Peploe’s.", level: 1 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Table reservations" }),
+  ).toBeVisible();
+  await page.goto("/seasonal");
 
   await eventLinks.first().click();
   await expect(page).toHaveURL("/seasonal/rugby-at-peploes");
@@ -172,7 +176,7 @@ test("shared closing banners fit long CMS labels and retain original short-label
       name: seasonalPageFixture.join.heading,
     });
     const actions = [
-      banner.getByRole("button", {
+      banner.getByRole("link", {
         name: seasonalPageFixture.join.bookingAction,
         exact: true,
       }),
@@ -226,7 +230,7 @@ test("shared closing banners fit long CMS labels and retain original short-label
         text.textContent = value;
       }, label);
     }
-    const shortBooking = banner.getByRole("button", {
+    const shortBooking = banner.getByRole("link", {
       name: "Book a Table",
       exact: true,
     });

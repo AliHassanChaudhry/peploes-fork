@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,7 +9,7 @@ import styles from "@/components/app/compounds/seasonal-event.module.css";
 import { SeasonalEventRelated } from "@/components/app/compounds/seasonal-event-related";
 import { SeasonalEventAction } from "@/components/app/molecules/seasonal-event-action";
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
+import { FOCUS_RING, ROUTES } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import type { ISeasonalEventProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -72,31 +73,53 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
             <h2 id="event-menu">{menu.heading}</h2>
             <p className={styles.menuDescription}>{menu.description}</p>
             <div className={styles.menuCards}>
-              {menu.cards.map((card) => (
-                <article
-                  key={card.id ?? card.title}
-                  className={styles.menuCard}
-                >
-                  <div className={styles.menuImage}>
-                    <Image
-                      {...card.image}
-                      fill
-                      sizes="(min-width: 1440px) 628px, (min-width: 1280px) calc((100vw - 184px) / 2), (min-width: 640px) calc((100vw - 88px) / 2), calc(100vw - 48px)"
-                      className={styles.cover}
-                    />
-                  </div>
-                  <div className={styles.menuCardCopy}>
-                    <h3>{card.title}</h3>
-                    <p>{card.description}</p>
-                    {card.href && (
-                      <SeasonalEventAction
-                        label={card.action}
-                        href={card.href}
-                      />
+              {menu.cards.map((card) => {
+                const image = (
+                  <Image
+                    {...card.image}
+                    fill
+                    sizes="(min-width: 1440px) 628px, (min-width: 1280px) calc((100vw - 184px) / 2), (min-width: 640px) calc((100vw - 88px) / 2), calc(100vw - 48px)"
+                    className={cn(
+                      styles.cover,
+                      "transition-transform duration-(--duration-base) ease-out motion-safe:group-hover:scale-105 motion-safe:group-focus-visible:scale-105 motion-reduce:transition-none",
                     )}
-                  </div>
-                </article>
-              ))}
+                  />
+                );
+                return (
+                  <article
+                    key={card.id ?? card.title}
+                    className={styles.menuCard}
+                    data-image-card
+                  >
+                    {card.href ? (
+                      <Link
+                        href={card.href as Route}
+                        aria-label={card.title}
+                        data-card-image
+                        className={cn(
+                          FOCUS_RING,
+                          styles.menuImage,
+                          "group block overflow-hidden",
+                        )}
+                      >
+                        {image}
+                      </Link>
+                    ) : (
+                      <div className={styles.menuImage}>{image}</div>
+                    )}
+                    <div className={styles.menuCardCopy}>
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      {card.href && (
+                        <SeasonalEventAction
+                          label={card.action}
+                          href={card.href}
+                        />
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -171,15 +194,16 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
               <p>{invitation.description}</p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4">
                 <Button
-                  type="button"
-                  aria-disabled="true"
+                  asChild
                   variant="brand-primary"
                   className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-6 py-2.5 text-base leading-[22px] has-[>svg]:px-6 sm:min-h-12 sm:w-auto sm:text-lg sm:leading-[26px] lg:min-w-[249px] lg:px-5 lg:has-[>svg]:px-5"
                 >
-                  <span className="min-w-0 [overflow-wrap:anywhere]">
-                    {invitation.bookingAction}
-                  </span>
-                  <ArrowRight aria-hidden="true" className="size-4" />
+                  <Link href={ROUTES.BOOK_A_TABLE}>
+                    <span className="min-w-0 [overflow-wrap:anywhere]">
+                      {invitation.bookingAction}
+                    </span>
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </Link>
                 </Button>
                 <Button
                   asChild
