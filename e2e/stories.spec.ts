@@ -66,7 +66,7 @@ test("story content animates on hover or scroll without disclosure buttons", asy
     if (isMobile) {
       const bounds = await card.boundingBox();
       expect(bounds?.height).toBe([460, 390, 330, 330][index]);
-      expect(bounds?.width).toBe((page.viewportSize()?.width ?? 0) - 48);
+      expect(bounds?.width).toBe((page.viewportSize()?.width ?? 0) - 32);
       await card.evaluate((element) =>
         window.scrollTo({
           top:
