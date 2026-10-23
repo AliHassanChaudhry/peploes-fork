@@ -68,8 +68,12 @@ The celebrations enquiry follows [Let’s talk about your celebration in Figma](
 Its desktop columns are 598px and 650px with a 48px gap. The form's inset
 divider spans the full 603px section, including its 48px vertical padding.
 The left and right headings use 44/46px and 34/35px EB Garamond respectively.
-Fields use secondary-colour 16/24px DM Sans, 38px control heights, 2px input
-corners and square selects. The date and guest fields have a 12px gap.
+Fields use secondary-colour 16/24px DM Sans and 38px desktop control heights.
+All enquiry variants use 4px field corners, pointer cursors for date, select and
+consent controls, and an inset neutral focus indicator without an outer outline.
+Forced-colors mode retains a distinct keyboard outline. Both occasion and guest
+selects use the styled native picker where supported, with native fallbacks.
+The date and guest fields have a 12px gap.
 Consent uses a 22px checkbox and 14/21px text; contact buttons have 2px corners,
 and Send Enquiry is 161 × 44px. Privacy-policy text links to `/privacy-cookies`
 and retains the design styling. Form submission remains deferred as described below.
@@ -162,7 +166,7 @@ Figma's image-fill crop,
 including its slight vertical compression and full-width gradient. Below 1024px,
 it retains a proportional cover crop in the 290px stacked image frame.
 The enquiry has 598px and 650px columns separated by
-48px, a full-height inset divider, 38px fields, 2px corners and a 22px checkbox.
+48px, a full-height inset divider, 38px fields, 4px corners and a 22px checkbox.
 The privacy-policy link points to `/privacy-cookies` and retains the design's
 underline.
 
@@ -266,8 +270,8 @@ is 1440 × 557px, with 598px and 650px columns separated by 48px. Both columns
 use 48px vertical padding; the form's inset Soft Stone divider spans the full
 section height. Headings use 40/42px and 34/35px EB Garamond. The introduction
 uses 18/24px DM Sans, with 48px before the two 262 × 48px contact buttons.
-The 602px form has 38px fields, a 68px message field, 2px input corners and
-a square guest selector. Its first row uses 294px and 296px controls with a
+The 602px form has 38px fields, a 68px message field and 4px corners on inputs
+and selectors. Its first row uses 294px and 296px controls with a
 12px gap. Secondary-colour field text uses 16/24px DM Sans; consent has a 22px
 checkbox and underlined burgundy policy text. Send Enquiry is 161 × 44px.
 The pale background mixes 6% burgundy over Warm Cream. The responsive layout

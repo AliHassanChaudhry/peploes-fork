@@ -34,7 +34,7 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
           className={cn(styles.cover, styles.heroImage)}
         />
         <div className="site-container">
-          <div className={styles.heroCopy}>
+          <div data-scroll-reveal className={styles.heroCopy}>
             <p className={styles.eyebrow}>{hero.eyebrow}</p>
             <h1 id="event-title">{hero.heading}</h1>
             <span className={styles.heroDivider} aria-hidden="true" />
@@ -47,7 +47,11 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
         <section className={styles.details} aria-label="Event information">
           <dl className={cn("site-container", styles.detailsList)}>
             {details.map((detail) => (
-              <div key={detail._key ?? detail.label} className={styles.detail}>
+              <div
+                data-scroll-reveal
+                key={detail._key ?? detail.label}
+                className={styles.detail}
+              >
                 <dt>
                   <Image
                     {...detail.icon}
@@ -66,11 +70,18 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       {menu && (
         <section className={styles.menu} aria-labelledby="event-menu">
           <div className={cn("site-container", styles.menuContent)}>
-            <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+            <p
+              data-scroll-reveal
+              className={cn(styles.eyebrow, styles.ruledEyebrow)}
+            >
               {menu.eyebrow}
             </p>
-            <h2 id="event-menu">{menu.heading}</h2>
-            <p className={styles.menuDescription}>{menu.description}</p>
+            <h2 data-scroll-reveal id="event-menu">
+              {menu.heading}
+            </h2>
+            <p data-scroll-reveal className={styles.menuDescription}>
+              {menu.description}
+            </p>
             <div className={styles.menuCards}>
               {menu.cards.map((card) => (
                 <article
@@ -85,7 +96,7 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
                       className={styles.cover}
                     />
                   </div>
-                  <div className={styles.menuCardCopy}>
+                  <div data-scroll-reveal className={styles.menuCardCopy}>
                     <h3>{card.title}</h3>
                     <p>{card.description}</p>
                     {card.href && (
@@ -105,8 +116,11 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       {story && (
         <section className={styles.story} aria-labelledby="event-story">
           <div className={cn("site-container", styles.storyContent)}>
-            <div className={styles.storyCopy}>
-              <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+            <div data-scroll-reveal className={styles.storyCopy}>
+              <p
+                data-scroll-reveal
+                className={cn(styles.eyebrow, styles.ruledEyebrow)}
+              >
                 {story.eyebrow}
               </p>
               <h2 id="event-story">{story.heading}</h2>
@@ -131,10 +145,15 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       {gallery && gallery.images.length > 0 && (
         <section className={styles.gallery} aria-labelledby="event-gallery">
           <div className="site-container">
-            <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+            <p
+              data-scroll-reveal
+              className={cn(styles.eyebrow, styles.ruledEyebrow)}
+            >
               {gallery.eyebrow}
             </p>
-            <h2 id="event-gallery">{gallery.heading}</h2>
+            <h2 data-scroll-reveal id="event-gallery">
+              {gallery.heading}
+            </h2>
             <div className={styles.galleryImages}>
               {gallery.images.map((photo) => (
                 <div
@@ -166,7 +185,7 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
             className={styles.cover}
           />
           <div className="site-container">
-            <div className={styles.invitationCopy}>
+            <div data-scroll-reveal className={styles.invitationCopy}>
               <h2 id="event-invitation">{invitation.heading}</h2>
               <p>{invitation.description}</p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4">
