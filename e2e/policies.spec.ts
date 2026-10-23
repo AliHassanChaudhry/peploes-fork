@@ -266,7 +266,7 @@ test("footer legal links open the policies requested in Figma", async ({
 
   for (const destination of [
     {
-      label: "Privacy",
+      label: "Privacy Policy",
       path: "/privacy-cookies",
       heading: "Your privacy matters.",
     },
@@ -279,6 +279,11 @@ test("footer legal links open the policies requested in Figma", async ({
       label: "Accessibility",
       path: "/accessibility-policy",
       heading: "A warm welcome for everyone.",
+    },
+    {
+      label: "Booking & Cancellation",
+      path: "/booking-cancellation-terms",
+      heading: "Before you book.",
     },
   ]) {
     const legalNavigation = page
