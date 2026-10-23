@@ -27,7 +27,7 @@ export function PrivateDiningEnquiryFields({
             defaultValue=""
             required
           >
-            <option value="" disabled>
+            <option value="" disabled hidden>
               {content.occasionLabel}
             </option>
             {content.occasions.map((occasion) => (

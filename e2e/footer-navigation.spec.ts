@@ -48,7 +48,7 @@ test("mobile footer legal and social controls have comfortable touch targets", a
 
     await expect(
       legal.getByRole("link", { name: "Privacy Policy", exact: true }),
-    ).toHaveAttribute("href", "/privacy-cookies");
+    ).toHaveAttribute("href", "/privacy-policy");
     await legal.getByRole("button", { name: "Cookie Settings" }).click();
     await expect(
       page.getByRole("dialog", { name: "Cookie Preferences" }),
