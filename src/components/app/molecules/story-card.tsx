@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import styles from "@/components/app/compounds/stories.module.css";
 import type { IStoryCardProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function StoryCard({ children, className }: IStoryCardProps) {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const card = ref.current;
     const copy = card?.querySelector<HTMLElement>("[data-story-copy]");
     const heading = copy?.querySelector("h3");
@@ -21,7 +21,11 @@ export function StoryCard({ children, className }: IStoryCardProps) {
       const offset = Math.max(0, detailsBottom - headingBottom);
       card.style.setProperty("--story-hidden-offset", `${offset}px`);
     };
+    // Establish the measured offset before paint without an initial transition.
+    copy.style.transition = "none";
     positionCopy();
+    copy.getBoundingClientRect();
+    copy.style.removeProperty("transition");
     const resizeObserver = new ResizeObserver(positionCopy);
     for (const element of [card, copy, details])
       resizeObserver.observe(element);

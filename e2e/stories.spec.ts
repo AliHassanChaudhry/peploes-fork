@@ -44,6 +44,20 @@ test("story content animates on hover or scroll without disclosure buttons", asy
   isMobile,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  if (!isMobile) {
+    await page.addInitScript(() => {
+      document.addEventListener("transitionrun", (event) => {
+        if (
+          event instanceof TransitionEvent &&
+          event.propertyName === "transform" &&
+          event.target instanceof Element &&
+          event.target.matches("[data-story-copy]")
+        ) {
+          document.documentElement.dataset.storyInitialTransition = "true";
+        }
+      });
+    });
+  }
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   const section = page.getByRole("region", {
@@ -51,6 +65,21 @@ test("story content animates on hover or scroll without disclosure buttons", asy
   });
   const cards = section.getByRole("article");
   await expect(cards).toHaveCount(4);
+  if (!isMobile) {
+    await expect
+      .poll(() => cards.first().getAttribute("style"))
+      .toContain("--story-hidden-offset");
+    await page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+    await expect(page.locator("html")).not.toHaveAttribute(
+      "data-story-initial-transition",
+      "true",
+    );
+  }
   await expect(section.getByRole("button", { name: /details/i })).toHaveCount(
     0,
   );
