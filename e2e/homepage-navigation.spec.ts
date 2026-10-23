@@ -101,7 +101,7 @@ test("homepage contact and event actions reach their existing destinations", asy
     for (const link of await card.getByRole("link").all()) {
       await expect(link).toHaveAttribute("href", href);
     }
-    const action = card.getByRole("link", { name: title, exact: true });
+    const action = card.locator("[data-card-action]");
     await action.click();
     await expect(page).toHaveURL(href);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
