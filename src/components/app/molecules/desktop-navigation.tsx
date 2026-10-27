@@ -21,8 +21,6 @@ const HOVER_CLOSE_DELAY_MS = 350;
 
 export function DesktopNavigation({ items }: IDesktopNavigationProps) {
   const [openItem, setOpenItem] = useState<IOpenDesktopNavigation | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [focusedId, setFocusedId] = useState<string | null>(null);
   const navigationRef = useRef<HTMLUListElement>(null);
   const indicatorRef = useRef<HTMLLIElement>(null);
   const backdropRef = useRef<HTMLLIElement>(null);
@@ -46,7 +44,6 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
             href === pathname ||
             (href === ROUTES.WHATS_ON && isSeasonalDetail),
         )?.id;
-  const highlightedId = hoveredId ?? focusedId ?? openItem?.id ?? currentId;
   const openId = openItem?.id;
   const openIndex = items.findIndex(({ id }) => id === openItem?.id);
 
@@ -59,7 +56,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
       navigation
         .closest("header")
         ?.querySelectorAll<HTMLElement>("[data-navigation-id]") ?? [],
-    ).find((node) => node.dataset.navigationId === highlightedId);
+    ).find((node) => node.dataset.navigationId === currentId);
     const panel = openId
       ? navigation.querySelector<HTMLElement>(
           '[data-navigation-panel][aria-hidden="false"]',
@@ -98,7 +95,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
       cancelAnimationFrame(readyFrame);
       observer.disconnect();
     };
-  }, [highlightedId, openId, isDesktop]);
+  }, [currentId, openId, isDesktop]);
 
   function cancelClose() {
     if (closeTimerRef.current !== null) {
@@ -108,43 +105,8 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
   }
 
   useEffect(() => {
-    const header = navigationRef.current?.closest("header");
-    if (!header) return;
-    const cleanups = Array.from(
-      header.querySelectorAll<HTMLElement>(
-        "[data-navbar-visit], [data-navbar-gift]",
-      ),
-    ).map((control) => {
-      const id = control.dataset.navigationId ?? null;
-      function hover(event: PointerEvent) {
-        if (event.pointerType === "mouse") {
-          setHoveredId(event.type === "pointerenter" ? id : null);
-        }
-      }
-      function focus(event: FocusEvent) {
-        setFocusedId(event.type === "focus" ? id : null);
-      }
-      control.addEventListener("pointerenter", hover);
-      control.addEventListener("pointerleave", hover);
-      control.addEventListener("focus", focus);
-      control.addEventListener("blur", focus);
-      return () => {
-        control.removeEventListener("pointerenter", hover);
-        control.removeEventListener("pointerleave", hover);
-        control.removeEventListener("focus", focus);
-        control.removeEventListener("blur", focus);
-      };
-    });
-    return () => {
-      for (const cleanup of cleanups) cleanup();
-    };
-  }, []);
-
-  useEffect(() => {
     if (!isDesktop) {
       setOpenItem(null);
-      setHoveredId(null);
-      setFocusedId(null);
     }
   }, [isDesktop]);
 
@@ -207,7 +169,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
         aria-hidden="true"
         data-navbar-indicator
         ref={indicatorRef}
-        data-visible={Boolean(highlightedId) && isDesktop}
+        data-visible={Boolean(currentId) && isDesktop}
         className={styles.indicator}
       />
       {items.map((item, index) => {
@@ -221,7 +183,6 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
             ref={isOpen ? activeItemRef : undefined}
             className="flex h-full items-center"
             onPointerEnter={(event) => {
-              if (event.pointerType === "mouse") setHoveredId(id);
               if (event.pointerType === "mouse" && content) {
                 cancelClose();
                 setOpenItem((current) => {
@@ -230,7 +191,6 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
               }
             }}
             onPointerLeave={(event) => {
-              if (event.pointerType === "mouse") setHoveredId(null);
               if (
                 isOpen &&
                 event.pointerType === "mouse" &&
@@ -247,11 +207,9 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
             }}
             onFocus={() => {
               cancelClose();
-              setFocusedId(id);
             }}
             onBlur={(event) => {
               if (!event.currentTarget.contains(event.relatedTarget)) {
-                setFocusedId(null);
                 setOpenItem((current) => (current?.id === id ? null : current));
               }
             }}

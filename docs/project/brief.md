@@ -290,9 +290,9 @@ Overview, opens `/private-dining`. See
 [Private dining and events](private-dining.md) for the shared page sections.
 
 Both desktop shelves share one open state so switching triggers replaces the
-visible panel. A shared burgundy underline moves between hovered, focused and
-current-page links, including Visit & Contact and Gift Vouchers on the right.
-Visit keeps the shared underline when it is the current page; Gift Vouchers
+visible panel. A shared burgundy underline follows the current-page link,
+including Visit & Contact on the right. It moves smoothly after click or keyboard
+navigation; hovering, focusing or opening a shelf does not move it. Gift Vouchers
 retains its existing inactive action. Switching shelves fades and slides content horizontally
 over 220ms; the Warm Cream background changes height without moving the page.
 The settled Figma layout stays unchanged. Reduced motion disables these

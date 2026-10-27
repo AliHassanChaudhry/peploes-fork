@@ -38,7 +38,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("the shared underline follows right-side hover, focus and the Visit page", async ({
+test("the shared underline changes only after navigation activation", async ({
   page,
 }) => {
   const navigation = page.getByRole("navigation", {
@@ -55,31 +55,52 @@ test("the shared underline follows right-side hover, focus and the Visit page", 
     exact: true,
   });
   const indicator = navigation.locator("[data-navbar-indicator]");
-  await menus.hover();
-  for (const control of [visit, gift, menus, gift]) {
+  const groups = navigation.getByRole("link", {
+    name: "Private Dining & Events",
+    exact: true,
+  });
+  for (const control of [menus, groups, visit, gift]) {
     await control.hover();
-    await expect(indicator).toHaveCSS("opacity", "1");
-    const bounds = await control.boundingBox();
-    await expect
-      .poll(async () => (await indicator.boundingBox())?.x)
-      .toBe(bounds?.x);
-    await expect
-      .poll(async () => (await indicator.boundingBox())?.width)
-      .toBe(bounds?.width);
+    await expect(indicator).toHaveCSS("opacity", "0");
+    await control.focus();
+    await expect(indicator).toHaveCSS("opacity", "0");
     await expect(control).toHaveCSS("text-decoration-line", "none");
   }
-  await page.mouse.move(0, 800);
-  for (const control of [visit, gift]) {
+  await menus.click();
+  await expect(page).toHaveURL("/menus");
+  await expect(indicator).toHaveCSS("opacity", "1");
+  const selected = await menus.boundingBox();
+  await expect
+    .poll(async () => (await indicator.boundingBox())?.x)
+    .toBe(selected?.x);
+  for (const control of [groups, visit, gift, menus]) {
+    await control.hover();
+    await expect(indicator).toHaveCSS("opacity", "1");
+    expect(await indicator.boundingBox()).toMatchObject({
+      x: selected?.x,
+      width: selected?.width,
+    });
     await control.focus();
-    await expect
-      .poll(async () => (await indicator.boundingBox())?.x)
-      .toBe((await control.boundingBox())?.x);
+    expect(await indicator.boundingBox()).toMatchObject({
+      x: selected?.x,
+      width: selected?.width,
+    });
   }
   await expect(gift).toHaveAttribute("aria-disabled", "true");
+  await indicator.evaluate((element) => {
+    element.addEventListener("transitionrun", (event) => {
+      if (
+        event instanceof TransitionEvent &&
+        event.propertyName === "transform"
+      )
+        element.setAttribute("data-selection-moved", "true");
+    });
+  });
   await visit.click();
   await page.mouse.move(0, 800);
   await page.getByRole("heading").first().click();
   await expect(page).toHaveURL(/\/visit-contact$/);
+  await expect(indicator).toHaveAttribute("data-selection-moved", "true");
   await expect(indicator).toHaveCSS("opacity", "1");
   await expect
     .poll(async () => (await indicator.boundingBox())?.x)
@@ -88,7 +109,7 @@ test("the shared underline follows right-side hover, focus and the Visit page", 
   await expect(visit).toHaveCSS("text-decoration-line", "none");
 });
 
-test("switching dropdowns animates the underline, background and content", async ({
+test("switching dropdowns animates the background and content while preserving the selected underline", async ({
   page,
 }) => {
   const navigation = page.locator("[data-navbar-primary]");
@@ -99,6 +120,8 @@ test("switching dropdowns animates the underline, background and content", async
   });
   const indicator = navigation.locator("[data-navbar-indicator]");
   const backdrop = navigation.locator("[data-navbar-backdrop]");
+  await menus.click();
+  await expect(page).toHaveURL("/menus");
   await menus.hover();
   await expect(indicator).toHaveCSS("opacity", "1");
   const start = await indicator.boundingBox();
@@ -118,10 +141,7 @@ test("switching dropdowns animates the underline, background and content", async
   expect(properties).toEqual(
     expect.arrayContaining(["transform", "opacity", "height"]),
   );
-  const middle = await indicator.boundingBox();
-  const destination = await groups.boundingBox();
-  expect(middle?.x).toBeGreaterThan(start?.x ?? 0);
-  expect(middle?.x).toBeLessThan(destination?.x ?? 0);
+  expect(await indicator.boundingBox()).toEqual(start);
   expect((await backdrop.boundingBox())?.height).toBeGreaterThan(
     startHeight ?? 0,
   );
@@ -176,9 +196,10 @@ test("reduced motion switches dropdowns immediately and survives rapid switching
         (node) => node.getAnimations({ subtree: true }).length,
       ),
     ).toBe(0);
-    expect(
-      (await navigation.locator("[data-navbar-indicator]").boundingBox())?.x,
-    ).toBe((await trigger.boundingBox())?.x);
+    await expect(navigation.locator("[data-navbar-indicator]")).toHaveCSS(
+      "opacity",
+      "0",
+    );
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
