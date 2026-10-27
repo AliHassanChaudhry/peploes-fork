@@ -249,7 +249,9 @@ describe("event routing", () => {
       destination: "phone",
     });
     client.trackCustomEvent("purchase", { value: 10 });
-    expect(gaEvents(browser, "booking_click")).toEqual([{ placement: "hero" }]);
+    expect(gaEvents(browser, "booking_click")).toEqual([
+      { placement: "hero", page_location: "https://peploes.test/" },
+    ]);
     expect(gaEvents(browser, "purchase")).toEqual([]);
   });
 

@@ -5,7 +5,7 @@ import type { IPendingAnalyticsEvent } from "@/lib/types";
 import { logGA4Event } from "./debug";
 import { sendToGA4 } from "./ga4";
 import { isAnalyticsPermitted } from "./permission";
-import { sanitizeAnalyticsEvent } from "./sanitize";
+import { sanitizeAnalyticsEvent, sanitizeUrlPart } from "./sanitize";
 import { getCurrentUTMParams } from "./utm";
 
 function sendEvent(
@@ -20,9 +20,15 @@ function sendEvent(
   // Denied events are dropped here, never queued, so consent cannot replay them.
   if (!isAnalyticsPermitted()) return;
 
+  // gtag otherwise fills the location from the raw URL, query and hash included.
+  const pageLocation =
+    event.params.page_location ?? sanitizeUrlPart("url", window.location.href);
+  const location: Record<string, string> = pageLocation
+    ? { page_location: pageLocation }
+    : {};
   const enriched: IPendingAnalyticsEvent = {
     name: event.name,
-    params: { ...event.params, ...getCurrentUTMParams() },
+    params: { ...event.params, ...location, ...getCurrentUTMParams() },
     dedupeKey,
   };
   sendToGA4(enriched);

@@ -83,7 +83,9 @@ UTM values must be short alphanumeric text with no email or phone-like content.
 | `contact_click` | `placement`, `destination` (`phone` or `email`) |
 | `directions_click` | `placement` |
 
-Never send `tel:`, `mailto:` or map URLs. No enquiry, subscription or booking
+Every other event also carries a path-only `page_location` taken when it is
+queued, because gtag.js would otherwise attach the raw browser URL. Never send
+`tel:`, `mailto:` or map URLs. No enquiry, subscription or booking
 completion event exists: the enquiry and newsletter controls are inert and the
 booking page is a design preview, so none of them may report success.
 
