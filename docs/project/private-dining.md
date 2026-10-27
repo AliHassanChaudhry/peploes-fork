@@ -107,14 +107,10 @@ description uses secondary text at 20/24px on desktop and 18/28px on mobile. The
 enquiry description is 580px wide at most, with 18px DM Sans and 23px line height
 on desktop. Its mobile fields keep their labels near the top of the 88px controls.
 
-The overview and corporate footers share the private-dining presentation.
-The celebrations page uses that presentation only below the 1280px desktop
-breakpoint, following the overview's mobile Figma reference: 40px top padding,
-24px side gutters, then brand, contact, Explore, newsletter and legal information.
-At 390px, this footer is 1334px tall. Celebrations keeps its existing desktop
-footer; other routes retain their existing layouts. A small client shell selects
-the presentation while its content remains server-rendered. The email field is
-editable locally and Subscribe remains inactive.
+All private-dining pages use the shared homepage footer, including its desktop
+columns, spacing, gutters and mobile reading order. Footer content remains
+server-rendered; newsletter behavior follows the shared footer contract in
+[the project brief](brief.md#footer-implementation).
 
 The overview closing banner keeps the original table photograph with separate
 desktop and mobile crops and Figma's ink gradients. Its reference heights are

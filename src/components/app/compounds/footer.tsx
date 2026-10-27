@@ -1,6 +1,5 @@
 import { ArrowRight, Clock3, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
-import { FooterFrame } from "@/components/app/compounds/footer-frame";
 import { FooterMeta } from "@/components/app/compounds/footer-meta";
 import { MobileFooterNavigation } from "@/components/app/compounds/mobile-footer-navigation";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 export function Footer() {
   return (
-    <FooterFrame className={cn(dmSans.className, "bg-warm-cream text-ink")}>
+    <footer className={cn(dmSans.className, "bg-warm-cream text-ink")}>
       <div
         data-footer-container
         className="site-container-inset pt-14 pb-10 xl:pt-20"
@@ -247,6 +246,6 @@ export function Footer() {
 
         <FooterMeta />
       </div>
-    </FooterFrame>
+    </footer>
   );
 }
