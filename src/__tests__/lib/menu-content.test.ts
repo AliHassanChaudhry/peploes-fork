@@ -50,12 +50,12 @@ it("preserves the published menu order and destinations in CMS navigation", asyn
   vi.mocked(getMenuCollections).mockResolvedValue(ok([]));
   const navigation = await loadMenuNavigation();
   expect(navigation.map((item) => item.href)).toEqual([
-    "/menus/lunch",
-    "/menus/dinner",
-    "/menus/pre-theatre",
-    "/menus/wine",
-    "/menus/cocktails",
-    "/menus/group-set-menu",
-    "/menus/seasonal",
+    "/menus?menu=lunch",
+    "/menus?menu=dinner",
+    "/menus?menu=pre-theatre",
+    "/menus?menu=wine",
+    "/menus?menu=cocktails",
+    "/menus?menu=group-set-menu",
+    "/menus?menu=seasonal",
   ]);
 });

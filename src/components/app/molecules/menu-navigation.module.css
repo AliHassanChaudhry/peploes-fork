@@ -1,9 +1,22 @@
-@media (width < 80rem) {
-  .scroll {
-    scroll-padding-inline-start: 8px;
-    scroll-snap-type: x proximity;
-  }
+.indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #8a1735;
+  pointer-events: none;
+  transition:
+    transform 260ms ease,
+    width 260ms ease;
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}
+
+@media (width < 80rem) {
   .tabs {
     --visible-tabs: 2.5;
   }
@@ -11,7 +24,6 @@
   .tabs > li {
     flex: 0 0 calc((100% + 8px) / var(--visible-tabs));
     min-width: max-content;
-    scroll-snap-align: start;
   }
 
   .tabs::after {

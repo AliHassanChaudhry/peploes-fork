@@ -44,6 +44,12 @@ function PageScrollReveal() {
       }
     };
     const register = () => {
+      for (const element of elements) {
+        if (!element.isConnected) {
+          observer?.unobserve(element);
+          elements.delete(element);
+        }
+      }
       if (!media.matches) return;
       document.querySelectorAll<HTMLElement>(targets).forEach(registerElement);
     };

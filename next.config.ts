@@ -191,6 +191,11 @@ const nextConfig: NextConfig = {
   redirects() {
     return [
       {
+        source: "/menus/:menu",
+        destination: "/menus?menu=:menu",
+        permanent: true,
+      },
+      {
         source: "/home",
         destination: "/",
         permanent: true,

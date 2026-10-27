@@ -48,6 +48,18 @@ test("cookie preferences fade and slide open on every visit and respect reduced 
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/visit-contact");
+  await page.evaluate(() => {
+    document.addEventListener("transitionrun", (event) => {
+      if (
+        event instanceof TransitionEvent &&
+        event.target instanceof HTMLDialogElement &&
+        event.target.open &&
+        !event.target.dataset.closing &&
+        !event.pseudoElement
+      )
+        document.documentElement.dataset.cookieOpeningTransitions += `${event.propertyName} `;
+    });
+  });
   const trigger = page.getByRole("button", {
     name: "Cookie Settings",
     exact: true,
@@ -57,19 +69,19 @@ test("cookie preferences fade and slide open on every visit and respect reduced 
     exact: true,
   });
   for (let opening = 0; opening < 2; opening++) {
+    await page.evaluate(() => {
+      document.documentElement.dataset.cookieOpeningTransitions = "";
+    });
     await trigger.click();
     await expect(dialog).toBeVisible();
-    const properties = await dialog.evaluate((element) =>
-      element
-        .getAnimations()
-        .map((animation) =>
-          animation instanceof CSSTransition
-            ? animation.transitionProperty
-            : "",
-        ),
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-cookie-opening-transitions",
+      /opacity/,
     );
-    expect(properties).toContain("opacity");
-    expect(properties).toContain("transform");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-cookie-opening-transitions",
+      /transform/,
+    );
     await expect(dialog).toHaveCSS("opacity", "1");
     await expect(dialog).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
     await page.keyboard.press("Escape");

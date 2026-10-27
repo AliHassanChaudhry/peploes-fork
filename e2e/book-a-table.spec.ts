@@ -515,11 +515,11 @@ test("party size menu fits the field and supports keyboard selection and dismiss
 
 for (const { path, count } of [
   { path: "/", count: 2 },
-  { path: "/menus/lunch", count: 1 },
-  { path: "/menus/dinner", count: 1 },
-  { path: "/menus/pre-theatre", count: 1 },
-  { path: "/menus/wine", count: 1 },
-  { path: "/menus/cocktails", count: 1 },
+  { path: "/menus?menu=lunch", count: 1 },
+  { path: "/menus?menu=dinner", count: 1 },
+  { path: "/menus?menu=pre-theatre", count: 1 },
+  { path: "/menus?menu=wine", count: 1 },
+  { path: "/menus?menu=cocktails", count: 1 },
   { path: "/visit-contact", count: 3 },
 ]) {
   test(`all booking calls to action on ${path} open the booking page`, async ({
