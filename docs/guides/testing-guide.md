@@ -110,6 +110,19 @@ Menu journeys import `test` from `e2e/menu-test.ts` so their synthetic CMS image
 URLs reach local photographs through the real Next image optimizer. These
 fixtures are not imported by the application or used as production fallbacks.
 
+Analytics delivery has its own spec, `e2e/analytics.spec.ts`, because provider
+settings are compiled into the browser bundle. `bun run test:e2e:analytics`
+builds with synthetic provider variables, serves on port 3108 through
+`playwright.analytics.config.ts` and runs only the desktop project. The normal
+configuration ignores that spec; it overwrites `.next`, so rerun `bun run
+test:e2e` afterwards to rebuild without providers. Provider hosts are intercepted
+with `context.route`, so no request leaves the machine. CI runs it after the
+normal browser tests, reusing the installed Chromium.
+
+Analytics assertions have one owner each. Unit tests own sanitising, allowlists
+and consent logic. Playwright owns page-level wiring: consent to requests,
+navigation counts and storage. Do not assert the same rule in both.
+
 Test the production build, locate controls by accessible role or label, and give
 each test isolated data. Add coverage for critical journeys such as sign-in,
 checkout, permission enforcement or a destructive workflow as they are built.
