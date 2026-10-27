@@ -25,20 +25,3 @@ export function clearCookies(pattern: RegExp): void {
     // Blocked cookies hold nothing to clear.
   }
 }
-
-export function clearStorageKeys(
-  getStorage: () => Storage,
-  pattern: RegExp,
-): void {
-  try {
-    const storage = getStorage();
-    const keys: string[] = [];
-    for (let index = 0; index < storage.length; index++) {
-      const key = storage.key(index);
-      if (key !== null && pattern.test(key)) keys.push(key);
-    }
-    for (const key of keys) storage.removeItem(key);
-  } catch {
-    // Blocked storage holds nothing to clear.
-  }
-}
