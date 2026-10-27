@@ -188,10 +188,16 @@ test("What's On remains the active section and returns from an event to the diar
     });
     await expect(whatsOn).not.toHaveAttribute("aria-current", "page");
     await expect(whatsOn).toHaveCSS("color", "rgb(122, 30, 36)");
-    await expect(navigation.locator("[data-navbar-indicator]")).toHaveCSS(
-      "opacity",
-      "1",
-    );
+    const indicator = navigation.locator("[data-navbar-indicator]");
+    await expect(indicator).toHaveCSS("opacity", "1");
+    const whatsOnBounds = await whatsOn.boundingBox();
+    expect(whatsOnBounds).not.toBeNull();
+    await expect
+      .poll(() => indicator.boundingBox())
+      .toMatchObject({
+        x: whatsOnBounds?.x,
+        width: whatsOnBounds?.width,
+      });
     await whatsOn.click();
     await expect(whatsOn).toHaveAttribute("aria-current", "page");
   }

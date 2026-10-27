@@ -122,10 +122,16 @@ test("Our Story navigation closes the mobile menu and shows its desktop active s
     await expect(page).toHaveURL("/our-story");
     await expect(story).toHaveAttribute("aria-current", "page");
     await expect(story).toHaveCSS("color", "rgb(122, 30, 36)");
-    await expect(navigation.locator("[data-navbar-indicator]")).toHaveCSS(
-      "opacity",
-      "1",
-    );
+    const indicator = navigation.locator("[data-navbar-indicator]");
+    await expect(indicator).toHaveCSS("opacity", "1");
+    const storyBounds = await story.boundingBox();
+    expect(storyBounds).not.toBeNull();
+    await expect
+      .poll(() => indicator.boundingBox())
+      .toMatchObject({
+        x: storyBounds?.x,
+        width: storyBounds?.width,
+      });
 
     await navigation.getByRole("link", { name: "Peploe’s home" }).click();
     await page.mouse.move(0, 0);
