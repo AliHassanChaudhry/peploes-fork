@@ -115,7 +115,10 @@ settings are compiled into the browser bundle. `bun run test:e2e:analytics`
 builds with synthetic provider variables, serves on port 3108 through
 `playwright.analytics.config.ts` and runs only the desktop project. The normal
 configuration ignores that spec; it overwrites `.next`, so rerun `bun run
-test:e2e` afterwards to rebuild without providers. Provider hosts are intercepted
+test:e2e` afterwards to rebuild without providers. That normal build is a
+live-site build (`NEXT_PUBLIC_VERCEL_ENV=production`) with empty provider IDs,
+so `analytics-unconfigured.spec.ts` exercises the missing-ID gate rather than
+the deployment gate. Provider hosts are intercepted
 with `context.route`, so no request leaves the machine. CI runs it after the
 normal browser tests, reusing the installed Chromium.
 
