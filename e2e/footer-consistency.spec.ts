@@ -53,6 +53,7 @@ test("every public page uses the homepage footer layout and content", async ({
     "/seasonal",
     "/seasonal/lobster-season",
     "/privacy-cookies",
+    "/privacy-policy",
     "/terms-conditions",
     "/accessibility-policy",
     "/booking-cancellation-terms",
