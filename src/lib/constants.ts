@@ -1,4 +1,4 @@
-import { ErrorCode } from "@/lib/enums";
+import { ErrorCode, GA4Event } from "@/lib/enums";
 import type {
   IBookingBannerContent,
   INavbarContent,
@@ -179,8 +179,9 @@ export const ISR_REVALIDATE = {
 } as const;
 
 export const ANALYTICS = {
-  DEDUP_WINDOW_MS: 2000,
   MAX_HISTORY_SIZE: 100,
+  MAX_QUEUE_SIZE: 20,
+  SCRIPT_LOAD_TIMEOUT_MS: 10_000,
   WEB_VITALS_LOAD_DELAY_MS: 2_500,
   UTM_KEYS: [
     "utm_source",
@@ -191,6 +192,10 @@ export const ANALYTICS = {
   ] as const,
   UTM_STORAGE_KEY: "app_utm_params",
   UTM_EXPIRY_HOURS: 24,
+  UTM_VALUE_MAX_LENGTH: 64,
+  UTM_VALUE_PATTERN: /^[a-z0-9][a-z0-9 _.+~-]*$/i,
+  PHONE_LIKE_MIN_DIGITS: 7,
+  PATH_MAX_LENGTH: 200,
   THRESHOLDS: {
     LCP: { good: 2500, needsImprovement: 4000 },
     CLS: { good: 0.1, needsImprovement: 0.25 },
@@ -416,6 +421,42 @@ export const MENU_SLUGS = [
   "group-set-menu",
   "seasonal",
 ] as const;
+
+/** Where an interaction happens on the live site; never a destination value. */
+export const ANALYTICS_PLACEMENTS = [
+  "navbar",
+  "hero",
+  "booking_banner",
+  "seasonal",
+  "seasonal_event",
+  "visit_contact",
+  "visit_contact_details",
+  "footer",
+  "private_dining",
+  "policy_page",
+  "table_booking_support",
+] as const;
+
+export const ANALYTICS_CONTACT_DESTINATIONS = ["phone", "email"] as const;
+
+/**
+ * The only events and properties that may reach an analytics provider. A
+ * closed list is an allowlist of values; a string names a sanitised URL part.
+ */
+export const ANALYTICS_EVENT_PARAMS = {
+  [GA4Event.PageView]: {
+    page_location: "url",
+    page_path: "path",
+    page_referrer: "referrer",
+  },
+  [GA4Event.BookingClick]: { placement: ANALYTICS_PLACEMENTS },
+  [GA4Event.MenuView]: { menu: MENU_SLUGS },
+  [GA4Event.ContactClick]: {
+    placement: ANALYTICS_PLACEMENTS,
+    destination: ANALYTICS_CONTACT_DESTINATIONS,
+  },
+  [GA4Event.DirectionsClick]: { placement: ANALYTICS_PLACEMENTS },
+} as const;
 
 export const SEASONAL_DETAIL_ICONS = {
   date: { src: "/peploes-event-calendar.svg", width: 48, height: 48 },

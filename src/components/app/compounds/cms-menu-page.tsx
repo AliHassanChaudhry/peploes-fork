@@ -1,8 +1,12 @@
+import type { ReactNode } from "react";
+
+import { TrackEvent } from "@/components/app/atoms/track-event";
 import { DrinksMenu } from "@/components/app/compounds/drinks-menu";
 import { RestaurantMenu } from "@/components/app/compounds/restaurant-menu";
 import { SetMenuCollection } from "@/components/app/compounds/set-menu-collection";
 import { WineMenu } from "@/components/app/compounds/wine-menu";
 import { MENU_ROUTES } from "@/lib/constants";
+import { GA4Event } from "@/lib/enums";
 import { getMenuBooking, loadMenu, loadMenusPage } from "@/lib/menu-content";
 import { buildSeoMetadata } from "@/lib/seo";
 import type { ICmsMenuPageProps, TMenuSlug } from "@/lib/types";
@@ -10,16 +14,27 @@ import type { ICmsMenuPageProps, TMenuSlug } from "@/lib/types";
 export async function CmsMenuPage({ slug }: ICmsMenuPageProps) {
   const [menu, settings] = await Promise.all([loadMenu(slug), loadMenusPage()]);
   const booking = getMenuBooking(slug, menu.booking ?? settings.booking);
+  let content: ReactNode;
   switch (menu._type) {
     case "restaurantMenu":
-      return <RestaurantMenu menu={{ ...menu, booking }} />;
+      content = <RestaurantMenu menu={{ ...menu, booking }} />;
+      break;
     case "wineMenu":
-      return <WineMenu menu={{ ...menu, booking }} />;
+      content = <WineMenu menu={{ ...menu, booking }} />;
+      break;
     case "drinksMenu":
-      return <DrinksMenu menu={{ ...menu, booking }} />;
+      content = <DrinksMenu menu={{ ...menu, booking }} />;
+      break;
     case "setMenuCollection":
-      return <SetMenuCollection menu={{ ...menu, booking }} />;
+      content = <SetMenuCollection menu={{ ...menu, booking }} />;
+      break;
   }
+  return (
+    <>
+      <TrackEvent eventName={GA4Event.MenuView} params={{ menu: slug }} />
+      {content}
+    </>
+  );
 }
 
 export async function getMenuMetadata(slug: TMenuSlug) {

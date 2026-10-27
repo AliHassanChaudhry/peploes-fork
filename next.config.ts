@@ -73,7 +73,12 @@ const nextConfig: NextConfig = {
       "'self'",
       ...(sentryOrigin ? [sentryOrigin] : []),
       ...(hasClientAnalytics
-        ? ["https://*.google-analytics.com", "https://analytics.google.com"]
+        ? [
+            "https://*.google-analytics.com",
+            "https://analytics.google.com",
+            "https://*.analytics.google.com",
+            "https://www.googletagmanager.com",
+          ]
         : []),
     ];
     const imageSources = [
@@ -81,7 +86,9 @@ const nextConfig: NextConfig = {
       "'self'",
       "data:",
       "blob:",
-      ...(hasClientAnalytics ? ["https://*.google-analytics.com"] : []),
+      ...(hasClientAnalytics
+        ? ["https://*.google-analytics.com", "https://www.googletagmanager.com"]
+        : []),
       "https://cdn.sanity.io",
     ].join(" ");
 

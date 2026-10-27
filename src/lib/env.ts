@@ -57,13 +57,28 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
     NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
     NEXT_PUBLIC_GTM_ID: z.string().optional(),
+    NEXT_PUBLIC_VERCEL_ENV: z
+      .enum(["production", "preview", "development"])
+      .optional(),
     NEXT_PUBLIC_GA_ENDPOINT: z
       .string()
       .url()
       .default("https://www.google-analytics.com/mp/collect"),
   },
 
-  runtimeEnv: process.env,
+  // Next inlines only literal `process.env.NEXT_PUBLIC_*` reads into the
+  // browser bundle, so each public variable is named here; server code still
+  // sees the whole of process.env.
+  runtimeEnv: {
+    ...process.env,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
+    NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
+    NEXT_PUBLIC_GA_ENDPOINT: process.env.NEXT_PUBLIC_GA_ENDPOINT,
+  },
 
   emptyStringAsUndefined: true,
 });
@@ -75,4 +90,11 @@ export function isProduction(): boolean {
 
 export function isLiveSite(): boolean {
   return env.VERCEL_ENV ? env.VERCEL_ENV === "production" : isProduction();
+}
+
+// Browser-safe twin of isLiveSite. It fails closed: a production build with no
+// explicit signal (a preview, `next start`) must not collect, so collection
+// needs NEXT_PUBLIC_VERCEL_ENV=production, which Vercel sets on production.
+export function isLiveSiteClient(): boolean {
+  return env.NEXT_PUBLIC_VERCEL_ENV === "production";
 }

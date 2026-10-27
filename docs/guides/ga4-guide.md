@@ -2,15 +2,25 @@
 
 The analytics modules provide event dispatch, UTM persistence, duplicate
 suppression, server-side Measurement Protocol calls, and Web Vitals events.
-They are building blocks. The root application does not load the GA script or
-call the Web Vitals hook yet.
+The root layout mounts `Analytics`, which owns page views, loads GA4 after
+consent and reacts to consent changes. The Web Vitals hook is not
+mounted.
 
 ## Files
 
-- `src/lib/analytics/client.ts` sends browser events through `window.gtag`.
+- `src/lib/analytics/client.ts` sanitises events and routes them to GA4.
 - `src/lib/analytics/server.ts` sends Measurement Protocol events.
-- `src/lib/analytics/utm.ts` stores UTM parameters in `sessionStorage`.
-- `src/lib/analytics/deduplication.ts` suppresses repeated client events.
+- `src/lib/analytics/utm.ts` stores safe UTM parameters in `sessionStorage`.
+- `src/lib/analytics/sanitize.ts` applies the event and property allowlist.
+- `src/lib/analytics/permission.ts` combines consent with the live-site check.
+- `src/lib/analytics/deduplication.ts` suppresses a repeated dedupe key.
+- `src/lib/analytics/lifecycle.ts` is the single page_view owner and aligns
+  GA4 with consent.
+- `src/lib/analytics/ga4.ts` queues and dispatches to `window.gtag`, loads
+  `gtag.js` (Consent Mode defaults denied, `send_page_view: false`), rechecks consent after load and clears `_ga*`
+  cookies on withdrawal.
+- `src/components/app/atoms/analytics.tsx` mounts the lifecycle;
+  `tracked-link.tsx` reports booking, contact and directions clicks.
 - `src/lib/analytics/web-vitals.ts` maps Web Vitals to GA4 events.
 - `src/lib/analytics/debug.ts` prints development diagnostics.
 - `src/lib/cookie-consent.ts` decides whether browser tracking is allowed.
@@ -21,15 +31,21 @@ call the Web Vitals hook yet.
 ```dotenv
 NEXT_PUBLIC_GA_MEASUREMENT_ID=
 NEXT_PUBLIC_GTM_ID=
+NEXT_PUBLIC_VERCEL_ENV=
 NEXT_PUBLIC_GA_ENDPOINT=https://www.google-analytics.com/mp/collect
 GA_API_SECRET=
 ```
 
-Client tracking needs a measurement ID and a loaded `gtag` function. Server
+Client tracking needs a measurement ID, analytics consent and a live-site
+deployment: `NEXT_PUBLIC_VERCEL_ENV` must equal `production`. Unset or any
+other value means no collection, even in a production build, so previews and
+local `next start` stay off. Vercel provides the variable; set it explicitly
+for QA builds or another host. Events wait in a bounded in-memory queue until `gtag` exists; the
+GA4 loader flushes the queue once loaded. Server
 tracking also needs `GA_API_SECRET`. Keep the secret on the server.
 
-The CSP permits Google Tag Manager and Analytics browser origins only when a
-public GA or GTM ID is configured. It does not load either provider script.
+The CSP permits Google browser origins only when GA4 is configured. GA4 needs Enhanced Measurement "Page changes based on browser history
+events" turned off in the property; code cannot verify that setting.
 
 ## Consent comes first
 
@@ -38,6 +54,11 @@ Cookie Preferences modal. Missing, malformed or inaccessible browser storage
 denies tracking. Changing a switch saves that category immediately; Accept All
 and Reject non-essential save all categories and close the modal. No analytics
 or marketing provider scripts are loaded by the preferences UI.
+`subscribeToConsent()` reports every save in this tab, including failed ones,
+and `storage` events from other tabs. Withdrawal clears the pending queue,
+dedupe history and stored UTM values; denied events are dropped, never queued
+or replayed. A failed save that only sets the denial cookie is not visible to
+other tabs as an event, but each dispatch re-reads consent first.
 If saving fails, a necessary denial cookie blocks older permissions across
 reloads and tabs. A successful save clears it. If the browser blocks both
 storage mechanisms, only the current page can retain the failed withdrawal.
@@ -48,20 +69,26 @@ into event functions.
 
 ## Client events
 
-Use the named functions for page views and purchases. Use `trackCustomEvent`
-for a stable product event that has an owner and a reporting use.
+`sanitizeAnalyticsEvent()` drops any event or property that is not in
+`ANALYTICS_EVENT_PARAMS`. Identifiers (placement, menu, destination) must come
+from a closed list. Locations are origin plus path, referrers origin only, and
+UTM values must be short alphanumeric text with no email or phone-like content.
 
-```typescript
-trackCustomEvent("contact_submitted", {
-  form: "sales",
-});
-```
+| Event | Properties |
+| --- | --- |
+| `page_view` | `page_location`, `page_path`, `page_referrer` |
+| `booking_click` | `placement` |
+| `menu_view` | `menu` (a menu slug) |
+| `contact_click` | `placement`, `destination` (`phone` or `email`) |
+| `directions_click` | `placement` |
 
-Event names use lowercase snake case. Keep parameters small and avoid email
-addresses, names, free text, and other personal data.
+Never send `tel:`, `mailto:` or map URLs. No enquiry, subscription or booking
+completion event exists: the enquiry and newsletter controls are inert and the
+booking page is a design preview, so none of them may report success.
 
-The client enriches events with stored UTM values and suppresses the same event
-and parameters within the configured deduplication window.
+`trackPageView` accepts a `dedupeKey` naming one navigation. Keys are recorded
+only after `gtag` accepts the event, and there is no time window, so quick
+revisits with new keys are all sent.
 
 ## Server events
 
@@ -75,14 +102,40 @@ documented deduplication key.
 
 ## Web Vitals
 
-`useWebVitals()` loads `web-vitals` after the configured delay and reports CLS,
-INP, LCP, FCP, and TTFB. Mount it once in a Client Component after consent. The
-current root layout does not mount it.
+`useWebVitals()` is not supported by the current event allowlist: its
+`web_vitals` events are not in `ANALYTICS_EVENT_PARAMS`, so
+`sanitizeAnalyticsEvent()` drops them. Do not mount it until the events are
+added to the allowlist with their properties.
+
+## Property settings
+
+Turn off Enhanced Measurement "Page changes based on browser history events":
+the app sends every `page_view` itself and a second owner would double count.
+Also review the other Enhanced Measurement events (scrolls, outbound clicks,
+file downloads): gtag.js reads the browser URL for them, so a visit with a query
+string or fragment can reach GA on those events even though our own events are
+sanitised. Disable the ones you do not need. Code cannot verify property
+settings.
+
+One page view per navigation, and no query string or fragment in production
+GA4 data, therefore depend on these property settings (history-based page
+changes off, other Enhanced Measurement events reviewed). The browser suite uses
+a `gtag.js` stub, so real gtag traffic is unverified.
 
 ## Verification
 
-- Verify consent denial before checking event delivery.
-- Use GA4 DebugView for browser events.
-- Use the Measurement Protocol validation endpoint while developing payloads.
-- Test UTM expiry and deduplication with controlled time.
+Run `bun run test:e2e:analytics` for browser delivery. It builds with
+`NEXT_PUBLIC_VERCEL_ENV=production` and a synthetic `G-TEST000000`, replaces
+`gtag.js` with a stub that consumes `dataLayer` like the real script and sends
+`g/collect` hits, and records those hits. It covers no traffic or storage before
+a choice and after rejection, one `page_view` per navigation (history moves and
+revisits included), withdrawal before, during and after load, re-consent, reload,
+a second tab, blocked storage, a blocked script, query/hash/email stripping,
+interaction payloads and the booking preview never reporting a booking.
+
+That proves our calls and consent handling, not receipt. Still to do by hand:
+
+- GA4 DebugView with a real test property (live receipt is otherwise unverified).
+- The Enhanced Measurement settings above.
+- Use the Measurement Protocol validation endpoint while developing server payloads.
 - Confirm that no personal or secret value appears in network payloads.

@@ -10,6 +10,37 @@ export const cookiePreferencesSchema = z.object({
 });
 
 let denyOptionalCookies = false;
+const listeners = new Set<() => void>();
+
+function notifyConsentChange(): void {
+  for (const listener of [...listeners]) {
+    try {
+      listener();
+    } catch {
+      // One failing subscriber must not stop the others from withdrawing.
+    }
+  }
+}
+
+function handleStorageEvent(event: { key: string | null }): void {
+  // A null key means another tab cleared all storage.
+  if (event.key !== null && event.key !== COOKIE_PREFERENCES.storageKey) return;
+  notifyConsentChange();
+}
+
+/** Calls `listener` after any save in this tab, or a consent change in another tab. */
+export function subscribeToConsent(listener: () => void): () => void {
+  listeners.add(listener);
+  if (listeners.size === 1 && typeof window !== "undefined") {
+    window.addEventListener?.("storage", handleStorageEvent);
+  }
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0 && typeof window !== "undefined") {
+      window.removeEventListener?.("storage", handleStorageEvent);
+    }
+  };
+}
 
 function hasStoredDenial(): boolean {
   return (
@@ -42,6 +73,15 @@ export function saveCookiePreferences(
   preferences: ICookiePreferences,
 ): boolean {
   if (typeof window === "undefined") return false;
+  try {
+    return persistPreferences(preferences);
+  } finally {
+    // Failed saves notify too: subscribers re-read consent, which now denies.
+    notifyConsentChange();
+  }
+}
+
+function persistPreferences(preferences: ICookiePreferences): boolean {
   try {
     window.localStorage.setItem(
       COOKIE_PREFERENCES.storageKey,

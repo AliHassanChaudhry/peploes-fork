@@ -1,9 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-
+import { TrackedLink } from "@/components/app/atoms/tracked-link";
 import { Button } from "@/components/ui/button";
 import { BOOKING_BANNER_CONTENT, ROUTES } from "@/lib/constants";
+import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond, ebGaramondItalic } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
@@ -56,10 +56,16 @@ export function BookingBanner() {
             variant="brand-primary-inverse"
             className="h-11 w-full rounded-[4px] bg-warm-cream px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium text-peploe-burgundy shadow-none sm:w-[156px]"
           >
-            <Link href={ROUTES.BOOK_A_TABLE}>
+            <TrackedLink
+              href={ROUTES.BOOK_A_TABLE}
+              interaction={{
+                event: GA4Event.BookingClick,
+                placement: "booking_banner",
+              }}
+            >
               {BOOKING_BANNER_CONTENT.ctaLabel}
               <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
+            </TrackedLink>
           </Button>
         </div>
       </div>
