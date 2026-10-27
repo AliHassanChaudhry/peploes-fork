@@ -2,11 +2,12 @@
 
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import styles from "@/components/app/molecules/menu-navigation.module.css";
-import { FOCUS_RING } from "@/lib/constants";
+import { FOCUS_RING, MENU_ROUTES } from "@/lib/constants";
+import { getSelectedMenu } from "@/lib/menu-selection";
 import type { IMenuNavigationProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -15,23 +16,67 @@ export function MenuNavigation({
   label,
   className,
 }: IMenuNavigationProps) {
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selection = searchParams.getAll("menu");
+  const activeHref =
+    MENU_ROUTES[getSelectedMenu(selection.length === 1 ? selection[0] : null)];
   const [openHref, setOpenHref] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+  const hasAlignedTab = useRef(false);
   const openItem = items.find((item) => item.href === openHref);
+
+  useLayoutEffect(() => {
+    const scroll = scrollRef.current;
+    const indicator = indicatorRef.current;
+    if (!scroll || !indicator) return;
+    const update = () => {
+      const target = Array.from(
+        scroll.querySelectorAll<HTMLElement>("[data-menu-path]"),
+      ).find((item) => item.dataset.menuPath === activeHref);
+      if (!target) return;
+      const bounds = target.getBoundingClientRect();
+      indicator.style.width = `${bounds.width}px`;
+      indicator.style.transform = `translateX(${bounds.left - scroll.getBoundingClientRect().left + scroll.scrollLeft}px)`;
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(scroll);
+    for (const target of scroll.querySelectorAll<HTMLElement>(
+      "[data-menu-path]",
+    ))
+      observer.observe(target);
+    return () => observer.disconnect();
+  }, [activeHref]);
 
   useEffect(() => {
     const scroll = scrollRef.current;
+    if (!scroll) return;
+    scroll.scrollTo({ left: scroll.scrollLeft, behavior: "instant" });
     const active = Array.from(
-      scroll?.querySelectorAll<HTMLElement>("[data-menu-path]") ?? [],
-    ).find((item) => item.dataset.menuPath === pathname);
-    const tab = active?.closest("li");
-    const firstTab = scroll?.querySelector("li");
-    if (scroll && tab && firstTab)
-      scroll.scrollLeft = tab.offsetLeft - firstTab.offsetLeft;
-  }, [pathname]);
+      scroll.querySelectorAll<HTMLElement>("[data-menu-path]"),
+    ).find((item) => item.dataset.menuPath === activeHref);
+    if (!active) return;
+    const bounds = active.getBoundingClientRect();
+    const viewport = scroll.getBoundingClientRect();
+    const left = bounds.left - viewport.left;
+    const right = bounds.right - viewport.right;
+    let distance = 0;
+    if (left < 0) distance = left - 8;
+    else if (right > 0) distance = right + 8;
+    if (Math.abs(distance) > 1)
+      scroll.scrollBy({
+        left: distance,
+        behavior:
+          hasAlignedTab.current &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "smooth"
+            : "instant",
+      });
+    hasAlignedTab.current = true;
+  }, [activeHref]);
 
   useEffect(() => {
     if (!openHref) return;
@@ -57,8 +102,9 @@ export function MenuNavigation({
         }
       }}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget))
+        if (!event.currentTarget.contains(event.relatedTarget)) {
           setOpenHref(null);
+        }
       }}
       className={cn(
         className,
@@ -69,7 +115,6 @@ export function MenuNavigation({
       <div
         ref={scrollRef}
         className={cn(
-          styles.scroll,
           "relative overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         )}
       >
@@ -81,7 +126,7 @@ export function MenuNavigation({
         >
           {items.map((item) => {
             const isOpen = openHref === item.href;
-            const currentPage = pathname === item.href ? "page" : undefined;
+            const currentPage = activeHref === item.href ? "page" : undefined;
             const controlsId = isOpen ? "menu-subnavigation" : undefined;
 
             return (
@@ -106,7 +151,7 @@ export function MenuNavigation({
                     }}
                     className={cn(
                       FOCUS_RING,
-                      "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:border-[#8a1735] aria-[current=page]:text-[#8a1735]",
+                      "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:text-[#8a1735]",
                     )}
                   >
                     {item.label}
@@ -118,12 +163,13 @@ export function MenuNavigation({
                 ) : item.href ? (
                   <Link
                     href={item.href}
+                    scroll={false}
                     aria-current={currentPage}
                     data-menu-path={item.href}
                     onClick={() => setOpenHref(null)}
                     className={cn(
                       FOCUS_RING,
-                      "flex min-w-24 items-center xl:min-w-0 justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-[current=page]:border-[#8a1735] aria-[current=page]:text-[#8a1735]",
+                      "flex min-w-24 items-center xl:min-w-0 justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-[current=page]:text-[#8a1735]",
                     )}
                   >
                     {item.label}
@@ -133,6 +179,12 @@ export function MenuNavigation({
             );
           })}
         </ul>
+        <span
+          ref={indicatorRef}
+          aria-hidden="true"
+          data-menu-indicator
+          className={styles.indicator}
+        />
       </div>
       <div className="xl:site-container xl:relative">
         {openItem?.children && (
@@ -140,7 +192,7 @@ export function MenuNavigation({
             id="menu-subnavigation"
             aria-label={openItem.label}
             className={cn(
-              "border border-soft-stone bg-[#f1e9e3] px-6 py-3 xl:absolute xl:top-0 xl:right-0 xl:min-w-[200px] xl:px-0 xl:py-1 xl:shadow-md",
+              "border border-soft-stone bg-[#f1e9e3] px-6 py-0 xl:absolute xl:top-0 xl:right-0 xl:min-w-[200px] xl:px-0 xl:shadow-md",
               openItem.href === items.at(-2)?.href && "xl:right-[183px]",
             )}
           >

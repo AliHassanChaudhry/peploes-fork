@@ -18,11 +18,6 @@ export const MOBILE_NAVIGATION_CONTENT = {
       })),
     },
     {
-      id: "our-story",
-      label: NAVBAR_CONTENT.ourStoryLabel,
-      href: ROUTES.OUR_STORY,
-    },
-    {
       id: "groups-occasions",
       label: NAVBAR_CONTENT.groupsLabel,
       children: [
@@ -32,6 +27,11 @@ export const MOBILE_NAVIGATION_CONTENT = {
           href,
         })),
       ],
+    },
+    {
+      id: "our-story",
+      label: NAVBAR_CONTENT.ourStoryLabel,
+      href: ROUTES.OUR_STORY,
     },
     {
       id: "whats-on",

@@ -142,8 +142,8 @@ This applies to the homepage, menu pages, private dining pages, navbar and foote
 
 Both utilities use 16px gutters below the desktop breakpoint. On desktop,
 the standard container leaves at least 72px on each side and the inset container
-leaves at least 80px. The menu footer uses the standard 72px gutters; the
-homepage footer uses the 80px inset. At the 1440px Figma reference, their content
+leaves at least 80px. Every page uses the homepage footer with the 80px inset.
+At the 1440px Figma reference, standard and inset content
 widths remain 1296px and 1280px. At a 2400px available page width, both are 1440px wide and
 centered with 480px on each side. Measure the content, not its background.
 At a 1520px page width, standard content is 1376px wide and inset content is
@@ -240,6 +240,8 @@ and working contact destinations when changing these controls.
 The initial navbar follows the Final Pages desktop navigation in Figma
 (`3131:11099`), including the yellow note requiring a sticky header. It uses the
 existing brand colours, DM Sans, 44px control targets and a centered logo.
+Desktop and mobile primary navigation uses this order: Menus, Private Dining &
+Events, Our Story, What’s On.
 The logo artwork comes from the [existing website](https://peploes.com/), stored
 locally and tinted with the Ink token using a CSS mask. Preserve its aspect
 ratio; replace it with the exact Figma vector when that export is available.
@@ -248,9 +250,11 @@ The desktop Menus dropdown follows the updated Nav / Shelf / Menus / Light
 frame (`3732:6583`). Hovering over Menus or pressing ArrowDown opens the shelf;
 clicking or pressing Enter navigates to Lunch. The shelf overlays
 the page below the 76px header without moving the logo or page content. At
-1440px, the Warm Cream panel is 352px high with 36px vertical padding, 72px
+1440px, the Warm Cream panel is 218px high with 36px vertical padding, 72px
 side gutters, a 360px introduction and a 56px gap before the destinations.
-Both desktop shelves cap their height to the available viewport space below
+The Menus shelf is 218px high and the Private Dining & Events shelf is 292px
+high at 1440px, excluding the 76px header. Both grow with their content and cap
+their height to the available viewport space below
 the header and scroll when needed.
 Six active menu links sit in three 146px-high columns, paired Lunch/Wine,
 Dinner/Cocktails and Pre-Theatre/Seasonal, with 40px column gaps, 24px row gaps
@@ -260,7 +264,7 @@ Verify pointer travel into the panel, keyboard activation and tab order, Escape
 with focus restoration, outside-click and focus-leave dismissal, short-viewport
 scrolling, reduced motion and dismissal when switching to mobile navigation.
 The desktop Private Dining & Events dropdown follows the updated Nav / Shelf /
-Groups / Light frame (`3732:6657`): a 352px panel with a 320px introduction,
+Groups / Light frame (`3732:6657`): a 292px panel with a 320px introduction,
 56px column gap and three photo destinations with 132px images and 36px gaps.
 The introduction replaces its description with a 44px-high Explore text action
 that opens the private dining overview. The first destination is Celebrations &
@@ -274,7 +278,14 @@ Overview, opens `/private-dining`. See
 [Private dining and events](private-dining.md) for the shared page sections.
 
 Both desktop shelves share one open state so switching triggers replaces the
-visible panel. Verify switching by pointer and keyboard as well as dismissal.
+visible panel. A shared burgundy underline moves between hovered, focused and
+current-page links, including Visit & Contact and Gift Vouchers on the right.
+Visit keeps the shared underline when it is the current page; Gift Vouchers
+retains its existing inactive action. Switching shelves fades and slides content horizontally
+over 220ms; the Warm Cream background changes height without moving the page.
+The settled Figma layout stays unchanged. Reduced motion disables these
+transitions. Closed content becomes inert immediately, including during fades.
+Verify switching by pointer and keyboard as well as dismissal.
 The navbar renders shelf content and fonts on the server and passes the result
 to the interactive navigation. Check font compilation in the dev server as well
 as the production build.
@@ -512,7 +523,7 @@ placeholder controls and horizontal overflow at narrow widths.
 
 `/seasonal` follows Final Pages `3821:14668`: the cocktail hero, monthly event
 diary, terrace feature and closing invitation. It is separate from the existing
-seasonal menu at `/menus/seasonal`. At the 1440px reference width, the sections
+seasonal menu at `/menus?menu=seasonal`. At the 1440px reference width, the sections
 are 437, 1729, 256 and 444px high. The diary uses 72px gutters, 45px month bars,
 224px event rows and 1px Soft Stone dividers. Its empty right column and the
 absence of decorative eyebrow rules are intentional.
@@ -662,7 +673,7 @@ readable, but new cards use explicit URLs.
    diary; the optional Event information fields control the displayed details.
 5. Optional sections may be left unset. When adding one, complete its required
    fields. Add linked cards in Menu & Experience or More to Explore and fill in
-   each card's Button URL, such as `/seasonal/lobster-season`, `/menus/dinner`
+   each card's Button URL, such as `/seasonal/lobster-season`, `/menus?menu=dinner`
    or `https://example.com/event`. Publish destination pages before linking to
    them. Galleries accept three to five photographs.
 6. Keep **Keep out of search engines** on for testing. Click **Publish**, then

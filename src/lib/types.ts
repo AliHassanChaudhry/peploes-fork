@@ -1037,7 +1037,7 @@ export interface IMenuContent extends IMenuEditorialContent, IMenuNotesContent {
 }
 
 export interface IMenuEditorialContent {
-  slug: string;
+  slug: TMenuSlug;
   title: string;
   description?: string;
   aside?: string;
@@ -1057,6 +1057,12 @@ export interface IMenuEditorialImageProps {
   image: IMenuImage;
   compact: boolean;
   imageBeforeAside?: boolean;
+}
+
+export interface IMenuIntroImageProps {
+  image: IMenuImage;
+  sizes: string;
+  className?: string;
 }
 
 export interface IMenuBooking {
@@ -1654,6 +1660,9 @@ export type TMenuCollections = InferSchema<
 >;
 export interface ICmsMenuPageProps {
   slug: TMenuSlug;
+}
+export interface IMenuContentTransitionProps extends ICmsMenuPageProps {
+  children: ReactNode;
 }
 export interface IMenuHeroProps {
   content: TMenusPageDocument;

@@ -1,14 +1,48 @@
 import { expect, test } from "./menu-test";
 
+test("removed reveal targets stop being observed during menu replacement", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    const unobserve = IntersectionObserver.prototype.unobserve;
+    IntersectionObserver.prototype.unobserve = function (target) {
+      if (target.id.startsWith("removed-reveal-"))
+        document.documentElement.dataset.lastUnobservedReveal = target.id;
+      return unobserve.call(this, target);
+    };
+  });
+  await page.goto("/menus?menu=wine");
+  for (let index = 0; index < 3; index++) {
+    const id = `removed-reveal-${index}`;
+    await page.evaluate((id) => {
+      const target = document.createElement("div");
+      target.id = id;
+      target.dataset.scrollReveal = "";
+      target.style.marginTop = "10000px";
+      document.querySelector("main")?.append(target);
+    }, id);
+    await expect(page.locator(`#${id}`)).toHaveAttribute(
+      "data-scroll-reveal-state",
+      "pending",
+    );
+    await page.locator(`#${id}`).evaluate((element) => element.remove());
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-last-unobserved-reveal",
+      id,
+    );
+  }
+});
+
 for (const path of [
   "/our-story",
-  "/menus/lunch",
-  "/menus/dinner",
-  "/menus/pre-theatre",
-  "/menus/seasonal",
-  "/menus/group-set-menu",
-  "/menus/cocktails",
-  "/menus/wine",
+  "/menus?menu=lunch",
+  "/menus?menu=dinner",
+  "/menus?menu=pre-theatre",
+  "/menus?menu=seasonal",
+  "/menus?menu=group-set-menu",
+  "/menus?menu=cocktails",
+  "/menus?menu=wine",
   "/private-dining",
   "/private-dining/groups-celebrations",
   "/private-dining/corporate-events",
@@ -106,9 +140,9 @@ test("client navigation and streamed content retain reveal behavior", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/menus/lunch");
+  await page.goto("/menus?menu=lunch");
   await page.getByRole("link", { name: "Dinner", exact: true }).first().click();
-  await expect(page).toHaveURL("/menus/dinner");
+  await expect(page).toHaveURL("/menus?menu=dinner");
   await expect(
     page.locator('main [data-scroll-reveal-state="pending"]').first(),
   ).toBeAttached();

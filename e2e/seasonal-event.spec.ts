@@ -188,7 +188,10 @@ test("What's On remains the active section and returns from an event to the diar
     });
     await expect(whatsOn).not.toHaveAttribute("aria-current", "page");
     await expect(whatsOn).toHaveCSS("color", "rgb(122, 30, 36)");
-    await expect(whatsOn).toHaveCSS("text-decoration-line", "underline");
+    await expect(navigation.locator("[data-navbar-indicator]")).toHaveCSS(
+      "opacity",
+      "1",
+    );
     await whatsOn.click();
     await expect(whatsOn).toHaveAttribute("aria-current", "page");
   }
@@ -526,7 +529,7 @@ test("menu and related event links open their published destinations", async ({
   page,
 }) => {
   for (const [slug, secondHref] of [
-    ["lobster-season", "/menus/wine"],
+    ["lobster-season", "/menus?menu=wine"],
     ["italian-wine-dinner", "https://example.com/events/wine"],
     ["sunday-at-peploes", "/seasonal/lobster-season?from=card#event-menu"],
   ]) {
@@ -537,7 +540,7 @@ test("menu and related event links open their published destinations", async ({
     });
     await expect(
       menu.getByRole("link", { name: "View Menu", exact: true }),
-    ).toHaveAttribute("href", "/menus/dinner");
+    ).toHaveAttribute("href", "/menus?menu=dinner");
     await expect(
       menu.getByRole("link", { name: "Find Out More", exact: true }),
     ).toHaveAttribute("href", secondHref);
@@ -545,7 +548,10 @@ test("menu and related event links open their published destinations", async ({
       has: page.getByRole("img"),
     });
     await expect(imageLinks).toHaveCount(2);
-    await expect(imageLinks.first()).toHaveAttribute("href", "/menus/dinner");
+    await expect(imageLinks.first()).toHaveAttribute(
+      "href",
+      "/menus?menu=dinner",
+    );
     await expect(imageLinks.nth(1)).toHaveAttribute("href", secondHref);
   }
   const navigationStart = await page.evaluate(() => performance.timeOrigin);
@@ -573,7 +579,7 @@ test("menu and related event links open their published destinations", async ({
     page
       .getByRole("main")
       .getByRole("link", { name: "View Menu", exact: true }),
-  ).toHaveAttribute("href", "/menus/dinner");
+  ).toHaveAttribute("href", "/menus?menu=dinner");
   const related = page.getByRole("region", { name: "More to Explore" });
   const imageNavigationStart = await page.evaluate(
     () => performance.timeOrigin,
@@ -657,7 +663,7 @@ test("CMS optional sections, five-photo galleries, highlights and related pages 
   const related = main.getByRole("region", { name: "More to Explore" });
   await expect(
     related.getByRole("link", { name: "Explore wines" }),
-  ).toHaveAttribute("href", "/menus/wine");
+  ).toHaveAttribute("href", "/menus?menu=wine");
   await expect(
     related.getByRole("link", { name: "Explore groups" }),
   ).toHaveAttribute("href", "/private-dining/groups-celebrations");

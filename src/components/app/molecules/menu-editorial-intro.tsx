@@ -1,7 +1,6 @@
-import Image from "next/image";
-
+import { MenuIntroImage } from "@/components/app/atoms/menu-intro-image";
 import { Breadcrumbs } from "@/components/app/compounds/breadcrumb-navigation";
-import { ROUTES } from "@/lib/constants";
+import { MENU_ROUTES, ROUTES } from "@/lib/constants";
 import { ebGaramond, ebGaramondItalic } from "@/lib/fonts";
 import type {
   IMenuEditorialImageProps,
@@ -79,10 +78,8 @@ function MenuEditorialImage({
       )}
       style={imageStyle}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
+      <MenuIntroImage
+        image={image}
         sizes={
           image.fit === "cover"
             ? "(min-width: 1280px) 258px, calc(100vw - 48px)"
@@ -112,7 +109,7 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
               menu.slug === "pre-theatre"
                 ? menu.slug
                 : menu.slug.replaceAll("-", " "),
-            url: `${ROUTES.MENUS}/${menu.slug}`,
+            url: MENU_ROUTES[menu.slug],
           },
         ]}
         className={cn(
