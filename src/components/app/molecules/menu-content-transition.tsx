@@ -16,6 +16,21 @@ export function MenuContentTransition({
   // Keep the displayed menu until its exit finishes, using the latest destination.
   const [displayed, setDisplayed] = useState({ slug, children });
   const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
+  const previousSlug = useRef(slug);
+
+  useLayoutEffect(() => {
+    if (previousSlug.current === displayed.slug) return;
+    previousSlug.current = displayed.slug;
+    const navigation = contentRef.current
+      ?.closest("main")
+      ?.querySelector("nav");
+    if (!navigation) return;
+    // A shorter menu must not leave the sticky tabs above the viewport.
+    const distance =
+      navigation.getBoundingClientRect().top -
+      Number.parseFloat(getComputedStyle(navigation).top);
+    if (distance < 0) window.scrollBy({ top: distance, behavior: "instant" });
+  }, [displayed.slug]);
 
   useLayoutEffect(() => {
     if (reducedMotion) {
