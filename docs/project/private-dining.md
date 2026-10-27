@@ -73,6 +73,9 @@ All enquiry variants use 4px field corners, pointer cursors for date, select and
 consent controls, and an inset neutral focus indicator without an outer outline.
 Forced-colors mode retains a distinct keyboard outline. Both occasion and guest
 selects use the styled native picker where supported, with native fallbacks.
+Picker placeholders are excluded from the menu. Hovered and selected options use
+the same pale background; keyboard focus uses an outline. Pickers prefer opening below the
+field with a small gap and retain browser positioning fallbacks near screen edges.
 The date and guest fields have a 12px gap.
 Consent uses a 22px checkbox and 14/21px text; contact buttons have 2px corners,
 and Send Enquiry is 161 × 44px. Privacy-policy text links to `/privacy-cookies`
@@ -267,7 +270,7 @@ use 48px vertical padding; the form's inset Soft Stone divider spans the full
 section height. Headings use 40/42px and 34/35px EB Garamond. The introduction
 uses 18/24px DM Sans, with 48px before the two 262 × 48px contact buttons.
 The 602px form has 38px fields, a 68px message field and 4px corners on inputs
-and selectors. Its first row uses 294px and 296px controls with a
+and selects. Its first row uses 294px and 296px controls with a
 12px gap. Secondary-colour field text uses 16/24px DM Sans; consent has a 22px
 checkbox and underlined burgundy policy text. Send Enquiry is 161 × 44px.
 The pale background mixes 6% burgundy over Warm Cream. The responsive layout

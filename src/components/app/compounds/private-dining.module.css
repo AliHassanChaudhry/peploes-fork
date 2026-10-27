@@ -660,6 +660,10 @@
   color: var(--warm-cream);
   border-color: rgb(250 247 241 / 60%);
 }
+.closing .contacts a:hover {
+  background-color: color-mix(in srgb, var(--warm-cream) 12%, transparent);
+  border-color: var(--warm-cream);
+}
 .closing .heroRule {
   margin-block: 0 24px;
 }
@@ -2067,15 +2071,9 @@
   .weddingEnquiry .contacts svg {
     stroke-width: 1.5;
   }
-  .corporatePage
+  :where(.corporatePage, .celebrationEnquiry, .weddingEnquiry)
     .enquiryFields
-    :where(input:not([type="checkbox"]), select, textarea),
-  .celebrationEnquiry
-    .enquiryFields
-    :where(input:not([type="checkbox"]), select, textarea),
-  .weddingEnquiry
-    .enquiryFields
-    :where(input:not([type="checkbox"]), select, textarea) {
+    :is(input:not([type="checkbox"]), select, textarea) {
     border: 0;
     border-radius: 4px;
     box-shadow: inset 0 0 0 1px var(--soft-stone);
@@ -2409,6 +2407,9 @@
   }
 
   .enquirySelect::picker(select) {
+    position-area: block-end span-inline-end;
+    position-try-order: normal;
+    margin-block: 4px;
     width: anchor-size(width);
     max-width: calc(100vw - 32px);
     height: min(240px, 40dvh);
@@ -2423,6 +2424,8 @@
   }
 
   .enquirySelect option {
+    background: var(--warm-cream);
+    color: var(--ink);
     cursor: pointer;
     min-height: 44px;
     padding: 10px 16px;
@@ -2430,9 +2433,14 @@
     line-height: 22px;
   }
 
-  .enquirySelect option:is(:hover, :focus, :checked) {
+  .enquirySelect option:is(:hover, :checked) {
     background: var(--events-pale);
     color: var(--peploe-burgundy);
+  }
+
+  .enquirySelect option:focus-visible {
+    outline: 2px solid var(--text-secondary);
+    outline-offset: -2px;
   }
 }
 
