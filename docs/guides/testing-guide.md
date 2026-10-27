@@ -122,9 +122,11 @@ the deployment gate. Provider hosts are intercepted
 with `context.route`, so no request leaves the machine. CI runs it after the
 normal browser tests, reusing the installed Chromium.
 
-Analytics assertions have one owner each. Unit tests own sanitising, allowlists
-and consent logic. Playwright owns page-level wiring: consent to requests,
-navigation counts and storage. Do not assert the same rule in both.
+Each analytics test layer verifies a different boundary. Unit tests verify the
+rules in isolation: sanitising, allowlists and consent logic. Playwright
+verifies the assembled page: consent reaching the network, navigation counts and
+browser storage. A rule may appear in both layers when each checks its own
+boundary; do not repeat the same assertion at the same boundary.
 
 Test the production build, locate controls by accessible role or label, and give
 each test isolated data. Add coverage for critical journeys such as sign-in,
