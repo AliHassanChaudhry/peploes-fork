@@ -13,6 +13,19 @@ test("removed reveal targets stop being observed during menu replacement", async
     };
   });
   await page.goto("/menus?menu=wine");
+  const navigation = page.getByRole("navigation", { name: "Restaurant menus" });
+  await expect(
+    navigation.getByRole("link", { name: "Wine", exact: true }),
+  ).toBeInViewport({ ratio: 1 });
+  await navigation.getByRole("link", { name: "Dinner", exact: true }).click();
+  await expect(page.locator("[data-menu-content]")).toHaveAttribute(
+    "data-menu",
+    "dinner",
+  );
+  await expect(page.locator("[data-menu-content]")).toHaveAttribute(
+    "data-phase",
+    "idle",
+  );
   for (let index = 0; index < 3; index++) {
     const id = `removed-reveal-${index}`;
     await page.evaluate((id) => {
