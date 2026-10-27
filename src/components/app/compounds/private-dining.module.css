@@ -2069,13 +2069,13 @@
   }
   .corporatePage
     .enquiryFields
-    :is(input:not([type="checkbox"]), select, textarea),
+    :where(input:not([type="checkbox"]), select, textarea),
   .celebrationEnquiry
     .enquiryFields
-    :is(input:not([type="checkbox"]), select, textarea),
+    :where(input:not([type="checkbox"]), select, textarea),
   .weddingEnquiry
     .enquiryFields
-    :is(input:not([type="checkbox"]), select, textarea) {
+    :where(input:not([type="checkbox"]), select, textarea) {
     border: 0;
     border-radius: 4px;
     box-shadow: inset 0 0 0 1px var(--soft-stone);

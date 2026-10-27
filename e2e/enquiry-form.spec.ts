@@ -19,7 +19,10 @@ for (const path of [
       await field.focus();
       await expect(field).toBeFocused();
       await expect(field).toHaveCSS("outline-style", "none");
-      await expect(field).not.toHaveCSS("box-shadow", "none");
+      await expect(field).toHaveCSS(
+        "box-shadow",
+        "rgb(89, 84, 80) 0px 0px 0px 2px inset",
+      );
     }
     const selects = form.getByRole("combobox");
     for (const select of await selects.all()) {
