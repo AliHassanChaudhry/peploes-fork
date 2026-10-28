@@ -372,15 +372,17 @@ test.describe("interaction events", () => {
     await page.locator('footer a[href^="mailto:"]:visible').first().click();
     await expect.poll(() => analytics.gaNamed("contact_click").length).toBe(2);
     await page.goto("/visit-contact");
-    // Directions leaves the site in the same tab: the click must survive unload.
     await page.context().route("https://www.google.com/maps/**", (route) =>
       route.fulfill({
         contentType: "text/html",
         body: "<title>maps</title>",
       }),
     );
-    await page.getByRole("link", { name: /Get directions to Peploe/ }).click();
-    await expect(page).toHaveURL(/google\.com\/maps/);
+    const directions = page.waitForEvent("popup");
+    await page
+      .getByRole("link", { name: "Get Directions", exact: true })
+      .click();
+    await (await directions).close();
     await expect
       .poll(() => analytics.gaNamed("directions_click").length, {
         timeout: 2500,

@@ -52,6 +52,11 @@ export const env = createEnv({
   clientPrefix: "NEXT_PUBLIC_",
 
   client: {
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: z.string().startsWith("pk.").optional(),
+    NEXT_PUBLIC_MAPBOX_STYLE_URL: z
+      .string()
+      .regex(/^mapbox:\/\/styles\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/)
+      .default("mapbox://styles/mapbox/light-v11"),
     NEXT_PUBLIC_SITE_URL: z.string().url(),
     NEXT_PUBLIC_API_BASE_URL: z.string().url().default("http://localhost:3000"),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
@@ -66,9 +71,6 @@ export const env = createEnv({
       .default("https://www.google-analytics.com/mp/collect"),
   },
 
-  // Next inlines only literal `process.env.NEXT_PUBLIC_*` reads into the
-  // browser bundle, so each public variable is named here; server code still
-  // sees the whole of process.env.
   runtimeEnv: {
     ...process.env,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
@@ -78,6 +80,9 @@ export const env = createEnv({
     NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
     NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
     NEXT_PUBLIC_GA_ENDPOINT: process.env.NEXT_PUBLIC_GA_ENDPOINT,
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN:
+      process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
+    NEXT_PUBLIC_MAPBOX_STYLE_URL: process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL,
   },
 
   emptyStringAsUndefined: true,
