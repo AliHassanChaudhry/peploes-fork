@@ -72,6 +72,12 @@ export const env = createEnv({
       .string()
       .url()
       .default("https://www.google-analytics.com/mp/collect"),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_POSTHOG_HOST: z
+      .string()
+      .url()
+      .refine((value) => value.startsWith("https://"), "Must use https")
+      .optional(),
   },
 
   runtimeEnv: {
@@ -87,6 +93,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN:
       process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
     NEXT_PUBLIC_MAPBOX_STYLE_URL: process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
 
   emptyStringAsUndefined: true,

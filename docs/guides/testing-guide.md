@@ -120,12 +120,15 @@ live-site build (`NEXT_PUBLIC_VERCEL_ENV=production`) with empty provider IDs,
 so `analytics-unconfigured.spec.ts` exercises the missing-ID gate rather than
 the deployment gate. Provider hosts are intercepted
 with `context.route`, so no request leaves the machine. CI runs it after the
-normal browser tests, reusing the installed Chromium.
+normal browser tests, reusing the installed Chromium. See the
+[PostHog guide](posthog-guide.md).
 
 Each analytics test layer verifies a different boundary. Unit tests verify the
-rules in isolation: sanitising, allowlists and consent logic. Playwright
-verifies the assembled page: consent reaching the network, navigation counts and
-browser storage. A rule may appear in both layers when each checks its own
+rules in isolation: sanitising, allowlists and consent logic. The real-SDK node
+test (`src/__tests__/lib/analytics-posthog-sdk.test.ts`) verifies what posthog-js
+puts in a payload and how it sends it. Playwright verifies the assembled page:
+consent reaching the network, navigation counts, unload delivery and browser
+storage. A rule may appear in more than one layer when each checks its own
 boundary; do not repeat the same assertion at the same boundary.
 
 Test the production build, locate controls by accessible role or label, and give

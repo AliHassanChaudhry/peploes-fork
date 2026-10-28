@@ -23,6 +23,17 @@ function getConfiguredOrigin(value: string | undefined): string | undefined {
   return new URL(value).origin;
 }
 
+// PostHog recommends its wildcard because its subdomains change; a host
+// outside posthog.com (for example a proxy) is allowed by exact origin.
+function getPostHogSource(): string | undefined {
+  const origin = getConfiguredOrigin(process.env.NEXT_PUBLIC_POSTHOG_HOST);
+  if (!origin || !process.env.NEXT_PUBLIC_POSTHOG_KEY) return undefined;
+
+  return new URL(origin).hostname.endsWith(".posthog.com")
+    ? "https://*.posthog.com"
+    : origin;
+}
+
 const nextConfig: NextConfig = {
   env: Object.fromEntries([
     // NODE_ENV is also production on previews and local production builds.
@@ -80,6 +91,7 @@ const nextConfig: NextConfig = {
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ||
         process.env.NEXT_PUBLIC_GTM_ID,
     );
+    const posthogSource = getPostHogSource();
     // Next Link retains the original document CSP when navigating to Visit.
     const hasMapbox = Boolean(process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
     const scriptSources = [
@@ -88,6 +100,7 @@ const nextConfig: NextConfig = {
       "'unsafe-inline'",
       ...(isDevelopment ? ["'unsafe-eval'"] : []),
       ...(hasClientAnalytics ? ["https://www.googletagmanager.com"] : []),
+      ...(posthogSource ? [posthogSource] : []),
     ];
     const connectionSources = [
       "connect-src",
@@ -101,6 +114,7 @@ const nextConfig: NextConfig = {
             "https://www.googletagmanager.com",
           ]
         : []),
+      ...(posthogSource ? [posthogSource] : []),
     ];
     const imageSources = [
       "img-src",
