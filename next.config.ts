@@ -22,6 +22,16 @@ function getConfiguredOrigin(value: string | undefined): string | undefined {
 }
 
 const nextConfig: NextConfig = {
+  env: Object.fromEntries([
+    // NODE_ENV is also production on previews and local production builds.
+    ["NEXT_PUBLIC_SENTRY_ENVIRONMENT", process.env.VERCEL_ENV || "development"],
+    // Vercel exposes VERCEL_ENV at build time only; inline it for the browser
+    // live-site gate. An explicit NEXT_PUBLIC_VERCEL_ENV wins (QA builds).
+    [
+      "NEXT_PUBLIC_VERCEL_ENV",
+      process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || "",
+    ],
+  ]),
   typedRoutes: true,
   experimental: {
     optimizePackageImports: [
@@ -38,14 +48,6 @@ const nextConfig: NextConfig = {
     },
   },
   poweredByHeader: false,
-  // Vercel exposes VERCEL_ENV at build time only; inline it for the browser
-  // live-site gate. An explicit NEXT_PUBLIC_VERCEL_ENV wins (QA builds).
-  env: Object.fromEntries([
-    [
-      "NEXT_PUBLIC_VERCEL_ENV",
-      process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || "",
-    ],
-  ]),
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -220,19 +222,19 @@ const nextConfig: NextConfig = {
 };
 
 const shouldEnableSentry = Boolean(
-  process.env.SENTRY_AUTH_TOKEN &&
+  process.env.VERCEL_ENV === "production" &&
+    process.env.SENTRY_AUTH_TOKEN &&
     process.env.SENTRY_ORG &&
     process.env.SENTRY_PROJECT,
 );
 
-const isProductionDeployment =
-  process.env.VERCEL_ENV === "production" ||
-  process.env.NODE_ENV === "production";
-
 const sentryConfig = {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   disableLogger: true,
   silent: !process.env.CI,
-  hideSourceMaps: isProductionDeployment,
+  sourcemaps: { deleteSourcemapsAfterUpload: true },
 };
 
 const exportConfig = shouldEnableSentry
