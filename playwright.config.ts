@@ -14,11 +14,13 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
+      // Needs its own build; see playwright.analytics.config.ts.
+      testIgnore: "**/analytics.spec.ts",
       use: { viewport: { width: 1440, height: 900 } },
     },
     {
       name: "phone",
-      testIgnore: "**/desktop-navigation.spec.ts",
+      testIgnore: ["**/desktop-navigation.spec.ts", "**/analytics.spec.ts"],
       use: {
         viewport: { width: 390, height: 844 },
         isMobile: true,
@@ -27,7 +29,7 @@ export default defineConfig({
     },
     {
       name: "small-phone",
-      testIgnore: "**/desktop-navigation.spec.ts",
+      testIgnore: ["**/desktop-navigation.spec.ts", "**/analytics.spec.ts"],
       use: {
         viewport: { width: 320, height: 740 },
         isMobile: true,

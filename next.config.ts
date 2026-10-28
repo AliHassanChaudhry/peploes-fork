@@ -24,11 +24,16 @@ function getConfiguredOrigin(value: string | undefined): string | undefined {
 }
 
 const nextConfig: NextConfig = {
-  env: {
+  env: Object.fromEntries([
     // NODE_ENV is also production on previews and local production builds.
-    // biome-ignore lint/style/useNamingConvention: Next.js env keys must match the public environment variable name.
-    NEXT_PUBLIC_SENTRY_ENVIRONMENT: process.env.VERCEL_ENV || "development",
-  },
+    ["NEXT_PUBLIC_SENTRY_ENVIRONMENT", process.env.VERCEL_ENV || "development"],
+    // Vercel exposes VERCEL_ENV at build time only; inline it for the browser
+    // live-site gate. An explicit NEXT_PUBLIC_VERCEL_ENV wins (QA builds).
+    [
+      "NEXT_PUBLIC_VERCEL_ENV",
+      process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || "",
+    ],
+  ]),
   typedRoutes: true,
   htmlLimitedBots: new RegExp(
     [HTML_LIMITED_BOT_UA_RE.source, ...HTML_LIMITED_AI_FETCHERS].join("|"),
@@ -89,7 +94,12 @@ const nextConfig: NextConfig = {
       "'self'",
       ...(sentryOrigin ? [sentryOrigin] : []),
       ...(hasClientAnalytics
-        ? ["https://*.google-analytics.com", "https://analytics.google.com"]
+        ? [
+            "https://*.google-analytics.com",
+            "https://analytics.google.com",
+            "https://*.analytics.google.com",
+            "https://www.googletagmanager.com",
+          ]
         : []),
     ];
     const imageSources = [
@@ -97,7 +107,9 @@ const nextConfig: NextConfig = {
       "'self'",
       "data:",
       "blob:",
-      ...(hasClientAnalytics ? ["https://*.google-analytics.com"] : []),
+      ...(hasClientAnalytics
+        ? ["https://*.google-analytics.com", "https://www.googletagmanager.com"]
+        : []),
       "https://cdn.sanity.io",
     ].join(" ");
 

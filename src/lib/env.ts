@@ -65,6 +65,9 @@ export const env = createEnv({
       .default("development"),
     NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
     NEXT_PUBLIC_GTM_ID: z.string().optional(),
+    NEXT_PUBLIC_VERCEL_ENV: z
+      .enum(["production", "preview", "development"])
+      .optional(),
     NEXT_PUBLIC_GA_ENDPOINT: z
       .string()
       .url()
@@ -76,8 +79,10 @@ export const env = createEnv({
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_SENTRY_ENVIRONMENT: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
     NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
     NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
+    NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
     NEXT_PUBLIC_GA_ENDPOINT: process.env.NEXT_PUBLIC_GA_ENDPOINT,
     NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN:
       process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
@@ -94,4 +99,12 @@ export function isProduction(): boolean {
 
 export function isLiveSite(): boolean {
   return env.VERCEL_ENV ? env.VERCEL_ENV === "production" : isProduction();
+}
+
+// Browser-safe twin of isLiveSite. It fails closed: a production build with no
+// explicit signal (a preview, `next start`) must not collect, so collection
+// needs NEXT_PUBLIC_VERCEL_ENV=production. next.config.ts fills it from
+// Vercel's build-time VERCEL_ENV unless the variable is set explicitly.
+export function isLiveSiteClient(): boolean {
+  return env.NEXT_PUBLIC_VERCEL_ENV === "production";
 }
