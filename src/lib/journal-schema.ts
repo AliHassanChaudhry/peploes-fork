@@ -33,7 +33,8 @@ export const journalArticleCardSchema = z.object({
     .int()
     .nonnegative()
     .nullish()
-    .transform((value) => value ?? undefined),
+    .transform((value) => value ?? undefined)
+    .optional(),
   readTimeMinutes: z
     .number()
     .int()
@@ -89,7 +90,10 @@ export const journalPageSchema = z.object({
     heading: text,
     standfirst: text,
     description: text,
-    image: image.nullish().transform((value) => value ?? undefined),
+    image: image
+      .nullish()
+      .transform((value) => value ?? undefined)
+      .optional(),
   }),
   featuredArticle: journalArticleCardSchema,
   listing: z.object({

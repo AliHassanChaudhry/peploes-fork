@@ -518,7 +518,7 @@ button now opens the private dining overview. Each card image and its Explore
 action open the same dedicated page. Images gently zoom on hover or keyboard
 focus, with motion disabled for visitors who prefer reduced motion.
 See [Private dining and events](private-dining.md)
-for the page layouts and enquiry preview limits.
+for the page layouts and enquiry interaction requirements.
 
 When changing this section, compare the photograph crops, gradient, typography,
 card order and spacing with Figma. Verify image loading, four destination links,
@@ -723,7 +723,7 @@ readable, but new cards use explicit URLs.
 For an initial example, from `studio` run
 `bun run seed:events:preview` to preview, then
 `bun run seed:events:development` to create it. This command is restricted to
-`3ggctsor/development`, creates only missing settings and one labelled test
+`w789ottu/development`, creates only missing settings and one labelled test
 event, and never replaces existing documents. The example is not a real event.
 No production content is copied automatically.
 The package commands use a Node launcher to set `PEPLOES_SEED_APPLY` explicitly: preview commands force
@@ -953,7 +953,7 @@ bun run --cwd studio seed:journal:preview
 bun run --cwd studio seed:journal:development
 ```
 
-The import only targets `3ggctsor/development`. Preview reads the existing
+The import only targets `w789ottu/development`. Preview reads the existing
 documents and validates the content and local images without uploading or
 writing. Apply creates missing documents and uploads their images, preserving
 existing published documents and drafts. A conflicting ID or URL stops the

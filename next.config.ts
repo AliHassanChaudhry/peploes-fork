@@ -1,7 +1,19 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
+import { HTML_LIMITED_BOT_UA_RE } from "next/dist/shared/lib/router/utils/html-bots";
+import { HTML_LIMITED_AI_FETCHERS } from "./src/lib/constants/crawlers";
 
 const BOOKING_PAGE = "/book-a-table";
+const emailBrowserFixture = process.env.EMAIL_E2E_BUILD === "1";
+
+if (
+  emailBrowserFixture &&
+  (process.env.VERCEL_ENV === "production" ||
+    process.env.SANITY_PROJECT_ID !== "testproject" ||
+    process.env.SANITY_DATASET !== "development")
+) {
+  throw new Error("Email browser fixtures require the isolated test project.");
+}
 
 const STRIPE_SOURCES = {
   script: ["https://js.stripe.com", "https://*.js.stripe.com"],
@@ -21,8 +33,43 @@ function getConfiguredOrigin(value: string | undefined): string | undefined {
   return new URL(value).origin;
 }
 
+// PostHog recommends its wildcard because its subdomains change; a host
+// outside posthog.com (for example a proxy) is allowed by exact origin.
+function getPostHogSource(): string | undefined {
+  const origin = getConfiguredOrigin(process.env.NEXT_PUBLIC_POSTHOG_HOST);
+  if (!origin || !process.env.NEXT_PUBLIC_POSTHOG_KEY) return undefined;
+
+  return new URL(origin).hostname.endsWith(".posthog.com")
+    ? "https://*.posthog.com"
+    : origin;
+}
+
 const nextConfig: NextConfig = {
+  ...(emailBrowserFixture
+    ? {
+        turbopack: {
+          resolveAlias: {
+            "@/dal/email-deliveries": "./e2e/fake-email-deliveries.ts",
+            "@/lib/enquiry-rate-limit": "./e2e/allow-enquiry.ts",
+          },
+        },
+      }
+    : {}),
+  env: Object.fromEntries([
+    // NODE_ENV is also production on previews and local production builds.
+    ["NEXT_PUBLIC_SENTRY_ENVIRONMENT", process.env.VERCEL_ENV || "development"],
+    // Vercel exposes VERCEL_ENV at build time only; inline it for the browser
+    // live-site gate. An explicit NEXT_PUBLIC_VERCEL_ENV wins (QA builds).
+    [
+      "NEXT_PUBLIC_VERCEL_ENV",
+      process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || "",
+    ],
+  ]),
   typedRoutes: true,
+  htmlLimitedBots: new RegExp(
+    [HTML_LIMITED_BOT_UA_RE.source, ...HTML_LIMITED_AI_FETCHERS].join("|"),
+    "i",
+  ),
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -54,6 +101,9 @@ const nextConfig: NextConfig = {
   },
   headers() {
     const isDevelopment = process.env.NODE_ENV === "development";
+    const isLiveSite = process.env.VERCEL_ENV
+      ? process.env.VERCEL_ENV === "production"
+      : process.env.NODE_ENV === "production";
     const sentryOrigin = getConfiguredOrigin(
       process.env.NEXT_PUBLIC_SENTRY_DSN,
     );
@@ -61,6 +111,7 @@ const nextConfig: NextConfig = {
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ||
         process.env.NEXT_PUBLIC_GTM_ID,
     );
+    const posthogSource = getPostHogSource();
     // Next Link retains the original document CSP when navigating to Visit.
     const hasMapbox = Boolean(process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
     const scriptSources = [
@@ -69,21 +120,30 @@ const nextConfig: NextConfig = {
       "'unsafe-inline'",
       ...(isDevelopment ? ["'unsafe-eval'"] : []),
       ...(hasClientAnalytics ? ["https://www.googletagmanager.com"] : []),
+      ...(posthogSource ? [posthogSource] : []),
     ];
     const connectionSources = [
       "connect-src",
       "'self'",
       ...(sentryOrigin ? [sentryOrigin] : []),
       ...(hasClientAnalytics
-        ? ["https://*.google-analytics.com", "https://analytics.google.com"]
+        ? [
+            "https://*.google-analytics.com",
+            "https://analytics.google.com",
+            "https://*.analytics.google.com",
+            "https://www.googletagmanager.com",
+          ]
         : []),
+      ...(posthogSource ? [posthogSource] : []),
     ];
     const imageSources = [
       "img-src",
       "'self'",
       "data:",
       "blob:",
-      ...(hasClientAnalytics ? ["https://*.google-analytics.com"] : []),
+      ...(hasClientAnalytics
+        ? ["https://*.google-analytics.com", "https://www.googletagmanager.com"]
+        : []),
       "https://cdn.sanity.io",
     ].join(" ");
 
@@ -142,6 +202,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: contentSecurityPolicy(false),
           },
+          ...(isLiveSite ? [] : [{ key: "X-Robots-Tag", value: "noindex" }]),
         ],
       },
       {
@@ -205,19 +266,19 @@ const nextConfig: NextConfig = {
 };
 
 const shouldEnableSentry = Boolean(
-  process.env.SENTRY_AUTH_TOKEN &&
+  process.env.VERCEL_ENV === "production" &&
+    process.env.SENTRY_AUTH_TOKEN &&
     process.env.SENTRY_ORG &&
     process.env.SENTRY_PROJECT,
 );
 
-const isProductionDeployment =
-  process.env.VERCEL_ENV === "production" ||
-  process.env.NODE_ENV === "production";
-
 const sentryConfig = {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   disableLogger: true,
   silent: !process.env.CI,
-  hideSourceMaps: isProductionDeployment,
+  sourcemaps: { deleteSourcemapsAfterUpload: true },
 };
 
 const exportConfig = shouldEnableSentry

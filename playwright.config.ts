@@ -1,6 +1,9 @@
 import { defineConfig } from "@playwright/test";
+import { E2E_SANITY_WEBHOOK_SECRET } from "./e2e/sanity-webhook";
 
 const baseURL = "http://127.0.0.1:3107";
+const emailTestIgnore =
+  process.env.EMAIL_E2E_BUILD === "1" ? [] : ["**/enquiry-delivery.spec.ts"];
 
 export default defineConfig({
   testDir: "./e2e",
@@ -9,16 +12,23 @@ export default defineConfig({
   use: {
     baseURL,
     browserName: "chromium",
+    launchOptions: { args: ["--font-render-hinting=none"] },
     trace: "retain-on-failure",
   },
   projects: [
     {
       name: "desktop",
+      // Needs its own build; see playwright.analytics.config.ts.
+      testIgnore: ["**/analytics.spec.ts", ...emailTestIgnore],
       use: { viewport: { width: 1440, height: 900 } },
     },
     {
       name: "phone",
-      testIgnore: "**/desktop-navigation.spec.ts",
+      testIgnore: [
+        "**/desktop-navigation.spec.ts",
+        "**/analytics.spec.ts",
+        ...emailTestIgnore,
+      ],
       use: {
         viewport: { width: 390, height: 844 },
         isMobile: true,
@@ -27,7 +37,11 @@ export default defineConfig({
     },
     {
       name: "small-phone",
-      testIgnore: "**/desktop-navigation.spec.ts",
+      testIgnore: [
+        "**/desktop-navigation.spec.ts",
+        "**/analytics.spec.ts",
+        ...emailTestIgnore,
+      ],
       use: {
         viewport: { width: 320, height: 740 },
         isMobile: true,
@@ -43,6 +57,7 @@ export default defineConfig({
       ["SANITY_PROJECT_ID", "testproject"],
       ["SANITY_DATASET", "development"],
       ["SANITY_API_VERSION", "2026-10-06"],
+      ["SANITY_WEBHOOK_SECRET", E2E_SANITY_WEBHOOK_SECRET],
     ]),
     url: baseURL,
     reuseExistingServer: false,

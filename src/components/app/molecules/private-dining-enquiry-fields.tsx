@@ -2,57 +2,103 @@
 
 import { ArrowRight, Check, ChevronDown, LoaderCircle } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import {
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
+import { submitPrivateDiningEnquiry } from "@/actions/private-dining-enquiry";
 import styles from "@/components/app/compounds/private-dining.module.css";
 import { PrivateDiningDate } from "@/components/app/molecules/private-dining-date";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
 import { PRIVATE_DINING_FORM } from "@/lib/constants/private-dining";
-import type { IPrivateDiningEnquiryProps } from "@/lib/types";
-
-const PREVIEW_DURATION_MS = 1200;
+import type {
+  IEnquiryActionState,
+  IPrivateDiningEnquiryProps,
+} from "@/lib/types";
 
 export function PrivateDiningEnquiryFields({
   content,
 }: IPrivateDiningEnquiryProps) {
-  const [ready, setReady] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "complete">("idle");
-  const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [notificationId, setNotificationId] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const submittingRef = useRef(false);
+  const [state, setState] = useState<IEnquiryActionState>({
+    status: "idle",
+    message: "",
+  });
+  const [pending, startTransition] = useTransition();
 
   useEffect(() => {
-    setReady(true);
-    return () => {
-      if (previewTimer.current !== null) clearTimeout(previewTimer.current);
-    };
+    setNotificationId(crypto.randomUUID());
   }, []);
+
+  function submit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    if (
+      pending ||
+      submittingRef.current ||
+      state.status === "success" ||
+      state.status === "unknown" ||
+      !event.currentTarget.reportValidity()
+    )
+      return;
+    submittingRef.current = true;
+    const data = new FormData(event.currentTarget);
+    startTransition(async () => {
+      try {
+        const result = await submitPrivateDiningEnquiry(data);
+        setState(result);
+        if (result.status === "success") {
+          formRef.current?.reset();
+          setNotificationId(crypto.randomUUID());
+        }
+      } catch {
+        setState({
+          status: "unknown",
+          message:
+            "We could not confirm delivery. Please contact our team before sending this again.",
+        });
+      } finally {
+        submittingRef.current = false;
+      }
+    });
+  }
+
+  function revise(): void {
+    if (state.status === "error" || state.status === "success") {
+      setNotificationId(crypto.randomUUID());
+      setState({ status: "idle", message: "" });
+    }
+  }
 
   return (
     <form
+      ref={formRef}
       className={styles.enquiryFields}
       aria-label={content.formEyebrow ?? content.eyebrow}
       noValidate
-      onChange={() => {
-        if (previewTimer.current !== null) clearTimeout(previewTimer.current);
-        previewTimer.current = null;
-        setStatus("idle");
-      }}
-      onSubmit={(event) => {
-        event.preventDefault();
-        if (
-          status !== "idle" ||
-          previewTimer.current !== null ||
-          !event.currentTarget.reportValidity()
-        )
-          return;
-        setStatus("loading");
-        // Issue #59 previews feedback until enquiry delivery is connected.
-        previewTimer.current = setTimeout(() => {
-          previewTimer.current = null;
-          setStatus("complete");
-        }, PREVIEW_DURATION_MS);
-      }}
+      onSubmit={submit}
+      onChange={revise}
     >
+      <input
+        type="hidden"
+        name="notificationId"
+        value={notificationId}
+        className={styles.enquiryHidden}
+      />
+      <input
+        type="text"
+        name="website"
+        autoComplete="off"
+        tabIndex={-1}
+        aria-hidden="true"
+        className={styles.enquiryHoneypot}
+      />
       {content.occasions && (
         <div className={styles.selectField}>
           <select
@@ -146,12 +192,17 @@ export function PrivateDiningEnquiryFields({
       <Button
         type="submit"
         variant="brand-primary"
-        disabled={!ready || status !== "idle"}
-        aria-busy={status === "loading"}
-        aria-describedby="enquiry-preview"
+        disabled={
+          pending ||
+          !notificationId ||
+          state.status === "success" ||
+          state.status === "unknown"
+        }
+        aria-busy={pending}
+        aria-describedby="enquiry-feedback"
         className={styles.sendButton}
       >
-        {status === "loading" ? (
+        {pending ? (
           <>
             {PRIVATE_DINING_FORM.loading}
             <LoaderCircle
@@ -159,7 +210,7 @@ export function PrivateDiningEnquiryFields({
               className="size-4 motion-safe:animate-spin"
             />
           </>
-        ) : status === "complete" ? (
+        ) : state.status === "success" ? (
           <>
             {PRIVATE_DINING_FORM.complete}
             <Check aria-hidden="true" className={styles.enquiryCheck} />
@@ -171,19 +222,15 @@ export function PrivateDiningEnquiryFields({
           </>
         )}
       </Button>
-      <p id="enquiry-preview" className={styles.enquiryNotice}>
-        {PRIVATE_DINING_FORM.preview}
-      </p>
       <p
+        id="enquiry-feedback"
         role="status"
         aria-atomic="true"
-        className={status === "idle" ? "sr-only" : styles.enquiryStatus}
+        className={
+          state.status === "idle" && !pending ? "sr-only" : styles.enquiryStatus
+        }
       >
-        {status === "loading"
-          ? PRIVATE_DINING_FORM.loading
-          : status === "complete"
-            ? PRIVATE_DINING_FORM.completedPreview
-            : ""}
+        {pending ? PRIVATE_DINING_FORM.loading : state.message}
       </p>
     </form>
   );

@@ -38,7 +38,7 @@ const cardProjection = `{
   "heroImage":heroImage{alt,desktopPosition,mobilePosition,"src":asset->url}
 }`;
 const placeholderUrl =
-  "https://cdn.sanity.io/images/3ggctsor/development/preview.jpg";
+  "https://cdn.sanity.io/images/w789ottu/development/preview.jpg";
 let operation = "initialize Sanity client";
 
 function mapImages(
@@ -271,11 +271,11 @@ async function main() {
   });
   const config = client.config();
   assert(
-    config.projectId === "3ggctsor" && config.dataset === "development",
-    "This command only supports 3ggctsor/development. No content was changed.",
+    config.projectId === "w789ottu" && config.dataset === "development",
+    "This command only supports w789ottu/development. No content was changed.",
   );
   process.stdout.write(
-    "Target: 3ggctsor/development. Existing documents are never replaced.\n",
+    "Target: w789ottu/development. Existing documents are never replaced.\n",
   );
   operation = "validate Journal manifest";
   const seeds = manifest();

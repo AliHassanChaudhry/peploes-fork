@@ -139,11 +139,8 @@ export const PRIVATE_DINING_FORM = {
     afterPolicy: " for enquiries.",
   },
   submit: "Send Enquiry",
-  loading: "Preparing…",
+  loading: "Sending…",
   complete: "Complete",
-  preview:
-    "Form preview only. To make an enquiry, please call or email our team.",
-  completedPreview: "Preview complete. Your enquiry has not been sent.",
   emailAction: "Email Reception",
 };
 

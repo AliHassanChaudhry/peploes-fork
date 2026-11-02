@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as content from "../../../studio/journal-content";
 
 const cms = vi.hoisted(() => ({
-  config: vi.fn(() => ({ projectId: "3ggctsor", dataset: "development" })),
+  config: vi.fn(() => ({ projectId: "w789ottu", dataset: "development" })),
   fetch: vi.fn(),
   upload: vi.fn(),
   transaction: vi.fn(),
@@ -27,7 +27,7 @@ describe("Journal importer", () => {
     vi.doMock("../../../studio/journal-content", () => source);
     documents.clear();
     cms.config.mockReturnValue({
-      projectId: "3ggctsor",
+      projectId: "w789ottu",
       dataset: "development",
     });
     cms.fetch.mockImplementation(() =>
@@ -38,7 +38,7 @@ describe("Journal importer", () => {
     cms.upload.mockImplementation((_kind, _bytes, options) =>
       Promise.resolve({
         _id: `image-${options.filename}`,
-        url: `https://cdn.sanity.io/images/3ggctsor/development/${options.filename}`,
+        url: `https://cdn.sanity.io/images/w789ottu/development/${options.filename}`,
       }),
     );
     cms.transaction.mockImplementation(() => {
@@ -74,7 +74,7 @@ describe("Journal importer", () => {
   it("previews exact intended IDs without uploading or mutating", async () => {
     await (await import("../../../studio/seed-journal")).journalSeed;
     expect(process.exitCode, output).toBe(0);
-    expect(output).toContain("Target: 3ggctsor/development");
+    expect(output).toContain("Target: w789ottu/development");
     expect(output).toContain("create journal-page");
     expect(output).toContain("create journal-category-from-gina");
     expect(output).toContain("create journal-article-some-things-have-changed");
@@ -93,7 +93,8 @@ describe("Journal importer", () => {
 
   it.each([
     { projectId: "other", dataset: "development" },
-    { projectId: "3ggctsor", dataset: "production" },
+    { projectId: "w789ottu", dataset: "production" },
+    { projectId: "3ggctsor", dataset: "development" },
   ])(
     "refuses an unauthorized target before reading or writing %j",
     async (config) => {
@@ -219,7 +220,7 @@ describe("Journal importer", () => {
         noIndex: true,
         heroImage: {
           alt: "Editor photo",
-          src: "https://cdn.sanity.io/images/3ggctsor/development/editor.jpg",
+          src: "https://cdn.sanity.io/images/w789ottu/development/editor.jpg",
         },
       },
     };
@@ -255,7 +256,7 @@ describe("Journal importer", () => {
     cms.upload
       .mockResolvedValueOnce({
         _id: "image-first",
-        url: "https://cdn.sanity.io/images/3ggctsor/development/first.jpg",
+        url: "https://cdn.sanity.io/images/w789ottu/development/first.jpg",
       })
       .mockRejectedValueOnce(
         Object.assign(new Error("private SDK details"), { statusCode: 503 }),

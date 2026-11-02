@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-
+import { TrackedLink } from "@/components/app/atoms/tracked-link";
 import { Button } from "@/components/ui/button";
 import { NAVBAR_CONTENT, ROUTES } from "@/lib/constants";
+import { GA4Event } from "@/lib/enums";
 import type { INavbarBookingButtonProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +18,11 @@ export function NavbarBookingButton({
       size="cta"
       className={cn("w-[99px] xl:w-[156px]", className)}
     >
-      <Link href={ROUTES.BOOK_A_TABLE} onNavigate={onNavigate}>
+      <TrackedLink
+        href={ROUTES.BOOK_A_TABLE}
+        onNavigate={onNavigate}
+        interaction={{ event: GA4Event.BookingClick, placement: "navbar" }}
+      >
         {label ?? (
           <>
             <span className="xl:hidden">
@@ -30,7 +34,7 @@ export function NavbarBookingButton({
           </>
         )}
         <ArrowRight aria-hidden="true" className="size-4" />
-      </Link>
+      </TrackedLink>
     </Button>
   );
 }

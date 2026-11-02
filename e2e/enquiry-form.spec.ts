@@ -21,7 +21,7 @@ async function fillEnquiry(form: Locator) {
   }
   await form.getByLabel("Preferred date", { exact: true }).fill("2026-12-01");
   await form.getByLabel("Your name").fill("Test Guest");
-  await form.getByLabel("Email address").fill("guest@example.com");
+  await form.getByLabel("Email address").fill("guest@example.test");
   await form.locator("textarea").fill("Please share your dining options.");
   const consent = form.getByRole("checkbox");
   if (await consent.count()) await consent.check();
@@ -75,63 +75,44 @@ for (const path of enquiryPaths) {
     await expect(submit).toBeEnabled();
   });
 
-  test(`${path} valid enquiry plays loading and completion without sending data`, async ({
+  test(`${path} valid enquiry waits for delivery and preserves input on failure`, async ({
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
+    let releaseRequest: () => void = () => undefined;
+    const responseGate = new Promise<void>((resolve) => {
+      releaseRequest = resolve;
+    });
+    await page.route(`**${path}`, async (route) => {
+      if (route.request().method() === "POST") await responseGate;
+      await route.continue();
+    });
     await page.goto(path);
     const form = page.locator("#enquire").getByRole("form");
-    const submit = form.getByRole("button", { name: "Send Enquiry" });
+    const submit = form.locator('button[type="submit"]');
     await expect(submit).toBeEnabled();
     await expect(form.getByRole("status")).toBeEmpty();
-    const transmissions: string[] = [];
-    page.on("request", (request) => {
-      const payload = request.url() + (request.postData() ?? "");
-      const values = [
-        "Test Guest",
-        "guest@example.com",
-        "Please share your dining options.",
-      ];
-      if (
-        values.some((value) =>
-          [
-            value,
-            encodeURIComponent(value),
-            encodeURIComponent(value).replaceAll("%20", "+"),
-          ].some((encoded) => payload.includes(encoded)),
-        )
-      ) {
-        transmissions.push(request.url());
-      }
-    });
     await fillEnquiry(form);
+    try {
+      await submit.click();
+      await expect(submit).toHaveAttribute("aria-busy", "true");
+      await expect(form).not.toHaveAttribute("aria-busy", "true");
+      await expect(submit).toBeDisabled();
+      await expect(submit).toHaveText("Sending…");
+      await expect(submit.locator("svg")).toHaveCSS("animation-name", "none");
+    } finally {
+      releaseRequest();
+    }
+    await expect(submit).toHaveAttribute("aria-busy", "false");
     await expect(submit).toBeEnabled();
-    await page.clock.install({ time: enquiryNow });
-    await page.clock.pauseAt(new Date(enquiryNow.getTime() + 1000));
-    await submit.click();
-    await expect(form.locator('button[type="submit"]')).toHaveAttribute(
-      "aria-busy",
-      "true",
-    );
-    await expect(form).not.toHaveAttribute("aria-busy", "true");
-    await expect(form.getByRole("status")).toHaveText("Preparing…");
-    const loading = form.getByRole("button", { name: "Preparing…" });
-    await expect(loading).toBeDisabled();
-    await expect(loading.locator("svg")).toHaveCSS("animation-name", "none");
-    await page.clock.runFor(1500);
-    await expect(form.locator('button[type="submit"]')).toHaveAttribute(
-      "aria-busy",
-      "false",
-    );
-    const complete = form.getByRole("button", { name: "Complete" });
-    await expect(complete).toBeDisabled();
-    await expect(complete.locator("svg")).toHaveCSS("animation-name", "none");
     await expect(form.getByRole("status")).toContainText(
-      "Preview complete. Your enquiry has not been sent.",
+      "Online enquiries are unavailable",
     );
     await expect(form.getByLabel("Your name")).toHaveValue("Test Guest");
+    await expect(form.getByLabel("Email address")).toHaveValue(
+      "guest@example.test",
+    );
     expect(new URL(page.url()).pathname).toBe(path);
-    expect(transmissions).toEqual([]);
   });
 }
 
@@ -159,13 +140,25 @@ test("enquiry date minimum refreshes when an overnight page is reopened", async 
   await expect(submit).toBeEnabled();
 });
 
-test("enquiry validation, editing and keyboard retries preserve the preview flow", async ({
+test("enquiry validation, editing and keyboard retries preserve real delivery state", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  let releaseRequest: () => void = () => undefined;
+  const responseGate = new Promise<void>((resolve) => {
+    releaseRequest = resolve;
+  });
+  let submissions = 0;
+  await page.route("**/private-dining/corporate-events", async (route) => {
+    if (route.request().method() === "POST") {
+      submissions += 1;
+      await responseGate;
+    }
+    await route.continue();
+  });
   await page.goto("/private-dining/corporate-events");
   const form = page.locator("#enquire").getByRole("form");
-  const submit = form.getByRole("button", { name: "Send Enquiry" });
+  const submit = form.locator('button[type="submit"]');
   const email = form.getByLabel("Email address");
   const consent = form.getByRole("checkbox");
   await fillEnquiry(form);
@@ -177,7 +170,7 @@ test("enquiry validation, editing and keyboard retries preserve the preview flow
     await email.evaluate((input: HTMLInputElement) => input.validationMessage),
   ).not.toBe("");
   await expect(submit).toHaveAttribute("aria-busy", "false");
-  await email.fill("guest@example.com");
+  await email.fill("guest@example.test");
   await consent.uncheck();
   await expect(submit).toBeEnabled();
   await submit.click();
@@ -185,41 +178,39 @@ test("enquiry validation, editing and keyboard retries preserve the preview flow
   await consent.check();
   await expect(submit).toBeEnabled();
 
-  await page.clock.install({ time: enquiryNow });
-  await page.clock.pauseAt(new Date(enquiryNow.getTime() + 1000));
-  await email.press("Enter");
-  await expect(form.locator('button[type="submit"]')).toHaveAttribute(
-    "aria-busy",
-    "true",
+  try {
+    await email.press("Enter");
+    await expect(submit).toHaveAttribute("aria-busy", "true");
+    await expect(submit).toBeDisabled();
+    await expect(submit.locator("svg")).toHaveCSS("animation-name", "spin");
+    await expect.poll(() => submissions).toBe(1);
+    await email.press("Enter");
+    expect(submissions).toBe(1);
+  } finally {
+    releaseRequest();
+  }
+  await expect(form.getByRole("status")).toContainText(
+    "Online enquiries are unavailable",
   );
-  const loading = form.getByRole("button", { name: "Preparing…" });
-  await expect(loading).toBeDisabled();
-  await expect(loading.locator("svg")).toHaveCSS("animation-name", "spin");
-  await page.clock.runFor(700);
-  await email.press("Enter");
-  await page.clock.runFor(500);
-  const complete = form.getByRole("button", { name: "Complete" });
-  await expect(complete).toBeDisabled();
-  await expect(complete.locator("svg")).not.toHaveCSS("animation-name", "none");
-  await expect(complete.locator("svg")).toHaveCSS("visibility", "visible");
-  await page.clock.runFor(300);
-  await expect(complete.locator("svg")).toHaveCSS("opacity", "1");
-
+  const previousId = await form.locator('[name="notificationId"]').inputValue();
   await form.locator("textarea").fill("An updated enquiry.");
   await expect(form.getByRole("status")).toBeEmpty();
+  expect(await form.locator('[name="notificationId"]').inputValue()).not.toBe(
+    previousId,
+  );
   await expect(submit).toBeEnabled();
-  await submit.click();
-  await page.clock.runFor(500);
   await email.fill("");
   await expect(submit).toBeEnabled();
-  await page.clock.runFor(1500);
+  await email.press("Enter");
+  await expect(email).toBeFocused();
   await expect(submit).toHaveAttribute("aria-busy", "false");
   await expect(form.getByRole("status")).toBeEmpty();
-  await email.fill("updated@example.com");
+  await email.fill("updated@example.test");
   await email.press("Enter");
-  await page.clock.runFor(1500);
-  await expect(complete).toBeVisible();
-  await expect(email).toHaveValue("updated@example.com");
+  await expect(form.getByRole("status")).toContainText(
+    "Online enquiries are unavailable",
+  );
+  await expect(email).toHaveValue("updated@example.test");
   await form.getByLabel("Preferred date", { exact: true }).click();
   await form
     .getByRole("button", { name: "Wednesday, 2 December 2026", exact: true })
@@ -391,7 +382,7 @@ for (const path of enquiryPaths) {
     await page.goto(path);
     const form = page.locator("#enquire").getByRole("form");
     const fields = form.locator(
-      'input:not([type="checkbox"]), select, textarea',
+      'input:not([type="checkbox"]):not([type="hidden"]):not([name="website"]), select, textarea',
     );
     await page.keyboard.press("Tab");
     for (const field of await fields.all()) {
@@ -568,3 +559,81 @@ for (const path of enquiryPaths) {
     }
   });
 }
+
+test("private dining enquiry keeps guest input when delivery is unavailable", async ({
+  page,
+}) => {
+  await page.goto("/private-dining");
+  const form = page.locator("#enquire").getByRole("form");
+  await form.getByLabel("Occasion type").selectOption("Wedding");
+  await form.getByLabel("Preferred date", { exact: true }).fill("2027-06-18");
+  await form.getByLabel("Number of guests").selectOption("7");
+  await form.getByLabel("Your name").fill("Example Guest");
+  await form.getByLabel("Email address").fill("guest@example.test");
+  await form
+    .getByLabel("Tell us about your gathering")
+    .fill("A family celebration.");
+  await form.getByRole("button", { name: "Send Enquiry" }).click();
+  await expect(form.getByRole("status")).toContainText(
+    "Online enquiries are unavailable",
+  );
+  await expect(form.getByLabel("Your name")).toHaveValue("Example Guest");
+  await expect(form.getByLabel("Email address")).toHaveValue(
+    "guest@example.test",
+  );
+  const previousId = await form.locator('[name="notificationId"]').inputValue();
+  await form.getByLabel("Your name").fill("Revised Guest");
+  await expect(form.getByLabel("Your name")).toHaveValue("Revised Guest");
+  expect(await form.locator('[name="notificationId"]').inputValue()).not.toBe(
+    previousId,
+  );
+});
+
+test("private dining enquiry does not submit an invalid form", async ({
+  page,
+}) => {
+  await page.goto("/private-dining");
+  const form = page.locator("#enquire").getByRole("form");
+  await form.getByRole("button", { name: "Send Enquiry" }).click();
+  expect(
+    await form
+      .getByLabel("Preferred date", { exact: true })
+      .evaluate((element) => element.matches(":invalid")),
+  ).toBe(true);
+  await expect(form.getByRole("status")).toBeEmpty();
+});
+
+test("private dining enquiry blocks retry when the action response is lost", async ({
+  page,
+}) => {
+  await page.route("**/private-dining", async (route) => {
+    if (route.request().method() === "POST") {
+      await route.abort("failed");
+      return;
+    }
+    await route.continue();
+  });
+  await page.goto("/private-dining");
+  const form = page.locator("#enquire").getByRole("form");
+  await form.getByLabel("Occasion type").selectOption("Wedding");
+  await form.getByLabel("Preferred date", { exact: true }).fill("2027-06-18");
+  await form.getByLabel("Number of guests").selectOption("7");
+  await form.getByLabel("Your name").fill("Example Guest");
+  await form.getByLabel("Email address").fill("guest@example.test");
+  await form
+    .getByLabel("Tell us about your gathering")
+    .fill("A family celebration.");
+  const notificationId = await form
+    .locator('[name="notificationId"]')
+    .inputValue();
+  await form.getByRole("button", { name: "Send Enquiry" }).click();
+  await expect(form.getByRole("status")).toContainText(
+    "could not confirm delivery",
+  );
+  await expect(
+    form.getByRole("button", { name: "Send Enquiry" }),
+  ).toBeDisabled();
+  expect(await form.locator('[name="notificationId"]').inputValue()).toBe(
+    notificationId,
+  );
+});

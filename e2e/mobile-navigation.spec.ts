@@ -4,7 +4,7 @@ test.beforeEach(async ({ page, isMobile }) => {
   if (!isMobile) await page.setViewportSize({ width: 768, height: 1024 });
 });
 
-test("mobile menu keeps navigation and vouchers without contact details", async ({
+test("mobile menu keeps navigation without unavailable vouchers or contact details", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -14,7 +14,7 @@ test("mobile menu keeps navigation and vouchers without contact details", async 
 
   await expect(menu.getByText("Opening Hours", { exact: true })).toHaveCount(0);
   await expect(
-    menu.getByText("16 St Stephen’s Green, Dublin 2", { exact: true }),
+    menu.getByText(/^16 St Stephen['’]s Green, Dublin 2$/),
   ).toHaveCount(0);
   await expect(menu.locator('a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(
     0,
@@ -22,24 +22,20 @@ test("mobile menu keeps navigation and vouchers without contact details", async 
   await expect(
     menu.getByRole("link", { name: "Visit & Contact" }),
   ).toBeVisible();
-  await expect(
-    menu.getByRole("button", { name: "Gift Vouchers" }),
-  ).toBeInViewport();
+  await expect(menu.getByText("Gift Vouchers")).toHaveCount(0);
   const booking = menu.getByRole("link", { name: "Book A Table", exact: true });
   await expect(booking).toBeInViewport();
   const bookingBox = await booking.boundingBox();
-  const vouchersBox = await menu
-    .getByRole("button", { name: "Gift Vouchers" })
-    .boundingBox();
-  if (!bookingBox || !vouchersBox) {
-    throw new Error("The booking and voucher buttons must be visible.");
+  const navigationBox = await menu.getByRole("navigation").boundingBox();
+  if (!bookingBox || !navigationBox) {
+    throw new Error("The navigation and booking button must be visible.");
   }
   expect(bookingBox.y).toBeGreaterThanOrEqual(
-    vouchersBox.y + vouchersBox.height,
+    navigationBox.y + navigationBox.height,
   );
-  expect(bookingBox.x).toBeCloseTo(vouchersBox.x, 0);
-  expect(bookingBox.width).toBeCloseTo(vouchersBox.width, 0);
-  expect(bookingBox.height).toBeCloseTo(vouchersBox.height, 0);
+  expect(bookingBox.x).toBeCloseTo(navigationBox.x, 0);
+  expect(bookingBox.width).toBeCloseTo(navigationBox.width, 0);
+  expect(bookingBox.height).toBe(48);
   await expect(
     menu.getByText("People make Peploe’s.", { exact: true }),
   ).toBeInViewport();
