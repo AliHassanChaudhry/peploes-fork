@@ -154,10 +154,21 @@ test("client navigation and streamed content retain reveal behavior", async ({
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/menus?menu=lunch");
-  await page.getByRole("link", { name: "Dinner", exact: true }).first().click();
+  const navigation = page.getByRole("navigation", { name: "Restaurant menus" });
+  await expect
+    .poll(async () =>
+      navigation
+        .locator("[data-menu-indicator]")
+        .evaluate((element) => element.getBoundingClientRect().width),
+    )
+    .toBeGreaterThan(0);
+  await navigation.getByRole("link", { name: "Dinner", exact: true }).click();
   await expect(page).toHaveURL("/menus?menu=dinner");
+  const content = page.locator("[data-menu-content]");
+  await expect(content).toHaveAttribute("data-menu", "dinner");
+  await expect(content).toHaveAttribute("data-phase", "idle");
   await expect(
-    page.locator('main [data-scroll-reveal-state="pending"]').first(),
+    content.locator('[data-scroll-reveal-state="pending"]').first(),
   ).toBeAttached();
   await page.evaluate(() => {
     const content = document.createElement("div");
