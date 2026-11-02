@@ -12,6 +12,7 @@ export default defineConfig({
   use: {
     baseURL,
     browserName: "chromium",
+    launchOptions: { args: ["--font-render-hinting=none"] },
     trace: "retain-on-failure",
   },
   projects: [
