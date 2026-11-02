@@ -241,12 +241,42 @@ test("desktop shelves match their Figma heights without moving the page", async 
       `[id="${await trigger.getAttribute("aria-controls")}"]`,
     );
     await expect(panel).toBeVisible();
-    await expect
-      .poll(() => panel.boundingBox())
-      .toEqual({
-        ...originalPanel,
-        height: trigger === groups ? 292 : 218,
-      });
+    try {
+      await expect
+        .poll(() => panel.boundingBox())
+        .toEqual({
+          ...originalPanel,
+          height: trigger === groups ? 292 : 218,
+        });
+    } catch (error) {
+      console.info(
+        "Shelf layout at failure",
+        await panel.evaluate((element) => ({
+          viewport: innerWidth,
+          documentWidth: document.documentElement.getBoundingClientRect().width,
+          clientWidth: element.clientWidth,
+          fonts: Array.from(document.fonts, (font) => ({
+            family: font.family,
+            weight: font.weight,
+            status: font.status,
+          })),
+          paragraphs: Array.from(element.querySelectorAll("p"), (paragraph) => {
+            const style = getComputedStyle(paragraph);
+            const context = document.createElement("canvas").getContext("2d");
+            if (context) context.font = style.font;
+            return {
+              text: paragraph.textContent,
+              width: paragraph.getBoundingClientRect().width,
+              height: paragraph.getBoundingClientRect().height,
+              font: style.font,
+              textWidth: context?.measureText(paragraph.textContent ?? "")
+                .width,
+            };
+          }),
+        })),
+      );
+      throw error;
+    }
     expect(await heading.boundingBox()).toEqual(originalHeading);
   }
   await groups.hover();
