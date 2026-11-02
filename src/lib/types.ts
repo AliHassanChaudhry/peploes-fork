@@ -1046,6 +1046,8 @@ export interface INavbarBrandProps {
 
 export interface INavbarBookingButtonProps {
   onNavigate?: () => void;
+  className?: string;
+  label?: string;
 }
 
 export interface INavbarContent {
@@ -1395,6 +1397,7 @@ export interface IMobileNavigationContent {
   title: string;
   navigationLabel: string;
   items: readonly IMobileNavigationItem[];
+  bookingLabel: string;
   brandPhrase: string;
 }
 

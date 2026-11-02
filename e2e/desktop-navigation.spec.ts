@@ -210,6 +210,7 @@ test("desktop shelves match their Figma heights without moving the page", async 
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.evaluate(() => document.fonts.ready);
   const scrollbarWidth = await page.evaluate(
     () =>
       window.innerWidth -
@@ -240,10 +241,12 @@ test("desktop shelves match their Figma heights without moving the page", async 
       `[id="${await trigger.getAttribute("aria-controls")}"]`,
     );
     await expect(panel).toBeVisible();
-    expect(await panel.boundingBox()).toEqual({
-      ...originalPanel,
-      height: trigger === groups ? 292 : 218,
-    });
+    await expect
+      .poll(() => panel.boundingBox())
+      .toEqual({
+        ...originalPanel,
+        height: trigger === groups ? 292 : 218,
+      });
     expect(await heading.boundingBox()).toEqual(originalHeading);
   }
   await groups.hover();

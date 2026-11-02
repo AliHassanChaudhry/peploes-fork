@@ -7,6 +7,7 @@ test.beforeEach(async ({ page, isMobile }) => {
 test("mobile menu keeps navigation without unavailable vouchers or contact details", async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await page.getByRole("button", { name: "Open menu" }).click();
   const menu = page.getByRole("dialog", { name: "Navigation menu" });
@@ -22,6 +23,19 @@ test("mobile menu keeps navigation without unavailable vouchers or contact detai
     menu.getByRole("link", { name: "Visit & Contact" }),
   ).toBeVisible();
   await expect(menu.getByText("Gift Vouchers")).toHaveCount(0);
+  const booking = menu.getByRole("link", { name: "Book A Table", exact: true });
+  await expect(booking).toBeInViewport();
+  const bookingBox = await booking.boundingBox();
+  const navigationBox = await menu.getByRole("navigation").boundingBox();
+  if (!bookingBox || !navigationBox) {
+    throw new Error("The navigation and booking button must be visible.");
+  }
+  expect(bookingBox.y).toBeGreaterThanOrEqual(
+    navigationBox.y + navigationBox.height,
+  );
+  expect(bookingBox.x).toBeCloseTo(navigationBox.x, 0);
+  expect(bookingBox.width).toBeCloseTo(navigationBox.width, 0);
+  expect(bookingBox.height).toBe(48);
   await expect(
     menu.getByText("People make Peploe’s.", { exact: true }),
   ).toBeInViewport();
