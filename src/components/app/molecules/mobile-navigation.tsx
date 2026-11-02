@@ -206,14 +206,6 @@ export function MobileNavigation({
                 )}
               </ul>
             </nav>
-            <Button
-              type="button"
-              variant="brand-contact"
-              aria-disabled="true"
-              className="h-12 w-full rounded-[4px] border-peploe-burgundy px-6 py-[13px] text-base leading-[22px] font-medium"
-            >
-              {MOBILE_NAVIGATION_CONTENT.giftVouchersLabel}
-            </Button>
             <NavbarBookingButton
               onNavigate={closeMenu}
               className="h-12 w-full leading-[22px]"

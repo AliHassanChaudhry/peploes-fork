@@ -1,8 +1,13 @@
 import "server-only";
 
 import type { Metadata } from "next";
-import { env } from "@/lib/config";
-import { DEFAULT_SEO } from "@/lib/constants";
+import { env, isLiveSite } from "@/lib/config";
+import {
+  DEFAULT_SEO,
+  RESTAURANT_ADDRESS,
+  RESTAURANT_CONTACT,
+  ROUTES,
+} from "@/lib/constants";
 import type {
   IOrganizationSchemaConfig,
   ISeoConfig,
@@ -21,6 +26,8 @@ export function buildSeoMetadata(config: ISeoConfig): Metadata {
     url,
     image,
     imageAlt,
+    imageWidth,
+    imageHeight,
     type = "website",
     noIndex,
     noFollow,
@@ -32,6 +39,11 @@ export function buildSeoMetadata(config: ISeoConfig): Metadata {
     ? title
     : `${title}${DEFAULT_SEO.titleSuffix}`;
   const canonical = url.startsWith("http") ? url : `${getSiteUrl()}${url}`;
+  const fallbackImage = image ? undefined : DEFAULT_SEO.socialImage;
+  const socialImage = image ?? DEFAULT_SEO.socialImage.src;
+  const socialImageAlt = imageAlt ?? fallbackImage?.alt;
+  const socialImageWidth = imageWidth ?? fallbackImage?.width;
+  const socialImageHeight = imageHeight ?? fallbackImage?.height;
   const metadata: Metadata = {
     title: fullTitle,
     description,
@@ -43,7 +55,14 @@ export function buildSeoMetadata(config: ISeoConfig): Metadata {
       type,
       siteName: DEFAULT_SEO.siteName,
       locale: DEFAULT_SEO.locale,
-      ...(image ? { images: [{ url: image, alt: imageAlt }] } : {}),
+      images: [
+        {
+          url: socialImage,
+          alt: socialImageAlt,
+          ...(socialImageWidth ? { width: socialImageWidth } : {}),
+          ...(socialImageHeight ? { height: socialImageHeight } : {}),
+        },
+      ],
       ...(publishedTime ? { publishedTime } : {}),
       ...(modifiedTime ? { modifiedTime } : {}),
       ...(author ? { authors: [author] } : {}),
@@ -55,10 +74,10 @@ export function buildSeoMetadata(config: ISeoConfig): Metadata {
       ...(DEFAULT_SEO.twitterHandle
         ? { creator: DEFAULT_SEO.twitterHandle }
         : {}),
-      ...(image ? { images: [image] } : {}),
+      images: [socialImage],
     },
     robots: {
-      index: !noIndex,
+      index: !noIndex && isLiveSite(),
       follow: !noFollow,
     },
   };
@@ -100,4 +119,48 @@ export function getOrganizationSchema(config: IOrganizationSchemaConfig) {
     ...(config.logoUrl ? { logo: config.logoUrl } : {}),
     ...(config.sameAs?.length ? { sameAs: config.sameAs } : {}),
   };
+}
+
+export function getSectionBreadcrumbSchema(
+  parent: { name: string; url: string },
+  page: { name: string; url: string },
+) {
+  return getBreadcrumbSchema([
+    { name: DEFAULT_SEO.siteName, url: ROUTES.HOME },
+    parent,
+    page,
+  ]);
+}
+
+export function getSiteGraph() {
+  const siteUrl = getSiteUrl();
+  const organizationId = `${siteUrl}/#organization`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: DEFAULT_SEO.siteName,
+        url: siteUrl,
+        telephone: RESTAURANT_CONTACT.phone,
+        email: RESTAURANT_CONTACT.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: RESTAURANT_ADDRESS.streetAddress,
+          addressLocality: RESTAURANT_ADDRESS.locality,
+          addressCountry: RESTAURANT_ADDRESS.countryCode,
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: DEFAULT_SEO.siteName,
+        description: DEFAULT_SEO.description,
+        url: siteUrl,
+        publisher: { "@id": organizationId },
+      },
+    ],
+  } as const;
 }

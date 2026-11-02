@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 
+import { Analytics } from "@/components/app/atoms/analytics";
 import { JsonLd } from "@/components/app/atoms/json-ld";
 import { RouteScrollReset } from "@/components/app/atoms/route-scroll-reset";
 import { SiteScrollReveal } from "@/components/app/atoms/site-scroll-reveal";
@@ -11,7 +12,7 @@ import { VisitAnchorInitializer } from "@/components/app/atoms/visit-anchor-init
 import { Footer } from "@/components/app/compounds/footer";
 import { Navbar } from "@/components/app/compounds/navbar";
 import { DEFAULT_SEO, HTTP_CONTENT_TYPE, ROUTES } from "@/lib/constants";
-import { buildSeoMetadata, getSiteUrl, getWebsiteSchema } from "@/lib/seo";
+import { buildSeoMetadata, getSiteGraph, getSiteUrl } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,17 +48,12 @@ export default function RootLayout({
           rel="describedby"
           type={HTTP_CONTENT_TYPE.MARKDOWN}
         />
-        <JsonLd
-          data={getWebsiteSchema({
-            name: DEFAULT_SEO.siteName,
-            description: DEFAULT_SEO.description,
-            url: siteUrl,
-          })}
-        />
+        <JsonLd data={getSiteGraph()} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Analytics />
         <RouteScrollReset />
         <SiteScrollReveal />
         <Navbar />
