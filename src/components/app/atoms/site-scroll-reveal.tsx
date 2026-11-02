@@ -33,6 +33,8 @@ function PageScrollReveal() {
     const registerElement = (element: HTMLElement) => {
       if (elements.has(element) || element.parentElement?.closest(targets))
         return;
+      // Streamed content is staged in hidden containers before entering the page.
+      if (element.getClientRects().length === 0) return;
       elements.add(element);
       const bounds = element.getBoundingClientRect();
       element.classList.add(styles.target);

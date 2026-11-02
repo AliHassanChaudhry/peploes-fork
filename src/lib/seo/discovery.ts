@@ -55,6 +55,7 @@ export function buildLlmsText(siteUrl: string): string {
   const homeUrl = getAbsolutePublicUrl(siteUrl, ROUTES.HOME);
   const whatsOnUrl = getAbsolutePublicUrl(siteUrl, ROUTES.WHATS_ON);
   const storyUrl = getAbsolutePublicUrl(siteUrl, ROUTES.OUR_STORY);
+  const journalUrl = getAbsolutePublicUrl(siteUrl, ROUTES.JOURNAL);
   const visitUrl = getAbsolutePublicUrl(siteUrl, ROUTES.VISIT_CONTACT);
   const sitemapUrl = getAbsolutePublicUrl(siteUrl, ROUTES.SITEMAP);
   const robotsUrl = getAbsolutePublicUrl(siteUrl, ROUTES.ROBOTS);
@@ -69,6 +70,7 @@ export function buildLlmsText(siteUrl: string): string {
     `- [Home](${homeUrl}): Application home page.`,
     `- [What’s On](${whatsOnUrl}): Seasonal menus, dining occasions and events at Peploe’s.`,
     `- [Our Story](${storyUrl}): The Canny family, the restaurant’s founding and the people behind Peploe’s.`,
+    `- [The Journal](${journalUrl}): Food, wine, people, produce, art and the life of the restaurant.`,
     `- [Visit & Contact](${visitUrl}): Opening hours, directions and contact details.`,
     "",
     "## Discovery",

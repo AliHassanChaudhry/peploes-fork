@@ -5,11 +5,7 @@ import { Reveal } from "@/components/app/atoms/scroll-reveal";
 import revealStyles from "@/components/app/atoms/site-scroll-reveal.module.css";
 import styles from "@/components/app/compounds/hero.module.css";
 import { Button } from "@/components/ui/button";
-import {
-  MOBILE_HOME_CONTENT,
-  RESTAURANT_CONTACT,
-  ROUTES,
-} from "@/lib/constants";
+import { RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import { HERO_CONTENT } from "@/lib/constants/hero";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -96,14 +92,26 @@ export function Hero() {
       </div>
 
       <figure className="bg-warm-cream sm:hidden">
-        <Image
-          src={MOBILE_HOME_CONTENT.entranceImage}
-          alt={HERO_CONTENT.entranceImage.alt}
-          width={4000}
-          height={2667}
-          sizes="100vw"
-          className="h-[520px] w-full object-fill"
-        />
+        <div className={styles.mobileEntrancePhoto}>
+          <Image
+            src={HERO_CONTENT.entranceBackground.src}
+            alt={HERO_CONTENT.entranceBackground.alt}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div
+            aria-hidden="true"
+            className={cn(styles.entranceOverlay, "absolute inset-0")}
+          />
+          <Image
+            src={HERO_CONTENT.entranceImage.src}
+            alt={HERO_CONTENT.entranceImage.alt}
+            fill
+            sizes="100vw"
+            className="object-fill"
+          />
+        </div>
         <figcaption
           data-scroll-reveal
           className={cn(

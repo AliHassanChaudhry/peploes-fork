@@ -49,6 +49,8 @@ test("removed reveal targets stop being observed during menu replacement", async
 
 for (const path of [
   "/our-story",
+  "/journal",
+  "/journal/growers-we-work-with",
   "/menus?menu=lunch",
   "/menus?menu=dinner",
   "/menus?menu=pre-theatre",
@@ -148,6 +150,44 @@ for (const path of [
       await expect(group).toHaveCSS("opacity", "1");
   });
 }
+
+test("hidden streamed Journal content waits for layout before revealing", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/journal");
+  await expect(
+    page.locator("main [data-scroll-reveal-state]").first(),
+  ).toBeAttached();
+  await page.evaluate(async () => {
+    const buffer = document.createElement("div");
+    buffer.id = "journal-stream-buffer";
+    buffer.hidden = true;
+    const content = document.createElement("p");
+    content.id = "journal-streamed-copy";
+    content.dataset.scrollReveal = "";
+    content.textContent = "Late arriving Journal content";
+    content.style.marginTop = "100vh";
+    buffer.append(content);
+    document.body.append(buffer);
+    // Let mutation observers process the hidden streaming buffer before inspection.
+    await new Promise(requestAnimationFrame);
+  });
+  const streamed = page.locator("#journal-streamed-copy");
+  await expect(streamed).not.toHaveAttribute("data-scroll-reveal-state");
+  await streamed.evaluate((element) => {
+    document.querySelector("main")?.append(element);
+    document.querySelector("#journal-stream-buffer")?.remove();
+  });
+  await expect(streamed).toHaveAttribute("data-scroll-reveal-state", "pending");
+  await expect(streamed).toHaveCSS("opacity", "0");
+  await expect(streamed).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 24)");
+  await streamed.scrollIntoViewIfNeeded();
+  await expect(streamed).toHaveAttribute("data-scroll-reveal-state", "visible");
+  await expect(streamed).toHaveCSS("transition-duration", "0.35s, 0.35s");
+  await expect(streamed).toHaveCSS("opacity", "1");
+  await expect(streamed).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+});
 
 test("client navigation and streamed content retain reveal behavior", async ({
   page,

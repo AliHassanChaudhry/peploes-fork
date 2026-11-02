@@ -49,6 +49,7 @@ describe("public discovery", function publicDiscoveryTests() {
       "> A family-run restaurant on St Stephen's Green, Dublin, since 2003.",
     );
     expect(content).toContain("[Home](https://example.com/)");
+    expect(content).toContain("[The Journal](https://example.com/journal)");
     expect(content).toContain(
       "- [What’s On](https://example.com/seasonal): Seasonal menus, dining occasions and events at Peploe’s.",
     );

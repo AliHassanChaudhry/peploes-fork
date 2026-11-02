@@ -83,8 +83,10 @@ and retains the design styling. Form submission remains deferred as described be
 
 The overview's occasion cards use 416 × 216px image frames and 24px gaps at the
 1440px reference. Their photographs retain the Figma crops toward the bottom of
-the original images. Desktop card numbers are 12px, with 1px dividers beside the
-copy; the first divider follows its shorter body. The corporate title breaks
+the original images. Desktop copy aligns with the photograph edges without side
+padding, and card numbers are 12px. The darker 2px dividers span the full card
+height and sit halfway across the gaps, with no dividers at the row's outer edges.
+The corporate title breaks
 before “Exclusive Hire” on desktop. The eyebrow rule is 2px on desktop and 3px
 on mobile. At 390px, the image frames are
 342 × 380px with 24px side gutters. Wider layouts use the shared 1440px content
@@ -287,8 +289,8 @@ and selects. Its first row uses 294px and 296px controls with a
 12px gap. Secondary-colour field text uses 16/24px DM Sans; consent has a 22px
 checkbox and underlined burgundy policy text. Send Enquiry is 161 × 44px.
 The pale background mixes 6% burgundy over Warm Cream. The responsive layout
-keeps stacked columns and larger controls below 1024px; submission remains
-disabled as described below.
+keeps stacked columns and larger controls below 1024px; the enquiry preview
+behaviour is described below.
 
 The [wedding closing banner](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3527-13075)
 is 1440 × 224px, with 48px vertical padding and a 530px text measure. The
@@ -313,8 +315,8 @@ image and text layout for group menus, corporate hire and wedding tasting;
 the callers supply copy and optional links or notes. Page variants retain their
 Figma spacing and image placement.
 The page-specific sections remain separate because their layouts differ.
-Within the page content, only the enquiry fields need client JavaScript, to
-prevent form submission.
+Within the page content, only the enquiry fields need client JavaScript, for
+the local enquiry preview and to prevent network submission.
 
 Desktop and mobile navigation, homepage occasion cards and footer links lead to
 the new pages. Group lunch and dinner links target the existing sections of
@@ -329,23 +331,43 @@ The first submenu link, Overview, opens `/private-dining`.
 
 ## Enquiry preview
 
-The shared guest-count dropdown offers 1–30 guests for this local preview.
-Its choices are temporary content, not the restaurant's capacity policy.
-Supporting browsers show a styled picker capped at 240px (or 40% of the
+The shared guest-count dropdown offers 1–7 guests, using the same constant as
+Book a Table and the booking service's site limit. Restaurant capacity and group
+menu eligibility remain separate content.
+Supporting browsers show a styled picker capped at 310px (or 40% of the
 viewport height), with scrolling inside the list. It retains native keyboard
 selection and required-field validation. Other browsers use their native picker.
+Option text aligns with the field value, selected checks sit on the right, and
+the list ends immediately after its last option. The page scrollbar uses Samsu's
+scrollbar CSS, with only its colour changed to Peploe's burgundy at 40% opacity.
 
-Fields can be filled locally, but Send Enquiry is disabled. The form has no
-action endpoint, storage, analytics or success message. Its submit event is
-prevented, including implicit submission from the keyboard. The disabled
-button describes the unavailable state to assistive technology and in its
-tooltip. It retains the brand hover colour without enabling submission;
-telephone and email remain the working enquiry routes.
+The preferred date allows today or a later date in the restaurant's Dublin
+time zone. Past dates are disabled in the picker and fail validation when typed.
+The minimum date refreshes on interaction and submission for pages left open overnight.
+The calendar uses the site's warm cream, burgundy and typography, with month
+navigation and keyboard date selection. Its left and right edges match the
+preferred-date field at every screen width. Autofilled fields keep their cream background.
+Narrow calendars use compact headings and day controls to keep dates separate.
+
+As clarified in [issue #59](https://github.com/TrueDevs-Inc/peploes/issues/59#issuecomment-6488999148),
+the shared form previews loading and completion without a submission backend.
+Send Enquiry is enabled once the form is interactive. Clicking it with missing
+or invalid fields shows the browser's validation message and focuses the first
+invalid control, including consent on the detail pages. A valid enquiry shows a spinner for 1.2 seconds,
+then an animated check and Complete label. Reduced motion keeps both icons static.
+A live status announces the result and explicitly says the enquiry has not been
+sent; visible preview copy directs visitors to phone or email.
+
+The form retains entered values. Editing cancels a pending preview or clears
+completion so it can be tried again. Send stays disabled during loading and
+after completion until a field changes. The timer is cancelled on unmount.
+The form has no action endpoint, storage or analytics. Submit events, including
+keyboard submission, are prevented. Before JavaScript loads, Send stays disabled.
 
 The privacy-policy link opens `/privacy-cookies`. Submission, server validation
 and delivery failure handling remain deferred until the enquiry service is
-configured. Do not enable submission by changing only the button's disabled
-state. Booking and newsletter integration remain outside these pages.
+configured. The preview completion is not a delivery confirmation. Booking and
+newsletter integration remain outside these pages.
 
 ## Verification
 
@@ -353,7 +375,8 @@ Compare section positions, typography, image crops and gradients with the
 desktop references and the 390px overview. Check narrower phones, tablet and
 wide desktop for wrapping and horizontal overflow. Verify all new routes,
 navigation links, menu anchors, enquiry anchors, contact destinations, input
-labels and disabled submission. Inspect the browser console and image loading.
+labels, required-field validation, loading/completion, editing and reduced motion.
+Verify that the preview sends no enquiry data. Inspect the browser console and image loading.
 Check the desktop overview link, Arrow Down, Tab and Escape. On mobile, verify
 the full row toggles by tap, Enter and Space, and the Overview submenu link
 opens the overview and closes the menu. Confirm refactored sections retain

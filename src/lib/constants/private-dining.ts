@@ -1,4 +1,4 @@
-import { ROUTES } from "@/lib/constants";
+import { GUEST_COUNTS, ROUTES } from "@/lib/constants";
 import type {
   IPrivateDiningFeature,
   IPrivateDiningPageContent,
@@ -129,7 +129,7 @@ export const PRIVATE_DINING_FORM = {
   heading: "Tell us what you’re planning.",
   date: "Preferred date",
   guests: "Number of guests",
-  guestCounts: Array.from({ length: 30 }, (_, index) => index + 1),
+  guestCounts: GUEST_COUNTS,
   name: "Your name",
   company: "Company",
   email: "Email address",
@@ -139,8 +139,11 @@ export const PRIVATE_DINING_FORM = {
     afterPolicy: " for enquiries.",
   },
   submit: "Send Enquiry",
-  unavailable:
-    "Online enquiries are not available yet. Please call or email our team.",
+  loading: "Preparing…",
+  complete: "Complete",
+  preview:
+    "Form preview only. To make an enquiry, please call or email our team.",
+  completedPreview: "Preview complete. Your enquiry has not been sent.",
   emailAction: "Email Reception",
 };
 

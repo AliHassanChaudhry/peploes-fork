@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { ROUTES } from "@/lib/constants";
+import { loadPublishedJournalSlugs } from "@/lib/journal-content";
+import { getJournalArticlePath } from "@/lib/journal-data";
 import { loadSeasonalEntries } from "@/lib/seasonal-content";
 import { seasonalPath } from "@/lib/seasonal-data";
 import { getSiteUrl } from "@/lib/seo";
@@ -11,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ROUTES.HOME,
     ROUTES.WHATS_ON,
     ROUTES.OUR_STORY,
+    ROUTES.JOURNAL,
     ROUTES.LUNCH,
     ROUTES.DINNER,
     ROUTES.PRE_THEATRE,
@@ -30,9 +33,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ].map((route) => ({
     url: `${baseUrl}${route}`,
   }));
-  const entries = await loadSeasonalEntries();
+  const [entries, articles] = await Promise.all([
+    loadSeasonalEntries(),
+    loadPublishedJournalSlugs(),
+  ]);
   return [
     ...staticPages,
+    ...articles
+      .filter((article) => !article.noIndex)
+      .map((article) => ({
+        url: `${baseUrl}${getJournalArticlePath(article.slug)}`,
+        lastModified: article._updatedAt,
+      })),
     ...entries
       .filter((entry) => !entry.noIndex)
       .map((entry) => ({

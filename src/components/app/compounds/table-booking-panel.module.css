@@ -502,13 +502,11 @@
   gap: 4px;
 }
 .selection:not(:disabled),
-.timeSlot,
-.calendar button {
+.timeSlot {
   cursor: pointer;
 }
 .selection:focus-visible,
 .timeSlot:focus-visible,
-.calendar button:focus-visible,
 .editAction:focus-visible,
 .backAction:focus-visible,
 .moreTimes:focus-visible {
@@ -565,64 +563,6 @@
 .partyOption[data-active="true"]:not([aria-selected="true"]) {
   outline: 1px solid var(--booking-accent);
   outline-offset: -1px;
-}
-.calendar {
-  position: absolute;
-  z-index: 5;
-  top: calc(100% + 6px);
-  left: 0;
-  width: min(100%, 700px);
-  padding: 16px;
-  border: 1px solid var(--booking-border);
-  border-radius: 4px;
-  background: var(--booking-control);
-  box-shadow: 0 10px 24px #0000001a;
-}
-.calendarHeader {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-.calendarHeader strong {
-  margin-right: auto;
-}
-.calendarHeader button {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-}
-.calendarHeader svg {
-  width: 16px;
-  height: 16px;
-}
-.calendarGrid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 4px;
-}
-.calendarGrid > * {
-  display: grid;
-  place-items: center;
-  min-width: 0;
-  min-height: 32px;
-  font-size: 12px;
-}
-.calendarGrid button {
-  border-radius: 50%;
-  aspect-ratio: 1;
-}
-.calendarGrid [data-outside="true"] {
-  color: var(--booking-muted);
-}
-.calendarGrid [aria-pressed="true"] {
-  background: var(--booking-accent);
-  color: var(--booking-surface);
-}
-.calendarGrid button:hover:not([aria-pressed="true"]) {
-  background: var(--booking-emblem);
 }
 .summary {
   display: flex;
@@ -933,22 +873,6 @@
   }
   .dateField {
     gap: 8px;
-  }
-  .calendar {
-    width: min(100%, 400px);
-    padding: 16px;
-  }
-  .calendarHeader {
-    font-size: 16px;
-    margin-bottom: 12px;
-  }
-  .calendarHeader button {
-    width: 36px;
-    height: 36px;
-  }
-  .calendarGrid > * {
-    font-size: 14px;
-    min-height: 36px;
   }
   .summary {
     gap: 12px;
