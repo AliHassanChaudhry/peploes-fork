@@ -42,8 +42,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function fillEnquiry(form: Locator) {
-  for (const select of await form.getByRole("combobox").all()) {
+  const selects = form.getByRole("combobox");
+  await expect(selects.first()).toBeVisible();
+  for (const select of await selects.all()) {
     await select.selectOption({ index: 1 });
+    await expect(select).not.toHaveValue("");
   }
   await form.getByLabel("Preferred date", { exact: true }).fill("2026-12-01");
   await form.getByLabel("Your name").fill("Test Guest");
