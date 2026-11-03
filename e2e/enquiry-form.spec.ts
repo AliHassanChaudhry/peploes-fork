@@ -11,7 +11,28 @@ const enquiryNow = new Date("2026-10-29T12:00:00Z");
 
 async function expectFocusedControl(control: Locator) {
   await control.page().bringToFront();
-  await expect(control).toBeFocused();
+  try {
+    await expect(control).toBeFocused();
+  } catch (error) {
+    console.error(
+      "Enquiry focus state",
+      await control
+        .evaluate(
+          (element) => ({
+            documentFocused: document.hasFocus(),
+            expectedActive: document.activeElement === element,
+            activeTag: document.activeElement?.tagName,
+            activeName: document.activeElement?.getAttribute("name"),
+            activeLabel: document.activeElement?.getAttribute("aria-label"),
+            valid: (element as HTMLInputElement).validity.valid,
+          }),
+          undefined,
+          { timeout: 1000 },
+        )
+        .catch(() => "Focus state unavailable"),
+    );
+    throw error;
+  }
 }
 
 test.use({ timezoneId: "UTC" });

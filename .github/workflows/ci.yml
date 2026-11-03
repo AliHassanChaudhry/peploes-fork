@@ -100,3 +100,28 @@ jobs:
 
       - name: Audit high-severity vulnerabilities
         run: bun audit --audit-level high
+
+  enquiry-focus-diagnostic:
+    name: Enquiry focus diagnostic
+    if: github.event_name == 'pull_request' && github.head_ref == 'fix/ali/new'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: package.json
+      - name: Install locked dependencies
+        run: bun ci
+      - name: Install locked Studio dependencies
+        run: bun install --cwd studio --frozen-lockfile
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
+      - name: Probe the two date-focus failures
+        run: bun run test:e2e --project=small-phone --grep '/private-dining rejects past|overnight' --repeat-each=20 --max-failures=1 --reporter=line
+        env:
+          NODE_ENV: production
