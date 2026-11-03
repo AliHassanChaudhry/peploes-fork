@@ -9,6 +9,11 @@ const enquiryPaths = [
 
 const enquiryNow = new Date("2026-10-29T12:00:00Z");
 
+async function expectFocusedControl(control: Locator) {
+  await control.page().bringToFront();
+  await expect(control).toBeFocused();
+}
+
 test.use({ timezoneId: "UTC" });
 
 test.beforeEach(async ({ page }) => {
@@ -64,7 +69,7 @@ for (const path of enquiryPaths) {
     await expect(submit).toBeEnabled();
     await expect(date).toHaveAttribute("min", "2026-07-02");
     await date.press("Enter");
-    await expect(date).toBeFocused();
+    await expectFocusedControl(date);
     expect(
       await date.evaluate((input: HTMLInputElement) => input.validationMessage),
     ).not.toBe("");
@@ -127,14 +132,14 @@ test("enquiry date minimum refreshes when an overnight page is reopened", async 
   await fillEnquiry(form);
   await date.fill("2026-07-02");
   await expect(submit).toBeEnabled();
-  await expect(date).toBeFocused();
+  await expectFocusedControl(date);
   await page.clock.setFixedTime(new Date("2026-07-02T23:30:00Z"));
   await date.click();
   await expect(date).toHaveAttribute("min", "2026-07-03");
   await page.keyboard.press("Escape");
   await expect(submit).toBeEnabled();
   await submit.click();
-  await expect(date).toBeFocused();
+  await expectFocusedControl(date);
   await expect(form.getByRole("status")).toBeEmpty();
   await date.fill("2026-07-03");
   await expect(submit).toBeEnabled();
@@ -165,7 +170,7 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   await email.fill("invalid-email");
   await expect(submit).toBeEnabled();
   await email.press("Enter");
-  await expect(email).toBeFocused();
+  await expectFocusedControl(email);
   expect(
     await email.evaluate((input: HTMLInputElement) => input.validationMessage),
   ).not.toBe("");
@@ -174,7 +179,7 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   await consent.uncheck();
   await expect(submit).toBeEnabled();
   await submit.click();
-  await expect(consent).toBeFocused();
+  await expectFocusedControl(consent);
   await consent.check();
   await expect(submit).toBeEnabled();
 
@@ -202,7 +207,7 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   await email.fill("");
   await expect(submit).toBeEnabled();
   await email.press("Enter");
-  await expect(email).toBeFocused();
+  await expectFocusedControl(email);
   await expect(submit).toHaveAttribute("aria-busy", "false");
   await expect(form.getByRole("status")).toBeEmpty();
   await email.fill("updated@example.test");
@@ -298,7 +303,7 @@ for (const path of enquiryPaths) {
       ).toHaveCount(0);
       await page.keyboard.press("Escape");
       await expect(calendar).toBeHidden();
-      await expect(date).toBeFocused();
+      await expectFocusedControl(date);
     }
     await date.click();
     await expect(

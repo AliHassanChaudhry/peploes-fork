@@ -1,3 +1,4 @@
+import { VISIT_CONTACT_CONTENT } from "@/lib/constants/visit-contact";
 import { expect, test } from "./menu-test";
 
 test("removed reveal targets stop being observed during menu replacement", async ({
@@ -83,10 +84,10 @@ for (const path of [
     await expect(
       page.locator("main [data-scroll-reveal-state]").first(),
     ).toBeAttached();
-    const uncovered = await page
-      .locator("main section")
-      .evaluateAll((sections) =>
+    const uncovered = await page.locator("main section").evaluateAll(
+      (sections, mapLabel) =>
         sections
+          .filter((section) => section.getAttribute("aria-label") !== mapLabel)
           .filter((section) => section.textContent?.trim())
           .filter(
             (section) =>
@@ -96,7 +97,8 @@ for (const path of [
           .map(
             (section) => section.getAttribute("aria-labelledby") ?? section.id,
           ),
-      );
+      VISIT_CONTACT_CONTENT.location.map.label,
+    );
     expect(uncovered).toEqual([]);
 
     // Short pages can have all main content in view before the first scroll.

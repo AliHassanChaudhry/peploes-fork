@@ -1,4 +1,22 @@
+import type { Locator } from "@playwright/test";
 import { expect, test } from "./menu-test";
+
+async function isUnboxedTextAction(link: Locator) {
+  if (!(await link.isVisible())) return false;
+  return await link.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return (
+      style.backgroundColor === "rgba(0, 0, 0, 0)" &&
+      style.boxShadow === "none" &&
+      [
+        style.borderTopWidth,
+        style.borderRightWidth,
+        style.borderBottomWidth,
+        style.borderLeftWidth,
+      ].every((width) => width === "0px")
+    );
+  });
+}
 
 test("narrow Stories text actions limit mouse hover while their wide boxes stay active", async ({
   page,
@@ -10,6 +28,8 @@ test("narrow Stories text actions limit mouse hover while their wide boxes stay 
   const actions = page.locator(
     'section[aria-labelledby="stories-heading"] [data-variant="brand-secondary-inverse"]',
   );
+  await expect(actions.first()).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
   expect(await actions.count()).toBeGreaterThan(0);
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -58,6 +78,8 @@ for (const route of [
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(route);
+    await expect(page.locator("main h1")).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
     const contents = page.getByRole("button", {
       name: "On this page",
       exact: true,
@@ -71,22 +93,17 @@ for (const route of [
       )
       .and(page.getByRole("link"))
       .filter({ hasText: /\S/ });
+    await expect
+      .poll(async () => {
+        for (const link of await links.all()) {
+          if (await isUnboxedTextAction(link)) return true;
+        }
+        return false;
+      })
+      .toBe(true);
     let checked = 0;
     for (const link of await links.all()) {
-      const eligible = await link.evaluate((element) => {
-        const style = getComputedStyle(element);
-        return (
-          style.backgroundColor === "rgba(0, 0, 0, 0)" &&
-          style.boxShadow === "none" &&
-          [
-            style.borderTopWidth,
-            style.borderRightWidth,
-            style.borderBottomWidth,
-            style.borderLeftWidth,
-          ].every((width) => width === "0px")
-        );
-      });
-      if (!eligible || !(await link.isVisible())) continue;
+      if (!(await isUnboxedTextAction(link))) continue;
       await link.evaluate((element) =>
         element.scrollIntoView({ block: "center", behavior: "instant" }),
       );
@@ -156,13 +173,22 @@ for (const route of [
           return isInlineFooterLink ? 18 : 44;
         });
         expect(bounds.height, label).toBeGreaterThanOrEqual(minimumHeight);
-        expect(
-          await link.evaluate(
-            (element, point) =>
-              element.contains(document.elementFromPoint(point.x, point.y)),
-            { x: content.inside.x, y: bounds.y + 2 },
-          ),
-        ).toBe(true);
+        const textPosition = (content.inside.x - bounds.x) / bounds.width;
+        await expect
+          .poll(
+            () =>
+              link.evaluate((element, position) => {
+                const current = element.getBoundingClientRect();
+                return element.contains(
+                  document.elementFromPoint(
+                    current.x + current.width * position,
+                    current.y + 2,
+                  ),
+                );
+              }, textPosition),
+            { message: label },
+          )
+          .toBe(true);
       } else {
         for (const point of [
           { x: center, y: content.top - 4 },

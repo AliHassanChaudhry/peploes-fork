@@ -187,7 +187,14 @@ test("category selection moves one underline and reveals the latest stories smoo
   await categories
     .getByRole("link", { name: "All stories", exact: true })
     .click();
+  await expect(
+    categories.getByRole("link", { name: "All stories", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(results.getByRole("article")).toHaveCount(6);
   await expect(results).toHaveCSS("animation-duration", "0.22s");
+  await expect
+    .poll(() => results.evaluate((element) => element.getAnimations().length))
+    .toBe(1);
   await results.evaluate((element) => element.getAnimations()[0].finish());
   await page
     .getByRole("button", {
