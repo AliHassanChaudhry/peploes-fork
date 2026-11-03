@@ -68,8 +68,15 @@ The celebrations enquiry follows [Let’s talk about your celebration in Figma](
 Its desktop columns are 598px and 650px with a 48px gap. The form's inset
 divider spans the full 603px section, including its 48px vertical padding.
 The left and right headings use 44/46px and 34/35px EB Garamond respectively.
-Fields use secondary-colour 16/24px DM Sans, 38px control heights, 2px input
-corners and square selects. The date and guest fields have a 12px gap.
+Fields use secondary-colour 16/24px DM Sans and 38px desktop control heights.
+All enquiry variants use 4px field corners, pointer cursors for date, select and
+consent controls, and an inset neutral focus indicator without an outer outline.
+Forced-colors mode retains a distinct keyboard outline. Both occasion and guest
+selects use the styled native picker where supported, with native fallbacks.
+Picker placeholders are excluded from the menu. Hovered and selected options use
+the same pale background; keyboard focus uses an outline. Pickers prefer opening below the
+field with a small gap and retain browser positioning fallbacks near screen edges.
+The date and guest fields have a 12px gap.
 Consent uses a 22px checkbox and 14/21px text; contact buttons have 2px corners,
 and Send Enquiry is 161 × 44px. Privacy-policy text links to `/privacy-cookies`
 and retains the design styling. Form submission remains deferred as described below.
@@ -82,6 +89,12 @@ before “Exclusive Hire” on desktop. The eyebrow rule is 2px on desktop and 3
 on mobile. At 390px, the image frames are
 342 × 380px with 24px side gutters. Wider layouts use the shared 1440px content
 limit described in the [project brief](brief.md#site-content-width).
+
+Occasion photographs zoom by 5% over 300ms with gentle ease-in-out timing on
+hover or keyboard focus. Leaving or re-entering during the zoom reverses from
+the current scale. Their rendering layer stays stable when the zoom finishes,
+preventing a sharpness jump at fractional display scaling. Reduced motion
+disables the image zoom and the retained layer.
 
 Occasion typography uses EB Garamond for headings and descriptions, and DM Sans
 for labels, numbers and links. Desktop section titles are 50/52px, card titles
@@ -103,14 +116,10 @@ description uses secondary text at 20/24px on desktop and 18/28px on mobile. The
 enquiry description is 580px wide at most, with 18px DM Sans and 23px line height
 on desktop. Its mobile fields keep their labels near the top of the 88px controls.
 
-The overview and corporate footers share the private-dining presentation.
-The celebrations page uses that presentation only below the 1280px desktop
-breakpoint, following the overview's mobile Figma reference: 40px top padding,
-24px side gutters, then brand, contact, Explore, newsletter and legal information.
-At 390px, this footer is 1334px tall. Celebrations keeps its existing desktop
-footer; other routes retain their existing layouts. A small client shell selects
-the presentation while its content remains server-rendered. The email field is
-editable locally and Subscribe remains inactive.
+All private-dining pages use the shared homepage footer, including its desktop
+columns, spacing, gutters and mobile reading order. Footer content remains
+server-rendered; newsletter behavior follows the shared footer contract in
+[the project brief](brief.md#footer-implementation).
 
 The overview closing banner keeps the original table photograph with separate
 desktop and mobile crops and Figma's ink gradients. Its reference heights are
@@ -162,7 +171,7 @@ Figma's image-fill crop,
 including its slight vertical compression and full-width gradient. Below 1024px,
 it retains a proportional cover crop in the 290px stacked image frame.
 The enquiry has 598px and 650px columns separated by
-48px, a full-height inset divider, 38px fields, 2px corners and a 22px checkbox.
+48px, a full-height inset divider, 38px fields, 4px corners and a 22px checkbox.
 The privacy-policy link points to `/privacy-cookies` and retains the design's
 underline.
 
@@ -204,6 +213,13 @@ The hero-photo replacement comment is still pending; the current Figma photo
 is retained. The capacity comment asking to remove “~100 seated + standing”
 has a clarification request from the designer. The contributor asked to retain
 that item until the comment is resolved.
+
+Below 640px, the corporate capacity section presents the two guest capacities as
+equal-width cards, followed by full-width space and availability rows. Cards use
+32px icons and 44/46px numbers; detail rows use 40px icons and 24/30px headings.
+Labels use 16/22px body type; supporting text is at least 14/22px. Subtle cream
+borders separate the groups. All four items remain in the page flow. Tablet and
+desktop layouts retain their existing columns.
 
 The homepage's yellow “Distinct commercial journeys” note requires separate
 content and enquiry experiences for celebrations, corporate events and weddings.
@@ -266,8 +282,8 @@ is 1440 × 557px, with 598px and 650px columns separated by 48px. Both columns
 use 48px vertical padding; the form's inset Soft Stone divider spans the full
 section height. Headings use 40/42px and 34/35px EB Garamond. The introduction
 uses 18/24px DM Sans, with 48px before the two 262 × 48px contact buttons.
-The 602px form has 38px fields, a 68px message field, 2px input corners and
-a square guest selector. Its first row uses 294px and 296px controls with a
+The 602px form has 38px fields, a 68px message field and 4px corners on inputs
+and selects. Its first row uses 294px and 296px controls with a
 12px gap. Secondary-colour field text uses 16/24px DM Sans; consent has a 22px
 checkbox and underlined burgundy policy text. Send Enquiry is 161 × 44px.
 The pale background mixes 6% burgundy over Warm Cream. The responsive layout

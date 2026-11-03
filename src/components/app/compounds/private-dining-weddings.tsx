@@ -19,12 +19,18 @@ export function PrivateDiningWeddings() {
   return (
     <>
       <PrivateDiningHero hero={WEDDINGS.hero} variant="weddings" />
-      <section className={cn(styles.paleSection, styles.weddingDay)}>
+      <section
+        className={cn(
+          "section-divider-subtle",
+          styles.paleSection,
+          styles.weddingDay,
+        )}
+      >
         <div className="site-container">
           <PrivateDiningHeading {...WEDDING_DAY} />
           <ol className={styles.weddingSteps}>
             {WEDDING_DAY.items.map((item) => (
-              <li key={item._key}>
+              <li data-scroll-reveal key={item._key}>
                 <h3 className={ebGaramond.className}>{item.heading}</h3>
                 <p>{item.description}</p>
               </li>
@@ -60,7 +66,7 @@ export function PrivateDiningWeddings() {
           className={styles.weddingTouches}
         />
       </section>
-      <div className={styles.weddingEnquiry}>
+      <div className={cn("section-divider-subtle", styles.weddingEnquiry)}>
         <PrivateDiningEnquiry content={WEDDINGS.enquiry} />
       </div>
       <PrivateDiningClosing

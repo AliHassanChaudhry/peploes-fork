@@ -28,18 +28,19 @@ export function Navbar() {
             {
               id: "menus",
               label: NAVBAR_CONTENT.menusLabel,
+              href: ROUTES.MENUS,
               content: <DesktopMenus />,
-            },
-            {
-              id: "our-story",
-              label: NAVBAR_CONTENT.ourStoryLabel,
-              href: ROUTES.OUR_STORY,
             },
             {
               id: NAVBAR_CONTENT.groupsId,
               label: NAVBAR_CONTENT.groupsLabel,
               href: ROUTES.PRIVATE_DINING,
               content: <DesktopGroups />,
+            },
+            {
+              id: "our-story",
+              label: NAVBAR_CONTENT.ourStoryLabel,
+              href: ROUTES.OUR_STORY,
             },
             {
               id: "whats-on",
@@ -53,21 +54,13 @@ export function Navbar() {
           <Button
             asChild
             data-navbar-visit
+            data-navigation-id={ROUTES.VISIT_CONTACT}
             variant="brand-nav"
             className="hidden h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-ink xl:inline-flex"
           >
             <Link href={ROUTES.VISIT_CONTACT}>
               {NAVBAR_CONTENT.visitContactLabel}
             </Link>
-          </Button>
-          <Button
-            data-navbar-gift
-            type="button"
-            variant="brand-nav"
-            aria-disabled="true"
-            className="hidden h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-peploe-burgundy xl:inline-flex"
-          >
-            {NAVBAR_CONTENT.giftVouchersLabel}
           </Button>
           <NavbarBookingButton />
           <MobileNavigation brandPhraseClassName={ebGaramondItalic.className} />

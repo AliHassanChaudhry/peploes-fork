@@ -2,10 +2,11 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-
+import { TrackedAnchor } from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/policy-page.module.css";
 import { PolicyContents } from "@/components/app/molecules/policy-contents";
 import { POLICY_HELP } from "@/lib/constants/policies";
+import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import type { IPolicyPageProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,7 @@ export function PolicyPage({ policy }: IPolicyPageProps) {
     >
       <section className={styles.hero} aria-labelledby="policy-title">
         <div className={cn("site-container", styles.heroContainer)}>
-          <div className={styles.heroCopy}>
+          <div data-scroll-reveal className={styles.heroCopy}>
             <p className={styles.eyebrow}>{policy.eyebrow}</p>
             <h1 id="policy-title">{policy.heading}</h1>
             <p className={styles.description}>{policy.description}</p>
@@ -68,6 +69,7 @@ export function PolicyPage({ policy }: IPolicyPageProps) {
         <div className={styles.sections}>
           {policy.sections.map((section, index) => (
             <section
+              data-scroll-reveal
               key={section._key}
               id={section._key}
               aria-labelledby={`${section._key}-heading`}
@@ -103,17 +105,41 @@ export function PolicyPage({ policy }: IPolicyPageProps) {
         </div>
       </div>
 
-      <section className={styles.help} aria-labelledby="policy-help-title">
+      <section
+        className={cn(
+          "section-divider-subtle section-divider-subtle-bottom",
+          styles.help,
+        )}
+        aria-labelledby="policy-help-title"
+      >
         <div className={cn("site-container", styles.helpContainer)}>
-          <div className={styles.helpHeading}>
+          <div data-scroll-reveal className={styles.helpHeading}>
             <p className={styles.eyebrow}>{POLICY_HELP.eyebrow}</p>
             <h2 id="policy-help-title">{POLICY_HELP.heading}</h2>
           </div>
-          <div className={styles.helpDetails}>
+          <div data-scroll-reveal className={styles.helpDetails}>
             <p>{POLICY_HELP.description}</p>
             <div className={styles.contactActions}>
-              <a href={`tel:${POLICY_HELP.phone}`}>{POLICY_HELP.phoneLabel}</a>
-              <a href={`mailto:${POLICY_HELP.email}`}>{POLICY_HELP.email}</a>
+              <TrackedAnchor
+                href={`tel:${POLICY_HELP.phone}`}
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "policy_page",
+                  destination: "phone",
+                }}
+              >
+                {POLICY_HELP.phoneLabel}
+              </TrackedAnchor>
+              <TrackedAnchor
+                href={`mailto:${POLICY_HELP.email}`}
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "policy_page",
+                  destination: "email",
+                }}
+              >
+                {POLICY_HELP.email}
+              </TrackedAnchor>
             </div>
           </div>
         </div>

@@ -1,11 +1,22 @@
 # Menu pages
 
-The menu routes are `/menus/lunch`, `/menus/dinner`, `/menus/pre-theatre`,
-`/menus/wine`, `/menus/cocktails`, `/menus/group-set-menu` and `/menus/seasonal`.
-`/menus` redirects to Lunch. The shared layout contains the hero and sticky menu
-navigation. Each page supplies its closing photograph and copy. The site header
-and footer remain shared with the homepage. The footer's menu variant follows
-the menu frames' spacing and mobile section order; homepage styling is unchanged.
+Menus share `/menus`, selected with the `menu` query: `lunch`, `dinner`,
+`pre-theatre`, `wine`, `cocktails`, `group-set-menu` or `seasonal`.
+Missing, invalid or repeated selections show Lunch. Old `/menus/<slug>` links
+permanently redirect to their query URL, preserving section anchors.
+The shared layout contains the hero and sticky menu navigation. Switching menus
+keeps that shell mounted, moves the underline and fades the selected content out
+and in on desktop and mobile. Reduced motion switches immediately. Only the
+selected CMS menu loads; refresh, Back and Forward retain the URL selection.
+The menu-tab underline follows the selected menu only; hovering, focusing or
+opening a collection dropdown does not move it. Introductory images load eagerly
+for the selected menu. If optimization fails, retry the same validated CMS image
+directly without changing its crop or reserved frame.
+Tabs and the displayed menu share a hydration boundary so an early selection
+cannot replace an unhydrated menu with a different view.
+Each menu supplies its closing photograph and copy. The site header
+and footer remain shared with the homepage, including the footer's spacing,
+gutters and mobile section order.
 The Group Set Menu enquiry action opens the private-dining enquiry section.
 Book a Table actions open the [booking design preview](brief.md#book-a-table-design-preview).
 Enquiry submission remains inactive until its integration exists.
@@ -23,6 +34,19 @@ removing prices do not apply to Dinner. Dinner has no set-menu offer.
 
 - The Menu navigation note (`3347:3824`) keeps the hero consistent between menus
   and the navigation accessible while scrolling. Phones scroll the links horizontally.
+  Below the desktop breakpoint, size tabs to show a whole number plus half of
+  the next tab: 2.5 below 360px, 3.5 from 360px, 4.5 from 480px, 5.5 from 640px
+  and 6.5 from 900px. Swiping scrolls freely. Selecting a fully visible tab
+  preserves the strip position so its underline transition stays visible.
+  A clipped selection scrolls smoothly only far enough to reveal it with an
+  8px edge gutter; reduced motion reveals it immediately. Labels stay on one
+  line; longer labels widen their tab to fit the text and chevron, so their
+  visible fraction can differ from half.
+  Dropdown tabs retain 22px horizontal padding and an 8px text-to-chevron gap
+  so their labels do not crowd the separators.
+  Group Set Menu and Seasonal dropdown panels have no top or bottom padding;
+  their menu rows meet the panel border without an extra strip.
+  Desktop retains its existing row layout.
 - The CMS note calls for editable headings, dishes, descriptions, prices, service
   times and notes. The allergen note calls for optional, editable expanding content.
 - Comment #17 removes individual starter and main-course prices from Lunch.
@@ -91,9 +115,32 @@ heading and entries remain editable content in the rendering contract.
 ## Sanity connection
 
 All seven routes read published Sanity content on the server. Studio is the editing
-screen; the website reads its saved content through the Sanity API. Publishing in
-Studio and refreshing the website shows the change. Draft edits do not appear.
-There is no browser token and no write token in the website.
+screen; the website reads its saved content through the Sanity API. Draft edits do
+not appear. There is no browser token and no write token in the website.
+
+The website caches Sanity responses under one tag. A publish, change or deletion
+in Studio calls the signed webhook at `/api/webhooks/sanity`. It waits three
+seconds for Sanity's read API to catch up, as Sanity's own Next.js helper does,
+then expires that tag, so the next page view reads the new content. Without a working webhook the
+cache still expires after five minutes. A failed Sanity request is not cached.
+The `/seasonal/<slug>` existence check in `src/proxy.ts` is not cached, because
+Next does not cache `fetch` in Proxy. It returns 404 as soon as an entry is
+unpublished. If the webhook is not working, a newly published entry can show the
+not-found page for up to five minutes.
+
+Each website environment needs its own webhook in Sanity (Manage, API,
+Webhooks):
+
+- URL: `https://<site>/api/webhooks/sanity`
+- Dataset: the dataset in that environment's `SANITY_DATASET`
+- Trigger on: create, update and delete; leave the filter empty and drafts off
+- Projection: `{_id, _type}`
+- HTTP method: POST
+- Secret: the same value as that environment's `SANITY_WEBHOOK_SECRET`, at least
+  32 random characters
+
+Until the secret is set the route answers 503 and editors wait up to five
+minutes. A request with a missing or wrong signature gets 401 and changes nothing.
 
 The following preview content remains pending restaurant approval:
 
@@ -124,18 +171,27 @@ desktop frame and a full-content-width, 214px-high mobile frame; both focal poin
 are preview image data. New presentation fields from `dev` are not all exposed
 by the current Studio schemas and projections; default rendering still applies.
 
-The active development project is `3ggctsor`, dataset `development`. Production
-is separate and is not used by this setup.
+The active project is `w789ottu` (Peploes, in the TrueDevs Sanity organization),
+dataset `development`. Its `production` dataset stays empty until the restaurant
+approves content. The earlier project `3ggctsor` is outside the organization and
+no longer used; its published development content was copied on 2 November 2026.
+Images were copied from the public CDN, which serves converted files, so WebP
+originals are stored as PNG or JPEG at the same dimensions.
+
+The development Studio is `https://peploes-dev.sanity.studio`, application ID
+`jhr5xqsq76c5ddm6dryvws85`, deployed from `studio` with
+`SANITY_STUDIO_PROJECT_ID=w789ottu SANITY_STUDIO_DATASET=development bunx sanity deploy --url peploes-dev`.
+Deploy a production Studio under its own hostname; do not reuse this application ID.
 
 | Studio content type | Menu URL name | Website path |
 | --- | --- | --- |
-| Restaurant menu | `lunch` | `/menus/lunch` |
-| Restaurant menu | `dinner` | `/menus/dinner` |
-| Restaurant menu | `pre-theatre` | `/menus/pre-theatre` |
-| Wine menu | `wine` | `/menus/wine` |
-| Drinks menu | `cocktails` | `/menus/cocktails` |
-| Set menu collection | `group-set-menu` | `/menus/group-set-menu` |
-| Set menu collection | `seasonal` | `/menus/seasonal` |
+| Restaurant menu | `lunch` | `/menus?menu=lunch` |
+| Restaurant menu | `dinner` | `/menus?menu=dinner` |
+| Restaurant menu | `pre-theatre` | `/menus?menu=pre-theatre` |
+| Wine menu | `wine` | `/menus?menu=wine` |
+| Drinks menu | `cocktails` | `/menus?menu=cocktails` |
+| Set menu collection | `group-set-menu` | `/menus?menu=group-set-menu` |
+| Set menu collection | `seasonal` | `/menus?menu=seasonal` |
 
 | Content | Sanity content shape |
 | --- | --- |
@@ -188,9 +244,9 @@ The booking object also accepts `tallOnMobile` for the Wine and Cocktails banner
 optional desktop image positioning, content width and text alignment. Mobile
 padding, mobile/desktop overlays and full-width mobile actions preserve each
 banner’s reference treatment. These presentation fields preserve the shared
-banner component while matching each photograph and caption. The shared menu navigation uses `compactDesktop` for
-the shorter bar in Wine, Cocktails, Group and Seasonal desktop frames; its
-mobile height remains consistent across routes. A 1px soft-stone divider spans
+banner component while matching each photograph and caption. The shared menu
+navigation uses the same 8px top padding on all desktop routes; its mobile
+height remains consistent across routes. A 1px soft-stone divider spans
 the menu navigation below the tabs on desktop and mobile; the active tab keeps
 its burgundy underline.
 
@@ -210,7 +266,7 @@ an error; they never display a local preview menu instead.
 
 Open two terminals in `D:\JavaScript\peploes-sanity`:
 
-1. Website: `bun run dev` — open `http://localhost:3000/menus/lunch`.
+1. Website: `bun run dev` — open `http://localhost:3000/menus?menu=lunch`.
 2. Studio: `bun run studio:dev` — open `http://localhost:3333`.
 
 Keep both terminals running. If dependencies are missing, run `bun install` in
@@ -236,7 +292,9 @@ the installed version is the version tested and built.
    optional price empty when it should not appear. Zero means an actual zero price.
 4. Drag entries to change their order. Empty dish sections are hidden. Notes and
    allergen information are optional. Uploaded images require a useful description.
-5. Click **Publish**, then refresh the matching website page.
+5. Click **Publish**, then refresh the matching website page. If the change is
+   missing, check the webhook's delivery log in Sanity; the page updates within
+   five minutes either way.
 
 Image fit, image scale, desktop photo scale and image ordering are hidden and
 read-only in Studio. Their saved values remain in the schema to preserve the
@@ -319,7 +377,10 @@ spacing and explicit price decimal formatting are also preserved.
 
 ### Code and checks
 
-- `src/lib/sanity-provider.ts` reads the published perspective with `no-store`.
+- `src/lib/sanity-provider.ts` reads the published perspective into the Next
+  data cache, tagged `sanity-content` with a five-minute limit, and verifies the
+  publish webhook signature.
+- `src/app/api/webhooks/sanity/route.ts` expires the tag after a signed publish.
 - `src/services/restaurant-menus.ts` validates external data and returns typed
   results. Duplicate URL names and invalid content are rejected.
 - `src/lib/menu-content.ts` shares each request between page, metadata and layout.

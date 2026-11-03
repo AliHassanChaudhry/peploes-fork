@@ -1,11 +1,15 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/visit-contact-details.module.css";
 import { Button } from "@/components/ui/button";
 import { RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import { VISIT_CONTACT_DETAILS } from "@/lib/constants/visit-contact-details";
+import { GA4Event } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 
 export function VisitContactDetails() {
@@ -15,7 +19,10 @@ export function VisitContactDetails() {
         aria-labelledby="visit-reservation-heading"
         className={styles.reservation}
       >
-        <div className={cn("site-container", styles.reservationGrid)}>
+        <div
+          data-scroll-reveal
+          className={cn("site-container", styles.reservationGrid)}
+        >
           <div>
             <p className={styles.eyebrow}>
               {VISIT_CONTACT_DETAILS.reservation.eyebrow}
@@ -33,17 +40,30 @@ export function VisitContactDetails() {
               variant="brand-primary-inverse"
               className={styles.bookingButton}
             >
-              <Link href={ROUTES.BOOK_A_TABLE}>
+              <TrackedLink
+                href={ROUTES.BOOK_A_TABLE}
+                interaction={{
+                  event: GA4Event.BookingClick,
+                  placement: "visit_contact_details",
+                }}
+              >
                 {VISIT_CONTACT_DETAILS.reservation.bookingLabel}
                 <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
+              </TrackedLink>
             </Button>
             <Button
               asChild
               variant="brand-secondary-inverse"
               className={styles.phoneButton}
             >
-              <a href={`tel:${RESTAURANT_CONTACT.phone}`}>
+              <TrackedAnchor
+                href={`tel:${RESTAURANT_CONTACT.phone}`}
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "visit_contact_details",
+                  destination: "phone",
+                }}
+              >
                 <Image
                   src={VISIT_CONTACT_DETAILS.reservation.phoneIcon}
                   alt=""
@@ -52,21 +72,31 @@ export function VisitContactDetails() {
                   className="shrink-0"
                 />
                 {VISIT_CONTACT_DETAILS.reservation.phoneLabel}
-              </a>
+              </TrackedAnchor>
             </Button>
             <Button asChild variant="brand-text" className={styles.emailLink}>
-              <a href={`mailto:${RESTAURANT_CONTACT.email}`}>
+              <TrackedAnchor
+                href={`mailto:${RESTAURANT_CONTACT.email}`}
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "visit_contact_details",
+                  destination: "email",
+                }}
+              >
                 <span>{VISIT_CONTACT_DETAILS.reservation.emailLabel}</span>
                 <ArrowRight aria-hidden="true" className="size-4" />
-              </a>
+              </TrackedAnchor>
             </Button>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="visit-dining-heading" className={styles.dining}>
+      <section
+        aria-labelledby="visit-dining-heading"
+        className={cn("section-divider-subtle-bottom", styles.dining)}
+      >
         <div className="site-container">
-          <div className={styles.diningIntro}>
+          <div data-scroll-reveal className={styles.diningIntro}>
             <div>
               <p className={styles.eyebrow}>
                 {VISIT_CONTACT_DETAILS.dining.eyebrow}
@@ -81,7 +111,11 @@ export function VisitContactDetails() {
           </div>
           <ul className={styles.services}>
             {VISIT_CONTACT_DETAILS.dining.services.map((service) => (
-              <li className={styles.service} key={service.heading}>
+              <li
+                data-scroll-reveal
+                className={styles.service}
+                key={service.heading}
+              >
                 <Image
                   src={service.icon}
                   alt=""
@@ -101,7 +135,10 @@ export function VisitContactDetails() {
       </section>
 
       <div className={cn("site-container", styles.practicalities)}>
-        <section aria-labelledby="visit-accessibility-heading">
+        <section
+          data-scroll-reveal
+          aria-labelledby="visit-accessibility-heading"
+        >
           <p className={styles.eyebrow}>
             {VISIT_CONTACT_DETAILS.accessibility.eyebrow}
           </p>
@@ -113,6 +150,7 @@ export function VisitContactDetails() {
           </p>
         </section>
         <section
+          data-scroll-reveal
           aria-labelledby="visit-gatherings-heading"
           className={styles.gatherings}
         >

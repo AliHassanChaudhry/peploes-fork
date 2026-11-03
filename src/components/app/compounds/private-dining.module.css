@@ -179,8 +179,41 @@
   margin-top: 32px;
 }
 .gatheringImage {
+  --image-zoom-ease: ease-in-out;
+  display: block;
   position: relative;
   height: 380px;
+  overflow: hidden;
+}
+:where(.gatheringCards > li:has(.gatheringImage:focus-visible)) .cardLink {
+  text-decoration-line: underline;
+}
+@media (hover: hover) {
+  :where(.gatheringCards > li:has(.gatheringImage:hover)) .cardLink {
+    text-decoration-line: underline;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gatheringImage .cover {
+    /* Avoid a sharpness jump when the completed zoom releases its layer. */
+    will-change: transform;
+    transition: transform var(--duration-base) var(--image-zoom-ease);
+  }
+  .gatheringImage:focus-visible .cover {
+    transform: scale(1.05);
+  }
+  :where(.gatheringCards > li:has(.gatheringImage:focus-visible) .cardLink)
+    svg {
+    transform: translateX(3px);
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .gatheringImage:hover .cover {
+    transform: scale(1.05);
+  }
+  :where(.gatheringCards > li:has(.gatheringImage:hover) .cardLink) svg {
+    transform: translateX(3px);
+  }
 }
 .gatheringCopy {
   padding-top: 20px;
@@ -426,6 +459,23 @@
   display: grid;
   gap: 12px;
 }
+.enquiryFields input.enquiryHidden {
+  display: none;
+}
+.enquiryFields input.enquiryHoneypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.enquiryFeedback {
+  min-height: 22px;
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 22px;
+}
 .enquiryFields input:not([type="checkbox"]),
 .enquiryFields select,
 .enquiryFields textarea {
@@ -447,10 +497,6 @@
   color: var(--ink);
   opacity: 1;
 }
-.enquiryFields :is(input, select, textarea):focus-visible {
-  outline: 2px solid var(--peploe-burgundy);
-  outline-offset: 3px;
-}
 .enquiryFields textarea {
   min-height: 144px;
   resize: vertical;
@@ -462,6 +508,9 @@
 .dateField {
   position: relative;
   min-width: 0;
+}
+.enquiryFields input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 .selectField {
   position: relative;
@@ -488,6 +537,7 @@
   display: none;
 }
 .consent {
+  cursor: pointer;
   display: flex;
   align-items: start;
   gap: 10px;
@@ -496,6 +546,7 @@
   margin-block: 16px;
 }
 .consent input {
+  cursor: pointer;
   width: 16px;
   height: 16px;
   margin-top: 3px;
@@ -538,7 +589,7 @@
 }
 .compactEnquiry .enquiryFields :is(input, select, textarea) {
   border: 0;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .compactEnquiry .enquiryFields :is(input, select),
 .compactEnquiry .enquiryFields input::placeholder,
@@ -628,6 +679,10 @@
 :where(.closing) .contacts a {
   color: var(--warm-cream);
   border-color: rgb(250 247 241 / 60%);
+}
+.closing .contacts a:hover {
+  background-color: color-mix(in srgb, var(--warm-cream) 12%, transparent);
+  border-color: var(--warm-cream);
 }
 .closing .heroRule {
   margin-block: 0 24px;
@@ -729,13 +784,6 @@
   display: grid;
   gap: 24px;
 }
-.spaces::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  border-bottom: 1px solid var(--soft-stone);
-  pointer-events: none;
-}
 .spaces > li {
   position: relative;
 }
@@ -745,6 +793,9 @@
   inset: 0;
   pointer-events: none;
   box-shadow: inset 0 -1px var(--soft-stone);
+}
+.spaces > li:last-child::after {
+  box-shadow: none;
 }
 .spaceImage {
   position: relative;
@@ -941,6 +992,103 @@
 
   .personalFeatures .featureHeading {
     line-height: 26px;
+  }
+}
+
+@media (width < 40rem) {
+  .capacity {
+    padding-block: 40px;
+  }
+
+  .capacity .heading {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  .capacityGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .capacityGrid > li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 16px;
+    row-gap: 4px;
+    padding-block: 24px;
+  }
+
+  .capacityGrid > li:nth-child(n + 3) {
+    border-top: 1px solid rgb(var(--overlay-cream-rgb) / 25%);
+  }
+
+  .capacityGrid > li:nth-child(-n + 2) {
+    grid-column: auto;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    padding: 16px;
+    border: 1px solid rgb(var(--overlay-cream-rgb) / 25%);
+    border-radius: 4px;
+    background: rgb(var(--overlay-cream-rgb) / 4%);
+  }
+
+  .capacityGrid > li:last-child {
+    padding-bottom: 0;
+  }
+
+  .capacityGrid .illustration {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 40px;
+    height: 40px;
+    margin: 4px 0 0;
+  }
+
+  .capacityGrid > li > :not(img) {
+    grid-column: 2;
+  }
+
+  .capacityGrid > li:nth-child(-n + 2) > :not(img) {
+    grid-column: 1;
+  }
+
+  .capacityGrid > li:nth-child(-n + 2) .illustration {
+    grid-row: auto;
+    width: 32px;
+    height: 32px;
+    margin: 0 0 8px;
+  }
+
+  .capacityGrid .capacityFigure {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  .capacityGrid .capacityLabel,
+  .capacityGrid li:last-child .capacityLabel {
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 0;
+  }
+
+  .capacityGrid li > p:last-child {
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 0;
+  }
+
+  .capacityGrid li:nth-child(n + 3) .capacityFigure {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .capacityGrid li:nth-child(-n + 2) > p:last-child,
+  .capacityGrid li:last-child > p:last-child {
+    font-size: 14px;
+    line-height: 22px;
   }
 }
 
@@ -1611,8 +1759,8 @@
     padding: 8px 12px;
   }
   .compactEnquiry .enquiryFields textarea {
-    min-height: 58px;
-    height: 58px;
+    min-height: 90px;
+    height: 90px;
     padding-top: 8px;
   }
   .compactEnquiry .enquiryFields :is(input, select, textarea) {
@@ -1869,7 +2017,7 @@
     gap: 8px;
   }
   .spaces > li::after {
-    box-shadow: inset -1px -1px var(--soft-stone);
+    box-shadow: inset -1px 0 var(--soft-stone);
   }
   .spaceImage {
     height: 230px;
@@ -1931,6 +2079,8 @@
     transform: translate(-8.29218%, -20.718%) scale(0.58291011, 2.4140238);
   }
   .corporateMenus::after {
+    box-shadow: inset 0 var(--section-border-subtle-width) 0
+      var(--section-border);
     background: linear-gradient(
       90deg,
       rgb(242 234 229 / 0%),
@@ -2036,17 +2186,11 @@
   .weddingEnquiry .contacts svg {
     stroke-width: 1.5;
   }
-  .corporatePage
-    .enquiryFields
-    :is(input:not([type="checkbox"]), select, textarea),
-  .celebrationEnquiry
-    .enquiryFields
-    :is(input:not([type="checkbox"]), select, textarea),
-  .weddingEnquiry
+  :where(.corporatePage, .celebrationEnquiry, .weddingEnquiry)
     .enquiryFields
     :is(input:not([type="checkbox"]), select, textarea) {
     border: 0;
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: inset 0 0 0 1px var(--soft-stone);
     padding-inline: 14px;
     color: var(--text-secondary);
@@ -2111,7 +2255,6 @@
   }
   .celebrationEnquiry .enquiryFields .selectField select,
   .weddingEnquiry .enquiryFields .selectField select {
-    border-radius: 0;
     padding-inline: 15px;
   }
   .celebrationEnquiry .consent,
@@ -2145,10 +2288,6 @@
     height: 20px;
     stroke-width: 1.2;
     color: var(--ink);
-  }
-  .corporatePage .guestSelect::picker-icon,
-  .weddingEnquiry .guestSelect::picker-icon {
-    display: none;
   }
   .corporateClosing .closingCopy,
   .weddingClosing .closingCopy {
@@ -2368,17 +2507,24 @@
 }
 
 @supports (appearance: base-select) {
-  .enquiryFields select.guestSelect,
-  .guestSelect::picker(select) {
+  .enquiryFields select.enquirySelect,
+  .enquirySelect::picker(select) {
     appearance: base-select;
   }
 
-  .enquiryFields select.guestSelect {
+  .enquiryFields select.enquirySelect {
     display: flex;
     align-items: center;
   }
 
-  .guestSelect::picker(select) {
+  .enquiryFields .selectField .selectIcon {
+    display: none;
+  }
+
+  .enquirySelect::picker(select) {
+    position-area: block-end span-inline-end;
+    position-try-order: normal;
+    margin-block: 4px;
     width: anchor-size(width);
     max-width: calc(100vw - 32px);
     height: min(240px, 40dvh);
@@ -2392,23 +2538,39 @@
     box-shadow: 0 4px 12px rgb(46 42 40 / 12%);
   }
 
-  .guestSelect option {
+  .enquirySelect option {
+    background: var(--warm-cream);
+    color: var(--ink);
+    cursor: pointer;
     min-height: 44px;
     padding: 10px 16px;
     font-size: 16px;
     line-height: 22px;
   }
 
-  .guestSelect option:is(:hover, :focus, :checked) {
+  .enquirySelect option:not(:disabled) + option:not(:disabled) {
+    border-top: 1px solid var(--soft-stone);
+  }
+
+  .enquirySelect option:is(:hover, :checked) {
     background: var(--events-pale);
     color: var(--peploe-burgundy);
   }
 
-  @media (width < 64rem) {
-    .compactEnquiry .guestSelect::picker-icon {
-      display: none;
-    }
+  .enquirySelect option:focus-visible {
+    outline: 2px solid var(--text-secondary);
+    outline-offset: -2px;
   }
+}
+
+.enquiryFields select,
+.enquiryFields input[type="date"] {
+  cursor: pointer;
+}
+
+.enquiryFields :is(input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--text-secondary);
 }
 
 @media (forced-colors: active) {
@@ -2430,5 +2592,10 @@
   .weddingEnquiry .contacts a:focus-visible {
     outline: 2px solid CanvasText;
     outline-offset: 3px;
+  }
+
+  .enquiryFields :is(input, select, textarea):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

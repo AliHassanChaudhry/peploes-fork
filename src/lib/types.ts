@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type { Result as NeverthrowResult } from "neverthrow";
 import type { Route } from "next";
+import type Link from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { infer as InferSchema } from "zod";
 import type { z } from "zod/v4";
@@ -17,14 +18,19 @@ import type {
   menuCollectionNavigationSchema,
   menusPageSchema,
 } from "@/lib/cms-menu-schema";
-import type { MENU_SLUGS, ROUTES } from "@/lib/constants";
+import type {
+  ANALYTICS_CONTACT_DESTINATIONS,
+  ANALYTICS_PLACEMENTS,
+  MENU_SLUGS,
+  ROUTES,
+} from "@/lib/constants";
 import type {
   BOOKING_SKIP_REASONS,
   BOOKING_UNSUPPORTED_SETTINGS,
 } from "@/lib/constants/booking";
 import type { buttonVariants } from "@/lib/constants/button";
 import type { cookiePreferencesSchema } from "@/lib/cookie-consent";
-import type { ErrorCode, HttpVerb, LogLevel } from "@/lib/enums";
+import type { ErrorCode, GA4Event, HttpVerb, LogLevel } from "@/lib/enums";
 import type { createResDiaryProvider } from "@/lib/resdiary-provider";
 import type {
   closedDatesReplySchema,
@@ -94,6 +100,84 @@ export interface IAppError {
   context?: Record<string, unknown>;
 }
 
+export type TEmailProvider = "smtp" | "resend";
+export type TEmailDeliveryStatus =
+  | "pending"
+  | "accepted"
+  | "rejected"
+  | "unknown";
+
+export interface IEmailMessage {
+  readonly notificationId: string;
+  readonly template: string;
+  readonly version: number;
+  readonly to: readonly string[];
+  readonly cc?: readonly string[];
+  readonly bcc?: readonly string[];
+  readonly replyTo?: string;
+  readonly subject: string;
+  readonly html: string;
+  readonly text: string;
+}
+
+export interface IEmailDelivery {
+  readonly id: string;
+  readonly payloadHash: string;
+  readonly template: string;
+  readonly provider: TEmailProvider;
+  readonly status: TEmailDeliveryStatus;
+  readonly providerId: string | null;
+}
+
+export type TEmailProviderOutcome =
+  | { readonly status: "accepted"; readonly providerId: string }
+  | {
+      readonly status: "unknown";
+      readonly reason: TEmailFailureReason;
+      readonly providerId?: string;
+    }
+  | {
+      readonly status: "rejected";
+      readonly reason: TEmailFailureReason;
+    };
+
+export type TEmailFailureReason =
+  | "invalid_provider_flag"
+  | "missing_email_identity"
+  | "missing_smtp_configuration"
+  | "missing_smtp_credentials"
+  | "missing_smtp_oauth_credentials"
+  | "missing_smtp_auth_method"
+  | "smtp_sender_mismatch"
+  | "smtp_authentication"
+  | "smtp_before_data"
+  | "smtp_explicit_rejection"
+  | "smtp_all_rejected"
+  | "partial_smtp_acceptance"
+  | "smtp_outcome_unknown"
+  | "missing_resend_configuration"
+  | "resend_rejected"
+  | "resend_outcome_unknown"
+  | "resend_response_invalid";
+
+export interface IEmailTransportMessage {
+  readonly id: string;
+  readonly from: string;
+  readonly to: readonly string[];
+  readonly cc: readonly string[];
+  readonly bcc: readonly string[];
+  readonly replyTo?: string;
+  readonly subject: string;
+  readonly html: string;
+  readonly text: string;
+}
+
+export interface IEnquiryActionState {
+  readonly status: "idle" | "success" | "error" | "unknown";
+  readonly message: string;
+  readonly guestAcknowledgement?: "accepted" | "failed";
+}
+
 // ─── Action Framework ────────────────────────────────────────────────────
 
 export interface IActionDefinition<
@@ -152,6 +236,8 @@ export interface ISeoConfig {
   url: string;
   image?: string;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   type?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
@@ -179,6 +265,15 @@ export interface IOrganizationSchemaConfig {
   url: string;
   logoUrl?: string;
   sameAs?: string[];
+}
+
+export interface ILlmsEntry {
+  slug: string;
+  title: string;
+  summary: string;
+  kind: "campaign" | "event" | "menuMoment";
+  date: string;
+  endDate?: string | null;
 }
 
 export interface IJsonLdProps {
@@ -252,14 +347,13 @@ export interface IUTMParameters {
   utm_content?: string;
 }
 
-export interface IEventRecord {
-  signature: string;
-  timestamp: number;
+export interface ISanitizedAnalyticsEvent {
+  name: string;
+  params: Record<string, string>;
 }
 
-export interface IEventSignature {
-  eventName: string;
-  params: Record<string, unknown>;
+export interface IPendingAnalyticsEvent extends ISanitizedAnalyticsEvent {
+  dedupeKey?: string;
 }
 
 export interface IWebVitalsLibMetric {
@@ -824,6 +918,28 @@ export interface ISentryErrorBoundaryState {
   error: Error | null;
 }
 
+export type TUrlPart = "url" | "path" | "referrer";
+
+export type TAnalyticsPlacement = (typeof ANALYTICS_PLACEMENTS)[number];
+
+/** A live click and the closed identifiers it reports; never a raw destination. */
+export type TTrackedInteraction =
+  | { event: GA4Event.BookingClick; placement: TAnalyticsPlacement }
+  | { event: GA4Event.DirectionsClick; placement: TAnalyticsPlacement }
+  | {
+      event: GA4Event.ContactClick;
+      placement: TAnalyticsPlacement;
+      destination: (typeof ANALYTICS_CONTACT_DESTINATIONS)[number];
+    };
+
+export type TTrackedLinkProps = ComponentProps<typeof Link> & {
+  interaction: TTrackedInteraction;
+};
+
+export type TTrackedAnchorProps = ComponentProps<"a"> & {
+  interaction: TTrackedInteraction;
+};
+
 export interface ITrackEventProps {
   eventName: string;
   params?: Record<string, unknown>;
@@ -930,6 +1046,8 @@ export interface INavbarBrandProps {
 
 export interface INavbarBookingButtonProps {
   onNavigate?: () => void;
+  className?: string;
+  label?: string;
 }
 
 export interface INavbarContent {
@@ -941,7 +1059,6 @@ export interface INavbarContent {
   groupsId: string;
   whatsOnLabel: string;
   visitContactLabel: string;
-  giftVouchersLabel: string;
   bookingLabel: string;
   mobileBookingLabel: string;
 }
@@ -1008,7 +1125,6 @@ export interface IMobileNavigationTriggerProps {
 }
 
 export interface IMenuNavigationLink {
-  compactDesktop?: boolean;
   label: string;
   href?: Route;
   children?: readonly { label: string; href: Route }[];
@@ -1038,7 +1154,7 @@ export interface IMenuContent extends IMenuEditorialContent, IMenuNotesContent {
 }
 
 export interface IMenuEditorialContent {
-  slug: string;
+  slug: TMenuSlug;
   title: string;
   description?: string;
   aside?: string;
@@ -1058,6 +1174,12 @@ export interface IMenuEditorialImageProps {
   image: IMenuImage;
   compact: boolean;
   imageBeforeAside?: boolean;
+}
+
+export interface IMenuIntroImageProps {
+  image: IMenuImage;
+  sizes: string;
+  className?: string;
 }
 
 export interface IMenuBooking {
@@ -1275,12 +1397,7 @@ export interface IMobileNavigationContent {
   title: string;
   navigationLabel: string;
   items: readonly IMobileNavigationItem[];
-  giftVouchersLabel: string;
-  openingHoursHeading: string;
-  openingHours: readonly IOpeningHours[];
-  address: string;
-  phoneAction: INavLink;
-  emailAction: INavLink;
+  bookingLabel: string;
   brandPhrase: string;
 }
 
@@ -1299,6 +1416,10 @@ export interface IFooterContent {
     emailLabel: string;
     submitLabel: string;
     status: string;
+    requiredError: string;
+    invalidError: string;
+    completionHint: string;
+    domains: readonly string[];
   };
   copyright: string;
   legalNavigationLabel: string;
@@ -1474,6 +1595,11 @@ export interface IStoryActionProps {
   href?: Route;
 }
 
+export interface IStoryCardProps {
+  children: ReactNode;
+  className: string;
+}
+
 export interface IEventActionProps {
   label: string;
   mobileLabel?: string;
@@ -1509,6 +1635,7 @@ export interface IPolicySection {
 
 export type TPolicyPath = (typeof ROUTES)[
   | "PRIVACY_COOKIES"
+  | "PRIVACY_POLICY"
   | "ACCESSIBILITY_POLICY"
   | "TERMS_CONDITIONS"
   | "BOOKING_CANCELLATION_TERMS"];
@@ -1655,6 +1782,9 @@ export type TMenuCollections = InferSchema<
 >;
 export interface ICmsMenuPageProps {
   slug: TMenuSlug;
+}
+export interface IMenuContentTransitionProps extends ICmsMenuPageProps {
+  children: ReactNode;
 }
 export interface IMenuHeroProps {
   content: TMenusPageDocument;

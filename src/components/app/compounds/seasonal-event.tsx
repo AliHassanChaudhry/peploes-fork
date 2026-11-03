@@ -1,14 +1,16 @@
 import { ArrowRight } from "lucide-react";
+import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-
+import { TrackedLink } from "@/components/app/atoms/tracked-link";
 import { SeasonalJoin } from "@/components/app/compounds/seasonal";
 import seasonalStyles from "@/components/app/compounds/seasonal.module.css";
 import styles from "@/components/app/compounds/seasonal-event.module.css";
 import { SeasonalEventRelated } from "@/components/app/compounds/seasonal-event-related";
 import { SeasonalEventAction } from "@/components/app/molecules/seasonal-event-action";
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
+import { FOCUS_RING, ROUTES } from "@/lib/constants";
+import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import type { ISeasonalEventProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -34,7 +36,7 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
           className={cn(styles.cover, styles.heroImage)}
         />
         <div className="site-container">
-          <div className={styles.heroCopy}>
+          <div data-scroll-reveal className={styles.heroCopy}>
             <p className={styles.eyebrow}>{hero.eyebrow}</p>
             <h1 id="event-title">{hero.heading}</h1>
             <span className={styles.heroDivider} aria-hidden="true" />
@@ -44,10 +46,17 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       </section>
 
       {details && details.length > 0 && (
-        <section className={styles.details} aria-label="Event information">
+        <section
+          className={cn("section-divider-subtle", styles.details)}
+          aria-label="Event information"
+        >
           <dl className={cn("site-container", styles.detailsList)}>
             {details.map((detail) => (
-              <div key={detail._key ?? detail.label} className={styles.detail}>
+              <div
+                data-scroll-reveal
+                key={detail._key ?? detail.label}
+                className={styles.detail}
+              >
                 <dt>
                   <Image
                     {...detail.icon}
@@ -65,38 +74,67 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
 
       {menu && (
         <section className={styles.menu} aria-labelledby="event-menu">
-          <div className={cn("site-container", styles.menuContent)}>
-            <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+          <div className="site-container">
+            <p
+              data-scroll-reveal
+              className={cn(styles.eyebrow, styles.ruledEyebrow)}
+            >
               {menu.eyebrow}
             </p>
-            <h2 id="event-menu">{menu.heading}</h2>
-            <p className={styles.menuDescription}>{menu.description}</p>
+            <h2 data-scroll-reveal id="event-menu">
+              {menu.heading}
+            </h2>
+            <p data-scroll-reveal className={styles.menuDescription}>
+              {menu.description}
+            </p>
             <div className={styles.menuCards}>
-              {menu.cards.map((card) => (
-                <article
-                  key={card.id ?? card.title}
-                  className={styles.menuCard}
-                >
-                  <div className={styles.menuImage}>
-                    <Image
-                      {...card.image}
-                      fill
-                      sizes="(min-width: 1440px) 628px, (min-width: 1280px) calc((100vw - 184px) / 2), (min-width: 640px) calc((100vw - 88px) / 2), calc(100vw - 48px)"
-                      className={styles.cover}
-                    />
-                  </div>
-                  <div className={styles.menuCardCopy}>
-                    <h3>{card.title}</h3>
-                    <p>{card.description}</p>
-                    {card.href && (
-                      <SeasonalEventAction
-                        label={card.action}
-                        href={card.href}
-                      />
+              {menu.cards.map((card) => {
+                const image = (
+                  <Image
+                    {...card.image}
+                    fill
+                    sizes="(min-width: 1584px) 700px, (min-width: 1280px) calc((100vw - 184px) / 2), (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 32px)"
+                    className={cn(
+                      styles.cover,
+                      "transition-transform duration-(--duration-base) ease-out motion-safe:group-hover:scale-105 motion-safe:group-focus-visible:scale-105 motion-reduce:transition-none",
                     )}
-                  </div>
-                </article>
-              ))}
+                  />
+                );
+                return (
+                  <article
+                    key={card.id ?? card.title}
+                    className={styles.menuCard}
+                    data-image-card
+                  >
+                    {card.href ? (
+                      <Link
+                        href={card.href as Route}
+                        aria-label={card.title}
+                        data-card-image
+                        className={cn(
+                          FOCUS_RING,
+                          styles.menuImage,
+                          "group block overflow-hidden",
+                        )}
+                      >
+                        {image}
+                      </Link>
+                    ) : (
+                      <div className={styles.menuImage}>{image}</div>
+                    )}
+                    <div data-scroll-reveal className={styles.menuCardCopy}>
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      {card.href && (
+                        <SeasonalEventAction
+                          label={card.action}
+                          href={card.href}
+                        />
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -105,8 +143,11 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       {story && (
         <section className={styles.story} aria-labelledby="event-story">
           <div className={cn("site-container", styles.storyContent)}>
-            <div className={styles.storyCopy}>
-              <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+            <div data-scroll-reveal className={styles.storyCopy}>
+              <p
+                data-scroll-reveal
+                className={cn(styles.eyebrow, styles.ruledEyebrow)}
+              >
                 {story.eyebrow}
               </p>
               <h2 id="event-story">{story.heading}</h2>
@@ -131,10 +172,15 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
       {gallery && gallery.images.length > 0 && (
         <section className={styles.gallery} aria-labelledby="event-gallery">
           <div className="site-container">
-            <p className={cn(styles.eyebrow, styles.ruledEyebrow)}>
+            <p
+              data-scroll-reveal
+              className={cn(styles.eyebrow, styles.ruledEyebrow)}
+            >
               {gallery.eyebrow}
             </p>
-            <h2 id="event-gallery">{gallery.heading}</h2>
+            <h2 data-scroll-reveal id="event-gallery">
+              {gallery.heading}
+            </h2>
             <div className={styles.galleryImages}>
               {gallery.images.map((photo) => (
                 <div
@@ -166,7 +212,7 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
             className={styles.cover}
           />
           <div className="site-container">
-            <div className={styles.invitationCopy}>
+            <div data-scroll-reveal className={styles.invitationCopy}>
               <h2 id="event-invitation">{invitation.heading}</h2>
               <p>{invitation.description}</p>
               <div className="mt-6 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4">
@@ -175,19 +221,25 @@ export function SeasonalEvent({ content, join }: ISeasonalEventProps) {
                   variant="brand-primary"
                   className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-6 py-2.5 text-base leading-[22px] has-[>svg]:px-6 sm:min-h-12 sm:w-auto sm:text-lg sm:leading-[26px] lg:min-w-[249px] lg:px-5 lg:has-[>svg]:px-5"
                 >
-                  <Link href={ROUTES.BOOK_A_TABLE}>
+                  <TrackedLink
+                    href={ROUTES.BOOK_A_TABLE}
+                    interaction={{
+                      event: GA4Event.BookingClick,
+                      placement: "seasonal_event",
+                    }}
+                  >
                     <span className="min-w-0 [overflow-wrap:anywhere]">
                       {invitation.bookingAction}
                     </span>
                     <ArrowRight aria-hidden="true" className="size-4" />
-                  </Link>
+                  </TrackedLink>
                 </Button>
                 <Button
                   asChild
                   variant="brand-secondary-inverse"
                   className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-none px-6 py-2.5 text-base leading-[22px] has-[>svg]:px-6 sm:min-h-12 sm:w-auto sm:text-lg sm:leading-[26px] lg:min-w-[206px] lg:px-5 lg:has-[>svg]:px-5"
                 >
-                  <Link href={ROUTES.VISIT_CONTACT}>
+                  <Link href={`${ROUTES.PRIVATE_DINING}#enquire`}>
                     <span className="min-w-0 [overflow-wrap:anywhere]">
                       {invitation.enquiryAction}
                     </span>

@@ -72,12 +72,17 @@ Framework route files may repeat declarations that the framework reads staticall
 
 ## Comments
 
-Use comments for reasons the code cannot express: security constraints, library
-limitations, concurrency or deliberate tradeoffs. Place the reason beside the
-operation. Remove statement narration, redundant banners and implementation
-history. Preserve licence notices and tool directives.
+Write code without comments. Do not add inline, block or JSX comments, even to
+explain a reason. Carry a security constraint, library limitation, concurrency
+rule or deliberate tradeoff in a name, a test, the owning guide or the PR
+description. Only licence notices and tool directives may stay as comments:
+Biome suppressions with their reason, and the version comment beside a pinned
+Action.
 
 ## External libraries
+
+The transactional email integration and its operational configuration are
+documented in [the email guide](guides/email-guide.md).
 
 When an external integration brings SDK configuration, transport objects or
 exception conventions into domain code, put those details in a concrete
@@ -258,7 +263,10 @@ and validation are available.
 
 The default CSP supports static rendering, so scripts and styles still allow
 inline content. It allows `unsafe-eval` only in development and adds monitoring
-or analytics origins only when their public configuration exists. The booking
+or analytics origins only when their public configuration exists. A configured
+public Mapbox token adds Mapbox connections and blob workers to the shared policy
+because client navigation to Visit retains the original document's CSP. Mapbox
+loads automatically on Visit, matching the Samsu reference. The booking
 page (`/book-a-table`) gets the same policy plus Stripe.js and its 3-D Secure
 frames, from a later header rule that replaces the site-wide one on that path. Projects that
 need nonce-based CSP must accept dynamic rendering as described in the

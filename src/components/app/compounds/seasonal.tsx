@@ -1,10 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { TrackedLink } from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/seasonal.module.css";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
+import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { seasonalPath } from "@/lib/seasonal-data";
 import type {
@@ -37,7 +38,7 @@ export function SeasonalJoin({ join }: ISeasonalJoinProps) {
         />
       </div>
       <div className="site-container">
-        <div className={styles.joinCopy}>
+        <div data-scroll-reveal className={styles.joinCopy}>
           <p className={styles.eyebrow}>{join.eyebrow}</p>
           <h2 id="seasonal-join">{join.heading}</h2>
           <p className={styles.description}>{join.description}</p>
@@ -45,19 +46,27 @@ export function SeasonalJoin({ join }: ISeasonalJoinProps) {
             <Button
               asChild
               variant="brand-primary"
-              className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-5 py-2.5 text-base leading-[22px] has-[>svg]:px-5 sm:w-auto sm:min-w-[156px] sm:gap-1 sm:leading-6"
+              size="cta"
+              className="h-auto min-h-11 w-full whitespace-normal leading-[22px] sm:w-auto sm:min-w-[156px] sm:gap-1 sm:leading-6"
             >
-              <Link href={ROUTES.BOOK_A_TABLE}>
+              <TrackedLink
+                href={ROUTES.BOOK_A_TABLE}
+                interaction={{
+                  event: GA4Event.BookingClick,
+                  placement: "seasonal",
+                }}
+              >
                 <span className="min-w-0 [overflow-wrap:anywhere]">
                   {join.bookingAction}
                 </span>
                 <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
+              </TrackedLink>
             </Button>
             <Button
               asChild
               variant="brand-secondary-inverse"
-              className="h-auto min-h-11 w-full max-w-full gap-2 whitespace-normal rounded-[4px] px-5 py-2.5 text-base leading-[22px] has-[>svg]:px-5 sm:w-auto sm:min-w-[148px] sm:gap-1.5 sm:px-[18px] sm:py-[9px] sm:leading-6 sm:has-[>svg]:px-[18px]"
+              size="cta"
+              className="h-auto min-h-11 w-full whitespace-normal leading-[22px] sm:w-auto sm:min-w-[148px] sm:gap-1.5 sm:px-[18px] sm:py-[9px] sm:leading-6 sm:has-[>svg]:px-[18px]"
             >
               <Link href={ROUTES.VISIT_CONTACT}>
                 <span className="min-w-0 [overflow-wrap:anywhere]">
@@ -86,7 +95,7 @@ function SeasonalHero(hero: TWhatsOnPage["hero"]) {
         />
       </div>
       <div className="site-container">
-        <div className={styles.heroCopy}>
+        <div data-scroll-reveal className={styles.heroCopy}>
           <p className={styles.eyebrow}>{hero.eyebrow}</p>
           <h1 id="seasonal-title">{hero.heading}</h1>
           <p className={styles.description}>{hero.description}</p>
@@ -102,7 +111,7 @@ function SeasonalDiary({ content, months }: ISeasonalProps) {
   return (
     <section className={styles.diary} aria-labelledby="seasonal-diary">
       <div className="site-container">
-        <div className={styles.diaryIntroduction}>
+        <div data-scroll-reveal className={styles.diaryIntroduction}>
           <div>
             <p className={styles.eyebrow}>{diary.eyebrow}</p>
             <h2 id="seasonal-diary">{diary.heading}</h2>
@@ -117,12 +126,20 @@ function SeasonalDiary({ content, months }: ISeasonalProps) {
               className={styles.month}
               aria-labelledby={`seasonal-${month.key}`}
             >
-              <h3 id={`seasonal-${month.key}`} className={styles.monthHeading}>
+              <h3
+                data-scroll-reveal
+                id={`seasonal-${month.key}`}
+                className={styles.monthHeading}
+              >
                 {month.name}
               </h3>
               <ul>
                 {month.events.map((event) => (
-                  <li key={event._id} className={styles.event}>
+                  <li
+                    data-scroll-reveal
+                    key={event._id}
+                    className={styles.event}
+                  >
                     <p className={styles.eventDate}>
                       <span className={styles.day}>{event.day}</span>
                       <span>{month.abbreviation}</span>
@@ -165,7 +182,7 @@ function SeasonalTerrace(terrace: NonNullable<TWhatsOnPage["terrace"]>) {
         />
       </div>
       <div className="site-container">
-        <div className={styles.terraceCopy}>
+        <div data-scroll-reveal className={styles.terraceCopy}>
           <h2 id="seasonal-terrace">{terrace.heading}</h2>
           <p className={styles.description}>{terrace.description}</p>
         </div>

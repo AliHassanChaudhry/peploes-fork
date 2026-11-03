@@ -1,8 +1,12 @@
 import { ArrowRight, Clock3, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
-import { FooterFrame } from "@/components/app/compounds/footer-frame";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/app/atoms/tracked-link";
 import { FooterMeta } from "@/components/app/compounds/footer-meta";
 import { MobileFooterNavigation } from "@/components/app/compounds/mobile-footer-navigation";
+import { NewsletterSignup } from "@/components/app/molecules/newsletter-signup";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import {
@@ -10,12 +14,13 @@ import {
   FOOTER_STYLES,
   MOBILE_FOOTER_CONTENT,
 } from "@/lib/constants/footer";
+import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
 export function Footer() {
   return (
-    <FooterFrame className={cn(dmSans.className, "bg-warm-cream text-ink")}>
+    <footer className={cn(dmSans.className, "bg-warm-cream text-ink")}>
       <div
         data-footer-container
         className="site-container-inset pt-14 pb-10 xl:pt-20"
@@ -75,36 +80,7 @@ export function Footer() {
             <p className="mt-4 text-sm leading-[21px] text-text-secondary xl:mt-6">
               {FOOTER_CONTENT.newsletter.description}
             </p>
-            <div
-              data-footer-newsletter-controls
-              className="mt-4 flex flex-col gap-3 xl:mt-6 xl:flex-row xl:items-end"
-            >
-              <label htmlFor="footer-newsletter-email" className="sr-only">
-                {FOOTER_CONTENT.newsletter.emailLabel}
-              </label>
-              <input
-                id="footer-newsletter-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder={FOOTER_CONTENT.newsletter.emailLabel}
-                aria-describedby="footer-newsletter-status"
-                className="h-[30px] min-w-0 rounded-none border-b border-border-interactive bg-transparent text-sm leading-[21px] text-ink placeholder:text-text-secondary focus-visible:shadow-[0_2px_0_var(--peploe-burgundy)] focus-visible:outline-none forced-colors:focus-visible:outline-2 forced-colors:focus-visible:outline-offset-2 forced-colors:focus-visible:outline-solid xl:h-11 xl:flex-1"
-              />
-              <Button
-                type="button"
-                variant="brand-primary"
-                aria-disabled="true"
-                aria-describedby="footer-newsletter-status"
-                className="h-11 gap-2 rounded-[4px] bg-peploe-burgundy px-5 text-base leading-[22px] font-medium text-warm-cream shadow-none has-[>svg]:px-5"
-              >
-                {FOOTER_CONTENT.newsletter.submitLabel}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Button>
-            </div>
-            <p id="footer-newsletter-status" className="sr-only">
-              {FOOTER_CONTENT.newsletter.status}
-            </p>
+            <NewsletterSignup />
           </section>
 
           <nav
@@ -176,20 +152,30 @@ export function Footer() {
               </span>
             </h2>
             <div className="mt-4 flex flex-col gap-4 xl:mt-6">
-              <a
+              <TrackedAnchor
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "footer",
+                  destination: "phone",
+                }}
                 href={`tel:${RESTAURANT_CONTACT.phone}`}
                 className={cn(FOCUS_RING, FOOTER_STYLES.contactLink)}
               >
                 <Phone aria-hidden="true" className="size-4 shrink-0" />
                 {RESTAURANT_CONTACT.phoneLabel}
-              </a>
-              <a
+              </TrackedAnchor>
+              <TrackedAnchor
+                interaction={{
+                  event: GA4Event.ContactClick,
+                  placement: "footer",
+                  destination: "email",
+                }}
                 href={`mailto:${RESTAURANT_CONTACT.email}`}
                 className={cn(FOCUS_RING, FOOTER_STYLES.contactLink)}
               >
                 <Mail aria-hidden="true" className="size-4 shrink-0" />
                 {RESTAURANT_CONTACT.email}
-              </a>
+              </TrackedAnchor>
             </div>
             <div className="mt-4 xl:relative xl:mt-6 xl:pt-[25px] xl:before:absolute xl:before:inset-x-0 xl:before:top-0 xl:before:h-px xl:before:bg-soft-stone">
               <h3 className="flex items-center gap-2 text-sm leading-5 font-medium xl:leading-[21px]">
@@ -235,10 +221,16 @@ export function Footer() {
                 variant="brand-text"
                 className="h-[18px] rounded-none p-0 has-[>svg]:px-0 text-[13px] leading-[18px] text-peploe-burgundy"
               >
-                <Link href={`${ROUTES.VISIT_CONTACT}#find-us`}>
+                <TrackedLink
+                  href={`${ROUTES.VISIT_CONTACT}#find-us`}
+                  interaction={{
+                    event: GA4Event.DirectionsClick,
+                    placement: "footer",
+                  }}
+                >
                   {MOBILE_FOOTER_CONTENT.directionsLabel}
                   <ArrowRight aria-hidden="true" className="size-4" />
-                </Link>
+                </TrackedLink>
               </Button>
             </div>
           </section>
@@ -246,6 +238,6 @@ export function Footer() {
 
         <FooterMeta />
       </div>
-    </FooterFrame>
+    </footer>
   );
 }

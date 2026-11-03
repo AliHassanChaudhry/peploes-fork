@@ -1,9 +1,4 @@
-import {
-  NAVBAR_CONTENT,
-  RESTAURANT_CONTACT,
-  RESTAURANT_OPENING_HOURS,
-  ROUTES,
-} from "@/lib/constants";
+import { NAVBAR_CONTENT, ROUTES } from "@/lib/constants";
 import { GROUPS_SHELF_CONTENT } from "@/lib/constants/groups-shelf";
 import { MENUS_CONTENT } from "@/lib/constants/menus";
 import type { IMobileNavigationContent } from "@/lib/types";
@@ -23,11 +18,6 @@ export const MOBILE_NAVIGATION_CONTENT = {
       })),
     },
     {
-      id: "our-story",
-      label: NAVBAR_CONTENT.ourStoryLabel,
-      href: ROUTES.OUR_STORY,
-    },
-    {
       id: "groups-occasions",
       label: NAVBAR_CONTENT.groupsLabel,
       children: [
@@ -37,6 +27,11 @@ export const MOBILE_NAVIGATION_CONTENT = {
           href,
         })),
       ],
+    },
+    {
+      id: "our-story",
+      label: NAVBAR_CONTENT.ourStoryLabel,
+      href: ROUTES.OUR_STORY,
     },
     {
       id: "whats-on",
@@ -49,17 +44,6 @@ export const MOBILE_NAVIGATION_CONTENT = {
       href: ROUTES.VISIT_CONTACT,
     },
   ],
-  giftVouchersLabel: "Gift Vouchers",
-  openingHoursHeading: "Opening Hours",
-  openingHours: RESTAURANT_OPENING_HOURS,
-  address: "16 St Stephen’s Green, Dublin 2",
-  phoneAction: {
-    href: `tel:${RESTAURANT_CONTACT.phone}`,
-    label: RESTAURANT_CONTACT.phoneLabel,
-  },
-  emailAction: {
-    href: `mailto:${RESTAURANT_CONTACT.email}`,
-    label: RESTAURANT_CONTACT.email,
-  },
+  bookingLabel: "Book A Table",
   brandPhrase: "People make Peploe’s.",
 } as const satisfies IMobileNavigationContent;

@@ -23,12 +23,18 @@ export function PrivateDiningCorporate() {
   return (
     <div className={styles.corporatePage}>
       <PrivateDiningHero hero={CORPORATE_EVENTS.hero} variant="corporate" />
-      <section className={cn(styles.paleSection, styles.corporateOccasions)}>
+      <section
+        className={cn(
+          "section-divider-subtle",
+          styles.paleSection,
+          styles.corporateOccasions,
+        )}
+      >
         <div className="site-container">
           <PrivateDiningHeading {...CORPORATE_OCCASIONS} />
           <ul className={styles.corporateOccasionList}>
             {CORPORATE_OCCASIONS.items.map((item) => (
-              <li key={item._key}>
+              <li data-scroll-reveal key={item._key}>
                 <h3 className={ebGaramond.className}>{item.heading}</h3>
                 <p>{item.description}</p>
               </li>
@@ -37,7 +43,7 @@ export function PrivateDiningCorporate() {
         </div>
       </section>
       <PrivateDiningImageSection
-        className={styles.exclusiveHire}
+        className={cn("lg:section-divider-subtle", styles.exclusiveHire)}
         heading={CORPORATE_HIRE}
         image={CORPORATE_HIRE.image}
       >
@@ -48,7 +54,7 @@ export function PrivateDiningCorporate() {
           <PrivateDiningHeading {...CORPORATE_CAPACITY} />
           <ul className={styles.capacityGrid}>
             {CORPORATE_CAPACITY.items.map((item) => (
-              <li key={item._key}>
+              <li data-scroll-reveal key={item._key}>
                 <Image
                   src={item.illustration}
                   alt=""
@@ -84,7 +90,7 @@ export function PrivateDiningCorporate() {
                   className={styles.cover}
                 />
               </div>
-              <div className={styles.spaceCopy}>
+              <div data-scroll-reveal className={styles.spaceCopy}>
                 <h3>{space.title}</h3>
                 <p>{space.description}</p>
               </div>
@@ -100,9 +106,12 @@ export function PrivateDiningCorporate() {
       />
       <PrivateDiningFeatureSection
         content={CORPORATE_LOCATION}
-        className={styles.location}
+        className={cn("section-divider-subtle", styles.location)}
       />
-      <PrivateDiningEnquiry content={CORPORATE_EVENTS.enquiry} />
+      <PrivateDiningEnquiry
+        content={CORPORATE_EVENTS.enquiry}
+        className="section-divider-subtle"
+      />
       <PrivateDiningClosing
         content={CORPORATE_EVENTS.closing}
         className={styles.corporateClosing}

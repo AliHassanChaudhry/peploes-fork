@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync } from "node:fs";
 import { basename } from "node:path";
 import { COCKTAILS_MENU } from "@/lib/constants/cocktails-menu";
 import { DINNER_MENU } from "@/lib/constants/dinner-menu";
@@ -52,10 +52,12 @@ const menus = new Map([
 const settings = project({
   ...MENU_PAGE_CONTENT,
   navigation: MENU_PAGE_CONTENT.navigation.map((item) => ({
-    label: ["/menus/group-set-menu", "/menus/seasonal"].includes(item.href)
+    label: ["/menus?menu=group-set-menu", "/menus?menu=seasonal"].includes(
+      item.href,
+    )
       ? "Special menus"
       : item.label,
-    menu: item.href.split("/").at(-1),
+    menu: new URL(item.href, "https://example.com").searchParams.get("menu"),
   })),
 });
 const collections = [GROUP_SET_MENU, SEASONAL_MENU].map((menu) => ({
@@ -91,8 +93,43 @@ function queryResult(url: URL): unknown {
 }
 
 const fetchNetwork = globalThis.fetch;
+const emailAttempts = new Map<string, number>();
+function emailReply(url: URL, init: RequestInit | undefined): Response {
+  if (url.pathname !== "/emails" || init?.method !== "POST") {
+    throw new Error("Unexpected Resend browser-test request.");
+  }
+  const key = new Headers(init.headers).get("Idempotency-Key");
+  if (!key) throw new Error("Missing browser-test idempotency key.");
+  const body: unknown = JSON.parse(String(init.body));
+  if (
+    typeof body !== "object" ||
+    body === null ||
+    !("text" in body) ||
+    typeof body.text !== "string"
+  ) {
+    throw new Error("Invalid browser-test email payload.");
+  }
+  const attempt = (emailAttempts.get(key) ?? 0) + 1;
+  emailAttempts.set(key, attempt);
+  const rejected = body.text.includes("REJECT_ONCE") && attempt === 1;
+  appendFileSync(
+    ".next/e2e/email-sends.ndjson",
+    `${JSON.stringify({ key, status: rejected ? "rejected" : "accepted" })}\n`,
+  );
+  return Response.json(
+    rejected ? { name: "validation_error" } : { id: `resend-${key}` },
+    { status: rejected ? 422 : 200 },
+  );
+}
+
 globalThis.fetch = async (input, init) => {
   const url = new URL(input instanceof Request ? input.url : input);
+  if (
+    process.env.EMAIL_E2E_BUILD === "1" &&
+    url.origin === "https://api.resend.com"
+  ) {
+    return emailReply(url, init);
+  }
   if (!url.hostname.endsWith(".api.sanity.io"))
     return await fetchNetwork(input, init);
   if (
