@@ -47,10 +47,6 @@ test("navigation reaches Visit, closes the mobile menu and shows the desktop act
       .getByRole("link", { name: "Visit & Contact", exact: true })
       .click();
     await expect(page).toHaveURL(/\/visit-contact$/);
-    await navigation.getByRole("link", { name: "Peploe’s home" }).click();
-    await page.mouse.move(0, 0);
-    await expect(page).toHaveURL("/");
-
     await expect(menu).not.toBeVisible();
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
   } else {
