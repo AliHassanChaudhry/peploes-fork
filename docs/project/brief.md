@@ -8,6 +8,11 @@ documented in [Private dining and events](private-dining.md).
 
 ## Book a Table design preview
 
+The date field starts on today's date in Dublin after hydration. Past dates and
+earlier months cannot be selected, including through keyboard navigation. The
+date refreshes when the search step regains focus or visibility; future choices
+are kept. Find a Table checks the date again before opening sample times.
+
 The /book-a-table page follows the desktop and mobile booking frames in Figma.
 Its server contract, hold timer and failure behaviour are documented in
 [Booking page and the table hold](booking-page.md).
