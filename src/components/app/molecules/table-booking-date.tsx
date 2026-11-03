@@ -1,37 +1,30 @@
 "use client";
 
-import {
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameMonth,
-  parseISO,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns";
-import { ArrowLeft, ArrowRight, CalendarDays, ChevronDown } from "lucide-react";
+import { format, parseISO } from "date-fns";
+import { CalendarDays, ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 
+import { DateCalendar } from "@/components/app/atoms/date-calendar";
 import styles from "@/components/app/compounds/table-booking-panel.module.css";
 import { TABLE_BOOKING_CONTENT } from "@/lib/constants/table-booking";
 import type { ITableBookingDateProps } from "@/lib/types";
 
 export function TableBookingDate({ value, onChange }: ITableBookingDateProps) {
   const [open, setOpen] = useState(false);
-  const [month, setMonth] = useState(() => startOfMonth(parseISO(value)));
   const trigger = useRef<HTMLButtonElement>(null);
-  const days = eachDayOfInterval({
-    start: startOfWeek(startOfMonth(month), { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(month), { weekStartsOn: 1 }),
-  });
 
   return (
     <fieldset
       className={styles.dateField}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          setOpen(false);
+          trigger.current?.focus();
+        }
       }}
     >
       <span id="booking-date-label" className={styles.fieldLabel}>
@@ -53,61 +46,15 @@ export function TableBookingDate({ value, onChange }: ITableBookingDateProps) {
         <ChevronDown aria-hidden="true" className={styles.chevron} />
       </button>
       {open && (
-        <fieldset
+        <DateCalendar
           id="booking-calendar"
-          className={styles.calendar}
-          aria-label="Choose date"
-          onKeyDown={(event) => {
-            if (event.key === "Escape") {
-              setOpen(false);
-              trigger.current?.focus();
-            }
+          value={value}
+          onChange={(date) => {
+            onChange(date);
+            setOpen(false);
+            trigger.current?.focus();
           }}
-        >
-          <div className={styles.calendarHeader}>
-            <strong aria-live="polite">{format(month, "MMMM yyyy")}</strong>
-            <button
-              type="button"
-              aria-label="Previous month"
-              onClick={() => setMonth(addMonths(month, -1))}
-            >
-              <ArrowLeft aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next month"
-              onClick={() => setMonth(addMonths(month, 1))}
-            >
-              <ArrowRight aria-hidden="true" />
-            </button>
-          </div>
-          <div className={styles.calendarGrid}>
-            {TABLE_BOOKING_CONTENT.weekdays.map((day) => (
-              <span key={day} className={styles.weekday}>
-                {day}
-              </span>
-            ))}
-            {days.map((day) => {
-              const date = format(day, "yyyy-MM-dd");
-              return (
-                <button
-                  type="button"
-                  key={date}
-                  aria-label={format(day, "EEEE, d MMMM yyyy")}
-                  aria-pressed={date === value}
-                  data-outside={!isSameMonth(day, month)}
-                  onClick={() => {
-                    onChange(date);
-                    setOpen(false);
-                    trigger.current?.focus();
-                  }}
-                >
-                  {format(day, "d")}
-                </button>
-              );
-            })}
-          </div>
-        </fieldset>
+        />
       )}
     </fieldset>
   );

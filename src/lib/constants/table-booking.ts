@@ -1,3 +1,5 @@
+import { GUEST_COUNTS } from "@/lib/constants";
+
 export const TABLE_BOOKING_CONTENT = {
   label: "Table reservations",
   progressLabel: "Booking progress",
@@ -15,9 +17,8 @@ export const TABLE_BOOKING_CONTENT = {
   partySize: {
     label: "Party size",
     initialValue: "2",
-    options: [1, 2, 3, 4, 5, 6, 7],
+    options: GUEST_COUNTS,
   },
-  weekdays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
   action: "Find a Table",
   times: [
     "5:30 pm",
