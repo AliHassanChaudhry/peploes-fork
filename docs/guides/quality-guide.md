@@ -22,10 +22,10 @@ code. Report unrelated findings separately.
 ## Required checks
 
 For production code, dependencies, scripts, hooks or CI configuration, run
-`bun run format`, then `bun run ci`. Run the relevant focused check during
-development. Run the full gate on the final implementation, then repeat affected
-checks after a later fix. Preserve other contributors' edits if formatting
-touches files outside the change.
+the formatter on changed supported files, then `bun run ci`. Run the relevant
+focused check during development. Run the full gate on the final implementation, then repeat affected
+checks after a later fix. Do not format unrelated files. The full read-only lint
+gate still checks the repository.
 
 `bun run ci` checks formatting/lint, types, unit tests, the production build and
 high-severity dependency advisories. It does not run database integration or
@@ -33,6 +33,10 @@ browser tests locally. Changes to SQL or persistence also need the relevant
 integration check. Visit & Contact navigation and responsive changes also need
 `bun run test:e2e`, which builds and tests the production application. Add browser
 coverage for new critical journeys as described in the [testing guide](testing-guide.md).
+
+Use the [test-quality skill](../../.agents/skills/test-quality/SKILL.md) during
+standards and spec review. Existing test patterns do not exempt a coupled test
+from removal. Keep review evidence in the PR or tracker, not a committed report.
 
 For prose-only changes, check changed Markdown links, rule consistency and the
 diff. Render HTML, PDF or other visual artifacts with their owning workflow.

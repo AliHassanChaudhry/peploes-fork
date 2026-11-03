@@ -64,6 +64,17 @@ Avoid tests that only:
 - mirror branches line by line for coverage;
 - test behavior owned by React, Next.js, Drizzle, or Zod.
 
+## Review test maintenance
+
+Apply the [test-quality skill](../../.agents/skills/test-quality/SKILL.md) to new
+and changed tests and accompanying docs. Always flag decorative CSS measurements,
+animation internals, private framework mechanics and implementation-mirroring
+assertions for removal from the PR. Preserve useful behavior in mixed tests.
+Existing coverage can satisfy a change; no test or doc is required per source edit.
+Explicit visual or performance requirements need a stable measurement and a
+reason a cheaper behavior check is insufficient. Accessibility and safety
+contracts still need checks. Review evidence belongs in the PR or tracker.
+
 ## Mocks
 
 Use real values and real local implementations when they are deterministic and

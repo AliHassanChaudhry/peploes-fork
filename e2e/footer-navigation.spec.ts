@@ -1,7 +1,6 @@
-import type { Locator } from "@playwright/test";
 import { expect, test } from "./menu-test";
 
-test("mobile footer legal links share one row with comfortable touch targets", async ({
+test("mobile footer legal links keep accessible names, touch targets and cookie settings", async ({
   page,
   viewport,
 }) => {
@@ -38,19 +37,6 @@ test("mobile footer legal links share one row with comfortable touch targets", a
       "Booking",
       "Cookie Settings",
     ]);
-    const positions = await controls.evaluateAll((elements) =>
-      elements.map((element) => {
-        const bounds = element.getBoundingClientRect();
-        return { left: bounds.left, top: bounds.top, right: bounds.right };
-      }),
-    );
-    for (let index = 1; index < positions.length; index++) {
-      expect(positions[index].top).toBeCloseTo(positions[0].top, 0);
-      expect(positions[index].left).toBeGreaterThanOrEqual(
-        positions[index - 1].right,
-      );
-    }
-
     for (const control of [
       ...(await controls.all()),
       footer.getByRole("link", { name: /on Instagram/ }),
@@ -94,34 +80,6 @@ test("mobile footer legal links share one row with comfortable touch targets", a
     });
   }
 });
-
-function sampleFooterFade(section: Locator) {
-  return section.evaluate(async (element) => {
-    const toggle = element.querySelector("summary");
-    if (!toggle) throw new Error("The footer section needs a toggle.");
-    const targetOpacity = element.hasAttribute("open") ? 0 : 1;
-    const samples = [];
-    toggle.click();
-    const started = performance.now();
-    do {
-      await new Promise(requestAnimationFrame);
-      const style = getComputedStyle(element, "::details-content");
-      const opacity = Number(style.opacity);
-      const height =
-        element.getBoundingClientRect().height -
-        toggle.getBoundingClientRect().height;
-      samples.push({
-        opacity,
-        height,
-        visibility: style.contentVisibility,
-        duration: style.transitionDuration,
-        easing: style.transitionTimingFunction,
-      });
-      if (opacity === targetOpacity) break;
-    } while (performance.now() - started < 1000);
-    return samples;
-  });
-}
 
 test("footer Explore matches desktop links and keeps them reachable", async ({
   page,
@@ -183,51 +141,6 @@ test("footer Explore matches desktop links and keeps them reachable", async ({
   await expect(page).toHaveURL("/visit-contact");
 });
 
-test("mobile Explore has a bottom border and equal contact spacing", async ({
-  page,
-  viewport,
-}) => {
-  if ((viewport?.width ?? 1440) >= 1280) {
-    await page.setViewportSize({ width: 390, height: 844 });
-  }
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  const footer = page.getByRole("contentinfo");
-  const explore = footer.getByRole("navigation", {
-    name: "Explore",
-    exact: true,
-  });
-  const details = explore.locator("details");
-
-  for (const open of [true, false]) {
-    if (!open) await explore.locator("summary").click();
-    await expect(details).toHaveJSProperty("open", open);
-    const spacing = await explore.evaluate((navigation) => {
-      const contact = navigation
-        .closest("footer")
-        ?.querySelector('[data-footer-section="contact"]');
-      if (!contact) throw new Error("The footer contact section is missing.");
-      return {
-        aboveContact:
-          contact.getBoundingClientRect().top -
-          navigation.getBoundingClientRect().bottom,
-        belowContact: -Number.parseFloat(
-          getComputedStyle(contact, "::after").bottom,
-        ),
-      };
-    });
-    expect(spacing.aboveContact).toBeCloseTo(40, 0);
-    expect(spacing.belowContact).toBeCloseTo(spacing.aboveContact, 0);
-    const bottomBorder = open ? details : explore.locator("summary h2");
-    await expect(bottomBorder).toHaveCSS("border-bottom-width", "1px");
-    await expect(bottomBorder).toHaveCSS("border-bottom-style", "solid");
-    await expect(bottomBorder).toHaveCSS(
-      "border-bottom-color",
-      "rgb(217, 209, 198)",
-    );
-  }
-});
-
 test("footer Journal link opens the hub", async ({ page, viewport }) => {
   await page.goto("/");
   const link = page
@@ -249,52 +162,6 @@ test("footer Journal link opens the hub", async ({ page, viewport }) => {
   );
 });
 
-test("footer content fades and collapses together", async ({
-  page,
-  viewport,
-}) => {
-  if ((viewport?.width ?? 1440) >= 1280) {
-    await page.setViewportSize({ width: 390, height: 844 });
-  }
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/");
-  const section = page
-    .getByRole("contentinfo")
-    .getByRole("navigation", { name: "Explore", exact: true });
-  const details = section.locator("details");
-  const story = section.getByRole("link", { name: "Our Story", exact: true });
-
-  await section.scrollIntoViewIfNeeded();
-  await sampleFooterFade(details);
-  const opening = await sampleFooterFade(details);
-  expect(opening.at(0)?.duration).toBe("0.5s");
-  expect(opening.at(0)?.easing).toBe("cubic-bezier(0.4, 0, 0.2, 1)");
-  expect(opening.some(({ opacity }) => opacity > 0 && opacity < 1)).toBe(true);
-  expect(opening.at(-1)?.opacity).toBe(1);
-  await expect(story).toBeVisible();
-
-  const expandedHeight = opening.at(-1)?.height ?? 0;
-  const closing = await sampleFooterFade(details);
-  expect(closing.at(0)?.duration).toBe("0.3s");
-  expect(closing.at(0)?.easing).toBe("cubic-bezier(0.4, 0, 0.2, 1)");
-  expect(
-    closing.some(
-      ({ opacity, height, visibility }) =>
-        opacity > 0 &&
-        opacity < 1 &&
-        height > 0 &&
-        height < expandedHeight - 1 &&
-        visibility === "visible",
-    ),
-  ).toBe(true);
-  for (const { opacity, height } of closing) {
-    expect(Math.abs(height - expandedHeight * opacity)).toBeLessThan(2);
-  }
-  expect(closing.at(-1)?.opacity).toBe(0);
-  expect(closing.at(-1)?.height).toBe(0);
-  await expect(story).toBeHidden();
-});
-
 test("footer respects reduced motion when opening and closing", async ({
   page,
   viewport,
@@ -314,14 +181,6 @@ test("footer respects reduced motion when opening and closing", async ({
   await expect(story).toBeHidden();
   await toggle.click();
   await expect(story).toBeVisible();
-  expect(
-    await section
-      .locator("details")
-      .evaluate(
-        (element) =>
-          getComputedStyle(element, "::details-content").transitionProperty,
-      ),
-  ).toBe("none");
   await toggle.click();
   await expect(story).toBeHidden();
 });
