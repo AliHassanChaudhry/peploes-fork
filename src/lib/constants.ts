@@ -11,6 +11,7 @@ import type {
 export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
+  ACCEPTED: 202,
   NO_CONTENT: 204,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
@@ -565,4 +566,14 @@ export const JOURNAL_LIMITS = {
   MAX_READ_TIME_MINUTES: 180,
   MAX_SEO_DESCRIPTION_CHARACTERS: 160,
   RELATED_ARTICLES: 3,
+} as const;
+
+export const NEWSLETTER_LIMITS = {
+  emailMaxLength: 254,
+  rateLimitSecretMinLength: 32,
+  requestsPerWindow: 3,
+  window: "1 h",
+  rateLimitTimeoutMs: 2_000,
+  providerTimeoutMs: 10_000,
+  redisPrefix: "peploes-newsletter",
 } as const;

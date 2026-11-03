@@ -60,8 +60,7 @@ export function PrivateDiningEnquiryFields({
       } catch {
         setState({
           status: "unknown",
-          message:
-            "We could not confirm delivery. Please contact our team before sending this again.",
+          message: PRIVATE_DINING_FORM.feedback.unknown,
         });
       } finally {
         submittingRef.current = false;

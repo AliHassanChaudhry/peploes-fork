@@ -1428,6 +1428,11 @@ export interface IFooterContent {
     description: string;
     emailLabel: string;
     submitLabel: string;
+    pendingLabel: string;
+    unavailableError: string;
+    rateLimitError: string;
+    deliveryError: string;
+    unknownError: string;
     status: string;
     requiredError: string;
     invalidError: string;
@@ -1884,4 +1889,9 @@ export interface IJournalArticleProps {
   article: TJournalArticle;
   relatedArticles: TJournalArticleCard[];
   articleAction: string;
+}
+
+export interface INewsletterActionState {
+  accepted: boolean;
+  message: string;
 }
