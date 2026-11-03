@@ -186,6 +186,7 @@ test("What's On remains the active section and returns from an event to the diar
       exact: true,
     });
     await expect(whatsOn).not.toHaveAttribute("aria-current", "page");
+    await whatsOn.click();
   }
 
   await expect(page).toHaveURL("/seasonal");

@@ -184,3 +184,39 @@ test("footer respects reduced motion when opening and closing", async ({
   await toggle.click();
   await expect(story).toBeHidden();
 });
+
+test("footer social and credit links retain their public destinations", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const footer = page.getByRole("contentinfo");
+  await expect(
+    footer.getByRole("link", { name: /on Instagram/ }),
+  ).toHaveAttribute("href", "https://www.instagram.com/peploesstephensgreen/");
+  await expect(
+    footer.getByRole("link", { name: /on Facebook/ }),
+  ).toHaveAttribute("href", "https://www.facebook.com/Peploes");
+  const credit = footer.getByRole("link", {
+    name: "Made with care by TrueDevs",
+    exact: true,
+  });
+  await expect(credit).toHaveAttribute(
+    "href",
+    "https://truedevs.tech/?utm_source=peploes&utm_medium=referral&utm_campaign=client_credit&utm_content=footer",
+  );
+  await expect(credit).toHaveAttribute("target", "_blank");
+  await expect(credit).toHaveAttribute("rel", "noopener noreferrer");
+});
+
+test("mobile footer address opens the restaurant location", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const address = page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "16 St Stephen's Green", exact: true });
+  await address.click();
+  await expect(page).toHaveURL("/visit-contact#find-us");
+  await expect(page.locator("#find-us")).toBeInViewport();
+});

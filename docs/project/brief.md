@@ -56,7 +56,10 @@ visual tokens or selecting final crops.
 
 The public `/book-a-table` page is a noindex design preview, not a completed
 reservation. It does not query ResDiary, send email or store a reservation.
-Its notice and confirmation must say that no reservation was made. Refresh
+Its notice and confirmation must say that no reservation was made. The date
+starts on today in Europe/Dublin. Past dates cannot be selected or submitted,
+and a page left open overnight refreshes its date while preserving future choices.
+Refresh
 resets the preview. Back navigation retains selections and guest names,
 including names with spaces; changing date or party size clears the chosen time.
 The separate server integration is described in [Booking](booking-page.md).
@@ -132,6 +135,14 @@ the installed CLI rejects that flag. The launcher overrides inherited mode
 values directly in the child environment, including on Windows.
 
 ## Journal
+
+Category selection keeps the featured story, updates the URL and supports direct
+links, Back and Forward. Changing category resets pagination; Load more appends
+stories and focuses the first new story without replaying existing cards.
+Exclude the featured article from its listing and the current article from its
+related stories. Related stories share the category. Unknown or unpublished
+articles return HTTP 404; provider failures report an error instead of a false
+404. Publishing and indexing are separate editorial decisions.
 
 ### Preparing Journal content
 

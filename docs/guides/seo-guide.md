@@ -3,6 +3,7 @@
 The starter provides Next.js metadata, factual structured data, crawler policy,
 a sitemap, and `llms.txt`. Replace its public site facts before launch.
 
+
 ## Site URL and defaults
 
 `NEXT_PUBLIC_SITE_URL` supplies canonical and sitemap URLs.

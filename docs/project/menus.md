@@ -51,10 +51,10 @@ in Studio calls the signed webhook at `/api/webhooks/sanity`. It waits three
 seconds for Sanity's read API to catch up, as Sanity's own Next.js helper does,
 then expires that tag, so the next page view reads the new content. Without a working webhook the
 cache still expires after five minutes. A failed Sanity request is not cached.
-The `/seasonal/<slug>` existence check in `src/proxy.ts` is not cached, because
-Next does not cache `fetch` in Proxy. It returns 404 as soon as an entry is
-unpublished. If the webhook is not working, a newly published entry can show the
-not-found page for up to five minutes.
+Published content pages also reuse rendered HTML. Signed publication invalidates
+the content cache; time-based revalidation can serve the previous page while
+refreshing. Article and event detail pages resolve content before responding,
+so missing entries return HTTP 404. Booking availability remains uncached.
 
 Each website environment needs its own webhook in Sanity (Manage, API,
 Webhooks):

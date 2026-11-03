@@ -34,6 +34,16 @@ Use route or data caching only when the product can name the acceptable stale
 window and invalidation event. Mutations should revalidate the affected path or
 tag after a successful write.
 
+Published Sanity content has a five-minute cache invalidated by the signed
+publish webhook. Time-based revalidation can serve the previous page while it
+refreshes. What's On also refreshes its rendered page so Dublin dates advance
+without an editorial publish. Booking availability requests remain uncached.
+Article and event detail pages must return HTTP 404 for missing content.
+
+Browser-test builds use isolated CMS fixtures, including during prerendering.
+Never deploy a browser-test build. Normal production builds require the
+configured published content.
+
 ## Images and fonts
 
 Use `next/image` for application images. Supply dimensions or `fill` with a
