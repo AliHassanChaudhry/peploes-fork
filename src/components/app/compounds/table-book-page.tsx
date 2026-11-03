@@ -50,13 +50,7 @@ export function TableBookPage() {
             className={styles.groupPhoto}
           />
         </div>
-        <div
-          data-scroll-reveal
-          className={cn(
-            "section-divider-subtle-bottom lg:section-divider-subtle",
-            styles.groupCopy,
-          )}
-        >
+        <div data-scroll-reveal className={styles.groupCopy}>
           <p className={styles.eyebrow}>
             {TABLE_BOOK_PAGE_CONTENT.groups.eyebrow}
           </p>

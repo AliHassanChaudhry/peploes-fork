@@ -31,6 +31,14 @@ import type {
 import type { buttonVariants } from "@/lib/constants/button";
 import type { cookiePreferencesSchema } from "@/lib/cookie-consent";
 import type { ErrorCode, GA4Event, HttpVerb, LogLevel } from "@/lib/enums";
+import type {
+  journalArticleCardSchema,
+  journalArticleSchema,
+  journalBlockSchema,
+  journalCategorySchema,
+  journalPageSchema,
+  journalPublishedSlugSchema,
+} from "@/lib/journal-schema";
 import type { createResDiaryProvider } from "@/lib/resdiary-provider";
 import type {
   closedDatesReplySchema,
@@ -1208,6 +1216,7 @@ export interface IMenuBookingStyle extends CSSProperties {
 
 export interface IMenuBookingProps {
   booking?: IMenuBooking;
+  alignLeft?: boolean;
 }
 
 export interface IMenuNotesContent {
@@ -1244,6 +1253,10 @@ export interface ISetMenuCollection
 
 export interface ISetMenuCollectionProps {
   menu: ISetMenuCollection;
+}
+
+export interface ISetMenuSelectionProps extends ISetMenuCollectionProps {
+  children: ReactNode;
 }
 
 export interface IWine {
@@ -1423,8 +1436,6 @@ export interface IFooterContent {
     status: string;
     requiredError: string;
     invalidError: string;
-    completionHint: string;
-    domains: readonly string[];
   };
   copyright: string;
   legalNavigationLabel: string;
@@ -1624,6 +1635,7 @@ export interface IButtonProps
   extends ComponentProps<"button">,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  hoverArea?: "content" | "control";
 }
 
 export interface IPolicyTextPart {
@@ -1751,6 +1763,14 @@ export interface ITableBookingDateProps {
   onChange: (value: string) => void;
 }
 
+export interface IDateCalendarProps {
+  id: string;
+  value: string;
+  min?: string;
+  onChange: (value: string) => void;
+  className?: string;
+}
+
 export interface ITableBookingPartySizeProps {
   value: string;
   onChange: (value: string) => void;
@@ -1821,6 +1841,54 @@ export interface ISeasonalEventProps {
 }
 export interface ISeasonalRouteProps {
   params: Promise<{ slug: string }>;
+}
+
+export interface IJournalRouteProps {
+  params: Promise<{ slug: string }>;
+}
+
+export interface IJournalHubRouteProps {
+  searchParams: Promise<{ category?: string | string[] }>;
+}
+
+export type TJournalCategory = InferSchema<typeof journalCategorySchema>;
+export type TJournalArticleCard = InferSchema<typeof journalArticleCardSchema>;
+export type TJournalBlock = InferSchema<typeof journalBlockSchema>;
+export type TJournalArticle = InferSchema<typeof journalArticleSchema>;
+export type TJournalPage = InferSchema<typeof journalPageSchema>;
+export type TJournalPublishedSlug = InferSchema<
+  typeof journalPublishedSlugSchema
+>;
+
+export interface IJournalHubProps {
+  content: TJournalPage;
+  categories: TJournalCategory[];
+  articles: TJournalArticleCard[];
+  initialCategory?: string;
+}
+
+export interface IJournalStoryCardProps {
+  article: TJournalArticleCard;
+  action: string;
+  dateGranularity?: "day" | "month";
+}
+
+export interface IJournalArticleResultsProps {
+  articles: TJournalArticleCard[];
+  listing: TJournalPage["listing"];
+  animate?: boolean;
+}
+
+export interface IJournalArticleListProps
+  extends Omit<IJournalArticleResultsProps, "animate"> {
+  categories: TJournalCategory[];
+  initialCategory?: string;
+}
+
+export interface IJournalArticleProps {
+  article: TJournalArticle;
+  relatedArticles: TJournalArticleCard[];
+  articleAction: string;
 }
 
 export interface INewsletterActionState {
