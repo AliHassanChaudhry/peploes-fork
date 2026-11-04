@@ -20,15 +20,7 @@ repeat unit coverage. Consolidate overlapping journeys.
 
 ## Select checks for the change
 
-After each change, run only checks affected by it. A normal CSS-only change
-usually needs a visual inspection, not unit, integration or browser tests.
-Prose needs link and consistency checks. Logic needs the focused tests for that
-behavior; SQL needs the affected integration check; a critical journey change
-may need its focused browser spec. Build when compilation or runtime assembly
-is affected. Expand only for a named remaining risk, a failure, an explicit user
-request or the shared CI gate. Do not run the complete suite by default or repeat
-an unchanged build. Report what ran and why omitted checks were unnecessary.
-See the repository quality guide for command selection and CI requirements.
+Select local checks using the [quality guide's Required checks section](../../../docs/guides/quality-guide.md#required-checks).
 
 Always flag these patterns for removal from the PR:
 
