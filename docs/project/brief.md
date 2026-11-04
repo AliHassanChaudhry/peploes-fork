@@ -225,6 +225,16 @@ buttons open the existing seasonal event templates; menu, story, private dining
 and contact links open their matching pages. Unbuilt editorial pages, Gift
 Vouchers and newsletter subscription remain inactive.
 
+## Booking newsletter opt-in
+
+Issue #120 adds an optional newsletter checkbox beneath the booking terms on
+the guest-details step. It starts unchecked, remains independent of the required
+terms, keeps its choice when going back to times, and resets on Start again.
+Both checked and unchecked choices allow the preview to complete.
+The booking page explains that no newsletter subscription is made in this
+preview. Connecting consent to the newsletter service belongs with activation
+of the live booking flow; the preview does not submit guest details.
+
 ## Homepage interaction previews
 
 Enabled links, buttons, selects, disclosure summaries and choice controls use a

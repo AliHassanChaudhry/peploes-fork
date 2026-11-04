@@ -44,6 +44,7 @@ export function TableBookingPanel() {
     phone: "",
     requests: "",
     terms: false,
+    newsletterOptIn: false,
   });
   const panel = useRef<HTMLElement>(null);
   const previousStep = useRef(0);
@@ -246,6 +247,7 @@ export function TableBookingPanel() {
                 phone: "",
                 requests: "",
                 terms: false,
+                newsletterOptIn: false,
               });
             }}
           >

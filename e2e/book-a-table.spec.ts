@@ -275,115 +275,163 @@ test("navbar booking navigation works and closes the mobile drawer", async ({
     await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   }
 });
-test("booking preview moves through time, details and confirmation without submitting a reservation", async ({
-  page,
-  isMobile,
-}) => {
-  const submissions: string[] = [];
-  page.on("request", (request) => {
-    if (request.method() === "POST") submissions.push(request.url());
-  });
-  await page.goto("/book-a-table");
-  const reservations = page.getByRole("region", { name: "Table reservations" });
-  await expect(reservations.getByText(/Design preview/)).toBeVisible();
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-    "content",
-    /noindex/,
-  );
+for (const newsletterOptIn of [false, true]) {
+  test(`booking preview completes with newsletter opt-in ${newsletterOptIn} without submitting`, async ({
+    page,
+    isMobile,
+  }) => {
+    const submissions: string[] = [];
+    page.on("request", (request) => {
+      if (request.method() === "POST") submissions.push(request.url());
+    });
+    await page.goto("/book-a-table");
+    const reservations = page.getByRole("region", {
+      name: "Table reservations",
+    });
+    await expect(reservations.getByText(/Design preview/)).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      /noindex/,
+    );
 
-  await reservations
-    .getByRole("button", { name: "Find a Table", exact: true })
-    .click();
-  await expect(
-    reservations.getByRole("heading", { name: "Available times", exact: true }),
-  ).toBeVisible();
-  await expect(
-    reservations.getByRole("button", { name: "Continue", exact: true }),
-  ).toBeDisabled();
-  await reservations
-    .getByRole("button", { name: "7:00 pm", exact: true })
-    .click();
-  await reservations
-    .getByLabel("I understand the table is required back by 9:00pm")
-    .check();
-  await reservations
-    .getByRole("button", { name: "Continue", exact: true })
-    .click();
-
-  await reservations
-    .getByRole("button", { name: "Confirm Reservation", exact: true })
-    .click();
-  await expect(
-    reservations
-      .getByText("Please enter your name.", { exact: true })
-      .filter({ visible: true })
-      .first(),
-  ).toBeVisible();
-  await expect(
-    reservations.getByRole("heading", {
-      name: "Your table is booked.",
-      exact: true,
-    }),
-  ).toHaveCount(0);
-
-  if (isMobile) {
     await reservations
-      .getByLabel("Full name", { exact: false })
-      .fill("Preview Guest");
-  } else {
+      .getByRole("button", { name: "Find a Table", exact: true })
+      .click();
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Available times",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      reservations.getByRole("button", { name: "Continue", exact: true }),
+    ).toBeDisabled();
     await reservations
-      .getByLabel("First name", { exact: false })
-      .fill("Preview");
-    await reservations.getByLabel("Surname", { exact: false }).fill("Guest");
-  }
-  await reservations
-    .getByLabel("Email address", { exact: false })
-    .fill("preview@example.com");
-  await reservations
-    .getByLabel(isMobile ? "Telephone number" : "Mobile number", {
-      exact: false,
-    })
-    .fill("+353 87 123 4567");
-  await reservations
-    .getByLabel("Special requests (optional)")
-    .fill("Preview only");
-  await reservations.getByRole("checkbox", { name: /By confirming/ }).check();
-  await reservations
-    .getByRole("button", { name: "Confirm Reservation", exact: true })
-    .click();
+      .getByRole("button", { name: "7:00 pm", exact: true })
+      .click();
+    await reservations
+      .getByLabel("I understand the table is required back by 9:00pm")
+      .check();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
 
-  await expect(
-    reservations.getByRole("heading", {
-      name: "Your table is booked.",
-      exact: true,
-    }),
-  ).toBeVisible();
-  await expect(
-    reservations.getByText(
-      "No table has been reserved and no confirmation email has been sent.",
-      { exact: true },
-    ),
-  ).toBeVisible();
-  await expect(
-    reservations.getByRole("button", { name: "Add to Calendar", exact: true }),
-  ).toBeDisabled();
-  await expect(
-    reservations.getByRole("link", { name: "View Menus", exact: true }),
-  ).toHaveAttribute("href", "/menus");
-  await expect(
-    reservations.getByRole("link", { name: "Plan Your Visit", exact: true }),
-  ).toHaveAttribute("href", "/visit-contact");
-  expect(submissions).toEqual([]);
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          document.documentElement.scrollWidth <=
-          document.documentElement.clientWidth,
+    await reservations
+      .getByRole("button", { name: "Confirm Reservation", exact: true })
+      .click();
+    await expect(
+      reservations
+        .getByText("Please enter your name.", { exact: true })
+        .filter({ visible: true })
+        .first(),
+    ).toBeVisible();
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Your table is booked.",
+        exact: true,
+      }),
+    ).toHaveCount(0);
+
+    if (isMobile) {
+      await reservations
+        .getByLabel("Full name", { exact: false })
+        .fill("Preview Guest");
+    } else {
+      await reservations
+        .getByLabel("First name", { exact: false })
+        .fill("Preview");
+      await reservations.getByLabel("Surname", { exact: false }).fill("Guest");
+    }
+    await reservations
+      .getByLabel("Email address", { exact: false })
+      .fill("preview@example.com");
+    await reservations
+      .getByLabel(isMobile ? "Telephone number" : "Mobile number", {
+        exact: false,
+      })
+      .fill("+353 87 123 4567");
+    await reservations
+      .getByLabel("Special requests (optional)")
+      .fill("Preview only");
+    const newsletter = reservations.getByRole("checkbox", {
+      name: "Email me news and updates from Peploe’s (optional)",
+    });
+    await expect(newsletter).not.toBeChecked();
+    await newsletter.focus();
+    await newsletter.press("Space");
+    await expect(newsletter).toBeChecked();
+    await expect(
+      reservations.getByRole("checkbox", { name: /By confirming/ }),
+    ).not.toBeChecked();
+    await reservations
+      .getByRole("button", { name: "Back to times", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
+    await expect(newsletter).toBeChecked();
+    await newsletter.uncheck();
+    await expect(newsletter).not.toBeChecked();
+    await newsletter.setChecked(newsletterOptIn);
+    await expect(
+      reservations.getByText(
+        "No newsletter subscription will be made in this preview.",
       ),
-    )
-    .toBe(true);
-});
+    ).toBeVisible();
+    await reservations.getByRole("checkbox", { name: /By confirming/ }).check();
+    await reservations
+      .getByRole("button", { name: "Confirm Reservation", exact: true })
+      .click();
+
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Your table is booked.",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      reservations.getByText(
+        "No table has been reserved and no confirmation email has been sent.",
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(
+      reservations.getByRole("button", {
+        name: "Add to Calendar",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    await expect(
+      reservations.getByRole("link", { name: "View Menus", exact: true }),
+    ).toHaveAttribute("href", "/menus");
+    await expect(
+      reservations.getByRole("link", { name: "Plan Your Visit", exact: true }),
+    ).toHaveAttribute("href", "/visit-contact");
+    expect(submissions).toEqual([]);
+    await reservations
+      .getByRole("button", { name: "Start again", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "Find a Table", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "6:00 pm", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
+    await expect(newsletter).not.toBeChecked();
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      )
+      .toBe(true);
+  });
+}
 
 test("booking preview preserves selections on back navigation and resets time when the search changes", async ({
   page,
