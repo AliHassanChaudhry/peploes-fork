@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 import { HTML_LIMITED_BOT_UA_RE } from "next/dist/shared/lib/router/utils/html-bots";
 import { HTML_LIMITED_AI_FETCHERS } from "./src/lib/constants/crawlers";
 
-const BOOKING_PAGE = "/book-a-table";
 const emailBrowserFixture = process.env.EMAIL_E2E_BUILD === "1";
 
 if (
@@ -26,8 +25,6 @@ const STRIPE_SOURCES = {
   ],
   connect: ["https://api.stripe.com"],
 } as const;
-
-const NO_EXTRA_SOURCES = { script: [], frame: [], connect: [] } as const;
 
 function getConfiguredOrigin(value: string | undefined): string | undefined {
   if (!value || !URL.canParse(value)) return undefined;
@@ -60,13 +57,13 @@ const nextConfig: NextConfig = {
       }
     : {}),
   env: Object.fromEntries([
-    // NODE_ENV is also production on previews and local production builds.
-    ["NEXT_PUBLIC_SENTRY_ENVIRONMENT", process.env.VERCEL_ENV || "development"],
-    // Vercel exposes VERCEL_ENV at build time only; inline it for the browser
-    // live-site gate. An explicit NEXT_PUBLIC_VERCEL_ENV wins (QA builds).
     [
-      "NEXT_PUBLIC_VERCEL_ENV",
-      process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || "",
+      "NEXT_PUBLIC_SENTRY_RELEASE",
+      process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA || "",
+    ],
+    [
+      "NEXT_PUBLIC_SENTRY_ENVIRONMENT",
+      process.env.SENTRY_ENVIRONMENT || process.env.VERCEL_ENV || "development",
     ],
   ]),
   typedRoutes: true,
@@ -105,9 +102,6 @@ const nextConfig: NextConfig = {
   },
   headers() {
     const isDevelopment = process.env.NODE_ENV === "development";
-    const isLiveSite = process.env.VERCEL_ENV
-      ? process.env.VERCEL_ENV === "production"
-      : process.env.NODE_ENV === "production";
     const sentryOrigin = getConfiguredOrigin(
       process.env.NEXT_PUBLIC_SENTRY_DSN,
     );
@@ -151,25 +145,22 @@ const nextConfig: NextConfig = {
       "https://cdn.sanity.io",
     ].join(" ");
 
-    function contentSecurityPolicy(stripe: boolean): string {
-      const extra = stripe ? STRIPE_SOURCES : NO_EXTRA_SOURCES;
+    function contentSecurityPolicy(): string {
       return [
         "default-src 'self'",
-        [...scriptSources, ...extra.script].join(" "),
+        [...scriptSources, ...STRIPE_SOURCES.script].join(" "),
         "style-src 'self' 'unsafe-inline'",
         imageSources,
         "font-src 'self' data:",
         [
           ...connectionSources,
-          ...extra.connect,
+          ...STRIPE_SOURCES.connect,
           ...(hasMapbox
             ? ["https://api.mapbox.com", "https://events.mapbox.com"]
             : []),
         ].join(" "),
         ...(hasMapbox ? ["worker-src 'self' blob:"] : []),
-        ...(extra.frame.length > 0
-          ? [["frame-src", ...extra.frame].join(" ")]
-          : []),
+        ["frame-src", ...STRIPE_SOURCES.frame].join(" "),
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",
@@ -204,17 +195,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: contentSecurityPolicy(false),
-          },
-          ...(isLiveSite ? [] : [{ key: "X-Robots-Tag", value: "noindex" }]),
-        ],
-      },
-      {
-        source: BOOKING_PAGE,
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value: contentSecurityPolicy(true),
+            value: contentSecurityPolicy(),
           },
         ],
       },
@@ -270,7 +251,7 @@ const nextConfig: NextConfig = {
 };
 
 const shouldEnableSentry = Boolean(
-  process.env.VERCEL_ENV === "production" &&
+  process.env.NODE_ENV === "production" &&
     process.env.SENTRY_AUTH_TOKEN &&
     process.env.SENTRY_ORG &&
     process.env.SENTRY_PROJECT,
@@ -280,6 +261,9 @@ const sentryConfig = {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   authToken: process.env.SENTRY_AUTH_TOKEN,
+  release: {
+    name: process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA,
+  },
   disableLogger: true,
   silent: !process.env.CI,
   sourcemaps: { deleteSourcemapsAfterUpload: true },
