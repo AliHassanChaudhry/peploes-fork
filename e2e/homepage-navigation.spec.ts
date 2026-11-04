@@ -8,6 +8,16 @@ test("mobile hero fills the first screen and keeps the desktop entrance artwork"
 }) => {
   await page.goto("/");
   const hero = page.locator('section[aria-labelledby="hero-heading"]');
+  // Issue #162 requires equal hero actions; compare them without fixing pixel sizes.
+  await page.evaluate(() => document.fonts.ready);
+  const booking = hero.getByRole("link", { name: "Book a Table", exact: true });
+  const call = hero.getByRole("link", { name: "Call Peploe's", exact: true });
+  const bookingBounds = await booking.boundingBox();
+  const callBounds = await call.boundingBox();
+  if (!bookingBounds || !callBounds)
+    throw new Error("Hero actions must be visible");
+  expect(callBounds.width).toBe(bookingBounds.width);
+  expect(callBounds.height).toBe(bookingBounds.height);
   const description = hero.getByText(
     "Great food, exceptional wine and genuine hospitality in the heart of the city.",
     { exact: true },

@@ -52,17 +52,20 @@ not a requirement for an animation. Keep movement restrained and navigation
 usable. Obtain the original logo, colour values and image files before settling
 visual tokens or selecting final crops.
 
-## Book a Table design preview
+## Book a Table
 
-The public `/book-a-table` page is a noindex design preview, not a completed
-reservation. It does not query ResDiary, send email or store a reservation.
-Its notice and confirmation must say that no reservation was made. The date
-starts on today in Europe/Dublin. Past dates cannot be selected or submitted,
-and the date refreshes when the search step regains focus or visibility,
-preserving future choices. Refresh resets the preview. Back navigation retains
-selections and guest names,
-including names with spaces; changing date or party size clears the chosen time.
-The separate server integration is described in [Booking](booking-page.md).
+The noindex `/book-a-table` flow uses ResDiary availability, holds and guest
+details. Start on its first open date; reject past Dublin dates and recheck
+before searching. The date refreshes on focus or visibility, keeping future
+choices. Date or party-size changes clear the selected time. Preserve guest
+details on Back and require return-time acknowledgement when ResDiary marks it
+as required. Names with spaces stay intact across responsive layouts.
+
+Some reservations require a Stripe deposit or card guarantee. Only a ResDiary
+confirmation and reference mean the booking is confirmed. Reloads restore the
+tab's held-table or payment state. Add to Calendar remains disabled. See the
+[booking contract](booking-page.md) for hold expiry, payment recovery, uncertain
+outcomes and confirmation-email limits.
 
 ## Visit & Contact
 

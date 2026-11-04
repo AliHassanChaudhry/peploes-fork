@@ -3,6 +3,12 @@ import { expect, test } from "./menu-test";
 import { announceSanityPublish } from "./sanity-webhook";
 import { seasonalFixtures } from "./seasonal-fixtures";
 
+test("live booking responses remain uncached", async ({ request }) => {
+  const response = await request.get("/book-a-table");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["cache-control"]).toContain("no-store");
+});
+
 test("cached event pages return 404 after unpublishing and recover after republishing", async ({
   request,
 }) => {
