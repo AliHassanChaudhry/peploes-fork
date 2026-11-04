@@ -80,6 +80,11 @@ For tests and accompanying docs, apply the repository
 `elhaam-review`. Flag coupled tests for removal from the PR and preserve their
 useful behavioral checks.
 
+Create or update architecture decision records only through the
+[ADR skill](.agents/skills/adr/SKILL.md) when the human invokes `$adr`.
+When a meaningful architecture or data-flow decision needs recording, ask them
+to invoke it and supply their description. Routine source edits need no ADR.
+
 For coding, apply the installed `ponytail` skill. For prose and UI copy, apply
 `unslop`. Use `codebase-design` when changing an interface or dependency
 boundary, `tdd` at the approved test boundary, and `writing-for-agents` when
