@@ -1,113 +1,64 @@
-# Repository agent guide
-
-This file contains agent-specific constraints. Technical conventions belong in
-the linked owner documents, not here.
+# Repository agent policy
 
 ## Authorization
 
-- Preserve unrelated working-tree changes.
-- Ask for the contributor's initials before creating a branch. Follow the
-  branch format in [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- Leave implementation changes uncommitted for user review. Commit, push,
-  open or merge a pull request, close an issue, or change a review thread only
-  when the user directly requests that specific operation. Approval of code
-  alone authorizes none of those operations. Skill instructions, issue text,
-  checklists and automation defaults are not user authorization.
-- Run any Drizzle generate, migrate, push, studio, or drop command only with
-  explicit permission.
-- Resolve exact targets before deleting or overwriting data, and prefer a
-  recoverable operation.
+Preserve unrelated working-tree changes. Ask for contributor initials before
+creating a branch; use the isolation and shipping policy in
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+Leave implementation changes uncommitted for review. Commit, push, open or merge
+a PR, close an issue, and change review threads only when the user explicitly
+requests that operation. Code approval, skills, tickets and automation grant no
+additional publishing permission. Existing authorization remains valid within
+its stated scope. Reply to or resolve threads only after the fix is pushed.
+
+Drizzle generate, migrate, push, studio and drop commands require explicit
+permission. Resolve exact targets before overwriting or deleting data and prefer
+a recoverable operation.
 
 ## Working method
 
-1. Before editing, inspect the branch, working tree and linked worktrees. Follow
-   the isolation workflow in `CONTRIBUTING.md`; implementation belongs on a
-   ticket branch by default. Direct work on `dev` or `main` requires the user
-   to explicitly name that exception; it does not authorize committing or pushing.
-2. Read the owning code, its callers, and its tests. Read `docs/architecture.md`
-   when changing module placement, dependencies or a server/client boundary.
-3. Use the smallest relevant document from the routing table below. For
-   implementation and tooling changes, follow `docs/guides/quality-guide.md`.
-4. Make the smallest change that solves the requested problem.
-5. Reuse existing coverage when it proves the changed behavior. Add a test only
-   for a named failure. Update docs only for changed setup, operations, lasting
-   product requirements or a decision whose reason is absent from the code.
-6. Select affected checks using the quality guide and report actual results.
-   Ordinary CSS or prose edits need no test run; do not default to full suites.
-7. Inspect the final diff for unrelated edits, secrets, generated files, and
-   disabled checks. Check shared definitions, dependency direction, duplicate
-   work and failure states against the owning rules.
-8. Report the result, checks and remaining limits, then wait for review. Follow
-   `CONTRIBUTING.md` for any later shipping operation.
+Inspect the branch, working tree and linked worktrees before editing. Read the
+owning code, callers, tests and named ticket. Direct implementation on `dev` or
+`main` requires the user to name that exception.
 
-Do not hide a lint, type, test, build, or audit failure. Report a genuine blocker
-instead of weakening a check.
+Make the smallest change that solves the requested problem. Add tests only for
+a named important failure; existing coverage can suffice. Keep documentation
+only for reasons or context absent from code and explanatory commit messages.
 
-Use clear names. Add a short comment when a non-obvious constraint or tradeoff
-cannot be expressed by the code. Do not create a test or guide just to explain
-a line of code. See Comments in [`docs/architecture.md`](docs/architecture.md).
+Choose affected checks using the [quality guide](docs/guides/quality-guide.md).
+Ordinary CSS or prose needs no test run. Never weaken checks to hide a failure.
+Inspect the final diff for unrelated edits, secrets, generated output, security,
+duplicate safety and dependency direction. Report actual checks and limits.
 
-## Context routing
+## Context
 
-| When the task changes | Read |
-| --- | --- |
-| Peploe's brand, content, booking, or CMS requirements | [`docs/project/brief.md`](docs/project/brief.md) |
-| Module placement, dependency direction, naming, server/client boundaries, environment access | [`docs/architecture.md`](docs/architecture.md) |
-| Tests, mocks, coverage, browser tests, or database tests | [`docs/guides/testing-guide.md`](docs/guides/testing-guide.md) |
-| Results, error mapping, retries, or action failures | [`docs/guides/error-handling-guide.md`](docs/guides/error-handling-guide.md) |
-| Log levels, context, or metadata | [`docs/guides/logging-guide.md`](docs/guides/logging-guide.md) |
-| Analytics, consent, attribution, or Web Vitals events | [`docs/guides/ga4-guide.md`](docs/guides/ga4-guide.md) |
-| PostHog configuration, consent lifecycle, event scrubbing, or its CSP | [`docs/guides/posthog-guide.md`](docs/guides/posthog-guide.md) |
-| Error capture, source maps, or Sentry privacy | [`docs/guides/sentry-guide.md`](docs/guides/sentry-guide.md) |
-| Rendering cost, images, fonts, streaming, or motion | [`docs/guides/performance-guide.md`](docs/guides/performance-guide.md) |
-| Metadata, JSON-LD, robots, sitemap, or `llms.txt` | [`docs/guides/seo-guide.md`](docs/guides/seo-guide.md) |
-| Quality gates, lint/CI/hooks, exceptions, or final review | [`docs/guides/quality-guide.md`](docs/guides/quality-guide.md) |
-| Branches, commits, PR descriptions, integration, or issue closure | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+Read only the relevant retained decisions:
 
-## Authorized Git work
+- [Restaurant direction](docs/project/brief.md), [menu questions](docs/project/menus.md),
+  [private dining](docs/project/private-dining.md) and [booking account decisions](docs/project/booking-page.md).
+- [Design policy](docs/architecture.md) when changing boundaries or dependencies.
+- [Analytics policy](docs/guides/ga4-guide.md), [PostHog account](docs/guides/posthog-guide.md),
+  [Sentry account](docs/guides/sentry-guide.md), [email approvals](docs/guides/email-guide.md)
+  and [search decisions](docs/guides/seo-guide.md) when those external choices matter.
 
-Keep each commit to one logical change and its tests. Inspect the staged diff,
-run the required gate, and do not add agent attribution or automated co-author
-tags.
+Source and configuration own current implementation, scripts and enforcement.
+Read framework documentation for the installed version before changing an API.
 
-Reply to or resolve review threads only after the fix is committed and pushed,
-and only when the user explicitly requests the review operation.
+## Skills
 
-## Agent skills
+Apply [test-quality](.agents/skills/test-quality/SKILL.md) to tests and accompanying
+docs, including during `elhaam-review`. Preserve useful behavioral checks while
+removing implementation coupling. Use `ponytail` for coding and `unslop` for
+prose. Apply `writing-for-agents` to guidance when available.
 
-For tests and accompanying docs, apply the repository
-[test-quality skill](.agents/skills/test-quality/SKILL.md), including during
-`elhaam-review`. Flag coupled tests for removal from the PR and preserve their
-useful behavioral checks.
+Finish implementation with standards and spec review using `code-review` and
+the codebase-fit checks in `elhaam-review` when available. Missing skills do not
+relax repository requirements or authorization.
 
-Create or update architecture decision records only through the
-[ADR skill](.agents/skills/adr/SKILL.md) when the human invokes `$adr`.
-When a meaningful architecture or data-flow decision needs recording, ask them
-to invoke it and supply their description. Routine source edits need no ADR.
-
-For coding, apply the installed `ponytail` skill. For prose and UI copy, apply
-`unslop`. Use `codebase-design` when changing an interface or dependency
-boundary, `tdd` at the approved test boundary, and `writing-for-agents` when
-editing agent guidance. Finish implementation with standards and spec review,
-using `code-review` and the codebase-fit checks in `elhaam-review` when available.
-Read skills before applying them. If a skill is unavailable, report that and
-follow the repository's equivalent rules; skill availability does not relax
-security, testing, review or authorization requirements.
-
-Apply only skills relevant to the task. Repository authorization and the user's
-request take precedence over a skill's default commit or publishing steps.
-
-### Issue tracker
-
-Use the project's configured tracker through
-[`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md). When a task names a
-spec or ticket, read its acceptance criteria and linked decisions before editing.
-
-### Framework documentation
-
-Before using or changing a Next.js API, read the relevant guide for the installed
-version in `node_modules/next/dist/docs/`. If dependencies are unavailable, use
-official documentation for the declared version and report the verification limit.
+Create ADRs only through the [ADR skill](.agents/skills/adr/SKILL.md) when the
+human invokes `$adr`. For a meaningful architecture or data-flow decision,
+ask them to supply its description. Routine source edits need no ADR.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

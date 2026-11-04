@@ -7,6 +7,9 @@ description: Record a human's architecture or data-flow decision as a concise nu
 
 Use `$adr` to record a meaningful change to module boundaries, dependencies,
 data ownership or data flow. Routine source, style and copy edits need no ADR.
+Before recording it, check whether code or an explanatory commit already
+preserves the reason. Link that source instead of duplicating it. A previous
+copy of the ADR itself in Git is not independent evidence.
 
 Ask the human to describe the decision and why it was chosen, unless they have
 already supplied that description. Wait for their words before creating a record.
