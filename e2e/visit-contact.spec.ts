@@ -6,6 +6,18 @@ test("Visit loads its image and contact information without horizontal overflow"
   await page.goto("/visit-contact");
 
   await expect(
+    page.getByRole("form", { name: "General contact message" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "Send us a message." }),
+  ).toHaveCount(0);
+  const enquiry = page.locator("#enquire");
+  await expect(
+    enquiry.getByRole("form", { name: "Plan your gathering" }),
+  ).toBeVisible();
+  await expect(enquiry.locator("+ section")).toContainText("The city fades.");
+
+  await expect(
     page.getByRole("heading", { name: "Step down from the city.", level: 1 }),
   ).toBeVisible();
   await expect(

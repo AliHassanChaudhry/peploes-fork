@@ -4,6 +4,8 @@ import {
   TrackedAnchor,
   TrackedLink,
 } from "@/components/app/atoms/tracked-link";
+import privateDiningStyles from "@/components/app/compounds/private-dining.module.css";
+import { PrivateDiningEnquiry } from "@/components/app/compounds/private-dining-enquiry";
 import styles from "@/components/app/compounds/visit-contact.module.css";
 import { VisitContactDetails } from "@/components/app/compounds/visit-contact-details";
 import { VisitLocationMap } from "@/components/app/molecules/visit-location-map";
@@ -13,6 +15,7 @@ import {
   RESTAURANT_OPENING_HOURS,
   ROUTES,
 } from "@/lib/constants";
+import { PRIVATE_DINING } from "@/lib/constants/private-dining";
 import { VISIT_CONTACT_CONTENT } from "@/lib/constants/visit-contact";
 import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -230,6 +233,11 @@ export function VisitContact() {
       <VisitContactInformation />
       <VisitLocation />
       <VisitContactDetails />
+      <PrivateDiningEnquiry
+        content={PRIVATE_DINING.enquiry}
+        compact
+        className={privateDiningStyles.page}
+      />
       <VisitClosing />
     </main>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, ChevronDown, LoaderCircle } from "lucide-react";
+import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import {
   type FormEvent,
@@ -204,10 +204,7 @@ export function PrivateDiningEnquiryFields({
         {pending ? (
           <>
             {PRIVATE_DINING_FORM.loading}
-            <LoaderCircle
-              aria-hidden="true"
-              className="size-4 motion-safe:animate-spin"
-            />
+            <ArrowRight aria-hidden="true" className="size-4" />
           </>
         ) : state.status === "success" ? (
           <>

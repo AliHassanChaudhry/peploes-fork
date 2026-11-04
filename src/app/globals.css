@@ -194,6 +194,10 @@
 @layer base {
   html {
     scrollbar-gutter: stable;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
   }
   * {
     @apply border-border outline-ring/50;

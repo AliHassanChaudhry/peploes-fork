@@ -377,13 +377,14 @@ function StoryToday() {
             {today.description}
           </p>
           <Button
-            type="button"
-            aria-disabled="true"
+            asChild
             variant="brand-primary"
             className="mt-6 h-auto min-h-11 w-[156px] max-w-full gap-[5px] rounded-[4px] px-5 py-2.5 text-base leading-6 whitespace-nowrap lg:mt-5"
           >
-            {today.action}
-            <ArrowRight aria-hidden="true" className="size-4" />
+            <Link href={ROUTES.BOOK_A_TABLE}>
+              {today.action}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
           </Button>
         </div>
       </div>

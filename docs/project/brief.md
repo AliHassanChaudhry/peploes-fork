@@ -12,6 +12,10 @@ The date field starts on today's date in Dublin after hydration. Past dates and
 earlier months cannot be selected, including through keyboard navigation. The
 date refreshes when the search step regains focus or visibility; future choices
 are kept. Find a Table checks the date again before opening sample times.
+Desktop booking calendars use 36px day cells and 10px row gaps; the booking
+card dimensions and mobile day-cell sizes stay the same.
+Fully elapsed weeks are hidden from the booking calendar. Earlier dates in the
+current week stay disabled so weekday alignment is preserved.
 
 The /book-a-table page follows the desktop and mobile booking frames in Figma.
 Its server contract, hold timer and failure behaviour are documented in
@@ -47,6 +51,10 @@ Contact buttons, opens `/book-a-table`. Visit's Check Online Availability action
 opens the same preview. Group enquiry links keep their existing destinations.
 
 ## Visit & Contact
+
+General enquiries use the published phone and email links. Visit & Contact also
+shows the shared private-dining gathering enquiry form directly above its
+closing banner. Private dining pages keep the same enquiry forms.
 
 `/visit-contact` follows the Final Pages Visit & Contact frame (`3602:4457`).
 At the 1440px reference, its section heights are 604, 236, 698, 302, 419, 366

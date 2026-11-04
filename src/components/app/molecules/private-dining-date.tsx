@@ -2,10 +2,10 @@
 
 import { Calendar } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-
 import { DateCalendar } from "@/components/app/atoms/date-calendar";
 import enquiryStyles from "@/components/app/compounds/private-dining.module.css";
 import styles from "@/components/app/molecules/private-dining-date.module.css";
+import { Button } from "@/components/ui/button";
 import { PRIVATE_DINING_FORM } from "@/lib/constants/private-dining";
 import { dublinToday } from "@/lib/dates";
 import { cn } from "@/lib/utils";
@@ -123,7 +123,8 @@ export function PrivateDiningDate() {
         />
         <span aria-hidden="true">{PRIVATE_DINING_FORM.date}</span>
       </label>
-      <button
+      <Button
+        variant="plain"
         type="button"
         className={styles.trigger}
         aria-label="Choose preferred date"
@@ -135,7 +136,7 @@ export function PrivateDiningDate() {
         }}
       >
         <Calendar aria-hidden="true" />
-      </button>
+      </Button>
       {open && minimum && (
         <DateCalendar
           key={`${value}:${minimum}`}

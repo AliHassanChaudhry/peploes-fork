@@ -117,6 +117,54 @@ test("desktop booking keeps the panel in place when opening available times", as
   }
 });
 
+test("desktop booking calendar has shorter rows without changing the booking box", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.clock.setFixedTime(new Date("2026-11-03T12:00:00Z"));
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/book-a-table");
+  await page.evaluate(() => document.fonts.ready);
+  const panel = page.getByRole("region", { name: "Table reservations" });
+  const closedBounds = await panel.boundingBox();
+  await panel.getByRole("button", { name: /^Date / }).click();
+  const calendar = panel.getByRole("group", {
+    name: "Choose date",
+    exact: true,
+  });
+  const calendarBounds = await calendar.boundingBox();
+  const openBounds = await panel.boundingBox();
+  if (!closedBounds || !openBounds || !calendarBounds)
+    throw new Error("Calendar and booking box must be visible");
+  expect(openBounds.height).toBeCloseTo(closedBounds.height, 0);
+  expect(calendarBounds.height).toBeLessThanOrEqual(370);
+  expect(calendarBounds.height).toBeGreaterThanOrEqual(340);
+  await expect(calendar.locator("[data-date]:visible")).toHaveCount(35);
+  await expect(
+    calendar.getByRole("button", {
+      name: "Sunday, 1 November 2026",
+      exact: true,
+    }),
+  ).toHaveCount(0);
+  await expect(
+    calendar.getByRole("button", {
+      name: "Monday, 2 November 2026",
+      exact: true,
+    }),
+  ).toBeDisabled();
+  expect(
+    await calendar.evaluate(
+      (element) => element.scrollHeight <= element.clientHeight,
+    ),
+  ).toBe(true);
+  await calendar
+    .getByRole("button", { name: "Monday, 30 November 2026", exact: true })
+    .click();
+  await expect(panel.getByRole("button", { name: /^Date / })).toHaveText(
+    "Mon, 30 Nov 2026",
+  );
+});
+
 test("booking brings hidden step controls back into view on forward and back navigation", async ({
   page,
 }) => {

@@ -4,6 +4,7 @@ import { LocateFixed } from "lucide-react";
 import type { Map as MapboxMap } from "mapbox-gl";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import layout from "@/components/app/compounds/visit-contact.module.css";
@@ -137,7 +138,8 @@ export function VisitLocationMap() {
         </p>
       ) : null}
       {ready ? (
-        <button
+        <Button
+          variant="plain"
           type="button"
           className={styles.recenter}
           aria-label={copy.recenterLabel}
@@ -150,7 +152,7 @@ export function VisitLocationMap() {
           }
         >
           <LocateFixed size={18} aria-hidden="true" />
-        </button>
+        </Button>
       ) : null}
     </div>
   );

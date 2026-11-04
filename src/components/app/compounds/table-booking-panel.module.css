@@ -874,6 +874,16 @@
   .dateField {
     gap: 8px;
   }
+  .bookingCalendar [data-date] {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    justify-self: center;
+    aspect-ratio: auto;
+  }
+  .bookingCalendar > div:last-child {
+    row-gap: 10px;
+  }
   .summary {
     gap: 12px;
     margin: 24px 0;

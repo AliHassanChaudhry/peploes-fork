@@ -429,6 +429,8 @@
   gap: 5px;
 }
 .enquiry {
+  position: relative;
+  z-index: 1;
   padding-block: 48px;
   scroll-margin-top: 80px;
 }
@@ -2587,6 +2589,15 @@
   .enquirySelect option::checkmark {
     order: 1;
     margin-inline-start: auto;
+  }
+
+  .enquirySelect[name="guests"]::picker(select) {
+    max-height: min(268px, 38dvh);
+  }
+
+  .enquirySelect[name="guests"] option {
+    min-height: 38px;
+    padding-block: 7px;
   }
 
   .enquirySelect option:not(:disabled) + option:not(:disabled) {

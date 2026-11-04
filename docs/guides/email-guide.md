@@ -1,7 +1,10 @@
 # Transactional email
 
-Issue #100 owns application email delivery. The private-dining enquiry is the
-first caller. Reservation messages belong to ResDiary until #97 confirms a gap;
+Issue #100 owns application email delivery. The shared gathering enquiry on
+private-dining pages and Visit & Contact is a public caller. General enquiries
+use phone and email links; the separate contact delivery implementation remains
+available without a form on the page. Reservation messages belong to
+ResDiary until #97 confirms a gap;
 newsletter subscriptions belong to #88.
 
 ## Owners and configuration

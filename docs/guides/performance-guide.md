@@ -92,6 +92,10 @@ Shared motion uses CSS and IntersectionObserver. Animate `transform` and
 `opacity`. Respect `prefers-reduced-motion`. Avoid JavaScript animation
 libraries until CSS cannot express a required interaction.
 
+Section links use native smooth scrolling when the visitor has no reduced-motion
+preference. Reduced motion keeps instant scrolling. The root layout declares
+`data-scroll-behavior="smooth"` so Next.js can keep route navigation instant.
+
 ## Verification
 
 ```bash

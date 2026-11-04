@@ -1,6 +1,7 @@
 import { expect, type Locator, test } from "@playwright/test";
 
 const enquiryPaths = [
+  "/visit-contact",
   "/private-dining",
   "/private-dining/groups-celebrations",
   "/private-dining/corporate-events",
@@ -36,6 +37,31 @@ async function fillEnquiry(form: Locator) {
 }
 
 for (const path of enquiryPaths) {
+  test(`${path} calendar hides past weeks and stays above following content`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+    const form = page.locator("#enquire").getByRole("form");
+    const date = form.getByLabel("Preferred date", { exact: true });
+    await date.click();
+    const calendar = form.getByRole("group", {
+      name: "Choose date",
+      exact: true,
+    });
+    const pastWeeks = calendar.locator('[data-past-week="true"]');
+    await expect(calendar).toBeVisible();
+    expect(await pastWeeks.count()).toBeGreaterThan(0);
+    for (const day of await pastWeeks.all()) await expect(day).toBeHidden();
+    await calendar.getByRole("button", { name: "Next month" }).click();
+    const lastDay = calendar.getByRole("button", {
+      name: "Sunday, 6 December 2026",
+      exact: true,
+    });
+    await lastDay.scrollIntoViewIfNeeded();
+    await lastDay.click();
+    await expect(date).toHaveValue("2026-12-06");
+  });
+
   test(`${path} lets an incomplete enquiry show the missing field`, async ({
     page,
   }) => {
@@ -190,7 +216,8 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
     await email.press("Enter");
     await expect(submit).toHaveAttribute("aria-busy", "true");
     await expect(submit).toBeDisabled();
-    await expect(submit.locator("svg")).toHaveCSS("animation-name", "spin");
+    await expect(submit).toHaveText("Sending…");
+    await expect(submit.locator("svg")).toHaveCSS("animation-name", "none");
     await expect.poll(() => submissions).toBe(1);
     await email.press("Enter");
     expect(submissions).toBe(1);
@@ -540,6 +567,22 @@ for (const path of enquiryPaths) {
       expect(option?.y).toBeGreaterThanOrEqual(
         (trigger?.y ?? 0) + (trigger?.height ?? 0),
       );
+      if ((await select.getAttribute("name")) === "guests") {
+        expect(option?.height).toBeGreaterThanOrEqual(38);
+        expect(option?.height).toBeLessThanOrEqual(40);
+        const lastOption = select.locator("option:not(:disabled)").last();
+        await lastOption.scrollIntoViewIfNeeded();
+        const lastBounds = await lastOption.boundingBox();
+        const sectionBounds = await page.locator("#enquire").boundingBox();
+        expect(lastBounds).not.toBeNull();
+        expect(sectionBounds).not.toBeNull();
+        expect(
+          (lastBounds?.y ?? 0) + (lastBounds?.height ?? 0),
+        ).toBeLessThanOrEqual(
+          (sectionBounds?.y ?? 0) + (sectionBounds?.height ?? 0),
+        );
+        await firstOption.scrollIntoViewIfNeeded();
+      }
       if (!isMobile) {
         await firstOption.hover();
         await expect(firstOption).not.toHaveCSS(

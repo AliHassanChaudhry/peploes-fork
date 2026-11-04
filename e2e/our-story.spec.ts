@@ -185,17 +185,18 @@ for (const [name, href, heading] of [
   });
 }
 
-test("the unbuilt Book a Table action remains a clearly marked placeholder", async ({
+test("Our Story Book a Table opens reservations by keyboard", async ({
   page,
 }) => {
   await page.goto("/our-story");
   const action = page
     .getByRole("main")
-    .getByRole("button", { name: "Book a Table", exact: true });
-  await expect(action).toHaveAttribute("type", "button");
-  await expect(action).toHaveAttribute("aria-disabled", "true");
+    .getByRole("link", { name: "Book a Table", exact: true });
+  await expect(action).toHaveAttribute("href", "/book-a-table");
   await action.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL("/our-story");
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page).toHaveURL("/book-a-table");
+  await expect(
+    page.getByRole("region", { name: "Table reservations" }),
+  ).toBeVisible();
 });

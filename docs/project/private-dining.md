@@ -14,6 +14,10 @@ Only the overview has a separate mobile frame. The three detail pages use its
 Desktop references are 1440px wide; the overview phone reference is 390px.
 Sections can grow at narrower widths and with enlarged text.
 
+The desktop Private Dining & Events navigation shelf links each occasion image
+and its title to the matching detail page. Image links support keyboard focus
+and activation.
+
 Below 640px, Every Reason to Gather and Good to Know use 48px icons beside
 their text, a 16px column gap and horizontal Soft Stone separators. Their item
 titles use 22/26px type, with 16/24px lists and descriptions. Made Personal
@@ -83,8 +87,8 @@ and retains the design styling. Submission uses the connected enquiry service de
 
 The overview's occasion cards use 416 × 216px image frames and 24px gaps at the
 1440px reference. Their photographs retain the Figma crops toward the bottom of
-the original images. Desktop copy aligns with the photograph edges without side
-padding, and card numbers are 12px. The 1px dividers use 70% opacity and span the full card
+the original images. Desktop copy has a 12px left inset from the photographs,
+and card numbers are 12px. The 1.3px dividers use 70% opacity, span the full card
 height and sit halfway across the gaps, with no dividers at the row's outer edges.
 The corporate title breaks
 before “Exclusive Hire” on desktop. The eyebrow rule is 2px on desktop and 3px
@@ -337,6 +341,8 @@ menu eligibility remain separate content.
 Supporting browsers show a styled picker capped at 310px (or 40% of the
 viewport height), with scrolling inside the list. It retains native keyboard
 selection and required-field validation. Other browsers use their native picker.
+The guest picker uses compact 38px rows and a height capped at 268px or 38% of
+the viewport, keeping the list inside the enquiry section with internal scrolling.
 Option text aligns with the field value, selected checks sit on the right, and
 the list ends immediately after its last option. The page scrollbar uses Samsu's
 scrollbar CSS, with only its colour changed to Peploe's burgundy at 40% opacity.
@@ -344,6 +350,9 @@ scrollbar CSS, with only its colour changed to Peploe's burgundy at 40% opacity.
 The preferred date allows today or a later date in the restaurant's Dublin
 time zone. Past dates are disabled in the picker and fail validation when typed.
 The minimum date refreshes on interaction and submission for pages left open overnight.
+The shared calendar hides fully elapsed weeks and keeps earlier dates in the
+current week disabled. Enquiry sections stack above following content so the
+calendar stays visible when it extends over the closing banner.
 The calendar uses the site's warm cream, burgundy and typography, with month
 navigation and keyboard date selection. Its left and right edges match the
 preferred-date field at every screen width. Autofilled fields keep their cream background.
