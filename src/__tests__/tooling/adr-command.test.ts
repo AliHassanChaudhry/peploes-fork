@@ -17,7 +17,7 @@ test("ADR command preserves human text and existing records, and rejects invalid
   const description = join(directory, "decision.md");
   const run = (slug: string) =>
     spawnSync(
-      process.execPath,
+      "bun",
       [command, "--slug", slug, "--description-file", description],
       { cwd: directory, encoding: "utf8" },
     );

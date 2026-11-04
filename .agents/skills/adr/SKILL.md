@@ -27,8 +27,8 @@ then create the record with:
 bun run adr --slug booking-provider --description-file /tmp/decision.md
 ```
 
-The command creates `docs/adr/ADR-001-booking-provider.md`, using the next
-available number and refusing to overwrite a file. Use a short kebab-case slug.
+The first record in an empty folder is `docs/adr/ADR-001-booking-provider.md`.
+Later records use the next available number; existing files are never overwritten. Use a short kebab-case slug.
 The body should contain the decision, its reason and any material consequence
 in the human's own words. Extra sections, dates and status fields are optional.
 Show the resulting record to the human; invocation does not authorize committing
