@@ -119,10 +119,14 @@ changes it.
 ## Pending owner decisions
 
 Not implemented because they need facts or choices from the owner: Restaurant
-schema (hours, cuisine, price, profiles, coordinates), one source of truth for
-opening hours, AI training crawler policy, Event markup (needs a venue field), an
-Organization logo asset, Sanity SEO fields for menus and private dining, IndexNow
-and Search Console, FAQ content, and visible breadcrumbs.
+schema (confirmed hours, cuisine, price and coordinates), Event markup (needs a
+confirmed venue), an Organization logo asset, Sanity SEO fields for menus and
+private dining, IndexNow and Search Console, and FAQ content. The footer and
+Visit opening-hours table already share `RESTAURANT_OPENING_HOURS`. Dining-service
+times remain separate from building opening hours. The footer social profiles
+are recorded in the project brief; crawler policy is implemented above, but its
+mixed-use choice still needs product-owner review. Menu breadcrumbs are already
+visible.
 
 ## Social images
 
