@@ -9,6 +9,27 @@ For each added or changed test, name the failure it catches and the public resul
 that proves it. Existing coverage can be enough. A changed source file does not
 by itself require a new test or document.
 
+## Earn the test cost
+
+Test important user actions and costly failures. A complete order or booking
+journey can justify an end-to-end test; clicking a button to inspect decorative
+CSS does not. Browser and integration tests must name a critical failure that
+cheaper existing coverage cannot catch, and justify their CI runtime and upkeep.
+Use integration tests for real database or provider-boundary failures, not to
+repeat unit coverage. Consolidate overlapping journeys.
+
+## Select checks for the change
+
+After each change, run only checks affected by it. A normal CSS-only change
+usually needs a visual inspection, not unit, integration or browser tests.
+Prose needs link and consistency checks. Logic needs the focused tests for that
+behavior; SQL needs the affected integration check; a critical journey change
+may need its focused browser spec. Build when compilation or runtime assembly
+is affected. Expand only for a named remaining risk, a failure, an explicit user
+request or the shared CI gate. Do not run the complete suite by default or repeat
+an unchanged build. Report what ran and why omitted checks were unnecessary.
+See the repository quality guide for command selection and CI requirements.
+
 Always flag these patterns for removal from the PR:
 
 - Exact decorative CSS values, font metrics, transform matrices, easing curves,

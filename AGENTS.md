@@ -32,7 +32,8 @@ the linked owner documents, not here.
 5. Reuse existing coverage when it proves the changed behavior. Add a test only
    for a named failure. Update docs only for changed setup, operations, lasting
    product requirements or a decision whose reason is absent from the code.
-6. Run the checks required by the quality guide and report their actual results.
+6. Select affected checks using the quality guide and report actual results.
+   Ordinary CSS or prose edits need no test run; do not default to full suites.
 7. Inspect the final diff for unrelated edits, secrets, generated files, and
    disabled checks. Check shared definitions, dependency direction, duplicate
    work and failure states against the owning rules.
@@ -78,6 +79,11 @@ For tests and accompanying docs, apply the repository
 [test-quality skill](.agents/skills/test-quality/SKILL.md), including during
 `elhaam-review`. Flag coupled tests for removal from the PR and preserve their
 useful behavioral checks.
+
+Create or update architecture decision records only through the
+[ADR skill](.agents/skills/adr/SKILL.md) when the human invokes `$adr`.
+When a meaningful architecture or data-flow decision needs recording, ask them
+to invoke it and supply their description. Routine source edits need no ADR.
 
 For coding, apply the installed `ponytail` skill. For prose and UI copy, apply
 `unslop`. Use `codebase-design` when changing an interface or dependency

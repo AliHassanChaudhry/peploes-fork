@@ -1,7 +1,8 @@
 # Peploe's website brief
 
 Figma owns visual references. Styles own dimensions, typography, crops and motion.
-This brief records lasting product requirements and editorial operations.
+This brief records restaurant requirements, owner decisions and editorial
+operations that code cannot explain. Update only when those facts change.
 See [menus](menus.md), [private dining](private-dining.md), and the
 [booking contract](booking-page.md) for their own requirements.
 

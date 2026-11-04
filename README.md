@@ -23,9 +23,10 @@ target and obtain explicit permission before running migrations locally.
 
 ## Verification
 
-Format changed supported files, then run `bun run ci`. Database integration tests run separately
-with `bun run test:integration` against a migrated disposable database.
-The GitHub workflow provisions its own database for that check.
+Choose local checks for the changed behavior using the
+[quality guide](docs/guides/quality-guide.md#required-checks). Ordinary CSS and
+prose edits do not require a test run. Shared CI runs the full integration gate.
+Database integration checks require an explicitly approved disposable database.
 
 ## Documentation
 

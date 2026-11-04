@@ -24,7 +24,12 @@ and how to report checks that could not run.
 
 ## Test selection
 
-Use the lowest layer that catches the real failure.
+Use the lowest layer that catches an important failure. End-to-end and
+integration tests must justify their runtime with a critical user outcome or a
+boundary failure that cheaper coverage cannot prove. A complete booking journey
+can earn a browser test; a click followed by decorative CSS checks cannot.
+Run only the checks affected by the change, following the quality guide.
+Ordinary CSS edits do not warrant a suite run.
 
 | Check | Use it for |
 | --- | --- |

@@ -186,6 +186,19 @@ Do not keep a prose copy of component structure or CSS. Link to the owner from
 other places only when a reader needs a route to it; do not copy its rules or
 inventories.
 
+`docs/project/` owns restaurant requirements and editorial operations that cannot
+be inferred from code: approved copy, unresolved owner decisions, CMS publishing
+and booking/payment recovery contracts. Keep those facts; remove duplicated
+implementation details and dated verification. Read only the relevant section,
+and update it only when those requirements or operations change.
+
+Record a meaningful architecture or data-flow decision through the
+[ADR skill](.agents/skills/adr/SKILL.md), invoked with `$adr`. Ask for the human's
+description first and preserve their wording with minimal grammar or context
+edits. `bun run adr --slug short-name --description-file /tmp/decision.md`
+creates the next `docs/adr/ADR-001-short-name.md`. Routine code or style changes
+need no ADR. Update records only when the architectural decision changes.
+
 Code and configuration remain the source of truth for dependencies, scripts,
 environment keys, and file inventories.
 

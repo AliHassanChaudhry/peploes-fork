@@ -1,7 +1,9 @@
 # Private dining and events
 
 Use the [approved Figma designs](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3480-3107)
-for presentation. Do not copy CSS measurements into this document.
+for presentation. This document keeps approved content, unresolved restaurant
+decisions and enquiry requirements. Styles and the email guide own their
+implementation; routine code changes do not require an update here.
 
 | Route | Design node |
 | --- | --- |

@@ -266,22 +266,6 @@ are hidden and read-only in Studio so content editing keeps the existing design.
 The Group menu inclusion heading remains editable. Compact menu navigation
 spacing and explicit price decimal formatting are also preserved.
 
-### Code and checks
-
-- `src/lib/sanity-provider.ts` reads the published perspective into the Next
-  data cache, tagged `sanity-content` with a five-minute limit, and verifies the
-  publish webhook signature.
-- `src/app/api/webhooks/sanity/route.ts` expires the tag after a signed publish.
-- `src/services/restaurant-menus.ts` validates external data and returns typed
-  results. Duplicate URL names and invalid content are rejected.
-- `src/lib/menu-content.ts` shares each request between page, metadata and layout.
-- `CmsMenuPage` passes the validated data into the existing menu components.
-- Studio schemas are in `studio/schemaTypes/`. Stable array keys supply anchors;
-  editor order is preserved. Sanity image hosts are configured in Next and CSP.
-- `bun run validate` checks lint, website/Studio types and unit tests.
-- `bun run build` builds the website; `bun run --cwd studio build` builds Studio.
-  Neither command deploys.
-
 For release, review the content and editor access, configure the intended
 production dataset in both website and Studio environments, and publish approved
 production content. Development documents do not automatically appear in
