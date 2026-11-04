@@ -36,7 +36,6 @@ suite after every change.
 
 Persistence checks require a migrated, disposable database. Verify the exact
 `DATABASE_URL` target before running them; never use a normal or shared database.
-Migration commands still require the permission in AGENTS.md.
 
 For example, `bun run test src/__tests__/services/example.test.ts` runs one unit
 file. Browser entry points forward spec paths, such as
