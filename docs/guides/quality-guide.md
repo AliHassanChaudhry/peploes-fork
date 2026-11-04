@@ -34,6 +34,10 @@ suite after every change.
 | Critical visitor journey | Focused browser spec only when cheaper checks cannot prove it |
 | Dependencies, build configuration or shared infrastructure | Affected build, audit, tooling or broader checks based on the blast radius |
 
+Persistence checks require a migrated, disposable database. Verify the exact
+`DATABASE_URL` target before running them; never use a normal or shared database.
+Migration commands still require the permission in AGENTS.md.
+
 For example, `bun run test src/__tests__/services/example.test.ts` runs one unit
 file. Browser entry points forward spec paths, such as
 `bun run test:e2e e2e/book-a-table.spec.ts`. They build the production app before
