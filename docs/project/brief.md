@@ -222,8 +222,8 @@ Compare section positions, line breaks, crops and overlays at 390px, then check
 narrow phones, tablet and desktop for overflow. Book a Table opens its design
 preview. Homepage telephone actions use the shared restaurant contact. Event
 buttons open the existing seasonal event templates; menu, story, private dining
-and contact links open their matching pages. Unbuilt editorial pages, Gift
-Vouchers and newsletter subscription remain inactive.
+and contact links open their matching pages. Unbuilt editorial pages and Gift Vouchers remain inactive. Newsletter signup
+uses the shared provider-backed form described below.
 
 ## Homepage interaction previews
 
@@ -234,8 +234,9 @@ button (issue #27). Text-entry fields retain their text cursor.
 Remaining placeholder actions use inert `type="button"` controls with `aria-disabled="true"`
 and no click handlers. They remain focusable and show the Figma hover styles
 without navigating, booking or submitting. The newsletter form validates email
-on Enter or Subscribe, then explains that signup is unavailable. It does not
-send or store the entered address.
+on Enter or Subscribe and submits to the configured newsletter provider. It
+shows acceptance only after the provider accepts the request and reports
+unavailability when the provider is not configured.
 
 The existing shared button owns the homepage's brand variants: primary,
 primary inverse, secondary inverse, editorial text, navigation and contact.
@@ -400,7 +401,8 @@ autocomplete and the native datalist are disabled.
 Focus colours the 1px bottom border burgundy and thickens it by 1px downward
 without moving the text. Enter and Subscribe show an error for empty
 or malformed addresses, including addresses without a dotted domain. Valid input
-shows that signup is unavailable pending integration; no email is sent or saved.
+uses the shared newsletter action. Accepted requests show confirmation; failures
+retain the entered address for correction or retry.
 Opening hours and contact details follow the design and should be confirmed by
 the restaurant before launch.
 
@@ -1010,3 +1012,19 @@ catalogues; the detail-only fixtures preserve those separate design scenarios.
 Additional stories and body blocks are labelled synthetic and exercise
 pagination, rendering and related-story exclusion. Never publish that synthetic
 copy as restaurant editorial content.
+
+## Homepage newsletter popup
+
+Issue #115 adapts Samsu's section-exit trigger. Samsu observes `#reviews`
+and opens once the section has scrolled fully above the viewport. Peploe's has
+no reviews section, so the approved equivalent is the existing `#wine` section.
+The popup uses the footer's approved "A Letter from Gina" copy and shared signup
+form. It adds no offer or discount.
+
+As in Samsu, a display starts a seven-day cooldown. Closing or subscribing
+suppresses future displays indefinitely in that browser. Storage contains only
+markers and a display timestamp. When storage is blocked, suppression lasts for
+the current visit. Another open dialog, a focused booking link, or an active
+summary or form control skips the opening opportunity. Escape, the close button
+and a backdrop click dismiss it and restore focus without scrolling. The accepted
+message stays visible until dismissal.
