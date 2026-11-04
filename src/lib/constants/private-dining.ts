@@ -1,4 +1,4 @@
-import { GUEST_COUNTS, ROUTES } from "@/lib/constants";
+import { ROUTES } from "@/lib/constants";
 import type {
   IPrivateDiningFeature,
   IPrivateDiningPageContent,
@@ -129,7 +129,8 @@ export const PRIVATE_DINING_FORM = {
   heading: "Tell us what you’re planning.",
   date: "Preferred date",
   guests: "Number of guests",
-  guestCounts: GUEST_COUNTS,
+  increaseGuests: "Increase number of guests",
+  decreaseGuests: "Decrease number of guests",
   name: "Your name",
   company: "Company",
   email: "Email address",

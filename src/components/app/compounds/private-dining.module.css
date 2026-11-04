@@ -187,10 +187,12 @@
 }
 :where(.gatheringCards > li:has(.gatheringImage:focus-visible)) .cardLink {
   text-decoration-line: underline;
+  text-decoration-color: currentColor;
 }
 @media (hover: hover) {
   :where(.gatheringCards > li:has(.gatheringImage:hover)) .cardLink {
     text-decoration-line: underline;
+    text-decoration-color: currentColor;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -281,6 +283,12 @@
 }
 .celebrationOccasions .occasionList {
   white-space: pre-line;
+}
+:where(.celebrationOccasions .occasionList) > li {
+  padding-block: 8px;
+}
+:where(.celebrationOccasions .occasionList) > li + li {
+  border-top: 1px solid var(--soft-stone);
 }
 .celebrationPlanning .eyebrow::before {
   height: 2px;
@@ -376,6 +384,10 @@
 .personalFeatures .featureHeading {
   margin-bottom: 8px;
   font-weight: 500;
+  font-size: 23px;
+}
+.personalFeatures p {
+  font-size: 15px;
 }
 .imageSection {
   position: relative;
@@ -503,6 +515,20 @@
   min-height: 144px;
   resize: vertical;
 }
+.enquiryFields textarea::-webkit-resizer {
+  background:
+    linear-gradient(
+      135deg,
+      transparent 50%,
+      var(--peploe-burgundy) 50% 55%,
+      transparent 55% 65%,
+      var(--peploe-burgundy) 65% 70%,
+      transparent 70% 80%,
+      var(--peploe-burgundy) 80% 85%,
+      transparent 85%
+    )
+    right 2px bottom 2px / 12px 12px no-repeat;
+}
 .fieldRow {
   display: grid;
   gap: 12px;
@@ -556,6 +582,7 @@
   flex-shrink: 0;
 }
 .sendButton {
+  margin-top: 16px;
   justify-self: start;
   width: 100%;
   height: 44px;
@@ -625,11 +652,6 @@
 .compactEnquiry .dateField input:invalid:not(:focus) {
   color: transparent;
 }
-.compactEnquiry .enquiryFields input:not([type="checkbox"]),
-.compactEnquiry .enquiryFields select {
-  min-height: 88px;
-  padding-block: 14px 52px;
-}
 .compactEnquiry .enquiryFields select {
   appearance: none;
   padding-right: 36px;
@@ -696,7 +718,6 @@
 .closing p {
   font-size: 18px;
   line-height: 28px;
-  max-width: 560px;
   margin-top: 20px;
 }
 :where(.closing) .contacts {
@@ -864,7 +885,6 @@
   text-underline-offset: 2px;
 }
 .corporateClosing p {
-  max-width: 530px;
   font-size: 20px;
   line-height: 29px;
   margin-top: 16px;
@@ -1237,7 +1257,6 @@
     margin-block: 16px;
   }
   .overview .heroDescription {
-    max-width: 405px;
     line-height: 24px;
   }
   .overview .heroRule {
@@ -1395,7 +1414,6 @@
   .cardDescription {
     font-size: 18px;
     line-height: 1.3;
-    max-width: 368px;
     min-height: 72px;
   }
   .cardLink {
@@ -1464,16 +1482,23 @@
   .fiveFeatures > li + li {
     border-left: 1px solid var(--soft-stone);
   }
+  .fiveFeatures > li:last-child {
+    flex: 1.5;
+  }
   .fiveFeatures .illustration {
     margin-inline: auto;
   }
   .fiveFeatures .featureHeading {
     line-height: 23px;
-    margin-bottom: 16px;
+    margin-bottom: 28px;
   }
   .fiveFeatures :is(.featureHeading, .occasionList) {
     max-width: 226.4px;
     margin-inline: auto;
+  }
+  .fiveFeatures > li:last-child .featureHeading {
+    max-width: none;
+    white-space: nowrap;
   }
   .celebrationOccasions {
     min-height: 456px;
@@ -1733,7 +1758,7 @@
   }
   .sendButton {
     width: auto;
-    margin-top: 0;
+    margin-top: 16px;
   }
   .contacts {
     gap: 12px;
@@ -1771,7 +1796,7 @@
     margin-bottom: 28px;
   }
   .compactEnquiry .sendButton {
-    margin-top: 0;
+    margin-top: 16px;
   }
   .compactEnquiry .enquiryForm {
     position: relative;
@@ -1856,7 +1881,6 @@
     line-height: 44px;
   }
   .overviewClosing p {
-    max-width: 470px;
     font-size: 18px;
     line-height: 24px;
     margin-top: 14px;
@@ -1899,7 +1923,7 @@
     font-family: var(--font-eb-garamond);
     font-size: 20px;
     line-height: 25px;
-    max-width: 470px;
+    max-width: 740px;
     margin-top: 12px;
   }
   .celebrationClosing .heading {
@@ -2172,7 +2196,6 @@
   }
   .location .features p {
     line-height: 22px;
-    white-space: pre-line;
   }
   .corporatePage .enquiry,
   .celebrationEnquiry,
@@ -2370,8 +2393,6 @@
   .weddingSteps p {
     font-size: 20px;
     line-height: 28px;
-    max-width: 258px;
-    white-space: pre-line;
   }
   .weddingSteps h3 {
     line-height: 39px;
@@ -2591,15 +2612,6 @@
     margin-inline-start: auto;
   }
 
-  .enquirySelect[name="guests"]::picker(select) {
-    max-height: min(268px, 38dvh);
-  }
-
-  .enquirySelect[name="guests"] option {
-    min-height: 38px;
-    padding-block: 7px;
-  }
-
   .enquirySelect option:not(:disabled) + option:not(:disabled) {
     border-top: 1px solid var(--soft-stone);
   }
@@ -2661,5 +2673,113 @@
   .enquiryFields :is(input, select, textarea):focus-visible {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+}
+
+.enquiryFields .selectField select.enquirySelect {
+  padding-right: 44px;
+}
+.enquiryFields .selectField .selectIcon {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: var(--peploe-burgundy);
+  stroke-width: 1.75;
+  pointer-events: none;
+}
+.enquirySelect::picker-icon {
+  display: none;
+}
+@media (width < 40rem) {
+  .compactEnquiry .enquiryFields .selectField .selectIcon {
+    top: 16px;
+    transform: none;
+  }
+}
+@supports not (appearance: base-select) {
+  .enquiryFields .selectField select.enquirySelect {
+    appearance: none;
+  }
+}
+
+.enquiryFields input[name="guests"] {
+  appearance: textfield;
+}
+.enquiryFields input[name="guests"]::-webkit-inner-spin-button,
+.enquiryFields input[name="guests"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+.guestField {
+  position: relative;
+}
+.enquiryFields .guestField input[name="guests"] {
+  padding-right: 52px;
+}
+.guestSteps {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  width: 44px;
+}
+.guestSteps .guestStep {
+  width: 44px;
+  min-height: 0;
+  height: 100%;
+  padding: 2px 8px;
+  background-clip: content-box;
+  border-radius: 0;
+  color: var(--peploe-burgundy);
+}
+.guestSteps .guestStep:hover {
+  color: var(--peploe-burgundy);
+}
+.guestSteps .guestStep svg {
+  width: 14px;
+  height: 12px;
+  fill: currentColor;
+  stroke: none;
+}
+.guestSteps .guestStep:last-child svg {
+  transform: rotate(180deg);
+}
+.guestSteps .guestStep:focus-visible {
+  outline: 2px solid var(--peploe-burgundy);
+  outline-offset: -3px;
+}
+
+@media (width < 40rem) {
+  .enquiry .enquiryFields,
+  .enquiry .fieldRow {
+    gap: 8px;
+  }
+  .enquiry .enquiryFields :is(input:not([type="checkbox"]), select, textarea) {
+    min-height: 38px;
+    height: 38px;
+    padding: 8px 12px;
+    border: 1px solid var(--soft-stone);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .enquiry .enquiryFields textarea[name="message"] {
+    min-height: 90px;
+    height: 90px;
+    line-height: 22px;
+  }
+  .enquiry .enquiryFields input[type="date"] {
+    padding-right: 44px;
+  }
+  .enquiry .enquiryFields :is(input, textarea)::placeholder {
+    color: var(--text-secondary);
+  }
+  .enquiry .enquiryFields input[name="guests"] {
+    padding-right: 52px;
   }
 }

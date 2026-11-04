@@ -166,22 +166,27 @@ function VisitContactInformation() {
 
 function VisitLocation() {
   return (
-    <section className={cn("site-container", styles.location)} id="find-us">
-      <div className={styles.locationGrid}>
-        <div data-scroll-reveal className={styles.locationCopy}>
-          <p className={styles.eyebrow}>
-            {VISIT_CONTACT_CONTENT.location.eyebrow}
-          </p>
-          <h2 className={styles.heading}>
-            {VISIT_CONTACT_CONTENT.location.heading}
-          </h2>
-          <p className={styles.description}>
-            {VISIT_CONTACT_CONTENT.location.description}
-          </p>
+    <section className={styles.locationSection} id="find-us">
+      <div className={styles.location}>
+        <div className={cn("site-container", styles.locationGrid)}>
+          <div data-scroll-reveal className={styles.locationCopy}>
+            <p className={styles.eyebrow}>
+              {VISIT_CONTACT_CONTENT.location.eyebrow}
+            </p>
+            <h2 className={styles.heading}>
+              {VISIT_CONTACT_CONTENT.location.heading}
+            </h2>
+            <p className={styles.description}>
+              {VISIT_CONTACT_CONTENT.location.description}
+            </p>
+          </div>
+          <VisitLocationMap />
         </div>
-        <VisitLocationMap />
       </div>
-      <div data-scroll-reveal className={styles.transport}>
+      <div
+        data-scroll-reveal
+        className={cn("site-container", styles.transport)}
+      >
         <h3 className={styles.eyebrow}>
           {VISIT_CONTACT_CONTENT.location.transportHeading}
         </h3>

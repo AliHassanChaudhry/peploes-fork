@@ -1,7 +1,7 @@
 import { expect, type Locator, test } from "@playwright/test";
 
 const enquiryPaths = [
-  "/visit-contact",
+  "/contact",
   "/private-dining",
   "/private-dining/groups-celebrations",
   "/private-dining/corporate-events",
@@ -23,20 +23,120 @@ test.beforeEach(async ({ page }) => {
 
 async function fillEnquiry(form: Locator) {
   const selects = form.getByRole("combobox");
-  await expect(selects.first()).toBeVisible();
+  await expect(form.getByLabel("Number of guests")).toBeVisible();
   for (const select of await selects.all()) {
     await select.selectOption({ index: 1 });
     await expect(select).not.toHaveValue("");
   }
+  await form.getByLabel("Number of guests").fill("80");
   await form.getByLabel("Preferred date", { exact: true }).fill("2026-12-01");
   await form.getByLabel("Your name").fill("Test Guest");
   await form.getByLabel("Email address").fill("guest@example.test");
   await form.locator("textarea").fill("Please share your dining options.");
-  const consent = form.getByRole("checkbox");
-  if (await consent.count()) await consent.check();
 }
 
 for (const path of enquiryPaths) {
+  test(`${path} guest buttons adjust the count and respect its limits`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+    const form = page.locator("#enquire").getByRole("form");
+    const guests = form.getByRole("spinbutton", { name: "Number of guests" });
+    const dateHeight = await form
+      .getByLabel("Preferred date", { exact: true })
+      .evaluate((input) => getComputedStyle(input).height);
+    await expect(guests).toHaveCSS("height", dateHeight);
+    const increase = form.getByRole("button", {
+      name: "Increase number of guests",
+    });
+    const decrease = form.getByRole("button", {
+      name: "Decrease number of guests",
+    });
+    await expect(increase).toBeVisible();
+    await expect(decrease).toBeVisible();
+    await expect(increase).toHaveCSS("color", "rgb(122, 30, 36)");
+    await expect(decrease).toHaveCSS("color", "rgb(122, 30, 36)");
+    for (const button of [increase, decrease]) {
+      await button.hover();
+      await expect(button).toHaveCSS("background-clip", "content-box");
+      const insets = await button.evaluate((element) => {
+        const input = element.parentElement?.previousElementSibling;
+        if (!(input instanceof HTMLInputElement))
+          throw new Error("Guest field is missing");
+        const field = input.getBoundingClientRect();
+        const control = element.getBoundingClientRect();
+        return {
+          top: control.top - field.top,
+          bottom: field.bottom - control.bottom,
+        };
+      });
+      expect(insets.top).toBeGreaterThanOrEqual(0);
+      expect(insets.bottom).toBeGreaterThanOrEqual(0);
+      await expect(button.locator("svg")).toHaveCSS("fill", "rgb(122, 30, 36)");
+      await expect(button.locator("svg")).toHaveCSS("stroke", "none");
+    }
+    await increase.click();
+    await expect(guests).toHaveValue("1");
+    await decrease.click();
+    await expect(guests).toHaveValue("1");
+    const maximum = await guests.getAttribute("max");
+    const startingCount = maximum
+      ? Math.min(80, Math.max(1, Number(maximum) - 1))
+      : 80;
+    const increasedCount = maximum
+      ? Math.min(startingCount + 1, Number(maximum))
+      : startingCount + 1;
+    await guests.fill(String(startingCount));
+    await increase.click();
+    await expect(guests).toHaveValue(String(increasedCount));
+    await decrease.focus();
+    await decrease.press("Enter");
+    await expect(guests).toHaveValue(String(Math.max(1, increasedCount - 1)));
+    if (maximum) {
+      await guests.fill(maximum);
+      await increase.click();
+      await expect(guests).toHaveValue(maximum);
+      await guests.fill(String(Number(maximum) + 1));
+      expect(
+        await guests.evaluate(
+          (input: HTMLInputElement) => input.validity.rangeOverflow,
+        ),
+      ).toBe(true);
+    }
+    await expect(form.getByRole("status")).toBeEmpty();
+  });
+
+  test(`${path} accepts custom guest counts above 80 and rejects invalid counts`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+    const form = page.locator("#enquire").getByRole("form");
+    await expect(form.getByRole("checkbox")).toHaveCount(0);
+    const guests = form.getByRole("spinbutton", { name: "Number of guests" });
+    const maximum = await guests.getAttribute("max");
+    for (const count of ["80", "120", "250"]) {
+      await guests.fill(count);
+      expect(
+        await guests.evaluate((input: HTMLInputElement) =>
+          input.checkValidity(),
+        ),
+      ).toBe(!maximum || Number(count) <= Number(maximum));
+      expect(
+        await form.evaluate((element: HTMLFormElement) =>
+          new FormData(element).get("guests"),
+        ),
+      ).toBe(count);
+    }
+    for (const count of ["", "0", "-1", "1.5"]) {
+      await guests.fill(count);
+      expect(
+        await guests.evaluate((input: HTMLInputElement) =>
+          input.checkValidity(),
+        ),
+      ).toBe(false);
+    }
+  });
+
   test(`${path} calendar hides past weeks and stays above following content`, async ({
     page,
   }) => {
@@ -194,7 +294,6 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   const form = page.locator("#enquire").getByRole("form");
   const submit = form.locator('button[type="submit"]');
   const email = form.getByLabel("Email address");
-  const consent = form.getByRole("checkbox");
   await fillEnquiry(form);
   await email.fill("invalid-email");
   await expect(submit).toBeEnabled();
@@ -205,11 +304,6 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   ).not.toBe("");
   await expect(submit).toHaveAttribute("aria-busy", "false");
   await email.fill("guest@example.test");
-  await consent.uncheck();
-  await expect(submit).toBeEnabled();
-  await submit.click();
-  await expectFocusedControl(consent);
-  await consent.check();
   await expect(submit).toBeEnabled();
 
   try {
@@ -257,22 +351,48 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   await expect(submit).toBeEnabled();
 });
 
+test("all enquiry forms share compact mobile field sizes", async ({ page }) => {
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    for (const path of enquiryPaths) {
+      await page.goto(path);
+      const form = page.locator("#enquire").getByRole("form");
+      const fields = form.locator(
+        'input:not([type="hidden"]):not([aria-hidden="true"]):not([type="checkbox"]), select',
+      );
+      for (const field of await fields.all()) {
+        await expect(field).toHaveCSS("height", "38px");
+        await expect(field).toHaveCSS("min-height", "38px");
+        await expect(field).toHaveCSS("padding-top", "8px");
+        await expect(field).toHaveCSS("padding-bottom", "8px");
+        await expect(field).toHaveCSS("border-top-width", "1px");
+      }
+      await expect(form.locator("textarea")).toHaveCSS("height", "90px");
+    }
+  }
+});
+
 test("private dining message area shows three lines without scrolling", async ({
   page,
-  isMobile,
 }) => {
   await page.goto("/private-dining");
   const message = page.locator('#enquire textarea[name="message"]');
   await message.fill(
     "A corporate dinner\nFor twelve guests\nPlease share availability",
   );
-  await expect(message).toHaveCSS("height", isMobile ? "190px" : "90px");
+  await expect(message).toHaveCSS("height", "90px");
   const dimensions = await message.evaluate((element) => ({
     height: element.clientHeight,
     contentHeight: element.scrollHeight,
   }));
   expect(dimensions.contentHeight).toBeLessThanOrEqual(dimensions.height);
   await expect(message).toHaveCSS("resize", "vertical");
+  expect(
+    await message.evaluate(
+      (element) =>
+        getComputedStyle(element, "::-webkit-resizer").backgroundImage,
+    ),
+  ).toContain("rgb(122, 30, 36)");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -413,6 +533,7 @@ for (const path of enquiryPaths) {
 
   test(`${path} enquiry controls share rounded styling and subtle focus`, async ({
     page,
+    isMobile,
   }) => {
     await page.goto(path);
     const form = page.locator("#enquire").getByRole("form");
@@ -433,24 +554,40 @@ for (const path of enquiryPaths) {
     }
     const selects = form.getByRole("combobox");
     for (const select of await selects.all()) {
+      const chevron = select.locator("+ svg");
+      await expect(chevron).toBeVisible();
+      await expect(chevron).toHaveCSS("color", "rgb(122, 30, 36)");
+      await expect(chevron).toHaveCSS("pointer-events", "none");
+      if (isMobile) {
+        const offset = await chevron.evaluate((element) => {
+          const select = element.previousElementSibling;
+          if (!select) throw new Error("Enquiry dropdown is missing");
+          const style = getComputedStyle(select);
+          const field = select.getBoundingClientRect();
+          const textCenter =
+            style.paddingTop === style.paddingBottom
+              ? field.top + field.height / 2
+              : field.top +
+                Number.parseFloat(style.borderTopWidth) +
+                Number.parseFloat(style.paddingTop) +
+                Number.parseFloat(style.lineHeight) / 2;
+          const arrow = element.getBoundingClientRect();
+          return arrow.top + arrow.height / 2 - textCenter;
+        });
+        expect(Math.abs(offset)).toBeLessThan(2);
+      }
       await expect(select).toHaveCSS("cursor", "pointer");
       await expect(select).toHaveCSS("appearance", "base-select");
       await expect(select).toHaveCSS("margin-top", "0px");
       await expect(select).toHaveCSS("margin-bottom", "0px");
     }
-    const guests = form.getByLabel("Number of guests");
-    await guests.click();
-    expect(
-      await guests.locator("option:not(:disabled)").allTextContents(),
-    ).toEqual(["1", "2", "3", "4", "5", "6", "7"]);
-    const sevenGuests = guests.getByRole("option", {
-      name: "7",
-      exact: true,
-    });
-    await sevenGuests.scrollIntoViewIfNeeded();
-    await expect(sevenGuests).toBeVisible();
-    await sevenGuests.click();
-    await expect(guests).toHaveValue("7");
+    const guests = form.getByLabel("Number of guests", { exact: true });
+    await expect(guests).toHaveCSS("appearance", "textfield");
+    await expect(
+      form.getByRole("button", { name: "Send Enquiry", exact: true }),
+    ).toHaveCSS("margin-top", "16px");
+    await guests.fill("120");
+    await expect(guests).toHaveValue("120");
     await expect(form.getByLabel("Preferred date", { exact: true })).toHaveCSS(
       "cursor",
       "pointer",
@@ -459,20 +596,7 @@ for (const path of enquiryPaths) {
     await expect(
       form.getByLabel("Preferred date", { exact: true }),
     ).toHaveValue("2026-12-01");
-    const consent = form.getByRole("checkbox");
-    if (await consent.count()) {
-      await expect(consent).toHaveCSS("cursor", "pointer");
-      const restingShadow = await consent.evaluate(
-        (element) => getComputedStyle(element).boxShadow,
-      );
-      await consent.check();
-      await expect(consent).toBeChecked();
-      await consent.focus();
-      await consent.press("Space");
-      await expect(consent).not.toBeChecked();
-      await expect(consent).toHaveCSS("box-shadow", /0px 0px 0px 2px inset$/);
-      await expect(consent).not.toHaveCSS("box-shadow", restingShadow);
-    }
+    await expect(form.getByRole("checkbox")).toHaveCount(0);
     await expect(
       form.getByRole("button", { name: "Send Enquiry" }),
     ).toBeEnabled();
@@ -567,22 +691,6 @@ for (const path of enquiryPaths) {
       expect(option?.y).toBeGreaterThanOrEqual(
         (trigger?.y ?? 0) + (trigger?.height ?? 0),
       );
-      if ((await select.getAttribute("name")) === "guests") {
-        expect(option?.height).toBeGreaterThanOrEqual(38);
-        expect(option?.height).toBeLessThanOrEqual(40);
-        const lastOption = select.locator("option:not(:disabled)").last();
-        await lastOption.scrollIntoViewIfNeeded();
-        const lastBounds = await lastOption.boundingBox();
-        const sectionBounds = await page.locator("#enquire").boundingBox();
-        expect(lastBounds).not.toBeNull();
-        expect(sectionBounds).not.toBeNull();
-        expect(
-          (lastBounds?.y ?? 0) + (lastBounds?.height ?? 0),
-        ).toBeLessThanOrEqual(
-          (sectionBounds?.y ?? 0) + (sectionBounds?.height ?? 0),
-        );
-        await firstOption.scrollIntoViewIfNeeded();
-      }
       if (!isMobile) {
         await firstOption.hover();
         await expect(firstOption).not.toHaveCSS(
@@ -618,7 +726,7 @@ test("private dining enquiry keeps guest input when delivery is unavailable", as
   const form = page.locator("#enquire").getByRole("form");
   await form.getByLabel("Occasion type").selectOption("Wedding");
   await form.getByLabel("Preferred date", { exact: true }).fill("2027-06-18");
-  await form.getByLabel("Number of guests").selectOption("7");
+  await form.getByLabel("Number of guests").fill("80");
   await form.getByLabel("Your name").fill("Example Guest");
   await form.getByLabel("Email address").fill("guest@example.test");
   await form
@@ -668,7 +776,7 @@ test("private dining enquiry blocks retry when the action response is lost", asy
   const form = page.locator("#enquire").getByRole("form");
   await form.getByLabel("Occasion type").selectOption("Wedding");
   await form.getByLabel("Preferred date", { exact: true }).fill("2027-06-18");
-  await form.getByLabel("Number of guests").selectOption("7");
+  await form.getByLabel("Number of guests").fill("80");
   await form.getByLabel("Your name").fill("Example Guest");
   await form.getByLabel("Email address").fill("guest@example.test");
   await form

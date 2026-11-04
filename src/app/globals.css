@@ -334,6 +334,7 @@
 @media (hover: hover) {
   [data-image-card]:has([data-card-image]:hover) [data-card-action] {
     text-decoration-line: underline;
+    text-decoration-color: currentColor;
   }
 }
 

@@ -466,15 +466,6 @@
     line-height: 65px;
   }
 
-  .terraceCopy .description {
-    max-width: 613px;
-  }
-
-  .terraceCopy .description,
-  .joinCopy .description {
-    white-space: pre-line;
-  }
-
   .joinCopy {
     padding-block: 52px 72px;
   }

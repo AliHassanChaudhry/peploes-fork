@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("Visit keeps general enquiries on direct contact links when email delivery is configured", async ({
   page,
 }) => {
-  await page.goto("/visit-contact");
+  await page.goto("/contact");
   await expect(
     page.getByRole("form", { name: "General contact message" }),
   ).toHaveCount(0);

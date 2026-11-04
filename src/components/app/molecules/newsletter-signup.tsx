@@ -16,9 +16,11 @@ export function NewsletterSignup() {
   return (
     <form
       autoComplete="off"
+      noValidate
       onSubmit={(event) => {
         event.preventDefault();
         if (pending || submitted) return;
+        if (!event.currentTarget.checkValidity()) return;
         setError("");
         startTransition(async () => {
           try {
@@ -58,6 +60,8 @@ export function NewsletterSignup() {
               setSubmitted(false);
             }}
             onInvalid={(event) => {
+              event.preventDefault();
+              event.currentTarget.focus();
               setError(
                 event.currentTarget.validity.valueMissing
                   ? FOOTER_CONTENT.newsletter.requiredError

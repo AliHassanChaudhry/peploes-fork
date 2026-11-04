@@ -1,7 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Check, ChevronDown, Triangle } from "lucide-react";
 import {
   type FormEvent,
   useEffect,
@@ -14,8 +13,8 @@ import { submitPrivateDiningEnquiry } from "@/actions/private-dining-enquiry";
 import styles from "@/components/app/compounds/private-dining.module.css";
 import { PrivateDiningDate } from "@/components/app/molecules/private-dining-date";
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
 import { PRIVATE_DINING_FORM } from "@/lib/constants/private-dining";
+import { env } from "@/lib/env";
 import type {
   IEnquiryActionState,
   IPrivateDiningEnquiryProps,
@@ -26,6 +25,7 @@ export function PrivateDiningEnquiryFields({
 }: IPrivateDiningEnquiryProps) {
   const [notificationId, setNotificationId] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
+  const guestsRef = useRef<HTMLInputElement>(null);
   const submittingRef = useRef(false);
   const [state, setState] = useState<IEnquiryActionState>({
     status: "idle",
@@ -75,6 +75,11 @@ export function PrivateDiningEnquiryFields({
     }
   }
 
+  function adjustGuests(step: number): void {
+    guestsRef.current?.stepUp(step);
+    revise();
+  }
+
   return (
     <form
       ref={formRef}
@@ -121,24 +126,39 @@ export function PrivateDiningEnquiryFields({
       )}
       <div className={styles.fieldRow}>
         <PrivateDiningDate />
-        <div className={styles.selectField}>
-          <select
+        <div className={styles.guestField}>
+          <input
+            ref={guestsRef}
+            type="number"
+            inputMode="numeric"
             name="guests"
-            className={styles.enquirySelect}
+            min={1}
+            max={env.NEXT_PUBLIC_ENQUIRY_MAX_GUESTS}
+            step={1}
             required
             aria-label={PRIVATE_DINING_FORM.guests}
-            defaultValue=""
-          >
-            <option value="" disabled hidden>
-              {PRIVATE_DINING_FORM.guests}
-            </option>
-            {PRIVATE_DINING_FORM.guestCounts.map((count) => (
-              <option key={count} value={count}>
-                {count}
-              </option>
-            ))}
-          </select>
-          <ChevronDown aria-hidden="true" className={styles.selectIcon} />
+            placeholder={PRIVATE_DINING_FORM.guests}
+          />
+          <div className={styles.guestSteps}>
+            <Button
+              type="button"
+              variant="ghost"
+              className={styles.guestStep}
+              aria-label={PRIVATE_DINING_FORM.increaseGuests}
+              onClick={() => adjustGuests(1)}
+            >
+              <Triangle aria-hidden="true" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className={styles.guestStep}
+              aria-label={PRIVATE_DINING_FORM.decreaseGuests}
+              onClick={() => adjustGuests(-1)}
+            >
+              <Triangle aria-hidden="true" />
+            </Button>
+          </div>
         </div>
       </div>
       <div className={content.company ? styles.fieldRow : undefined}>
@@ -173,21 +193,6 @@ export function PrivateDiningEnquiryFields({
         placeholder={content.messageLabel}
         rows={3}
       />
-      {content.consent && (
-        <label className={styles.consent}>
-          <input type="checkbox" name="consent" required />
-          <span>
-            {PRIVATE_DINING_FORM.consent.beforePolicy}
-            <Link
-              href={ROUTES.PRIVACY_COOKIES}
-              className={styles.consentPolicy}
-            >
-              {PRIVATE_DINING_FORM.consent.policy}
-            </Link>
-            {PRIVATE_DINING_FORM.consent.afterPolicy}
-          </span>
-        </label>
-      )}
       <Button
         type="submit"
         variant="brand-primary"

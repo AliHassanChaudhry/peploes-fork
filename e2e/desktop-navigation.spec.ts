@@ -95,7 +95,7 @@ test("the shared underline changes only after navigation activation", async ({
   await visit.click();
   await page.mouse.move(0, 800);
   await page.getByRole("heading").first().click();
-  await expect(page).toHaveURL(/\/visit-contact$/);
+  await expect(page).toHaveURL(/\/contact$/);
   await expect(indicator).toHaveAttribute("data-selection-moved", "true");
   await expect(indicator).toHaveCSS("opacity", "1");
   await expect
