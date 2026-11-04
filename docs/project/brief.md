@@ -231,3 +231,22 @@ catalogues; the detail-only fixtures preserve those separate design scenarios.
 Additional stories and body blocks are labelled synthetic and exercise
 pagination, rendering and related-story exclusion. Never publish that synthetic
 copy as restaurant editorial content.
+
+## Homepage newsletter popup
+
+The approved trigger opens the popup after the Wine section has scrolled fully
+above the viewport.
+The popup uses the footer's approved "A Letter from Gina" copy and shared signup
+form. It adds no offer or discount.
+
+As in Samsu, a display starts a seven-day cooldown. Closing or subscribing
+suppresses future displays indefinitely in that browser. Storage contains only
+markers and a display timestamp. When storage is blocked, suppression lasts for
+the current visit. Another open dialog, a focused booking link, or an active
+summary or form control skips the opening opportunity. Escape, the close button
+and a backdrop click dismiss it and restore focus without scrolling. The accepted
+message stays visible until dismissal.
+
+Newsletter signup validates the address and submits to the configured provider.
+Show acceptance only after provider acceptance. Unconfigured delivery reports
+unavailable; definite failures preserve the address for correction or retry.

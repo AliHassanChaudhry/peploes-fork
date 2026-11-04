@@ -66,3 +66,39 @@ test("newsletter has no email suggestions and Tab moves to Subscribe", async ({
     await expect(email).toHaveValue(value);
   }
 });
+
+test("newsletter cannot perform a native GET before hydration", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+  const email = page.getByLabel("Your email address", { exact: true });
+  const submit = page
+    .getByRole("region", { name: "A Letter from Gina" })
+    .getByRole("button");
+  await expect(email).toBeDisabled();
+  await expect(submit).toBeDisabled();
+  await expect(page).toHaveURL("/");
+  await context.close();
+});
+
+test("newsletter waits safely through blocked hydration and enables after scripts recover", async ({
+  page,
+}) => {
+  await page.route("**/_next/**/*.js*", (route) => route.abort());
+  await page.goto("/");
+  const region = page.getByRole("region", { name: "A Letter from Gina" });
+  await expect(
+    region.getByLabel("Your email address", { exact: true }),
+  ).toBeDisabled();
+  await expect(
+    region.getByRole("button", { name: "Loading signup…", exact: true }),
+  ).toBeDisabled();
+  await expect(page).toHaveURL("/");
+  await page.unroute("**/_next/**/*.js*");
+  await page.reload();
+  await expect(
+    region.getByLabel("Your email address", { exact: true }),
+  ).toBeEnabled();
+});
