@@ -66,6 +66,12 @@ The separate server integration is described in [Booking](booking-page.md).
 
 ## Visit & Contact
 
+The general contact form sends one restaurant notification through the selected
+transactional email provider. It shows success only after provider acceptance,
+keeps the visitor's entries on definite failure, and directs uncertain outcomes
+to the published phone or email contact. The private-dining form remains a
+separate enquiry flow.
+
 Phone, email, directions and booking links must work on phones and desktops.
 Mapbox loads automatically and keeps a local preview and directions when
 unconfigured or unavailable. Set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to the
