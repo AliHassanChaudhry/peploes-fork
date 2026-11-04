@@ -37,7 +37,8 @@ tag after a successful write.
 Published Sanity content has a five-minute cache invalidated by the signed
 publish webhook. Time-based revalidation can serve the previous page while it
 refreshes. What's On also refreshes its rendered page so Dublin dates advance
-without an editorial publish. Booking availability requests remain uncached.
+without an editorial publish. Booking requests bypass the Next data cache;
+provider rules and closed dates are held in memory for five minutes.
 Article and event detail pages must return HTTP 404 for missing content.
 
 Browser-test builds use isolated CMS fixtures, including during prerendering.

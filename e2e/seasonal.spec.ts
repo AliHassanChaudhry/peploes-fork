@@ -166,7 +166,7 @@ test("diary entries and booking actions open their respective pages", async ({
   ).toBeVisible();
 });
 
-test("shared closing banners fit long CMS labels and retain original short-label dimensions", async ({
+test("shared closing banners fit long CMS labels and keep short-label actions visible", async ({
   page,
 }) => {
   for (const pathname of ["/seasonal", "/seasonal/rugby-at-peploes"]) {
@@ -220,7 +220,7 @@ test("shared closing banners fit long CMS labels and retain original short-label
           contact.x >= booking.x + booking.width,
       ).toBe(true);
     }
-    // Keep the original labels as a second layout case on the same rendered controls.
+    // Check that the original labels remain visible on the same rendered controls.
     for (const [index, label] of ["Book a Table", "Contact Us"].entries()) {
       await actions[index].evaluate((element, value) => {
         const text = document

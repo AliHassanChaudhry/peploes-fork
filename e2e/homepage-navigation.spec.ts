@@ -30,6 +30,7 @@ test("mobile hero fills the first screen and keeps the desktop entrance artwork"
     await expect(
       hero.getByRole("link", { name: "Call Peploe's", exact: true }),
     ).toBeInViewport();
+    await expect(entrance).not.toBeInViewport();
     await entrance.scrollIntoViewIfNeeded();
     await expect(entrance).toBeVisible();
     await expect(entrance).not.toHaveJSProperty("naturalWidth", 0);

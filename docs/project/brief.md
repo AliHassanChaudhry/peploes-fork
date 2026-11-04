@@ -58,9 +58,9 @@ The public `/book-a-table` page is a noindex design preview, not a completed
 reservation. It does not query ResDiary, send email or store a reservation.
 Its notice and confirmation must say that no reservation was made. The date
 starts on today in Europe/Dublin. Past dates cannot be selected or submitted,
-and a page left open overnight refreshes its date while preserving future choices.
-Refresh
-resets the preview. Back navigation retains selections and guest names,
+and the date refreshes when the search step regains focus or visibility,
+preserving future choices. Refresh resets the preview. Back navigation retains
+selections and guest names,
 including names with spaces; changing date or party size clears the chosen time.
 The separate server integration is described in [Booking](booking-page.md).
 

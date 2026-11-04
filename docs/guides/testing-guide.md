@@ -69,7 +69,8 @@ Avoid tests that only:
 Apply the [test-quality skill](../../.agents/skills/test-quality/SKILL.md) to new
 and changed tests and accompanying docs. Always flag decorative CSS measurements,
 animation internals, private framework mechanics and implementation-mirroring
-assertions for removal from the PR. Preserve useful behavior in mixed tests.
+assertions for removal when the requirement is user behavior. Preserve security
+headers, protocol contracts, cache invalidation and useful behavior in mixed tests.
 Existing coverage can satisfy a change; no test or doc is required per source edit.
 Explicit visual or performance requirements need a stable measurement and a
 reason a cheaper behavior check is insufficient. Accessibility and safety

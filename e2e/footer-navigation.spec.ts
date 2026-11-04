@@ -213,9 +213,16 @@ test("mobile footer address opens the restaurant location", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const address = page
-    .getByRole("contentinfo")
-    .getByRole("link", { name: "16 St Stephen's Green", exact: true });
+  const footer = page.getByRole("contentinfo");
+  for (const name of ["View full opening times", "Directions"]) {
+    await expect(footer.getByRole("link", { name, exact: true })).toHaveCount(
+      0,
+    );
+  }
+  const address = footer.getByRole("link", {
+    name: "16 St Stephen's Green",
+    exact: true,
+  });
   await address.click();
   await expect(page).toHaveURL("/visit-contact#find-us");
   await expect(page.locator("#find-us")).toBeInViewport();

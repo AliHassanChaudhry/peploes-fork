@@ -28,7 +28,7 @@ test("Visit loads its image and contact information without horizontal overflow"
     .toBe(true);
 });
 
-test("navigation reaches Visit, closes the mobile menu and shows the desktop active state", async ({
+test("navigation reaches Visit, closes the mobile menu and returns home on desktop", async ({
   page,
   isMobile,
 }) => {

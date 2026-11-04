@@ -379,6 +379,35 @@ for (const path of enquiryPaths) {
   }) => {
     await page.goto(path);
     const form = page.locator("#enquire").getByRole("form");
+    await expect(
+      form.getByRole("button", { name: "Send Enquiry" }),
+    ).toBeEnabled();
+    await page.keyboard.press("Tab");
+    const fields = form.locator(
+      'input:not([type="hidden"]):not([name="website"]), select, textarea',
+    );
+    for (const field of await fields.all()) {
+      const restingShadow = await field.evaluate(
+        (element) => getComputedStyle(element).boxShadow,
+      );
+      await field.focus();
+      await expect(field).toBeFocused();
+      await expect
+        .poll(() =>
+          field.evaluate((element, resting) => {
+            const style = getComputedStyle(element);
+            const outline =
+              style.outlineStyle !== "none" &&
+              Number.parseFloat(style.outlineWidth) > 0 &&
+              style.outlineColor !== "rgba(0, 0, 0, 0)";
+            return (
+              outline ||
+              (style.boxShadow !== "none" && style.boxShadow !== resting)
+            );
+          }, restingShadow),
+        )
+        .toBe(true);
+    }
     const guests = form.getByLabel("Number of guests");
     await guests.click();
     expect(

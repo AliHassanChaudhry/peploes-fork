@@ -20,6 +20,14 @@ for (const destination of [
     });
     await page.route("**/*", async (route) => {
       if (new URL(route.request().url()).pathname === destination.path) {
+        const headers = route.request().headers();
+        if (
+          headers["next-router-prefetch"] ||
+          headers["next-router-segment-prefetch"]
+        ) {
+          await route.abort();
+          return;
+        }
         observed();
         await gate;
       }

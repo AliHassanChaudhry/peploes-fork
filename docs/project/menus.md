@@ -38,7 +38,7 @@ Prices use euro. Lunch and Pre-Theatre course prices are optional; Dinner keeps
 individual prices. Empty cocktail sections remain hidden until content exists.
 Seasonal entries are an ordered editable collection, not a fixed Christmas list.
 Confirm sample prices, vintages, duplicate bottles and old seasonal dates before
-publishing. Group eligibility follows 'greater than 7' in the menu header.
+publishing. Seasonal group eligibility follows 'greater than 7' in its menu header.
 
 ## Sanity connection
 
@@ -54,7 +54,8 @@ cache still expires after five minutes. A failed Sanity request is not cached.
 Published content pages also reuse rendered HTML. Signed publication invalidates
 the content cache; time-based revalidation can serve the previous page while
 refreshing. Article and event detail pages resolve content before responding,
-so missing entries return HTTP 404. Booking availability remains uncached.
+so missing entries return HTTP 404. Booking requests bypass the Next data cache.
+Rules and closed dates are held in memory for five minutes.
 
 Each website environment needs its own webhook in Sanity (Manage, API,
 Webhooks):

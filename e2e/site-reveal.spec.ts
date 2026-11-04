@@ -46,10 +46,13 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       .getByRole("link", { name: "The Journal", exact: true })
       .click();
     await expect(page).toHaveURL("/journal");
-    const article = page.getByRole("main").getByRole("heading", { level: 1 });
+    const contactAfterNavigation = page
+      .getByRole("contentinfo")
+      .locator('a[href^="tel:"]');
+    await contactAfterNavigation.scrollIntoViewIfNeeded();
     await expect
       .poll(() =>
-        article.evaluate((element) =>
+        contactAfterNavigation.evaluate((element) =>
           element.checkVisibility({
             opacityProperty: true,
             visibilityProperty: true,

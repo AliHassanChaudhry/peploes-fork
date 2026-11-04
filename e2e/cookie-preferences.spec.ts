@@ -261,6 +261,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     ]) {
       await trigger.click();
       await expect(dialog).toBeVisible();
+      await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
       if (dismissal === "escape") await page.keyboard.press("Escape");
       else if (dismissal === "outside") await page.mouse.click(4, 4);
       else
