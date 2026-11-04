@@ -46,6 +46,20 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       .getByRole("link", { name: "The Journal", exact: true })
       .click();
     await expect(page).toHaveURL("/journal");
+    const journalHeading = page
+      .getByRole("main")
+      .getByRole("heading", { level: 1 });
+    await expect(journalHeading).toHaveText("The Journal");
+    await expect
+      .poll(() =>
+        journalHeading.evaluate((element) =>
+          element.checkVisibility({
+            opacityProperty: true,
+            visibilityProperty: true,
+          }),
+        ),
+      )
+      .toBe(true);
     const contactAfterNavigation = page
       .getByRole("contentinfo")
       .locator('a[href^="tel:"]');
