@@ -305,6 +305,14 @@ export function TableBookingDetails({
           {errors.terms}
         </p>
       )}
+      <label className={styles.terms}>
+        <input
+          type="checkbox"
+          checked={details.newsletterOptIn}
+          onChange={(event) => update("newsletterOptIn", event.target.checked)}
+        />
+        <span>{copy.newsletterLabel}</span>
+      </label>
       {formError && (
         <p role="alert" className={styles.formError}>
           {formError}

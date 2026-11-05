@@ -114,6 +114,7 @@ export function useGuestDetails(): IGuestDetailsSending {
             mobile: details.phone,
             specialRequests: details.requests,
             termsAccepted: details.terms,
+            newsletterOptIn: details.newsletterOptIn,
           }),
         );
         if (reply?.ok) {
