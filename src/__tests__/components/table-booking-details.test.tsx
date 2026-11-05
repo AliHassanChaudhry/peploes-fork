@@ -8,6 +8,12 @@ vi.mock("@/components/app/compounds/table-booking-panel.module.css", () => ({
   default: {},
 }));
 vi.mock("@/components/ui/button.module.css", () => ({ default: {} }));
+vi.mock(
+  "@/components/app/molecules/table-booking-processing.module.css",
+  () => ({
+    default: {},
+  }),
+);
 
 const props: ITableBookingDetailsProps = {
   details: {
@@ -18,6 +24,7 @@ const props: ITableBookingDetailsProps = {
     phone: "871234567",
     requests: "",
     terms: false,
+    newsletterOptIn: false,
   },
   terms: [],
   sending: false,

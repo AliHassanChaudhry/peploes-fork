@@ -11,11 +11,63 @@ import {
 import {
   chooseDate,
   chooseGuests,
+  chooseTime,
+  expectBookingAtTop,
   findTable,
   laterFreeDate,
   openBooking,
 } from "./booking-page";
 import { expect, test } from "./menu-test";
+
+test("booking opens with the introduction visible and aligns subsequent steps below the navbar", async ({
+  page,
+}) => {
+  const panel = await openBooking(page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(
+    page.getByRole("main").getByText("Book", { exact: true }),
+  ).toBeVisible();
+  await chooseDate(panel, laterFreeDate());
+  await panel.evaluate((element) => {
+    window.scrollTo({
+      top: element.getBoundingClientRect().top + window.scrollY + 40,
+      behavior: "instant",
+    });
+  });
+  await panel
+    .getByRole("button", { name: "Find a Table", exact: true })
+    .click();
+  await expect(
+    panel.getByRole("button", { name: "6:00 pm", exact: true }),
+  ).toBeVisible();
+  await expectBookingAtTop(panel);
+  await panel.getByRole("button", { name: "6:00 pm", exact: true }).click();
+  const continueButton = panel.getByRole("button", {
+    name: "Continue",
+    exact: true,
+  });
+  await continueButton.scrollIntoViewIfNeeded();
+  await continueButton.click();
+  await expect(panel.getByRole("timer")).toBeVisible();
+  await expectBookingAtTop(panel);
+  const back = panel.getByRole("button", {
+    name: "Back to times",
+    exact: true,
+  });
+  await back.scrollIntoViewIfNeeded();
+  const repeatedSearches: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("/api/bookings/times?"))
+      repeatedSearches.push(request.url());
+  });
+  await back.click();
+  await expect(
+    panel.getByRole("button", { name: "6:00 pm", exact: true }),
+  ).toBeVisible();
+  await expectBookingAtTop(panel);
+  expect(repeatedSearches).toHaveLength(0);
+});
 
 test("accepting another time's required deadline replaces the previous acceptance", async ({
   page,
@@ -103,15 +155,19 @@ for (const restored of [false, true]) {
       .click();
     await expect(reservations.getByRole("timer")).toBeVisible();
     if (restored) {
+      const timesRequests: string[] = [];
+      page.on("request", (request) => {
+        if (request.url().includes("/api/bookings/times?"))
+          timesRequests.push(request.url());
+      });
       await page.reload();
       await expect(reservations.getByRole("timer")).toBeVisible();
+      expect(timesRequests).toHaveLength(0);
     }
     await reservations
       .getByRole("button", { name: "Back to times", exact: true })
       .click();
-    await reservations
-      .getByRole("button", { name: "7:00 pm", exact: true })
-      .click();
+    await chooseTime(reservations, "7:00 pm");
     const deadline = reservations.getByRole("checkbox", {
       name: "I understand the table is required back by 9:00 pm",
       exact: true,
@@ -136,9 +192,7 @@ test("an after-midnight hold shows its calendar day and restores the same reserv
   const visit = addDays(evening, 1);
   await chooseDate(panel, evening);
   await findTable(panel);
-  await panel
-    .getByRole("button", { name: "12:15 am (next day)", exact: true })
-    .click();
+  await chooseTime(panel, "12:15 am (next day)");
   await panel.getByRole("button", { name: "Continue", exact: true }).click();
   await expect(panel.getByRole("timer")).toBeVisible();
   await expect(
@@ -161,7 +215,7 @@ test("an after-midnight hold shows its calendar day and restores the same reserv
   ).toBeVisible();
 });
 
-test("desktop booking keeps the panel in place when opening available times", async ({
+test("desktop booking aligns the panel when opening available times", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -172,19 +226,13 @@ test("desktop booking keeps the panel in place when opening available times", as
     exact: true,
   });
   await findTable.scrollIntoViewIfNeeded();
-  const initialBounds = await reservations.boundingBox();
-  expect(initialBounds).not.toBeNull();
 
   await findTable.click();
   await expect(
     reservations.getByRole("heading", { name: "Available times", exact: true }),
   ).toBeVisible();
   await expect(reservations).toBeFocused();
-  const timesBounds = await reservations.boundingBox();
-  expect(timesBounds).not.toBeNull();
-  if (initialBounds && timesBounds) {
-    expect(Math.abs(timesBounds.y - initialBounds.y)).toBeLessThanOrEqual(1);
-  }
+  await expectBookingAtTop(reservations);
 });
 
 test("desktop booking calendar keeps compact day rows and hides elapsed weeks", async ({
@@ -276,7 +324,7 @@ test("booking refreshes expired dates on search, focus and visibility while keep
   await expect(date).toHaveText(shortDayLabel(addDays(future, 2)));
 });
 
-test("booking brings hidden step controls back into view on forward and back navigation", async ({
+test("booking focuses and aligns forward and back steps below the navbar", async ({
   page,
 }) => {
   await page.goto("/book-a-table");
@@ -294,14 +342,7 @@ test("booking brings hidden step controls back into view on forward and back nav
     await action.scrollIntoViewIfNeeded();
     await action.click();
     await expect(reservations).toBeFocused();
-    await expect
-      .poll(() =>
-        reservations.evaluate((element) => element.getBoundingClientRect().top),
-      )
-      .toBeGreaterThanOrEqual(99);
-    await expect(
-      reservations.getByRole("list", { name: "Booking progress" }),
-    ).toBeInViewport();
+    await expectBookingAtTop(reservations);
   }
 });
 
@@ -444,121 +485,162 @@ test("navbar booking navigation works and closes the mobile drawer", async ({
     await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   }
 });
-test("the booking journey holds a time, sends the details and shows ResDiary's confirmation", async ({
-  page,
-  isMobile,
-}) => {
-  const submissions: string[] = [];
-  page.on("request", (request) => {
-    if (request.method() === "POST") submissions.push(request.url());
+for (const newsletterOptIn of [false, true]) {
+  test(`connected booking completes with newsletter opt-in ${newsletterOptIn}`, async ({
+    page,
+    isMobile,
+  }) => {
+    const submissions: string[] = [];
+    page.on("request", (request) => {
+      if (request.method() === "POST") submissions.push(request.url());
+    });
+    await page.goto("/book-a-table");
+    const reservations = page.getByRole("region", {
+      name: "Table reservations",
+    });
+    const previewNotice = reservations.getByText(
+      /Booking preview|no reservation (?:is|was) made/i,
+    );
+    await expect(previewNotice).toHaveCount(0);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      /noindex/,
+    );
+
+    await chooseDate(reservations, laterFreeDate());
+    await reservations
+      .getByRole("button", { name: "Find a Table", exact: true })
+      .click();
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Available times",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(previewNotice).toHaveCount(0);
+    await expect(
+      reservations.getByRole("button", { name: "Continue", exact: true }),
+    ).toBeDisabled();
+    await chooseTime(reservations, "7:00 pm");
+    await reservations
+      .getByLabel("I understand the table is required back by 9:00 pm")
+      .check();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
+
+    await reservations
+      .getByRole("button", { name: "Confirm Reservation", exact: true })
+      .click();
+    await expect(
+      reservations
+        .getByText("Please enter your name.", { exact: true })
+        .filter({ visible: true })
+        .first(),
+    ).toBeVisible();
+    await expect(previewNotice).toHaveCount(0);
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Your table is booked.",
+        exact: true,
+      }),
+    ).toHaveCount(0);
+
+    if (isMobile) {
+      await reservations
+        .getByLabel("Full name", { exact: false })
+        .fill("Preview Guest");
+    } else {
+      await reservations
+        .getByLabel("First name", { exact: false })
+        .fill("Preview");
+      await reservations.getByLabel("Surname", { exact: false }).fill("Guest");
+    }
+    await reservations
+      .getByLabel("Email address", { exact: false })
+      .fill("preview@example.com");
+    await reservations
+      .getByLabel(isMobile ? "Telephone number" : "Mobile number", {
+        exact: false,
+      })
+      .fill("087 123 4567");
+    await reservations
+      .getByLabel("Special requests (optional)")
+      .fill("Preview only");
+    const newsletter = reservations.getByRole("checkbox", {
+      name: "Email me news and updates from Peploe’s (optional)",
+    });
+    await expect(newsletter).toBeChecked();
+    await newsletter.focus();
+    await newsletter.press("Space");
+    await expect(newsletter).not.toBeChecked();
+    await expect(
+      reservations.getByRole("checkbox", { name: /By confirming/ }),
+    ).not.toBeChecked();
+    await reservations
+      .getByRole("button", { name: "Back to times", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
+    await expect(newsletter).not.toBeChecked();
+    await newsletter.setChecked(newsletterOptIn);
+    await reservations.getByRole("checkbox", { name: /By confirming/ }).check();
+    await reservations
+      .getByRole("button", { name: "Confirm Reservation", exact: true })
+      .click();
+
+    await expect(
+      reservations.getByRole("heading", {
+        name: "Your table is booked.",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      reservations
+        .locator("p", { hasText: "Booking reference" })
+        .locator("strong"),
+    ).toHaveText(/^E2EBK\d{4}$/);
+    await expect(previewNotice).toHaveCount(0);
+    await expect(
+      reservations.getByRole("button", {
+        name: "Add to Calendar",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    await expect(
+      reservations.getByRole("link", { name: "View Menus", exact: true }),
+    ).toHaveAttribute("href", "/menus");
+    await expect(
+      reservations.getByRole("link", { name: "Plan Your Visit", exact: true }),
+    ).toHaveAttribute("href", "/visit-contact");
+    await expectBookingAtTop(reservations);
+    expect(submissions).toHaveLength(3);
+    await reservations
+      .getByRole("button", { name: "Start again", exact: true })
+      .click();
+    await chooseDate(reservations, laterFreeDate());
+    await reservations
+      .getByRole("button", { name: "Find a Table", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "6:00 pm", exact: true })
+      .click();
+    await reservations
+      .getByRole("button", { name: "Continue", exact: true })
+      .click();
+    await expect(newsletter).toBeChecked();
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      )
+      .toBe(true);
   });
-  await page.goto("/book-a-table");
-  const reservations = page.getByRole("region", { name: "Table reservations" });
-  const previewNotice = reservations.getByText(
-    /Booking preview|no reservation (?:is|was) made/i,
-  );
-  await expect(previewNotice).toHaveCount(0);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-    "content",
-    /noindex/,
-  );
-
-  await chooseDate(reservations, laterFreeDate());
-  await reservations
-    .getByRole("button", { name: "Find a Table", exact: true })
-    .click();
-  await expect(
-    reservations.getByRole("heading", { name: "Available times", exact: true }),
-  ).toBeVisible();
-  await expect(previewNotice).toHaveCount(0);
-  await expect(
-    reservations.getByRole("button", { name: "Continue", exact: true }),
-  ).toBeDisabled();
-  await reservations
-    .getByRole("button", { name: "7:00 pm", exact: true })
-    .click();
-  await reservations
-    .getByLabel("I understand the table is required back by 9:00 pm")
-    .check();
-  await reservations
-    .getByRole("button", { name: "Continue", exact: true })
-    .click();
-
-  await reservations
-    .getByRole("button", { name: "Confirm Reservation", exact: true })
-    .click();
-  await expect(
-    reservations
-      .getByText("Please enter your name.", { exact: true })
-      .filter({ visible: true })
-      .first(),
-  ).toBeVisible();
-  await expect(previewNotice).toHaveCount(0);
-  await expect(
-    reservations.getByRole("heading", {
-      name: "Your table is booked.",
-      exact: true,
-    }),
-  ).toHaveCount(0);
-
-  if (isMobile) {
-    await reservations
-      .getByLabel("Full name", { exact: false })
-      .fill("Preview Guest");
-  } else {
-    await reservations
-      .getByLabel("First name", { exact: false })
-      .fill("Preview");
-    await reservations.getByLabel("Surname", { exact: false }).fill("Guest");
-  }
-  await reservations
-    .getByLabel("Email address", { exact: false })
-    .fill("preview@example.com");
-  await reservations
-    .getByLabel(isMobile ? "Telephone number" : "Mobile number", {
-      exact: false,
-    })
-    .fill("087 123 4567");
-  await reservations
-    .getByLabel("Special requests (optional)")
-    .fill("Preview only");
-  await reservations.getByRole("checkbox", { name: /By confirming/ }).check();
-  await reservations
-    .getByRole("button", { name: "Confirm Reservation", exact: true })
-    .click();
-
-  await expect(
-    reservations.getByRole("heading", {
-      name: "Your table is booked.",
-      exact: true,
-    }),
-  ).toBeVisible();
-  await expect(
-    reservations
-      .locator("p", { hasText: "Booking reference" })
-      .locator("strong"),
-  ).toHaveText(/^E2EBK\d{4}$/);
-  await expect(previewNotice).toHaveCount(0);
-  await expect(
-    reservations.getByRole("button", { name: "Add to Calendar", exact: true }),
-  ).toBeDisabled();
-  await expect(
-    reservations.getByRole("link", { name: "View Menus", exact: true }),
-  ).toHaveAttribute("href", "/menus");
-  await expect(
-    reservations.getByRole("link", { name: "Plan Your Visit", exact: true }),
-  ).toHaveAttribute("href", "/contact");
-  expect(submissions).toHaveLength(2);
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          document.documentElement.scrollWidth <=
-          document.documentElement.clientWidth,
-      ),
-    )
-    .toBe(true);
-});
+}
 
 test("booking preview preserves selections on back navigation and resets time when the search changes", async ({
   page,
@@ -577,9 +659,7 @@ test("booking preview preserves selections on back navigation and resets time wh
   await expect(
     reservations.getByText(`Showing times for ${dayLabel(date)} · 3 guests`),
   ).toBeVisible();
-  await reservations
-    .getByRole("button", { name: "7:00 pm", exact: true })
-    .click();
+  await chooseTime(reservations, "7:00 pm");
   await reservations
     .getByLabel("I understand the table is required back by 9:00 pm")
     .check();
@@ -606,9 +686,7 @@ test("booking preview preserves selections on back navigation and resets time wh
   await reservations
     .getByRole("button", { name: "Find a Table", exact: true })
     .click();
-  await reservations
-    .getByRole("button", { name: "7:00 pm", exact: true })
-    .click();
+  await chooseTime(reservations, "7:00 pm");
   await expect(
     reservations.getByLabel(
       "I understand the table is required back by 9:00 pm",
@@ -806,7 +884,7 @@ for (const { path, count } of [
   { path: "/menus?menu=pre-theatre", count: 1 },
   { path: "/menus?menu=wine", count: 1 },
   { path: "/menus?menu=cocktails", count: 1 },
-  { path: "/contact", count: 3 },
+  { path: "/visit-contact", count: 3 },
 ]) {
   test(`all booking calls to action on ${path} open the booking page`, async ({
     page,

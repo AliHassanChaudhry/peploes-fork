@@ -232,6 +232,23 @@ buttons open the existing seasonal event templates; menu, story, private dining
 and contact links open their matching pages. Unbuilt editorial pages and Gift Vouchers remain inactive. Newsletter signup
 uses the shared provider-backed form described below.
 
+## Booking newsletter opt-in
+
+Issue #120 adds an optional newsletter checkbox beneath the booking terms on
+the guest-details step. It starts checked and can be unchecked, remains independent
+of the required terms, keeps its choice when going back to times, and resets to
+checked on Start again.
+Both choices allow the connected booking to proceed. The checkbox rows have an
+8px gap. After ResDiary accepts the guest details (confirmation, deposit or card
+guarantee), a checked newsletter box requests a subscription through the existing
+newsletter service after the booking response. Subscription failure never
+changes the booking result or retries the booking. Consent and email are not
+stored for recovery. If the booking outcome remains unclear and is only resolved
+later by status polling, no newsletter request is made; guests can use the footer
+signup instead. Newsletter delivery still needs the configured Klaviyo list,
+credentials and rate limiter. No subscription success is promised by the booking
+confirmation.
+
 ## Homepage interaction previews
 
 Enabled links, buttons, selects, disclosure summaries and choice controls use a
