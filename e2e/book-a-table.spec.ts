@@ -613,7 +613,7 @@ for (const newsletterOptIn of [false, true]) {
     ).toHaveAttribute("href", "/menus");
     await expect(
       reservations.getByRole("link", { name: "Plan Your Visit", exact: true }),
-    ).toHaveAttribute("href", "/visit-contact");
+    ).toHaveAttribute("href", "/contact");
     await expectBookingAtTop(reservations);
     expect(submissions).toHaveLength(3);
     await reservations
