@@ -8,9 +8,10 @@ import styles from "@/components/app/molecules/private-dining-date.module.css";
 import { Button } from "@/components/ui/button";
 import { PRIVATE_DINING_FORM } from "@/lib/constants/private-dining";
 import { dublinToday } from "@/lib/dates";
+import type { IPrivateDiningDateProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function PrivateDiningDate() {
+export function PrivateDiningDate({ errorId }: IPrivateDiningDateProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [minimum, setMinimum] = useState("");
@@ -98,6 +99,8 @@ export function PrivateDiningDate() {
           name="date"
           max="9999-12-31"
           aria-label={PRIVATE_DINING_FORM.date}
+          aria-invalid={Boolean(errorId)}
+          aria-describedby={errorId}
           aria-controls={open ? calendarId : undefined}
           required
           onFocus={refreshMinimum}

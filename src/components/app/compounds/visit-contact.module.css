@@ -261,16 +261,10 @@ body:has(.page) [data-navbar-visit] {
 }
 .location {
   padding-block: 48px 44px;
-  background: var(--location-background);
 }
 .locationSection {
-  --location-background: color-mix(
-    in srgb,
-    var(--soft-stone) 55%,
-    var(--warm-cream)
-  );
   scroll-margin-top: 100px;
-  background: var(--location-background);
+  background: var(--warm-cream);
 }
 .locationGrid {
   display: grid;
@@ -284,6 +278,8 @@ body:has(.page) [data-navbar-visit] {
   position: relative;
   display: block;
   aspect-ratio: 760 / 333;
+  border: 0.2px solid var(--soft-stone);
+  box-shadow: 0 4px 18px 3px color-mix(in srgb, var(--ink) 6%, transparent);
 }
 .cover {
   object-fit: cover;
@@ -471,6 +467,7 @@ body:has(.page) [data-navbar-visit] {
   .map {
     aspect-ratio: auto;
     height: 240px;
+    box-shadow: 0 4px 18px 5px color-mix(in srgb, var(--ink) 6%, transparent);
   }
   .transport {
     margin-top: 32px;

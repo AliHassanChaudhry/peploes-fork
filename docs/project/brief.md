@@ -405,8 +405,8 @@ Privacy. The links share the contents disclosure on mobile.
 Footer Instagram and Facebook links use the restaurant
 profiles linked from [the official website](https://peploes.com/) and open in a
 new tab. Other unbuilt navigation destinations remain inactive. The newsletter
-email field has an accessible label without email-domain suggestions. Browser
-autocomplete and the native datalist are disabled. Tab moves to Subscribe
+email field has an accessible label and enables native saved-email autofill.
+Custom email-domain suggestions and the native datalist are disabled. Tab moves to Subscribe
 without changing the address. Browser validation popups are disabled; invalid
 addresses show the inline error below the field and focus the input.
 Focus colours the 1px bottom border burgundy and thickens it by 1px downward
@@ -628,7 +628,8 @@ No separate mobile frame is supplied. Below
 640px, follow the homepage and menu pages: 16px gutters, 48px hero type, 42px
 section headings, 16px body copy and stacked full-width invitation buttons.
 Photo banners use vertical overlays with room above the text; their height grows
-with the content. The diary retains its date column, 1px horizontal row dividers
+with the content. Below 640px, the hub hero has a minimum height of `100svh`.
+The diary retains its date column, 1px horizontal row dividers
 and a 1px Soft Stone vertical rule beside each date. Use compact month headings
 and 44px minimum action targets. The terrace photo uses a 3:2 crop.
 The shared invitation follows these phone styles on individual events too;

@@ -13,6 +13,8 @@ Only the overview has a separate mobile frame. The three detail pages use its
 24px phone gutters, stacked content, type scale and full-width controls.
 Desktop references are 1440px wide; the overview phone reference is 390px.
 Sections can grow at narrower widths and with enlarged text.
+Below 640px, the overview hero has a minimum height of one small viewport
+(`100svh`) and grows when its copy needs more room.
 
 The desktop Private Dining & Events navigation shelf links each occasion image
 and its title to the matching detail page. Image links support keyboard focus
@@ -123,7 +125,7 @@ and 22/28px on mobile. Their desktop columns have 40px gaps; centred label width
 are capped at 294px to preserve the Figma line breaks on wider screens. The menu
 description uses secondary text at 20/24px on desktop and 18/28px on mobile. The compact
 enquiry description is 580px wide at most, with 18px DM Sans and 23px line height
-on desktop. Its mobile fields keep their labels near the top of the 88px controls.
+on desktop. Its mobile date placeholder uses the shared vertical-centering rule, without a fixed top offset. Empty, unfocused date fields hide the browser date text so it cannot overlap the placeholder; focused and valid dates remain readable.
 
 All private-dining pages use the shared homepage footer, including its desktop
 columns, spacing, gutters and mobile reading order. Footer content remains
@@ -184,6 +186,7 @@ The enquiry has 598px and 650px columns separated by
 The privacy-policy link points to `/privacy-cookies` and retains the design's
 underline.
 
+On phones, the corporate Location Matters heading, eyebrow, icons and card text are centered. Card headings use 23px type and descriptions use 15px type.
 The corporate Location Matters section uses 36px top and 40px bottom padding,
 a 48/50px regular heading, 48px icons and 1px inset Soft Stone dividers.
 At desktop widths, card titles use 22/25px regular EB Garamond and descriptions
@@ -237,8 +240,7 @@ enquiries include a company field; wedding enquiries do not ask for an occasion
 type. The overview note `3482:6834` supplies its five occasion choices: Groups &
 Celebrations, Corporate Event, Exclusive Hire, Wedding and Other.
 
-Textarea resize grips use burgundy diagonal lines in browsers that support
-styling the native grip. Below 640px, compact-form dropdown arrows align with
+Textarea resize grips use burgundy diagonal lines in browsers that support styling the native grip. On phones, a visible 24px touch handle provides vertical dragging; keyboard users can use arrow keys or activate the handle to add a line. The handle preserves message text and does not submit the form. Below 640px, compact-form dropdown arrows align with
 the first line of the field text.
 
 Resolved comments on the overview ask for cleaner sections with less text
@@ -344,8 +346,10 @@ Enquiry select fields use maroon outline chevrons, centered at the right edge wi
 
 ## Enquiry submission
 
+Shared enquiry fields, message areas and form wrappers have no minimum-height constraints at any breakpoint. Existing desktop height and padding rules remain in place. On phones, all shared enquiry forms use natural field heights. Inputs and selects use 10px vertical padding and 22px line height, giving 44px controls. The three-row message field uses 12px vertical padding for a 92px initial height and remains vertically resizable. Fields share 8px gaps, Soft Stone borders and 4px corners.
+
 The shared guest-count field accepts a custom positive whole number, including 80 or more.
-Maroon filled triangle up/down buttons sit beside the guest count; typing and keyboard adjustment remain available. The submit button has an additional 16px of space above it.
+Maroon outlined chevron up/down buttons sit beside the guest count; typing and keyboard adjustment remain available. The submit button has an additional 16px of space above it.
 Set `NEXT_PUBLIC_ENQUIRY_MAX_GUESTS` to a positive whole number to cap enquiries in both the form and server validation. Leave it empty for no fixed capacity cap. This public setting requires a rebuild after changes. Book a Table keeps its separate online booking limit.
 Restaurant capacity and group menu eligibility remain separate content.
 For occasion selects, supporting browsers show a styled picker capped at 310px (or 40% of the
@@ -367,9 +371,8 @@ preferred-date field at every screen width. Autofilled fields keep their cream b
 Narrow calendars use compact headings and day controls to keep dates separate.
 
 The shared form calls the enquiry action connected in issue #100.
-Send Enquiry is enabled once the form is interactive. Clicking it with missing
-or invalid fields shows the browser's validation message and focuses the first
-invalid control. No enquiry variant includes an agreement checkbox. A valid enquiry shows a
+Send Enquiry is enabled once the form is interactive. Clicking it with several missing required fields shows a required-fields warning.
+Individual invalid fields show inline validation messages. No enquiry variant includes an agreement checkbox. A valid enquiry shows a
 spinner while delivery is pending, then an animated check and Complete label
 only after the server confirms acceptance. Reduced motion keeps both icons static.
 A live status announces the server's result. The form has no simulated completion timer.

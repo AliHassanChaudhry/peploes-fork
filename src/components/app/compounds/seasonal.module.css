@@ -275,6 +275,10 @@
     padding-block: 176px 40px;
   }
 
+  .heroCopy {
+    min-height: 100svh;
+  }
+
   .heroCopy h1 {
     margin-top: 14px;
     font-size: 48px;

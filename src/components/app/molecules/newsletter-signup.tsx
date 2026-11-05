@@ -20,7 +20,6 @@ export function NewsletterSignup() {
 
   return (
     <form
-      autoComplete="off"
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
@@ -56,11 +55,12 @@ export function NewsletterSignup() {
         <div className={styles.field}>
           <input
             id={`${id}-email`}
+            name="email"
             type="email"
             required
             disabled={!ready || pending || submitted}
             pattern=".+@.+\..+"
-            autoComplete="off"
+            autoComplete="email"
             autoCapitalize="none"
             spellCheck={false}
             placeholder={FOOTER_CONTENT.newsletter.emailLabel}

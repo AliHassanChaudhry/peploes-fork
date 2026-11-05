@@ -65,7 +65,7 @@ function VisitHero() {
           <p className={styles.description}>
             {VISIT_CONTACT_CONTENT.hero.description}
           </p>
-          <div className={styles.heroActions}>
+          <div data-button-pair className={styles.heroActions}>
             <VisitBookingButton />
             <Button
               asChild
