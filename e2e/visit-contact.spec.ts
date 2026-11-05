@@ -1,19 +1,28 @@
 import { expect, test } from "@playwright/test";
 
-test("Find Us and Getting Here share the map background at every width", async ({
+test("location sections keep the page background and the map has a shadow", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/contact");
   const section = page.locator("#find-us");
-  const desktopBackground = await section
-    .locator(":scope > div")
-    .first()
+  const desktopBackground = await page
+    .getByRole("main")
     .evaluate((element) => getComputedStyle(element).backgroundColor);
-  expect(desktopBackground).not.toBe("rgba(0, 0, 0, 0)");
   for (const width of [320, 390, 639, 768, 1280, 1440]) {
     await page.setViewportSize({ width, height: 844 });
     await expect(section).toHaveCSS("background-color", desktopBackground);
+    for (const content of await section.locator(":scope > div").all()) {
+      await expect(content).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    }
+    const map = section.locator("[aria-busy]");
+    await expect(map).toHaveCSS("border-top-style", "solid");
+    const borderWidth = await map.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).borderTopWidth),
+    );
+    expect(borderWidth).toBeGreaterThan(0);
+    expect(borderWidth).toBeLessThanOrEqual(1);
+    await expect(map).not.toHaveCSS("box-shadow", "none");
   }
 });
 

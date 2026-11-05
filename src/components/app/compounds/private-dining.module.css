@@ -151,6 +151,11 @@
   margin-top: 16px;
   height: 2px;
 }
+@media (width < 40rem) {
+  .overview {
+    min-height: 100svh;
+  }
+}
 .gatherings .eyebrow {
   margin-bottom: 16px;
 }
@@ -484,7 +489,6 @@
   opacity: 0;
 }
 .enquiryFeedback {
-  min-height: 22px;
   margin: 0;
   color: var(--ink);
   font-size: 14px;
@@ -496,7 +500,7 @@
   display: block;
   width: 100%;
   min-width: 0;
-  min-height: 56px;
+  min-height: 0;
   border: 1px solid var(--soft-stone);
   border-radius: 4px;
   background-color: var(--warm-cream);
@@ -512,11 +516,10 @@
   opacity: 1;
 }
 .enquiryFields textarea {
-  min-height: 144px;
   resize: vertical;
 }
-.enquiryFields textarea::-webkit-resizer {
-  background:
+.messageField {
+  --message-resize-grip:
     linear-gradient(
       135deg,
       transparent 50%,
@@ -528,9 +531,33 @@
       transparent 85%
     )
     right 2px bottom 2px / 12px 12px no-repeat;
+  position: relative;
+  min-width: 0;
+}
+.enquiryFields textarea::-webkit-resizer {
+  background: var(--message-resize-grip);
+}
+.messageResize {
+  display: none;
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: var(--message-resize-grip);
+  cursor: ns-resize;
+  touch-action: none;
+}
+.messageResize:focus-visible {
+  outline: 2px solid var(--peploe-burgundy);
+  outline-offset: -2px;
 }
 .fieldRow {
   display: grid;
+  align-items: start;
   gap: 12px;
 }
 .dateField {
@@ -637,7 +664,6 @@
   gap: 8px;
 }
 .compactEnquiry .enquiryFields textarea {
-  min-height: 190px;
   padding-top: 14px;
 }
 .compactEnquiry .enquiryFields :is(input, select, textarea) {
@@ -651,6 +677,10 @@
 }
 .compactEnquiry .dateField input:invalid:not(:focus) {
   color: transparent;
+}
+.compactEnquiry .enquiryFields input:not([type="checkbox"]),
+.compactEnquiry .enquiryFields select {
+  padding-block: 10px 12px;
 }
 .compactEnquiry .enquiryFields select {
   appearance: none;
@@ -670,10 +700,6 @@
 }
 .compactEnquiry .dateField input::-webkit-calendar-picker-indicator {
   opacity: 0;
-}
-.compactEnquiry .dateField span {
-  top: 14px;
-  transform: none;
 }
 .contacts {
   display: flex;
@@ -1730,14 +1756,12 @@
   .enquiryFields select,
   .compactEnquiry .enquiryFields input:not([type="checkbox"]),
   .compactEnquiry .enquiryFields select {
-    min-height: 38px;
     height: 38px;
     padding: 8px 12px;
     font-size: 16px;
     line-height: 20px;
   }
   .enquiryFields textarea {
-    min-height: 68px;
     height: 68px;
     padding: 8px 12px;
     font-size: 16px;
@@ -1753,7 +1777,6 @@
   }
   .consent {
     margin-block: 20px;
-    min-height: 48px;
     align-items: center;
   }
   .sendButton {
@@ -1772,9 +1795,6 @@
   :where(.enquiryIntro) .contacts a {
     flex: 1;
     height: 48px;
-  }
-  .compactEnquiry {
-    min-height: 398px;
   }
   .compactEnquiry .enquiryContainer {
     grid-template-columns: 612fr 555fr;
@@ -1814,12 +1834,10 @@
   }
   .compactEnquiry .enquiryFields input:not([type="checkbox"]),
   .compactEnquiry .enquiryFields select {
-    min-height: 40px;
     height: 40px;
     padding: 8px 12px;
   }
   .compactEnquiry .enquiryFields textarea {
-    min-height: 90px;
     height: 90px;
     padding-top: 8px;
   }
@@ -2311,7 +2329,7 @@
   }
   .celebrationEnquiry .enquiryFields .selectField select,
   .weddingEnquiry .enquiryFields .selectField select {
-    padding-inline: 15px;
+    padding-inline: 14px;
   }
   .celebrationEnquiry .consent,
   .weddingEnquiry .consent {
@@ -2569,7 +2587,6 @@
   .enquiryFields .selectField select.enquirySelect {
     display: flex;
     align-items: center;
-    padding-inline: 12px;
   }
 
   .enquiryFields .selectField .selectIcon {
@@ -2717,6 +2734,36 @@
 .guestField {
   position: relative;
 }
+.fieldError {
+  margin: 6px 0 0;
+  padding-inline: 17px;
+  color: var(--peploe-burgundy);
+  font-size: 13px;
+  line-height: 18px;
+}
+.requiredWarning {
+  margin: 0;
+  color: var(--peploe-burgundy);
+  font-size: 13px;
+  line-height: 18px;
+}
+.compactEnquiry .fieldError {
+  padding-inline: 16px;
+}
+@media (width >= 64rem) {
+  .fieldError,
+  .compactEnquiry .fieldError {
+    padding-inline: 13px;
+  }
+  :is(.corporatePage, .celebrationEnquiry, .weddingEnquiry) .fieldError {
+    padding-inline: 14px;
+  }
+}
+@media (width < 40rem) {
+  .enquiry .fieldError {
+    padding-inline: 15px;
+  }
+}
 .enquiryFields .guestField input[name="guests"] {
   padding-right: 52px;
 }
@@ -2740,13 +2787,11 @@
   color: var(--peploe-burgundy);
 }
 .guestSteps .guestStep svg {
-  width: 14px;
-  height: 12px;
-  fill: currentColor;
-  stroke: none;
-}
-.guestSteps .guestStep:last-child svg {
-  transform: rotate(180deg);
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
 }
 .guestSteps .guestStep:focus-visible {
   outline: 2px solid var(--peploe-burgundy);
@@ -2754,32 +2799,54 @@
 }
 
 @media (width < 40rem) {
+  .corporatePage .location {
+    text-align: center;
+  }
+  .corporatePage .location .featureHeading {
+    font-size: 23px;
+  }
+  .corporatePage .location .features p {
+    font-size: 15px;
+  }
+  .corporatePage .location .eyebrow {
+    justify-content: center;
+  }
+  .corporatePage .location .illustration {
+    margin-inline: auto;
+  }
   .enquiry .enquiryFields,
   .enquiry .fieldRow {
     gap: 8px;
   }
   .enquiry .enquiryFields :is(input:not([type="checkbox"]), select, textarea) {
-    min-height: 38px;
-    height: 38px;
-    padding: 8px 12px;
+    height: auto;
+    padding: 10px 14px;
     border: 1px solid var(--soft-stone);
     border-radius: 4px;
     color: var(--text-secondary);
     font-size: 16px;
-    line-height: 20px;
+    line-height: 22px;
   }
   .enquiry .enquiryFields textarea[name="message"] {
-    min-height: 90px;
-    height: 90px;
-    line-height: 22px;
+    padding-block: 12px;
+    padding-right: 32px;
+  }
+  .messageResize {
+    display: block;
+  }
+  .enquiry .enquiryFields textarea::-webkit-resizer {
+    background: none;
   }
   .enquiry .enquiryFields input[type="date"] {
     padding-right: 44px;
   }
+  .enquiry .enquiryFields input[name="guests"] {
+    padding-right: 52px;
+  }
   .enquiry .enquiryFields :is(input, textarea)::placeholder {
     color: var(--text-secondary);
   }
-  .enquiry .enquiryFields input[name="guests"] {
-    padding-right: 52px;
+  .enquiry .enquiryFields input[type="date"]:invalid:not(:focus) {
+    color: transparent;
   }
 }

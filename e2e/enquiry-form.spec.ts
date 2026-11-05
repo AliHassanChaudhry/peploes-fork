@@ -23,12 +23,14 @@ test.beforeEach(async ({ page }) => {
 
 async function fillEnquiry(form: Locator) {
   const selects = form.getByRole("combobox");
-  await expect(form.getByLabel("Number of guests")).toBeVisible();
+  await expect(
+    form.getByRole("spinbutton", { name: "Number of guests" }),
+  ).toBeVisible();
   for (const select of await selects.all()) {
     await select.selectOption({ index: 1 });
     await expect(select).not.toHaveValue("");
   }
-  await form.getByLabel("Number of guests").fill("80");
+  await form.getByRole("spinbutton", { name: "Number of guests" }).fill("80");
   await form.getByLabel("Preferred date", { exact: true }).fill("2026-12-01");
   await form.getByLabel("Your name").fill("Test Guest");
   await form.getByLabel("Email address").fill("guest@example.test");
@@ -36,6 +38,179 @@ async function fillEnquiry(form: Locator) {
 }
 
 for (const path of enquiryPaths) {
+  test(`${path} required warnings move from the button to the only missing field`, async ({
+    page,
+  }) => {
+    let submissions = 0;
+    await page.route("**/*", async (route) => {
+      if (route.request().method() === "POST") {
+        if (route.request().headers()["next-action"]) submissions += 1;
+        await route.abort();
+      } else {
+        await route.continue();
+      }
+    });
+    await page.goto(path);
+    const form = page.locator("#enquire").getByRole("form");
+    const submit = form.getByRole("button", { name: "Send Enquiry" });
+    await submit.click();
+    const summary = form.getByText("Please complete all required fields.", {
+      exact: true,
+    });
+    await expect(summary).toBeVisible();
+    await expect(form.getByRole("alert")).toHaveCount(1);
+    await expect(summary).toHaveCSS("color", "rgb(122, 30, 36)");
+    const summaryBounds = await summary.boundingBox();
+    const submitBounds = await submit.boundingBox();
+    expect(
+      (summaryBounds?.y ?? 0) + (summaryBounds?.height ?? 0),
+    ).toBeLessThanOrEqual(submitBounds?.y ?? 0);
+    await fillEnquiry(form);
+    await expect(form.getByRole("alert")).toHaveCount(0);
+    const required = form.locator(
+      "input[required], select[required], textarea[required]",
+    );
+    for (const control of await required.all()) {
+      const value = await control.inputValue();
+      if (
+        await control.evaluate(
+          (element) => element instanceof HTMLSelectElement,
+        )
+      ) {
+        await control.evaluate((element: HTMLSelectElement) => {
+          element.selectedIndex = 0;
+          element.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+      } else {
+        await control.fill("");
+      }
+      await submit.click();
+      await expect(summary).toHaveCount(0);
+      const error = form.getByRole("alert");
+      await expect(error).toHaveCount(1);
+      const messages: Record<string, string> = {
+        occasion: "Please select an occasion type.",
+        date: "Please choose a preferred date.",
+        guests: "Please enter the number of guests.",
+        name: "Please enter your name.",
+        email: "Please enter your email address.",
+        message: "Please enter your enquiry details.",
+      };
+      await expect(error).toHaveText(
+        messages[(await control.getAttribute("name")) ?? ""],
+      );
+      await expect(error).toHaveCSS("color", "rgb(122, 30, 36)");
+      await expect(control).toHaveAttribute("aria-invalid", "true");
+      await expect(control).toHaveAttribute(
+        "aria-describedby",
+        (await error.getAttribute("id")) ?? "",
+      );
+      const controlBounds = await control.boundingBox();
+      const errorBounds = await error.boundingBox();
+      const fieldTextStart = await control.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return (
+          element.getBoundingClientRect().left +
+          Number.parseFloat(style.paddingLeft) +
+          Number.parseFloat(style.borderLeftWidth)
+        );
+      });
+      const errorTextStart = await error.evaluate((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        return range.getBoundingClientRect().left;
+      });
+      expect(Math.abs(fieldTextStart - errorTextStart)).toBeLessThan(1);
+      expect(errorBounds?.y).toBeGreaterThanOrEqual(
+        (controlBounds?.y ?? 0) + (controlBounds?.height ?? 0),
+      );
+      if (
+        await control.evaluate(
+          (element) => element instanceof HTMLSelectElement,
+        )
+      ) {
+        await control.selectOption(value);
+      } else {
+        await control.fill(value);
+      }
+      await expect(form.getByRole("alert")).toHaveCount(0);
+    }
+    const email = form.getByRole("textbox", { name: "Email address" });
+    await email.fill("invalid-email");
+    await submit.click();
+    await expect(form.getByRole("alert")).toHaveCount(1);
+    await expect(form.getByRole("alert")).toHaveText(
+      "Please enter a valid email address.",
+    );
+    await expect(email).toHaveAttribute("aria-invalid", "true");
+    await email.fill("guest@example.test");
+    await expect(form.getByRole("alert")).toHaveCount(0);
+    expect(submissions).toBe(0);
+  });
+
+  test(`${path} guest validation appears below the field and clears when corrected`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+    const form = page.locator("#enquire").getByRole("form");
+    const guests = form.getByRole("spinbutton", { name: "Number of guests" });
+    await guests.evaluate((input: HTMLInputElement) => {
+      input.max = "120";
+    });
+    await guests.fill("125");
+    const error = form.getByRole("alert");
+    await expect(error).toContainText("120");
+    await expect(error).toHaveText("The maximum number of guests is 120.");
+    await expect(guests).toHaveAttribute("aria-invalid", "true");
+    await expect(guests).toHaveAttribute(
+      "aria-describedby",
+      (await error.getAttribute("id")) ?? "",
+    );
+    await expect(error).toHaveCSS("color", "rgb(122, 30, 36)");
+    const numberStart = await guests.evaluate((input) => {
+      const style = getComputedStyle(input);
+      return (
+        input.getBoundingClientRect().left +
+        Number.parseFloat(style.paddingLeft) +
+        Number.parseFloat(style.borderLeftWidth)
+      );
+    });
+    const warningStart = await error.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getBoundingClientRect().left;
+    });
+    expect(Math.abs(warningStart - numberStart)).toBeLessThan(1);
+    const fieldBounds = await guests.boundingBox();
+    const errorBounds = await error.boundingBox();
+    expect(errorBounds?.y).toBeGreaterThanOrEqual(
+      (fieldBounds?.y ?? 0) + (fieldBounds?.height ?? 0),
+    );
+    expect(
+      await guests.evaluate((input: HTMLInputElement) => {
+        let prevented = false;
+        input.addEventListener(
+          "invalid",
+          (event) => {
+            prevented = event.defaultPrevented;
+          },
+          { once: true },
+        );
+        input.reportValidity();
+        return prevented;
+      }),
+    ).toBe(true);
+    await guests.fill("120");
+    await expect(error).toHaveCount(0);
+    await expect(guests).toHaveAttribute("aria-invalid", "false");
+    await guests.fill("125");
+    await form
+      .getByRole("button", { name: "Decrease number of guests" })
+      .click();
+    await expect(guests).toHaveValue("120");
+    await expect(error).toHaveCount(0);
+  });
+
   test(`${path} guest buttons adjust the count and respect its limits`, async ({
     page,
   }) => {
@@ -72,8 +247,11 @@ for (const path of enquiryPaths) {
       });
       expect(insets.top).toBeGreaterThanOrEqual(0);
       expect(insets.bottom).toBeGreaterThanOrEqual(0);
-      await expect(button.locator("svg")).toHaveCSS("fill", "rgb(122, 30, 36)");
-      await expect(button.locator("svg")).toHaveCSS("stroke", "none");
+      await expect(button.locator("svg")).toHaveCSS("fill", "none");
+      await expect(button.locator("svg")).toHaveCSS(
+        "stroke",
+        "rgb(122, 30, 36)",
+      );
     }
     await increase.click();
     await expect(guests).toHaveValue("1");
@@ -351,7 +529,10 @@ test("enquiry validation, editing and keyboard retries preserve real delivery st
   await expect(submit).toBeEnabled();
 });
 
-test("all enquiry forms share compact mobile field sizes", async ({ page }) => {
+test("mobile enquiry fields size naturally without oversized minimum heights", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 844 });
     for (const path of enquiryPaths) {
@@ -361,38 +542,157 @@ test("all enquiry forms share compact mobile field sizes", async ({ page }) => {
         'input:not([type="hidden"]):not([aria-hidden="true"]):not([type="checkbox"]), select',
       );
       for (const field of await fields.all()) {
-        await expect(field).toHaveCSS("height", "38px");
-        await expect(field).toHaveCSS("min-height", "38px");
-        await expect(field).toHaveCSS("padding-top", "8px");
-        await expect(field).toHaveCSS("padding-bottom", "8px");
+        await expect(field).toHaveCSS("min-height", "0px");
+        await expect(field).toHaveCSS("height", "44px");
+        await expect(field).toHaveCSS("padding-top", "10px");
+        await expect(field).toHaveCSS("padding-bottom", "10px");
         await expect(field).toHaveCSS("border-top-width", "1px");
       }
-      await expect(form.locator("textarea")).toHaveCSS("height", "90px");
+      await expect(form.locator("textarea")).toHaveCSS("height", "92px");
+      await expect(form.locator("textarea")).toHaveCSS("min-height", "0px");
+      await expect(form.locator("textarea")).toHaveCSS("resize", "vertical");
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
+  }
+});
+
+test("enquiry date placeholders stay vertically centered on phones", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    for (const path of enquiryPaths) {
+      await page.goto(path);
+      const date = page
+        .locator("#enquire")
+        .getByLabel("Preferred date", { exact: true });
+      const name = page
+        .locator("#enquire")
+        .getByLabel("Your name", { exact: true });
+      await name.focus();
+      const placeholder = date.locator("+ span");
+      await expect(placeholder).toBeVisible();
+      await expect(date).toHaveCSS("color", "rgba(0, 0, 0, 0)");
+      const offset = await placeholder.evaluate((element) => {
+        const input = element.previousElementSibling;
+        if (!(input instanceof HTMLInputElement))
+          throw new Error("Date field is missing");
+        const text = element.getBoundingClientRect();
+        const field = input.getBoundingClientRect();
+        return text.top + text.height / 2 - field.top - field.height / 2;
+      });
+      expect(Math.abs(offset)).toBeLessThan(0.5);
+      await date.focus();
+      await expect(placeholder).toBeHidden();
+      await expect(date).not.toHaveCSS("color", "rgba(0, 0, 0, 0)");
+      await name.focus();
+      await expect(placeholder).toBeVisible();
+      await expect(date).toHaveCSS("color", "rgba(0, 0, 0, 0)");
+      await date.fill("2026-12-01");
+      await expect(placeholder).toBeHidden();
+      await expect(date).toHaveValue("2026-12-01");
+      await name.focus();
+      await expect(placeholder).toBeHidden();
+      await expect(date).not.toHaveCSS("color", "rgba(0, 0, 0, 0)");
+    }
+  }
+});
+
+test("mobile message handles resize by touch and keyboard without changing the enquiry", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  const session = await page.context().newCDPSession(page);
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    for (const path of enquiryPaths) {
+      await page.goto(path);
+      const form = page.locator("#enquire").getByRole("form");
+      const message = form.locator("textarea");
+      const handle = form.getByRole("button", {
+        name: "Resize message",
+        exact: true,
+      });
+      await expect(handle).toBeVisible();
+      await message.fill("Please share your celebration options.");
+      await handle.evaluate((element) =>
+        element.scrollIntoView({ block: "center" }),
+      );
+      const bounds = await handle.boundingBox();
+      if (!bounds) throw new Error("Message resize handle is missing");
+      const initialHeight = await message.evaluate(
+        (element) => element.getBoundingClientRect().height,
+      );
+      const x = bounds.x + bounds.width / 2;
+      const y = bounds.y + bounds.height / 2;
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: y + 60 }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchEnd",
+        touchPoints: [],
+      });
+      await expect
+        .poll(() =>
+          message.evaluate((element) => element.getBoundingClientRect().height),
+        )
+        .toBeCloseTo(initialHeight + 60, 0);
+      await handle.focus();
+      await handle.press("ArrowUp");
+      await expect
+        .poll(() =>
+          message.evaluate((element) => element.getBoundingClientRect().height),
+        )
+        .toBeCloseTo(initialHeight + 38, 0);
+      await handle.press("Enter");
+      await expect
+        .poll(() =>
+          message.evaluate((element) => element.getBoundingClientRect().height),
+        )
+        .toBeCloseTo(initialHeight + 60, 0);
+      await expect(message).toHaveValue(
+        "Please share your celebration options.",
+      );
+      await expect(form.getByRole("status")).toBeEmpty();
     }
   }
 });
 
 test("private dining message area shows three lines without scrolling", async ({
   page,
+  isMobile,
 }) => {
   await page.goto("/private-dining");
   const message = page.locator('#enquire textarea[name="message"]');
   await message.fill(
     "A corporate dinner\nFor twelve guests\nPlease share availability",
   );
-  await expect(message).toHaveCSS("height", "90px");
+  await expect(message).toHaveCSS("height", isMobile ? "92px" : "90px");
   const dimensions = await message.evaluate((element) => ({
     height: element.clientHeight,
     contentHeight: element.scrollHeight,
   }));
   expect(dimensions.contentHeight).toBeLessThanOrEqual(dimensions.height);
   await expect(message).toHaveCSS("resize", "vertical");
-  expect(
-    await message.evaluate(
-      (element) =>
-        getComputedStyle(element, "::-webkit-resizer").backgroundImage,
-    ),
-  ).toContain("rgb(122, 30, 36)");
+  const gripBackground = isMobile
+    ? await page
+        .getByRole("button", { name: "Resize message", exact: true })
+        .evaluate((element) => getComputedStyle(element).backgroundImage)
+    : await message.evaluate(
+        (element) =>
+          getComputedStyle(element, "::-webkit-resizer").backgroundImage,
+      );
+  expect(gripBackground).toContain("rgb(122, 30, 36)");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
