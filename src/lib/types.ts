@@ -1749,6 +1749,7 @@ export interface ITableBookingGuestDetails {
   phone: string;
   requests: string;
   terms: boolean;
+  newsletterOptIn: boolean;
 }
 
 export type TTableBookingDetailsErrors = Partial<

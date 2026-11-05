@@ -18,6 +18,7 @@ const props: ITableBookingDetailsProps = {
     phone: "871234567",
     requests: "",
     terms: false,
+    newsletterOptIn: false,
   },
   terms: [],
   sending: false,

@@ -717,6 +717,7 @@ function emptyDetails(): ITableBookingGuestDetails {
     phone: "",
     requests: "",
     terms: false,
+    newsletterOptIn: false,
   };
 }
 

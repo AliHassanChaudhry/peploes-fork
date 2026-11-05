@@ -53,6 +53,7 @@ export const TABLE_BOOKING_CONTENT = {
     nameError: "Please enter your name.",
     emailError: "Please enter a valid email address.",
     phoneError: "Please enter a valid telephone number.",
+    newsletterLabel: "Email me news and updates from Peploe’s (optional)",
     termsError: "Please accept the booking terms.",
     termsAgreement: "By confirming, you agree to",
     termsName: "Peploe’s Booking & Cancellation Terms.",
