@@ -70,6 +70,33 @@ export function findTable(reservations: Locator) {
     .click();
 }
 
+export async function expectBookingAtTop(reservations: Locator) {
+  await expect
+    .poll(() =>
+      reservations.evaluate((element) =>
+        Math.abs(
+          element.getBoundingClientRect().top -
+            (document.querySelector("header")?.getBoundingClientRect().bottom ??
+              0) -
+            8,
+        ),
+      ),
+    )
+    .toBeLessThanOrEqual(1);
+}
+
+export async function chooseTime(reservations: Locator, name: string) {
+  const times = reservations.getByRole("group", {
+    name: "Available times",
+    exact: true,
+  });
+  await expect(times).toBeVisible();
+  const slot = times.getByRole("button", { name, exact: true });
+  const more = reservations.getByRole("button", { name: /^Show more times/ });
+  if ((await more.isVisible()) && !(await slot.isVisible())) await more.click();
+  await slot.click();
+}
+
 export async function restorePaymentStep(
   page: Page,
   kind: "payment" | "card" = "payment",

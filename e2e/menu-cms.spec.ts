@@ -7,8 +7,9 @@ for (const menu of [
   "group-set-menu",
   "seasonal",
 ]) {
-  test(`${menu} allergen information stays visible without disclosure controls`, async ({
+  test(`${menu} allergens remain visible without a dropdown and centered on desktop`, async ({
     page,
+    viewport,
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(`/menus?menu=${menu}`);
@@ -17,9 +18,29 @@ for (const menu of [
       exact: true,
     });
     const information = heading.locator("..");
-    await expect(heading).toBeVisible();
-    await expect(information.locator("p")).toBeVisible();
-    await expect(information.locator("summary, button")).toHaveCount(0);
+    const description = information.locator("p");
+    await expect(description).toBeVisible();
+    await heading.click();
+    await expect(description).toBeVisible();
+    await expect(information.locator("summary")).toHaveCount(0);
+    if ((viewport?.width ?? 1440) >= 1280) {
+      await expect
+        .poll(() =>
+          information.evaluate((element) => {
+            const panel = element.closest(".site-container");
+            const heading = element.querySelector("h2");
+            const last = element.querySelector("p");
+            if (!panel || !heading || !last) {
+              throw new Error("The menu allergen panel is incomplete.");
+            }
+            const bounds = panel.getBoundingClientRect();
+            const top = heading.getBoundingClientRect().top - bounds.top;
+            const bottom = bounds.bottom - last.getBoundingClientRect().bottom;
+            return Math.abs(top - bottom);
+          }),
+        )
+        .toBeLessThanOrEqual(1);
+    }
   });
 }
 test("switching from deep Wine content keeps menu navigation visible", async ({

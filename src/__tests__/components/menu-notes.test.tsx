@@ -50,6 +50,8 @@ describe("menu notes reading order", () => {
     );
     expect(html).toContain("Allergen information");
     expect(html).toContain("Tell your server about dietary requirements.");
+    expect(html).not.toContain("<details");
+    expect(html).toContain("<h2");
   });
 
   it("omits the panel when neither notes nor allergens exist", () => {
