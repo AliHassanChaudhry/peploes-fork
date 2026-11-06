@@ -25,20 +25,102 @@ Each menu supplies its closing photograph and copy. The site header
 and footer remain shared with the homepage, including the footer's spacing,
 gutters and mobile section order.
 The Group Set Menu enquiry action opens the private-dining enquiry section.
-Its closing banner heading, description and enquiry button share a left edge
-on desktop and mobile; the desktop content keeps its existing position.
+Every menu's closing banner heading, description and action button share a left
+edge on desktop and mobile; the desktop content keeps its existing position.
 Book a Table actions open the [booking page](brief.md#book-a-table).
 Enquiry delivery follows the [email guide](../guides/email-guide.md).
 
 ## Design and content decisions
 
-Use the [Figma menu references](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3345-534)
-for visual presentation; styles own spacing, type, crops and animation values.
-Prices use euro. Lunch and Pre-Theatre course prices are optional; Dinner keeps
-individual prices. Empty cocktail sections remain hidden until content exists.
-Seasonal entries are an ordered editable collection, not a fixed Christmas list.
-Confirm sample prices, vintages, duplicate bottles and old seasonal dates before
-publishing. Seasonal group eligibility follows 'greater than 7' in its menu header.
+Reference: [Peploe’s Figma, Lunch desktop](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3345-534)
+and [Lunch mobile](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3384-11229).
+
+Dinner follows [desktop](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3347-3831)
+and [mobile](https://www.figma.com/design/0fEgisdlNBr23CuWHJOTNC/Peploe-s?node-id=3387-12594).
+It retains individual dish prices, the 5pm service time, its own food photograph,
+eight sides and the group-size note. The Lunch and Pre-Theatre comments about
+removing prices do not apply to Dinner. Dinner has no set-menu offer.
+
+- The Menu navigation note (`3347:3824`) keeps the hero consistent between menus
+  and the navigation accessible while scrolling. Phones scroll the links horizontally.
+  Below the desktop breakpoint, size tabs to show a whole number plus half of
+  the next tab: 2.5 below 360px, 3.5 from 360px, 4.5 from 480px, 5.5 from 640px
+  and 6.5 from 900px. Swiping scrolls freely. Selecting a fully visible tab
+  preserves the strip position so its underline transition stays visible.
+  A clipped selection scrolls smoothly only far enough to reveal it with an
+  8px edge gutter; reduced motion reveals it immediately. Labels stay on one
+  line; longer labels widen their tab to fit the text and chevron, so their
+  visible fraction can differ from half.
+  Dropdown tabs retain 22px horizontal padding and an 8px text-to-chevron gap
+  so their labels do not crowd the separators.
+  Group Set Menu and Seasonal dropdown panels have no top or bottom padding;
+  their menu rows meet the panel border without an extra strip.
+  Desktop retains its existing row layout.
+- The CMS note calls for editable headings, dishes, descriptions, prices, service
+  times and notes. Allergen information is optional and editable; when present, its heading and
+  description remain visible without a dropdown on every screen size.
+- Comment #17 removes individual starter and main-course prices from Lunch.
+  Small bites and sides retain prices. The offer is two courses for €42 or three
+  for €48. Optional prices allow future individual pricing without changing the UI.
+- Comment #22 removes the introductory prose for each course. Dish descriptions
+  remain part of the menu.
+- Comment #15 approves the food photograph with an option to remove it later.
+  The introductory image is optional and its removal leaves no empty image panel.
+
+### Remaining menu references and decisions
+
+| Menu | Desktop node | Mobile node |
+| --- | --- | --- |
+| Pre-Theatre | `3367:6480` | `3387:12944` |
+| Wine | `3356:7861` | `3388:14050` |
+| Cocktails | `3380:9952` | `3392:16854` |
+| Group Set Menu | `3399:18287` | `3407:21690` |
+| Seasonal | `3402:20164` | `3407:22064` |
+
+- Comment #24 originally requested no individual prices for Pre-Theatre starters,
+  mains and desserts. The current editing requirement allows optional prices for
+  every dish, including these courses. Leave prices empty to retain the Figma
+  presentation. The rib-eye supplement remains part of its description.
+- The final reply to #26 keeps “Start Here” in the wine index. Comment #27 requires
+  editable categories, subcategories and their contents, including new countries.
+- The wine navigation note specifies scrolling to sections on the same page,
+  without filtering the list or loading another page. The index and tables use
+  the same available content so hidden bottles cannot leave empty jump targets.
+  The desktop close control collapses the index and returns focus to its Browse
+  summary; the summary can reopen it with the pointer, Enter or Space.
+  Mobile uses a plus/minus summary and compact rows whose chevrons link to the
+  corresponding sections; category links jump directly to their wine tables.
+- The wine CMS note requires editable names, vintages, regions, glass/bottle
+  prices and availability. The current Figma list demonstrates layout only.
+- Comment #34 requests Classic and Peploe’s Signature Cocktail sections between
+  Aperitifs and Spirits. Their ordered entries are prepared but empty because the
+  promised cocktail list is not present in the comments. Empty sections are hidden.
+- Comment #43 requested included bread and main-course sides for the group and
+  Christmas menus. The contributor's later placement instruction keeps the visible
+  inclusion strip only where it appears in Figma: Group Set Lunch on desktop.
+  Seasonal tea/coffee appears once in its own course, removing the frame’s
+  duplicated entry under Dessert.
+- Comment #44 asks about future lobster-week and wine-pairing menus. Seasonal
+  entries are an ordered collection, with navigation generated from that same
+  collection; they are not a fixed Christmas enum.
+- Comment #23 proposes a restaurant illustration but has no approved replacement
+  attached. The current frame illustration is retained and remains editable.
+
+The Figma aperitif pound symbols are treated as placeholder errors: all prices
+use euro, consistent with the Dublin restaurant and the rest of its menus.
+The duplicate Grey Goose entries, wine prices/vintages and the Christmas 2025
+service date are retained as local design preview copy. Confirm these with the
+restaurant before publishing current menus. Seasonal group eligibility follows
+the menu headers (“greater than 7”) rather than the contradictory “7 or more” footer.
+
+The October 8 desktop frames supply the shared preview wording when desktop and
+mobile differ, as selected by the contributor. This includes drink spellings,
+apostrophes and the Seasonal salmon accompaniment. Approved comments take
+precedence over the frame copy. Shared navigation now reads “Private Dining &
+Events”. The latest Group desktop frame adds an “Included with your menu” strip
+to Group Set Lunch only. Group Set Dinner and both Seasonal previews have empty
+inclusion lists, and the strip is hidden on mobile to match those frames. Its
+heading and entries remain editable content in the rendering contract.
 
 ## Sanity connection
 
