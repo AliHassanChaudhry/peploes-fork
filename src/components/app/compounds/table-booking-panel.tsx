@@ -470,7 +470,8 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
             summary={booked.summary}
           />
           <TableBookingSupport confirmation />
-          <button
+          <Button
+            variant="plain"
             type="button"
             className={cn(styles.backAction, styles.restart)}
             onClick={() => {
@@ -483,7 +484,7 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
           >
             <ArrowLeft aria-hidden="true" />
             Start again
-          </button>
+          </Button>
         </>
       )}
     </section>
@@ -809,7 +810,8 @@ function BookingTimes({
       )}
       <HoldError message={holdError} />
       <div className={styles.flowActions}>
-        <button
+        <Button
+          variant="plain"
           type="button"
           className={styles.backAction}
           disabled={holding}
@@ -817,7 +819,7 @@ function BookingTimes({
         >
           <ArrowLeft aria-hidden="true" />
           Back to search
-        </button>
+        </Button>
         <Button
           type="button"
           variant="brand-primary"
@@ -959,7 +961,8 @@ function TimesList({ times, time, onTimeChange }: TTableBookingTimesListProps) {
       {times.status === "ready" && times.data.times.length > 0 && (
         <fieldset className={styles.timeGrid} aria-label={content.timesLabel}>
           {times.data.times.map((slot) => (
-            <button
+            <Button
+              variant="plain"
               type="button"
               key={`${slot.date} ${slot.time}`}
               aria-pressed={time?.date === slot.date && time.time === slot.time}
@@ -967,7 +970,7 @@ function TimesList({ times, time, onTimeChange }: TTableBookingTimesListProps) {
               onClick={() => onTimeChange(slot)}
             >
               {slot.label}
-            </button>
+            </Button>
           ))}
         </fieldset>
       )}

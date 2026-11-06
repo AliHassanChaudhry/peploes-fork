@@ -78,6 +78,11 @@ export const env = createEnv({
   clientPrefix: "NEXT_PUBLIC_",
 
   client: {
+    NEXT_PUBLIC_ENQUIRY_MAX_GUESTS: z.coerce
+      .number()
+      .int()
+      .positive()
+      .optional(),
     NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: z.string().startsWith("pk.").optional(),
     NEXT_PUBLIC_MAPBOX_STYLE_URL: z
       .string()
@@ -106,6 +111,7 @@ export const env = createEnv({
 
   runtimeEnv: {
     ...process.env,
+    NEXT_PUBLIC_ENQUIRY_MAX_GUESTS: process.env.NEXT_PUBLIC_ENQUIRY_MAX_GUESTS,
     EMAIL_SMTP_HOST: process.env.EMAIL_SMTP_HOST || process.env.SMTP_HOST,
     EMAIL_SMTP_PORT: process.env.EMAIL_SMTP_PORT || process.env.SMTP_PORT,
     EMAIL_SMTP_USERNAME:
