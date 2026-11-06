@@ -1,14 +1,15 @@
+import { COOKIE_PREFERENCES } from "../src/lib/constants/cookie-consent";
 import {
-  acceptAll,
   expect,
   expectPageViews,
-  openPreferences,
   providerStorage,
-  rejectAll,
   settle,
+  storeAcceptedPreferences,
+  storeRejectedPreferences,
   suppressNavigationOfLinks,
   test,
 } from "./analytics-harness";
+import { bookingTestTime } from "./booking-fixtures";
 import { chooseDate, laterFreeDate } from "./booking-page";
 
 test.setTimeout(90_000);
@@ -43,7 +44,7 @@ test.describe("before and after placeholder choices", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await rejectAll(page);
+    await storeRejectedPreferences(page);
     await page.locator('a[href="/our-story"]:visible').first().click();
     await expect(page).toHaveURL("/our-story");
     await expectPageViews(page, analytics, 2);
@@ -56,6 +57,14 @@ test.describe("before and after placeholder choices", () => {
     analytics,
   }) => {
     await page.addInitScript(() => {
+      Object.defineProperty(document, "cookie", {
+        get() {
+          throw new Error("blocked");
+        },
+        set() {
+          throw new Error("blocked");
+        },
+      });
       for (const name of ["localStorage", "sessionStorage"])
         Object.defineProperty(window, name, {
           get() {
@@ -78,7 +87,7 @@ test.describe("grant and navigation", () => {
   }) => {
     await page.goto("/");
     await expectPageViews(page, analytics, 1);
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await settle(page);
     expect(analytics.gaPageViews()).toHaveLength(1);
     expect(analytics.posthogPageViews()).toHaveLength(1);
@@ -110,7 +119,7 @@ test.describe("grant and navigation", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
 
     await page.locator('a[href="/our-story"]:visible').first().click();
@@ -144,54 +153,40 @@ test.describe("grant and navigation", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
     await page.reload();
     await expectPageViews(page, analytics, 2);
-    const dialog = await openPreferences(page);
-    await expect(
-      dialog.getByRole("switch", { name: "Analytics", exact: true }),
-    ).toBeChecked();
+    expect(
+      await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key) ?? "null"),
+        COOKIE_PREFERENCES.storageKey,
+      ),
+    ).toEqual(COOKIE_PREFERENCES.accepted);
   });
 
-  test("keyboard operation grants analytics and restores focus", async ({
+  test("the removed footer settings stay unavailable while reporting remains active", async ({
     page,
     analytics,
   }) => {
     await page.goto("/");
-    const trigger = page.getByRole("button", {
-      name: "Cookie Settings",
-      exact: true,
-    });
-    await trigger.focus();
-    await page.keyboard.press("Enter");
-    const dialog = page.getByRole("dialog", {
-      name: "Cookie Preferences",
-      exact: true,
-    });
-    await expect(dialog).toBeVisible();
-    const analyticsSwitch = dialog.getByRole("switch", {
-      name: "Analytics",
-      exact: true,
-    });
-    await analyticsSwitch.focus();
-    await page.keyboard.press("Space");
-    await expect(analyticsSwitch).toBeChecked();
-    await page.keyboard.press("Escape");
-    await expect(dialog).not.toBeVisible();
-    await expect(trigger).toBeFocused();
+    await expect(
+      page.getByRole("contentinfo").getByRole("button", {
+        name: "Cookie Settings",
+        exact: true,
+        includeHidden: true,
+      }),
+    ).toBeHidden();
     await expectPageViews(page, analytics, 1);
   });
-});
 
-test.describe("placeholder preference changes", () => {
   test("rejection keeps optional interactions, attribution and pageviews active", async ({
     page,
     analytics,
   }) => {
     await page.goto("/?utm_source=newsletter");
     await expectPageViews(page, analytics, 1);
-    await rejectAll(page);
+    await storeRejectedPreferences(page);
     await suppressNavigationOfLinks(page);
     await page.locator('footer a[href^="tel:"]:visible').first().click();
     await expect
@@ -211,7 +206,7 @@ test.describe("placeholder preference changes", () => {
   }) => {
     analytics.hold();
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await rejectAll(page);
+    await storeRejectedPreferences(page);
     analytics.release();
     await expectPageViews(page, analytics, 1);
     expect(analytics.posthogPageViews()).toHaveLength(1);
@@ -223,10 +218,10 @@ test.describe("placeholder preference changes", () => {
   }) => {
     analytics.hold();
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await rejectAll(page);
+    await storeRejectedPreferences(page);
     analytics.release();
     await expectPageViews(page, analytics, 1);
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await settle(page);
     expect(analytics.gaPageViews()).toHaveLength(1);
     expect(analytics.posthogPageViews()).toHaveLength(1);
@@ -238,10 +233,10 @@ test.describe("placeholder preference changes", () => {
   }) => {
     await page.goto("/");
     await expectPageViews(page, analytics, 1);
-    await rejectAll(page);
-    await acceptAll(page);
-    await rejectAll(page);
-    await acceptAll(page);
+    await storeRejectedPreferences(page);
+    await storeAcceptedPreferences(page);
+    await storeRejectedPreferences(page);
+    await storeAcceptedPreferences(page);
     await settle(page);
     expect(analytics.gaPageViews()).toHaveLength(1);
     expect(analytics.posthogPageViews()).toHaveLength(1);
@@ -257,7 +252,7 @@ test.describe("placeholder preference changes", () => {
     const other = await context.newPage();
     await other.goto("/contact");
     await expectPageViews(page, analytics, 2);
-    await rejectAll(other);
+    await storeRejectedPreferences(other);
     await page.locator('a[href="/our-story"]:visible').first().click();
     await expect(page).toHaveURL("/our-story");
     await expectPageViews(page, analytics, 3);
@@ -272,7 +267,7 @@ test.describe("failing providers", () => {
   }) => {
     analytics.block("gtag-js", "posthog");
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await page.locator('a[href="/our-story"]:visible').first().click();
     await expect(page).toHaveURL("/our-story");
     await expect(page.getByRole("main")).toBeVisible();
@@ -291,7 +286,7 @@ test.describe("payload privacy", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
     await page.goto(
       "/our-story?utm_source=jane@example.com&email=x&token=abc123#private-hash",
@@ -320,7 +315,7 @@ test.describe("payload privacy", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
     await page.goto(
       "/?utm_source=newsletter&utm_medium=email&gclid=abc999&fbclid=zzz888",
@@ -343,7 +338,7 @@ test.describe("interaction events", () => {
     analytics,
   }) => {
     await page.goto("/");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
 
     await page
@@ -441,8 +436,9 @@ test.describe("interaction events", () => {
     page,
     analytics,
   }) => {
+    await page.clock.setSystemTime(bookingTestTime());
     await page.goto("/book-a-table");
-    await acceptAll(page);
+    await storeAcceptedPreferences(page);
     await expectPageViews(page, analytics, 1);
 
     const reservations = page.getByRole("region", {

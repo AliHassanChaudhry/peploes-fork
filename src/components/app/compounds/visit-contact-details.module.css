@@ -19,7 +19,8 @@
 }
 
 .heading,
-.serviceHeading {
+.serviceHeading,
+.serviceHours {
   font-family: var(--font-eb-garamond), serif;
   font-weight: 400;
 }
@@ -159,9 +160,8 @@
 }
 
 .serviceHours {
-  color: var(--text-secondary);
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 26px;
+  line-height: 34px;
 }
 
 .serviceDetail {
@@ -379,15 +379,7 @@
   .diningIntro {
     grid-template-columns: minmax(0, 654fr) minmax(0, 578fr);
     align-items: center;
-    gap: 0 64px;
-  }
-
-  .diningIntro > div {
-    display: contents;
-  }
-
-  .diningIntro .eyebrow {
-    grid-column: 1 / -1;
+    gap: 64px;
   }
 
   .services {

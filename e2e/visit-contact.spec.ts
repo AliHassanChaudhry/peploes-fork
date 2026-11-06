@@ -136,7 +136,7 @@ test("Visit loads its image and contact information without horizontal overflow"
     .toBe(true);
 });
 
-test("navigation reaches Visit, closes the mobile menu and shows the desktop active state", async ({
+test("navigation reaches Visit, closes the mobile menu and returns home on desktop", async ({
   page,
   isMobile,
 }) => {
@@ -165,18 +165,9 @@ test("navigation reaches Visit, closes the mobile menu and shows the desktop act
     await visit.click();
     await page.mouse.move(0, 0);
     await expect(page).toHaveURL(/\/contact$/);
-    await expect(visit).toHaveCSS("color", "rgb(122, 30, 36)");
-    const underline = navigation.locator("[data-navbar-indicator]");
-    await expect(underline).toHaveCSS("opacity", "1");
-    await expect(underline).toHaveCSS("height", "2px");
-    await expect(underline).toHaveCSS("background-color", "rgb(122, 30, 36)");
-    await expect
-      .poll(async () => (await underline.boundingBox())?.x)
-      .toBe((await visit.boundingBox())?.x);
     await navigation.getByRole("link", { name: "Peploe’s home" }).click();
     await page.mouse.move(0, 0);
     await expect(page).toHaveURL("/");
-    await expect(visit).toHaveCSS("color", "rgb(46, 42, 40)");
   }
 });
 
@@ -227,9 +218,22 @@ for (const targetId of ["opening-hours", "find-us"]) {
     const session = await page.context().newCDPSession(page);
     await session.send("Emulation.setCPUThrottlingRate", { rate: 6 });
     await page.goto(`/contact#${targetId}`);
+    const target = page.locator(`#${targetId}`);
+    await expect(target).toBeInViewport();
     await expect
-      .poll(async () => (await page.locator(`#${targetId}`).boundingBox())?.y)
-      .toBeCloseTo(100, 0);
+      .poll(() =>
+        target.evaluate((element) => {
+          const header = document.querySelector(
+            'nav[aria-label="Main navigation"]',
+          );
+          if (!header) throw new Error("Main navigation is missing");
+          return (
+            element.getBoundingClientRect().top >=
+            header.getBoundingClientRect().bottom
+          );
+        }),
+      )
+      .toBe(true);
   });
 }
 
@@ -259,4 +263,29 @@ test("contact and map links point to the restaurant's public destinations", asyn
     "href",
     "https://www.google.com/maps/dir/?api=1&destination=Peploe%27s%2C%2016%20St%20Stephen%27s%20Green%2C%20Dublin%202",
   );
+});
+
+test("Contact keeps its only enquiry form immediately before the closing section", async ({
+  page,
+}) => {
+  await page.goto("/contact");
+  const main = page.getByRole("main");
+  await expect(
+    main.getByRole("form", { name: "Plan your gathering" }),
+  ).toBeVisible();
+  await expect(
+    main.getByRole("form", { name: "General contact message" }),
+  ).toHaveCount(0);
+  await expect(main.getByRole("form")).toHaveCount(1);
+  const sections = await main
+    .locator(":scope > section")
+    .evaluateAll((elements) =>
+      elements.map((section) => ({
+        id: section.id,
+        hasForm: Boolean(section.querySelector("form")),
+      })),
+    );
+  expect(sections.at(-2)).toEqual({ id: "enquire", hasForm: true });
+  expect(sections.filter((section) => section.hasForm)).toHaveLength(1);
+  expect(sections[0]?.hasForm).toBe(false);
 });

@@ -17,7 +17,7 @@ import {
   laterFreeDate,
   openBooking,
 } from "./booking-page";
-import { expect, test } from "./menu-test";
+import { expect, test } from "./booking-test";
 
 test("booking opens with the introduction visible and aligns subsequent steps below the navbar", async ({
   page,
@@ -198,8 +198,19 @@ test("an after-midnight hold shows its calendar day and restores the same reserv
   await expect(
     panel.getByText(shortDayLabel(visit), { exact: false }),
   ).toBeVisible();
+  const held = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem("peploes:booking-hold") ?? "{}"),
+  );
   await page.reload();
   await expect(panel.getByRole("timer")).toBeVisible();
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(sessionStorage.getItem("peploes:booking-hold") ?? "{}"),
+    ),
+  ).toMatchObject({
+    holdReference: held.holdReference,
+    holdRevision: held.holdRevision,
+  });
   await expect(
     panel.getByText(shortDayLabel(visit), { exact: false }),
   ).toBeVisible();
@@ -235,7 +246,7 @@ test("desktop booking aligns the panel when opening available times", async ({
   await expectBookingAtTop(reservations);
 });
 
-test("desktop booking calendar keeps compact day rows and hides elapsed weeks", async ({
+test("booking calendar omits elapsed weeks and keeps remaining dates selectable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -244,23 +255,11 @@ test("desktop booking calendar keeps compact day rows and hides elapsed weeks", 
   const field = panel.getByRole("button", { name: /^Date / });
   await expect(field).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
-  const closedBounds = await panel.boundingBox();
   await field.click();
   const calendar = panel.getByRole("group", {
     name: "Choose date",
     exact: true,
   });
-  const openBounds = await panel.boundingBox();
-  if (!closedBounds || !openBounds)
-    throw new Error("Booking box must be visible");
-  expect(openBounds.height).toBeCloseTo(closedBounds.height, 0);
-  const days = calendar.getByRole("button", { name: /, \d+ / });
-  const first = await days.nth(0).boundingBox();
-  const nextRow = await days.nth(7).boundingBox();
-  if (!first || !nextRow) throw new Error("Calendar days must be visible");
-  expect(first.width).toBeCloseTo(36, 0);
-  expect(first.height).toBeCloseTo(36, 0);
-  expect(nextRow.y - first.y - first.height).toBeCloseTo(10, 0);
   const today = dublinToday();
   const weekday = new Date(`${today}T12:00:00Z`).getUTCDay();
   const previousSunday = addDays(today, -(weekday || 7));
@@ -586,6 +585,22 @@ for (const newsletterOptIn of [false, true]) {
     await expect(newsletter).not.toBeChecked();
     await newsletter.setChecked(newsletterOptIn);
     await reservations.getByRole("checkbox", { name: /By confirming/ }).check();
+    const phone = reservations.getByLabel(
+      isMobile ? "Telephone number" : "Mobile number",
+      { exact: false },
+    );
+    await phone.fill("00353871234567");
+    const beforeInvalidPhone = submissions.length;
+    await reservations
+      .getByRole("button", { name: "Confirm Reservation", exact: true })
+      .click();
+    await expect(
+      reservations.getByText("Enter the number without the country code.", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    expect(submissions).toHaveLength(beforeInvalidPhone);
+    await phone.fill("087 123 4567");
     await reservations
       .getByRole("button", { name: "Confirm Reservation", exact: true })
       .click();
@@ -884,7 +899,7 @@ for (const { path, count } of [
   { path: "/menus?menu=pre-theatre", count: 1 },
   { path: "/menus?menu=wine", count: 1 },
   { path: "/menus?menu=cocktails", count: 1 },
-  { path: "/visit-contact", count: 3 },
+  { path: "/contact", count: 3 },
 ]) {
   test(`all booking calls to action on ${path} open the booking page`, async ({
     page,

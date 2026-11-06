@@ -3,10 +3,6 @@
 The starter provides Next.js metadata, factual structured data, crawler policy,
 a sitemap, and `llms.txt`. Replace its public site facts before launch.
 
-The browser favicon is `src/app/icon.svg`, which embeds the original 32×32 PNG from
-`https://peploes.com/media/sqekby2f/peploes_fav.png?width=32&height=32`.
-A 7px clipping radius rounds its corners. Next.js includes it through the root
-app icon file convention.
 
 ## Site URL and defaults
 
@@ -54,6 +50,8 @@ describes.
 
 Indexing follows each page's `noIndex` metadata setting. There is no global
 staging/production indexing switch or deployment-based `X-Robots-Tag`.
+Requests with `x-presentation: admin` receive a `noindex` header from
+`next.config.ts`, independently of public page metadata.
 `robots.txt` uses the same configured crawler policy in every environment,
 with the site URL supplied by the hosting project's environment values.
 The policy has three groups in `AI_CRAWLER_POLICY`:
