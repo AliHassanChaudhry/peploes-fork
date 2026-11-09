@@ -372,7 +372,7 @@ function StoryToday() {
           >
             {today.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7 lg:text-xl">
+          <p className="mt-6 hidden text-lg leading-7 sm:block lg:text-xl">
             {today.description}
           </p>
           <Button
