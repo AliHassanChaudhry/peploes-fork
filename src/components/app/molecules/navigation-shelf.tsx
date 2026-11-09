@@ -17,17 +17,19 @@ export function NavigationShelf({
           introClassName,
         )}
       >
-        <p className="text-xs leading-4 font-medium tracking-[1.2px] text-peploe-burgundy uppercase">
-          {eyebrow}
-        </p>
-        <p
-          className={cn(
-            ebGaramond.className,
-            "text-[42px] leading-12 font-normal",
-          )}
-        >
-          {heading}
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-xs leading-4 font-medium tracking-[1.2px] text-peploe-burgundy uppercase">
+            {eyebrow}
+          </p>
+          <p
+            className={cn(
+              ebGaramond.className,
+              "text-[42px] leading-12 font-normal",
+            )}
+          >
+            {heading}
+          </p>
+        </div>
         <span aria-hidden="true" className="h-0.5 w-11 bg-peploe-burgundy" />
         {action}
       </div>

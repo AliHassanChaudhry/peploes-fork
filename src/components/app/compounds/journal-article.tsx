@@ -30,12 +30,14 @@ export function JournalArticle({
       <article aria-labelledby="journal-article-title">
         <header className={styles.hero}>
           <div data-scroll-reveal className={styles.heroCopy}>
-            <p className={styles.eyebrow}>
-              <Link href={getJournalCategoryPath(article.category.slug)}>
-                {article.category.name}
-              </Link>
-            </p>
-            <h1 id="journal-article-title">{article.title}</h1>
+            <div className="flex flex-col gap-2">
+              <p className={styles.eyebrow}>
+                <Link href={getJournalCategoryPath(article.category.slug)}>
+                  {article.category.name}
+                </Link>
+              </p>
+              <h1 id="journal-article-title">{article.title}</h1>
+            </div>
             <p className={styles.standfirst}>{article.standfirst}</p>
             <p className={styles.metadata}>
               <time dateTime={article.date}>

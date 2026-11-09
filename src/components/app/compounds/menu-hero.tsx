@@ -40,7 +40,7 @@ export function MenuHero({ content }: IMenuHeroProps) {
             id="menus-hero-heading"
             className={cn(
               ebGaramond.className,
-              "whitespace-pre-line text-[46px] leading-[44px] tracking-[-0.6px] xl:mt-4 xl:text-[62px] xl:leading-[0.96] xl:tracking-[-1.5px]",
+              "mt-2 whitespace-pre-line text-[36px] sm:text-[46px] leading-[44px] tracking-[-0.6px] xl:text-[62px] xl:leading-[0.96] xl:tracking-[-1.5px]",
             )}
           >
             {content.heading}

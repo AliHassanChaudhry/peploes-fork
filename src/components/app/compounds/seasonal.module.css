@@ -3,6 +3,11 @@
   background: var(--warm-cream);
 }
 
+body:has(.page) {
+  /* Keep the footer from anchoring the viewport when streamed content replaces the loader. */
+  overflow-anchor: none;
+}
+
 .page :is(h1, h2, h4, .day) {
   font-family: var(--font-eb-garamond), serif;
   font-weight: 400;
@@ -71,7 +76,7 @@
 
 .heroCopy h1,
 .joinCopy h2 {
-  margin-top: 20px;
+  margin-top: 8px;
   font-size: 44px;
   line-height: 46px;
 }
@@ -81,6 +86,7 @@
 }
 
 .diary {
+  scroll-margin-top: 100px;
   padding-block: 48px;
 }
 
@@ -94,7 +100,7 @@
 }
 
 .diaryIntroduction h2 {
-  margin-top: 20px;
+  margin-top: 8px;
   font-size: 56px;
   line-height: 58px;
 }
@@ -284,7 +290,7 @@
   }
 
   .heroCopy h1 {
-    margin-top: 14px;
+    margin-top: 8px;
     font-size: 48px;
     line-height: 46px;
     letter-spacing: -1px;
@@ -296,7 +302,7 @@
 
   .diaryIntroduction h2,
   .joinCopy h2 {
-    margin-top: 14px;
+    margin-top: 8px;
     font-size: 42px;
     line-height: 44px;
   }
@@ -330,7 +336,7 @@
   }
 
   .eventCopy h4 {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 30px;
   }
 
@@ -434,17 +440,19 @@
 
   .diaryIntroduction .eyebrow {
     grid-column: 1 / -1;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
   }
 
   .diaryIntroduction h2 {
     margin-top: 0;
+    text-box: trim-both cap alphabetic;
     font-size: 84px;
     line-height: 86px;
   }
 
   .diaryIntroduction > p {
     justify-self: end;
+    text-box: trim-both cap alphabetic;
     max-width: 530px;
     font-size: 20px;
     line-height: 28px;
@@ -456,6 +464,10 @@
 
   .eventAction {
     min-height: 40px;
+  }
+
+  .terrace {
+    margin-bottom: 0;
   }
 
   .terraceImage {
@@ -526,5 +538,13 @@
   .joinCopy h2 {
     font-size: 36px;
     line-height: 40px;
+  }
+}
+
+@media (width < 40rem) {
+  .diaryIntroduction h2,
+  .terraceCopy h2,
+  .joinCopy h2 {
+    font-size: 30px;
   }
 }

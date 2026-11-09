@@ -48,7 +48,7 @@
   height: 2px;
 }
 .sectionHeading .eyebrow {
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 :where(.overview, .personalDetails, .capacity, .weddingHire) .eyebrow {
   color: inherit;
@@ -92,7 +92,7 @@
   line-height: 50px;
   font-weight: 400;
   white-space: pre-line;
-  margin-block: 28px 24px;
+  margin-block: 8px 24px;
 }
 .heroDescription {
   font-size: 18px;
@@ -142,7 +142,7 @@
   padding-block: 40px;
 }
 .overview .heroTitle {
-  margin-block: 16px 20px;
+  margin-block: 8px 20px;
 }
 .overview .eyebrow::before {
   display: none;
@@ -189,7 +189,7 @@
   }
 
   .overview .heroTitle {
-    margin-block: 14px 0;
+    margin-block: 8px 0;
     font-size: 40px;
     line-height: 44px;
     letter-spacing: -1px;
@@ -208,7 +208,7 @@
   }
 }
 .gatherings .eyebrow {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .gatherings .eyebrow::before {
   height: 3px;
@@ -397,7 +397,7 @@
   margin-top: 24px;
 }
 .overviewMenuCopy .eyebrow {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 .overviewMenuCopy .eyebrow::before,
 .compactEnquiry .eyebrow::before {
@@ -708,7 +708,7 @@
   margin-top: 16px;
 }
 .compactEnquiry .eyebrow {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .compactEnquiry .enquiryContainer {
   gap: 32px;
@@ -1054,7 +1054,7 @@
 
 @media (width < 40rem) {
   :is(.celebrationOccasions, .personalDetails, .celebrationPlanning) .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
 
   :is(.celebrationOccasions, .celebrationPlanning) .features {
@@ -1256,7 +1256,7 @@
 
 @media (width >= 64rem) {
   .sectionHeading .eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
   }
   .heading {
     font-size: 48px;
@@ -1283,7 +1283,7 @@
   .heroTitle {
     font-size: 56px;
     line-height: 55px;
-    margin-block: 16px;
+    margin-block: 8px 16px;
   }
   .heroDescription {
     font-size: 18px;
@@ -1333,7 +1333,7 @@
   .overview .heroTitle {
     font-size: 62px;
     line-height: 61px;
-    margin-block: 16px 20px;
+    margin-block: 8px 20px;
   }
   .overview .heroDescription {
     line-height: 24px;
@@ -1430,7 +1430,7 @@
     line-height: 52px;
   }
   .gatherings .eyebrow {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .gatherings .eyebrow::before {
     height: 2px;
@@ -1865,7 +1865,7 @@
     line-height: 23px;
   }
   .compactEnquiry .eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
   }
   .compactEnquiry .sendButton {
     margin-top: 16px;
@@ -2103,7 +2103,7 @@
     margin-top: 48px;
   }
   .capacity .eyebrow {
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
   .capacity .heading {
     font-size: 52px;
@@ -2230,7 +2230,7 @@
     margin-top: 28px;
   }
   .location .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
   .location .features > li {
     position: relative;
@@ -2528,7 +2528,7 @@
     padding: 48px 26px;
   }
   .weddingTasting .eyebrow {
-    margin-bottom: 18px;
+    margin-bottom: 8px;
   }
   .weddingTasting .eyebrow::before {
     display: none;
@@ -2999,5 +2999,43 @@
   .overviewMenuCopy,
   .weddingHireCopy {
     padding-block: 32px;
+  }
+}
+
+@media (width < 40rem) {
+  .heading,
+  .celebrationClosing .heading,
+  .capacity .heading,
+  .celebrationOccasions .heading,
+  .celebrations .heroTitle,
+  .corporate .heroTitle,
+  .weddings .heroTitle {
+    font-size: 30px;
+  }
+
+  .overview .heroTitle {
+    font-size: 36px;
+  }
+
+  .enquiryForm .heading {
+    font-size: 30px;
+  }
+}
+
+@media (width < 40rem) {
+  .description,
+  .heroDescription,
+  .cardDescription,
+  .menuDescription,
+  .menuDescriptions,
+  .personalFeatures p,
+  .corporateOccasionList p,
+  .closing p,
+  .corporateClosing p,
+  .weddingSteps p,
+  .weddingTouches p,
+  .capacityGrid li:last-child > p:last-child,
+  .corporatePage .location .features p {
+    font-size: 16px;
   }
 }

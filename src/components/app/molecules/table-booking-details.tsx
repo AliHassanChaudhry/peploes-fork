@@ -277,12 +277,26 @@ export function TableBookingDetails({
         closedby="closerequest"
         aria-labelledby={`${termsId}-title`}
         className={`${styles.changeDialog} ${styles.termsDialog}`}
-        onCancel={(event) => {
-          event.preventDefault();
-          event.currentTarget.close();
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            event.currentTarget.close();
+          }
         }}
         onClose={(event) => {
           if (!event.currentTarget.open) termsButton.current?.focus();
+        }}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (
+            event.clientX < bounds.left ||
+            event.clientX > bounds.right ||
+            event.clientY < bounds.top ||
+            event.clientY > bounds.bottom
+          ) {
+            event.currentTarget.close();
+          }
         }}
       >
         <h2

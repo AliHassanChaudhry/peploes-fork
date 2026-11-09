@@ -35,7 +35,11 @@ export function NavigationShelfLink({
           label
         )}
       </Button>
-      {description && <p className="text-sm leading-[21px]">{description}</p>}
+      {description && (
+        <p className="text-sm leading-[21px] max-sm:text-[16px]">
+          {description}
+        </p>
+      )}
     </div>
   );
 }

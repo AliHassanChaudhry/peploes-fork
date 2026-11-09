@@ -300,3 +300,10 @@
     object-position: var(--menu-image-desktop-position, center);
   }
 }
+
+@media (width < 40rem) {
+  .standfirst,
+  .intro {
+    font-size: 16px;
+  }
+}

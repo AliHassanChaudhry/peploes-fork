@@ -83,7 +83,9 @@ function MenuNotesText({ menu, compact, collection }: IMenuNotesProps) {
           )}
         >
           {menu.notes.map((note) => (
-            <p key={note}>{note}</p>
+            <p key={note} className="max-sm:text-[16px]">
+              {note}
+            </p>
           ))}
         </div>
       )}
@@ -128,7 +130,7 @@ function MenuAllergenInformation({
       </h2>
       <p
         className={cn(
-          "mt-1 whitespace-pre-line text-sm leading-[21px] xl:mt-[18px] xl:max-w-[540px]",
+          "mt-1 whitespace-pre-line text-sm leading-[21px] xl:mt-[18px] xl:max-w-[540px] max-sm:text-[16px]",
           compact &&
             "xl:mt-0 xl:max-w-none xl:pt-1 xl:text-xs xl:leading-[18px]",
         )}
