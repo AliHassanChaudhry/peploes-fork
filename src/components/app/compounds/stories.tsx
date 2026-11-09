@@ -47,25 +47,27 @@ export function Stories() {
     >
       <div className="site-container flex flex-col gap-8 pt-12 pb-8 sm:gap-12 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
         <div data-scroll-reveal className="flex flex-col items-start gap-4">
-          <p className="flex items-center gap-2.5 text-[11px] leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:mb-3 sm:text-sm">
-            <span
-              aria-hidden="true"
-              className="h-0.5 w-12 shrink-0 bg-current"
-            />
-            {STORIES_CONTENT.eyebrow}
-          </p>
-          <h2
-            id="stories-heading"
-            className={cn(
-              ebGaramond.className,
-              "text-[36px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
-            )}
-          >
-            {STORIES_CONTENT.headingLines[0]}
-            <br className="hidden lg:block" />
-            <span className="lg:hidden"> </span>
-            {STORIES_CONTENT.headingLines[1]}
-          </h2>
+          <div className="flex flex-col gap-2">
+            <p className="flex items-center gap-2.5 text-[11px] leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:text-sm">
+              <span
+                aria-hidden="true"
+                className="h-0.5 w-12 shrink-0 bg-current"
+              />
+              {STORIES_CONTENT.eyebrow}
+            </p>
+            <h2
+              id="stories-heading"
+              className={cn(
+                ebGaramond.className,
+                "text-[30px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
+              )}
+            >
+              {STORIES_CONTENT.headingLines[0]}
+              <br className="hidden lg:block" />
+              <span className="lg:hidden"> </span>
+              {STORIES_CONTENT.headingLines[1]}
+            </h2>
+          </div>
           <p className="mt-1 text-base leading-6 text-text-secondary sm:text-lg">
             {STORIES_CONTENT.description}
           </p>
@@ -115,21 +117,23 @@ export function Stories() {
               data-story-copy
               className="relative flex flex-col gap-[9px] sm:gap-4"
             >
-              <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-sm sm:leading-5 sm:tracking-[0.1em]">
-                <span data-story-text>{STORIES_CONTENT.family.eyebrow}</span>
-              </p>
-              <h3
-                className={cn(
-                  ebGaramond.className,
-                  "text-[30px] leading-[31px] font-normal sm:text-[38px] sm:leading-[44px]",
-                )}
-              >
-                <span data-story-text>
-                  {STORIES_CONTENT.family.heading}
-                  <br />
-                  {STORIES_CONTENT.family.headingContinuation}
-                </span>
-              </h3>
+              <div className="flex flex-col gap-2">
+                <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-sm sm:leading-5 sm:tracking-[0.1em]">
+                  <span data-story-text>{STORIES_CONTENT.family.eyebrow}</span>
+                </p>
+                <h3
+                  className={cn(
+                    ebGaramond.className,
+                    "text-[30px] leading-[31px] font-normal sm:text-[38px] sm:leading-[44px]",
+                  )}
+                >
+                  <span data-story-text>
+                    {STORIES_CONTENT.family.heading}
+                    <br />
+                    {STORIES_CONTENT.family.headingContinuation}
+                  </span>
+                </h3>
+              </div>
               <div id="family-story-details" data-story-details>
                 <p className="hidden text-sm leading-5 text-warm-cream/90 sm:block sm:text-[15px] sm:leading-[22px]">
                   <span data-story-text>
@@ -180,17 +184,23 @@ export function Stories() {
                 data-story-copy
                 className="relative flex w-full flex-col gap-[9px] p-6 sm:w-1/2 sm:gap-3 sm:p-8"
               >
-                <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
-                  <span data-story-text>{STORIES_CONTENT.produce.eyebrow}</span>
-                </p>
-                <h3
-                  className={cn(
-                    ebGaramond.className,
-                    "text-[30px] leading-[31px] font-normal sm:text-2xl sm:leading-[30px]",
-                  )}
-                >
-                  <span data-story-text>{STORIES_CONTENT.produce.heading}</span>
-                </h3>
+                <div className="flex flex-col gap-2">
+                  <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
+                    <span data-story-text>
+                      {STORIES_CONTENT.produce.eyebrow}
+                    </span>
+                  </p>
+                  <h3
+                    className={cn(
+                      ebGaramond.className,
+                      "text-[30px] leading-[31px] font-normal sm:text-2xl sm:leading-[30px]",
+                    )}
+                  >
+                    <span data-story-text>
+                      {STORIES_CONTENT.produce.heading}
+                    </span>
+                  </h3>
+                </div>
                 <div id="produce-story-details" data-story-details>
                   <p className="hidden text-sm leading-5 sm:block">
                     <span data-story-text>
@@ -244,27 +254,29 @@ export function Stories() {
                   data-story-copy
                   className="relative flex flex-col gap-[9px] sm:gap-2"
                 >
-                  <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
-                    <span data-story-text className="sm:hidden">
-                      {MOBILE_HOME_CONTENT.ginaEyebrow}
-                    </span>
-                    <span data-story-text className="hidden sm:inline">
-                      {STORIES_CONTENT.gina.eyebrow}
-                    </span>
-                  </p>
-                  <h3
-                    className={cn(
-                      ebGaramond.className,
-                      "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
-                    )}
-                  >
-                    <span data-story-text className="sm:hidden">
-                      {MOBILE_HOME_CONTENT.ginaHeading}
-                    </span>
-                    <span data-story-text className="hidden sm:inline">
-                      {STORIES_CONTENT.gina.heading}
-                    </span>
-                  </h3>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
+                      <span data-story-text className="sm:hidden">
+                        {MOBILE_HOME_CONTENT.ginaEyebrow}
+                      </span>
+                      <span data-story-text className="hidden sm:inline">
+                        {STORIES_CONTENT.gina.eyebrow}
+                      </span>
+                    </p>
+                    <h3
+                      className={cn(
+                        ebGaramond.className,
+                        "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
+                      )}
+                    >
+                      <span data-story-text className="sm:hidden">
+                        {MOBILE_HOME_CONTENT.ginaHeading}
+                      </span>
+                      <span data-story-text className="hidden sm:inline">
+                        {STORIES_CONTENT.gina.heading}
+                      </span>
+                    </h3>
+                  </div>
                   <div
                     id="gina-story-details"
                     data-story-details
@@ -313,17 +325,19 @@ export function Stories() {
                   data-story-copy
                   className="relative flex flex-col gap-[9px] sm:gap-2"
                 >
-                  <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
-                    <span data-story-text>{STORIES_CONTENT.art.eyebrow}</span>
-                  </p>
-                  <h3
-                    className={cn(
-                      ebGaramond.className,
-                      "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
-                    )}
-                  >
-                    <span data-story-text>{STORIES_CONTENT.art.heading}</span>
-                  </h3>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[11px] leading-[14px] font-medium tracking-[1.2px] uppercase sm:text-xs sm:leading-[18px] sm:tracking-[0.1em]">
+                      <span data-story-text>{STORIES_CONTENT.art.eyebrow}</span>
+                    </p>
+                    <h3
+                      className={cn(
+                        ebGaramond.className,
+                        "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
+                      )}
+                    >
+                      <span data-story-text>{STORIES_CONTENT.art.heading}</span>
+                    </h3>
+                  </div>
                   <div id="art-story-details" data-story-details>
                     <p className="hidden text-[13px] leading-[18px] text-warm-cream/80 sm:block">
                       <span data-story-text>

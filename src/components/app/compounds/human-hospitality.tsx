@@ -18,27 +18,28 @@ export function HumanHospitality() {
       <div className="relative isolate grid xl:ml-[max(0px,calc((100vw-var(--site-content-max-width))/2-72px))] xl:max-w-[calc(var(--site-content-max-width)+72px)] xl:grid-cols-[minmax(0,1fr)_min(37.5%,563px)] xl:gap-8">
         <div className="site-container relative z-10 xl:mx-0 xl:ml-[72px] xl:w-auto">
           <div className="flex min-w-0 flex-col items-start gap-5 pt-12 pb-9 sm:gap-7 sm:py-20 xl:max-w-[783px]">
-            <p
-              data-scroll-reveal
-              className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase"
-            >
-              <span
-                aria-hidden="true"
-                className="h-0.5 w-12 shrink-0 bg-current"
-              />
-              {HUMAN_HOSPITALITY_CONTENT.eyebrow}
-            </p>
-
             <div data-scroll-reveal className="flex flex-col gap-5">
-              <h2
-                id="human-hospitality-heading"
-                className={cn(
-                  ebGaramond.className,
-                  "text-[36px] leading-[40px] font-medium text-peploe-burgundy sm:text-[52px] sm:leading-[58px] xl:text-[60px] xl:leading-[66px]",
-                )}
-              >
-                {HUMAN_HOSPITALITY_CONTENT.heading}
-              </h2>
+              <div className="flex flex-col gap-2">
+                <p
+                  data-scroll-reveal
+                  className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-0.5 w-12 shrink-0 bg-current"
+                  />
+                  {HUMAN_HOSPITALITY_CONTENT.eyebrow}
+                </p>
+                <h2
+                  id="human-hospitality-heading"
+                  className={cn(
+                    ebGaramond.className,
+                    "text-[30px] leading-[40px] font-medium text-peploe-burgundy sm:text-[52px] sm:leading-[58px] xl:text-[60px] xl:leading-[66px]",
+                  )}
+                >
+                  {HUMAN_HOSPITALITY_CONTENT.heading}
+                </h2>
+              </div>
               <p className="text-base leading-[25px] text-ink/82 sm:leading-[26px] sm:text-ink/80">
                 {HUMAN_HOSPITALITY_CONTENT.description}
               </p>

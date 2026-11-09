@@ -27,7 +27,7 @@ export function MenuDish({ dish }: IMenuDishProps) {
         <p
           className={cn(
             ebGaramond.className,
-            "mt-0.5 text-[15px] leading-[23px] text-text-secondary xl:text-sm xl:leading-[21px]",
+            "mt-0.5 text-[15px] leading-[23px] text-text-secondary xl:text-sm xl:leading-[21px] max-sm:text-[16px]",
           )}
         >
           {dish.description}

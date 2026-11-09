@@ -121,9 +121,9 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
       <h1
         className={cn(
           ebGaramond.className,
-          "mt-2 whitespace-pre-line text-[46px] leading-none tracking-[-1px] after:mt-5 after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:mt-[14px] xl:text-[54px] xl:leading-[52px] xl:tracking-[-1px] xl:after:hidden",
+          "mt-2 whitespace-pre-line text-[36px] sm:text-[46px] leading-none tracking-[-1px] after:mt-5 after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:text-[54px] xl:leading-[52px] xl:tracking-[-1px] xl:after:hidden",
           compact && "xl:text-[46px]",
-          hasCompactDescription && "xl:mt-0.5 xl:tracking-normal",
+          hasCompactDescription && "xl:tracking-normal",
           menu.serviceTimes &&
             "leading-[56px] after:mt-[10px] xl:leading-none xl:after:mt-[14px] xl:after:block xl:after:w-[72px]",
         )}
@@ -134,7 +134,7 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
         <p
           className={cn(
             !compact && ebGaramond.className,
-            "mt-4 text-lg leading-6 text-text-secondary",
+            "mt-4 text-lg leading-6 text-text-secondary max-sm:text-[16px]",
             compact &&
               "text-sm leading-[21px] xl:mt-3.5 xl:max-w-[600px] xl:leading-5",
           )}

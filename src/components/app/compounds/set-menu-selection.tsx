@@ -64,7 +64,7 @@ export function SetMenuSelection({ menu, children }: ISetMenuSelectionProps) {
             <p className="mt-2 text-base">
               {formatMenuPrice(selected.price)} per person
             </p>
-            <p className="mt-3 text-sm leading-5 text-text-secondary">
+            <p className="mt-3 text-sm leading-5 text-text-secondary max-sm:text-[16px]">
               {selected.summary}
             </p>
             {selected.inclusions.length > 0 && (
