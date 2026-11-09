@@ -4,7 +4,7 @@ test.beforeEach(async ({ page, isMobile }) => {
   if (!isMobile) await page.setViewportSize({ width: 768, height: 1024 });
 });
 
-test("mobile menu keeps navigation without unavailable vouchers or contact details", async ({
+test("mobile menu keeps navigation and vouchers without contact details", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -22,7 +22,16 @@ test("mobile menu keeps navigation without unavailable vouchers or contact detai
   await expect(
     menu.getByRole("link", { name: "Visit & Contact" }),
   ).toBeVisible();
-  await expect(menu.getByText("Gift Vouchers")).toHaveCount(0);
+  const vouchers = menu.getByRole("link", {
+    name: "Gift Vouchers",
+    exact: true,
+  });
+  await expect(vouchers).toHaveAttribute(
+    "href",
+    "https://peploes.voucherconnect.com/",
+  );
+  await expect(vouchers).toHaveAttribute("target", "_blank");
+  await expect(vouchers).toBeInViewport();
   const booking = menu.getByRole("link", { name: "Book A Table", exact: true });
   await expect(booking).toBeInViewport();
   await expect(

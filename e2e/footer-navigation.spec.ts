@@ -89,11 +89,14 @@ test("footer Explore matches desktop links and keeps them reachable", async ({
     "What’s On",
     "The Journal",
     "Visit & Contact",
+    "Gift Vouchers",
   ]);
   await expect(
     explore.getByRole("link", { name: "Private Dining & Events", exact: true }),
   ).toHaveAttribute("href", "/private-dining");
-  await expect(explore.getByText("Gift Vouchers")).toHaveCount(0);
+  await expect(
+    explore.getByRole("link", { name: "Gift Vouchers", exact: true }),
+  ).toHaveAttribute("href", "https://peploes.voucherconnect.com/");
   await expect(
     footer.getByRole("navigation", { name: "Occasions", exact: true }),
   ).toHaveCount(0);

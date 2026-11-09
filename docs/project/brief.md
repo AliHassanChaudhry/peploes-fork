@@ -102,7 +102,8 @@ Opening-hours and location links support `#opening-hours` and `#find-us`.
 ## Navigation and policies
 
 Menus, private dining, Our Story, What's On, Journal and Visit must be reachable.
-Book a Table is the primary action. Hide vouchers until a destination exists.
+Book a Table is the primary action. Gift Vouchers opens the restaurant's existing
+Voucher Connect shop in a new tab; the site has no voucher checkout of its own.
 Keyboard users can open and dismiss menus, reach destinations, and recover
 focus. Mobile menus contain focus, prevent background scrolling and close
 on navigation or a desktop resize. Reduced motion must leave controls usable.

@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { FOCUS_RING } from "@/lib/constants";
+import { FOCUS_RING, GIFT_VOUCHERS_LINK } from "@/lib/constants";
 import { FOOTER_CONTENT, MOBILE_FOOTER_CONTENT } from "@/lib/constants/footer";
 import { ebGaramond } from "@/lib/fonts";
 import type { IMenuNavigationLink } from "@/lib/types";
@@ -57,6 +57,23 @@ export function MobileFooterNavigation() {
                     </Button>
                   </li>
                 ))}
+                {heading === FOOTER_CONTENT.exploreHeading && (
+                  <li>
+                    <Button
+                      asChild
+                      variant="brand-nav"
+                      className="h-11 w-full justify-start rounded-none p-0 text-base leading-[22px] font-normal text-text-secondary focus-visible:ring-inset"
+                    >
+                      <a
+                        href={GIFT_VOUCHERS_LINK.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {GIFT_VOUCHERS_LINK.label}
+                      </a>
+                    </Button>
+                  </li>
+                )}
               </ul>
             </div>
           </details>
