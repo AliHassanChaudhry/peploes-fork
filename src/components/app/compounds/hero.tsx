@@ -127,7 +127,7 @@ export function Hero() {
             alt={HERO_CONTENT.entranceImage.alt}
             fill
             sizes="100vw"
-            className="object-fill"
+            className="object-cover"
           />
         </div>
         <figcaption
