@@ -227,6 +227,7 @@
   }
 
   .heroCopy h1 {
+    font-size: 36px;
     line-height: 52px;
     letter-spacing: 0;
   }
@@ -270,7 +271,7 @@
   }
 
   .featuredCopy h2 {
-    font-size: 34px;
+    font-size: 30px;
     line-height: 39px;
   }
 
@@ -396,5 +397,13 @@
 
   .closingImage img {
     object-position: center 87.304%;
+  }
+}
+
+@media (width < 40rem) {
+  .description,
+  .standfirst,
+  .featuredDescription {
+    font-size: 16px;
   }
 }

@@ -101,7 +101,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
         </h3>
         <p
           className={cn(
-            "text-soft-stone",
+            "text-soft-stone max-sm:text-[16px]",
             featured
               ? "text-sm leading-[21px] sm:text-base sm:leading-6"
               : "text-sm leading-[21px]",
@@ -141,7 +141,7 @@ export function WhatsOn({ events }: IWhatsOnProps) {
           className="flex flex-col items-start gap-4 xl:flex-row xl:items-end xl:justify-between xl:gap-8"
         >
           <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-4 sm:gap-7">
+            <div className="flex flex-col gap-2">
               <p className="flex items-center gap-2 text-xs leading-4 font-medium tracking-[0.1em] uppercase">
                 <span
                   aria-hidden="true"
@@ -153,7 +153,7 @@ export function WhatsOn({ events }: IWhatsOnProps) {
                 id="whats-on-heading"
                 className={cn(
                   ebGaramond.className,
-                  "text-[42px] leading-[42px] font-medium sm:text-[60px] sm:leading-[66px]",
+                  "text-[30px] leading-[42px] font-medium sm:text-[60px] sm:leading-[66px]",
                 )}
               >
                 {WHATS_ON_CONTENT.heading}

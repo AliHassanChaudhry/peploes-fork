@@ -400,7 +400,7 @@ for (const activation of ["click", "Enter", "Space"]) {
 
     for (const accepted of [false, true]) {
       await agreement.setChecked(accepted);
-      for (const dismissal of ["Close", "Escape"]) {
+      for (const dismissal of ["Close", "Escape", "Backdrop"]) {
         if (activation === "click") {
           await terms.click();
         } else {
@@ -424,8 +424,10 @@ for (const activation of ["click", "Enter", "Space"]) {
         await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
         if (dismissal === "Close") {
           await close.click();
-        } else {
+        } else if (dismissal === "Escape") {
           await page.keyboard.press("Escape");
+        } else {
+          await page.mouse.click(4, 4);
         }
         await expect(dialog).not.toBeVisible();
         await expect(terms).toBeFocused();

@@ -226,3 +226,10 @@
     flex-direction: column;
   }
 }
+
+@media (width < 40rem) {
+  .description,
+  .category p {
+    font-size: 16px;
+  }
+}

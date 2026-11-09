@@ -90,7 +90,7 @@ export function Footer() {
             >
               {FOOTER_CONTENT.newsletter.heading}
             </h2>
-            <p className="mt-4 text-sm leading-[21px] text-text-secondary xl:mt-6">
+            <p className="mt-4 text-sm leading-[21px] text-text-secondary xl:mt-6 max-sm:text-[16px]">
               {FOOTER_CONTENT.newsletter.description}
             </p>
             <NewsletterSignup />

@@ -50,20 +50,22 @@ export function Journal({
               />
             </Link>
             <div data-scroll-reveal className={styles.featuredCopy}>
-              <p className={styles.metadata}>
-                <Link href={getJournalCategoryPath(featured.category.slug)}>
-                  {featured.category.name}
-                </Link>
-                <span aria-hidden="true"> · </span>
-                <span>{featured.readTimeMinutes} min read</span>
-                <span aria-hidden="true"> · </span>
-                <time dateTime={featured.date}>
-                  {formatJournalDate(featured.date)}
-                </time>
-              </p>
-              <h2 id="journal-featured">
-                <Link href={featuredHref}>{featured.title}</Link>
-              </h2>
+              <div className="flex flex-col gap-2">
+                <p className={styles.metadata}>
+                  <Link href={getJournalCategoryPath(featured.category.slug)}>
+                    {featured.category.name}
+                  </Link>
+                  <span aria-hidden="true"> · </span>
+                  <span>{featured.readTimeMinutes} min read</span>
+                  <span aria-hidden="true"> · </span>
+                  <time dateTime={featured.date}>
+                    {formatJournalDate(featured.date)}
+                  </time>
+                </p>
+                <h2 id="journal-featured">
+                  <Link href={featuredHref}>{featured.title}</Link>
+                </h2>
+              </div>
               <p className={styles.featuredDescription}>
                 {featured.standfirst}
               </p>
@@ -107,8 +109,10 @@ function JournalHero(hero: TJournalPage["hero"]) {
       )}
       <div className="site-container">
         <div data-scroll-reveal className={styles.heroCopy}>
-          <p className={styles.heroEyebrow}>{hero.eyebrow}</p>
-          <h1 id="journal-title">{hero.heading}</h1>
+          <div className="flex flex-col gap-2">
+            <p className={styles.heroEyebrow}>{hero.eyebrow}</p>
+            <h1 id="journal-title">{hero.heading}</h1>
+          </div>
           <p className={styles.standfirst}>{hero.standfirst}</p>
           <p className={styles.description}>{hero.description}</p>
         </div>

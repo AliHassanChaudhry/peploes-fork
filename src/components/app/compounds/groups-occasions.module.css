@@ -147,3 +147,9 @@
     );
   }
 }
+
+@media (width < 40rem) {
+  .card .description {
+    font-size: 16px;
+  }
+}
