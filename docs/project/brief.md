@@ -53,6 +53,10 @@ not a requirement for an animation. Keep movement restrained and navigation
 usable. Obtain the original logo, colour values and image files before settling
 visual tokens or selecting final crops.
 
+Additional darkness for text readability belongs behind the text, with a soft
+fade above it. Keep the upper photograph at its existing brightness. Apply this
+pattern to the areas the owner identifies.
+
 ## Book a Table
 
 The noindex `/book-a-table` flow uses ResDiary availability, holds and guest

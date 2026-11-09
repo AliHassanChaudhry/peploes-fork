@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
 import styles from "@/components/app/compounds/stories.module.css";
 import { StoryCard } from "@/components/app/molecules/story-card";
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,7 @@ export function Stories() {
       aria-labelledby="stories-heading"
       className={cn(dmSans.className, "bg-warm-cream text-ink")}
     >
-      <div className="site-container flex flex-col gap-8 pt-12 pb-14 sm:gap-12 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
+      <div className="site-container flex flex-col gap-8 pt-12 pb-8 sm:gap-12 sm:py-20 lg:gap-[72px] xl:pb-[76px]">
         <div data-scroll-reveal className="flex flex-col items-start gap-4">
           <p className="flex items-center gap-2.5 text-[11px] leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:mb-3 sm:text-sm">
             <span
@@ -80,8 +81,19 @@ export function Stories() {
           </Button>
         </div>
 
-        <div className="grid items-start gap-[18px] text-warm-cream sm:gap-7 xl:grid-cols-2">
-          <StoryCard className="relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[520px] sm:p-10 xl:min-h-[640px]">
+        <div
+          className={cn(
+            browseStyles.row,
+            browseStyles.hideScrollbar,
+            "grid items-start gap-[18px] text-warm-cream max-sm:-mr-4 max-sm:[--browse-card-min-height:400px] sm:gap-7 xl:grid-cols-2",
+          )}
+        >
+          <StoryCard
+            className={cn(
+              browseStyles.card,
+              "relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[520px] sm:p-10 xl:min-h-[640px]",
+            )}
+          >
             <Image
               src={STORIES_CONTENT.family.image.src}
               alt={STORIES_CONTENT.family.image.alt}
@@ -124,7 +136,7 @@ export function Stories() {
                     {STORIES_CONTENT.family.description}
                   </span>
                 </p>
-                <div className="sm:pt-3">
+                <div className="pt-2 sm:pt-3">
                   <StoryAction
                     label={STORIES_CONTENT.family.ctaLabel}
                     filled
@@ -135,8 +147,18 @@ export function Stories() {
             </div>
           </StoryCard>
 
-          <div className="grid min-w-0 gap-[18px] sm:gap-7">
-            <StoryCard className="relative isolate flex min-h-[390px] items-end justify-end overflow-hidden rounded-[4px] bg-ink sm:min-h-[308px] sm:items-center">
+          <div
+            className={cn(
+              browseStyles.group,
+              "grid min-w-0 gap-[18px] sm:gap-7",
+            )}
+          >
+            <StoryCard
+              className={cn(
+                browseStyles.card,
+                "relative isolate flex min-h-[390px] items-end justify-end overflow-hidden rounded-[4px] bg-ink sm:min-h-[308px] sm:items-center",
+              )}
+            >
               <Image
                 src={STORIES_CONTENT.produce.image.src}
                 alt={STORIES_CONTENT.produce.image.alt}
@@ -183,8 +205,18 @@ export function Stories() {
               </div>
             </StoryCard>
 
-            <div className="grid gap-[18px] sm:grid-cols-2 sm:gap-7">
-              <StoryCard className="relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]">
+            <div
+              className={cn(
+                browseStyles.group,
+                "grid gap-[18px] sm:grid-cols-2 sm:gap-7",
+              )}
+            >
+              <StoryCard
+                className={cn(
+                  browseStyles.card,
+                  "relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]",
+                )}
+              >
                 <Image
                   src={STORIES_CONTENT.gina.image.src}
                   alt={STORIES_CONTENT.gina.image.alt}
@@ -254,7 +286,12 @@ export function Stories() {
                 </div>
               </StoryCard>
 
-              <StoryCard className="relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]">
+              <StoryCard
+                className={cn(
+                  browseStyles.card,
+                  "relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]",
+                )}
+              >
                 <Image
                   src={STORIES_CONTENT.art.image.src}
                   alt={STORIES_CONTENT.art.image.alt}

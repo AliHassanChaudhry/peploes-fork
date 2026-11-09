@@ -88,3 +88,9 @@
     --visible-tabs: 6.5;
   }
 }
+
+@media (width < 80rem) {
+  .tabs > li > :is(a, button) {
+    pointer-events: auto;
+  }
+}
