@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/app/atoms/scroll-reveal";
 import revealStyles from "@/components/app/atoms/site-scroll-reveal.module.css";
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/hero.module.css";
 import { Button } from "@/components/ui/button";
-import { RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
+import { NAVBAR_CONTENT, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import { HERO_CONTENT } from "@/lib/constants/hero";
 import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -105,6 +106,13 @@ export function Hero() {
               </TrackedAnchor>
             </Button>
           </div>
+          <Link
+            href={ROUTES.MENUS}
+            className="inline-flex min-h-11 items-center justify-center gap-2 text-lg underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 sm:hidden"
+          >
+            {NAVBAR_CONTENT.menusLabel}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
       </div>
 

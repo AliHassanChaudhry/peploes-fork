@@ -190,8 +190,8 @@
 
   .overview .heroTitle {
     margin-block: 14px 0;
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 40px;
+    line-height: 44px;
     letter-spacing: -1px;
     white-space: normal;
   }
@@ -2922,5 +2922,82 @@
   }
   .enquiry .enquiryFields input[type="date"]:invalid:not(:focus) {
     color: transparent;
+  }
+}
+
+@media (width < 40rem) {
+  .gatheringImage {
+    height: 220px;
+  }
+  .gatherings {
+    /* The 44px action includes 10px below its 24px text line. */
+    padding-block: 48px 22px;
+  }
+  .gatheringCards > li {
+    display: flex;
+    flex-direction: column;
+  }
+  .gatheringCopy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .gatheringCopy .cardDescription {
+    flex: 1;
+  }
+  .gatheringCopy .cardLink {
+    align-self: flex-start;
+  }
+  .benefits .features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+  .benefits .featureHeading {
+    font-size: 20px;
+    line-height: 26px;
+    white-space: normal;
+  }
+  .weddingHireImage {
+    height: 220px;
+  }
+
+  .promoImage,
+  .spaceImage {
+    height: 200px;
+  }
+
+  .celebrations .heroImage {
+    height: 320px;
+  }
+
+  .celebrationMenus .promoImage {
+    height: 290px;
+  }
+
+  .corporatePage .heroImage {
+    height: 320px;
+  }
+
+  .corporatePage :is(.promoImage, .spaceImage) {
+    height: 290px;
+  }
+
+  .corporatePage :is(.heroCopy, .promoCopy, .paleSection, .enquiry) {
+    padding-block: 48px;
+  }
+
+  .heroCopy,
+  .promoCopy,
+  .benefits,
+  .paleSection,
+  .personalDetails,
+  .enquiry,
+  .weddingDetails {
+    padding-block: 32px;
+  }
+
+  .overviewMenuCopy,
+  .weddingHireCopy {
+    padding-block: 32px;
   }
 }

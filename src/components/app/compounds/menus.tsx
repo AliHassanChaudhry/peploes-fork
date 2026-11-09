@@ -14,7 +14,7 @@ export function Menus() {
       aria-labelledby="menus-heading"
       className={cn(dmSans.className, "bg-warm-cream text-ink")}
     >
-      <div className="relative h-[238px] sm:h-[300px] lg:h-[370px]">
+      <div className="relative h-[200px] sm:h-[300px] lg:h-[370px]">
         <Image
           src={MENUS_CONTENT.image.src}
           alt={MENUS_CONTENT.image.alt}
@@ -27,7 +27,7 @@ export function Menus() {
           alt={MENUS_CONTENT.image.alt}
           fill
           sizes="100vw"
-          className="object-cover sm:hidden"
+          className="object-cover object-[center_calc(100%_+_12px)] sm:hidden"
         />
       </div>
 
@@ -60,7 +60,7 @@ export function Menus() {
 
         <ul
           aria-label={MENUS_CONTENT.categoriesLabel}
-          className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
+          className="grid grid-cols-2 gap-x-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
         >
           {MENUS_CONTENT.categories.map(({ label, href }) => {
             const content = (
