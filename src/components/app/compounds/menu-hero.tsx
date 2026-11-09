@@ -26,8 +26,12 @@ export function MenuHero({ content }: IMenuHeroProps) {
       />
       <div
         data-scroll-reveal
-        className="site-container py-[54px] xl:pt-[68px] xl:pb-[52px]"
+        className="site-container py-[54px] max-sm:relative xl:pt-[68px] xl:pb-[52px]"
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-4 top-7 bottom-0 -z-10 bg-[linear-gradient(180deg,rgba(24,20,19,0)_0px,rgba(24,20,19,0.65)_32px,rgba(24,20,19,0.65)_100%)] sm:hidden"
+        />
         <div className="max-w-[720px]">
           <p className="text-sm leading-5 font-medium tracking-[0.08em] uppercase">
             {content.eyebrow}

@@ -38,7 +38,7 @@
 .categoryLinks a {
   position: relative;
   display: flex;
-  min-height: 40px;
+  min-height: 44px;
   align-items: center;
   padding-block: 7px 13px;
   font-size: 14px;

@@ -10,6 +10,7 @@ export const PRIVATE_DINING = {
     "Gather at Peploe’s for celebrations, corporate events and intimate Dublin weddings, with group menus and a dedicated events team.",
   hero: {
     eyebrow: "Private Dining & Events",
+    action: "Make an enquiry",
     heading: "Life tastes\nbetter together.",
     description:
       "From long lunches and family celebrations to business dinners and intimate city weddings, Peploe’s offers a warm setting for bringing people together in the heart of Dublin.",

@@ -216,8 +216,9 @@
 
   .heroCopy {
     gap: 20px;
-    min-height: 520px;
-    padding-block: 72px 48px;
+    min-height: calc(100svh - 72px);
+    justify-content: flex-end;
+    padding-block: 40px 80px;
   }
 
   .heroEyebrow {
@@ -237,9 +238,10 @@
   .hero::after {
     background: linear-gradient(
       180deg,
-      rgb(15 11 10 / 82%),
-      rgb(15 11 10 / 46%) 66%,
-      rgb(15 11 10 / 18%)
+      rgb(15 11 10 / 8%) 0%,
+      rgb(15 11 10 / 35%) 30%,
+      rgb(15 11 10 / 85%) 60%,
+      rgb(15 11 10 / 96%) 100%
     );
   }
 

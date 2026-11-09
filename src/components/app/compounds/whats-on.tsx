@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, ROUTES, WHATS_ON_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -46,7 +47,8 @@ function EventCard({ event, featured = false }: IEventCardProps) {
     <article
       data-image-card
       className={cn(
-        "min-w-0 max-sm:pb-6 max-sm:shadow-[inset_0_-1px_0_rgb(250_247_241/0.3)]",
+        browseStyles.card,
+        "min-w-0 max-sm:border-b max-sm:border-warm-cream/30 max-sm:pb-6",
         featured
           ? "flex flex-col gap-[14px] sm:gap-4"
           : "relative grid grid-cols-1 items-start gap-[14px] sm:not-first:pt-6 sm:not-first:before:absolute sm:not-first:before:inset-x-0 sm:not-first:before:top-0 sm:not-first:before:h-px sm:not-first:before:bg-soft-stone sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-6",
@@ -61,7 +63,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
           FOCUS_RING,
           "group relative block overflow-hidden focus-visible:ring-warm-cream",
           featured
-            ? "h-[236px] rounded-[2px] sm:aspect-635/172 sm:h-auto"
+            ? "h-[190px] rounded-[2px] sm:aspect-635/172 sm:h-auto"
             : "h-[190px] rounded-[1px] sm:aspect-5/4 sm:h-40",
         )}
       >
@@ -133,7 +135,7 @@ export function WhatsOn({ events }: IWhatsOnProps) {
         "bg-button-primary-pressed text-warm-cream",
       )}
     >
-      <div className="site-container flex flex-col gap-8 pt-12 pb-[52px] sm:gap-12 sm:py-20">
+      <div className="site-container flex flex-col gap-8 pt-12 pb-8 sm:gap-12 sm:py-20">
         <div
           data-scroll-reveal
           className="flex flex-col items-start gap-4 xl:flex-row xl:items-end xl:justify-between xl:gap-8"
@@ -167,10 +169,18 @@ export function WhatsOn({ events }: IWhatsOnProps) {
           />
         </div>
 
-        <div className="grid items-start gap-6 sm:gap-12 xl:grid-cols-[minmax(0,635fr)_minmax(0,613fr)]">
+        <div
+          className={cn(
+            browseStyles.row,
+            browseStyles.hideScrollbar,
+            "grid items-start gap-6 max-sm:-mr-4 sm:gap-12 xl:grid-cols-[minmax(0,635fr)_minmax(0,613fr)]",
+          )}
+        >
           <EventCard event={featuredEvent} featured />
           {otherEvents.length > 0 && (
-            <div className="flex min-w-0 flex-col gap-6">
+            <div
+              className={cn(browseStyles.group, "flex min-w-0 flex-col gap-6")}
+            >
               {otherEvents.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}

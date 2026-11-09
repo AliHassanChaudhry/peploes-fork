@@ -34,7 +34,11 @@ export function Wine() {
       />
 
       <div className="site-container relative">
-        <div className="flex min-h-[600px] w-full max-w-[748px] flex-col justify-end gap-5 pt-[210px] pb-[52px] sm:min-h-0 sm:justify-start sm:gap-8 sm:py-20">
+        <div className="flex min-h-[600px] w-full max-w-[748px] flex-col justify-end gap-5 pt-[210px] pb-[52px] max-sm:relative max-sm:isolate sm:min-h-0 sm:justify-start sm:gap-8 sm:py-20">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-4 top-[190px] bottom-0 -z-10 bg-[linear-gradient(180deg,rgba(24,20,19,0)_0px,rgba(24,20,19,0.55)_32px,rgba(24,20,19,0.55)_100%)] sm:hidden"
+          />
           <p
             data-scroll-reveal
             className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase"
