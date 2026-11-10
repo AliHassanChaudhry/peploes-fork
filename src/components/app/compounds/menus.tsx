@@ -33,7 +33,7 @@ export function Menus() {
 
       <div
         data-scroll-reveal
-        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20"
+        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20 lg:pb-12"
       >
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">

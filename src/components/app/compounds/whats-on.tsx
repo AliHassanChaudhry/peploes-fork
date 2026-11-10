@@ -49,7 +49,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
       data-image-card
       className={cn(
         styles.card,
-        "min-w-0 max-sm:border-b max-sm:border-warm-cream/30 max-sm:pb-6",
+        "min-w-0 max-sm:border-b max-sm:border-warm-cream/30 max-sm:pb-3",
         featured
           ? "flex flex-col gap-[14px] sm:gap-4"
           : "relative grid grid-cols-1 items-start gap-[14px] sm:not-first:pt-6 sm:not-first:before:absolute sm:not-first:before:inset-x-0 sm:not-first:before:top-0 sm:not-first:before:h-px sm:not-first:before:bg-soft-stone sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-6",

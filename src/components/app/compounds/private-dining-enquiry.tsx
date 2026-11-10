@@ -29,7 +29,11 @@ export function PrivateDiningEnquiry({
           />
           {content.contacts && <PrivateDiningContacts />}
         </div>
-        <div data-scroll-reveal className={styles.enquiryForm}>
+        <div
+          id="enquiry-form"
+          data-scroll-reveal
+          className={styles.enquiryForm}
+        >
           {content.formEyebrow && (
             <PrivateDiningHeading
               eyebrow={content.formEyebrow}

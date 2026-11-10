@@ -1178,6 +1178,7 @@
 
   .capacityGrid > li:last-child {
     padding-bottom: 0;
+    row-gap: 6px;
   }
 
   .capacityGrid .illustration {
@@ -1233,6 +1234,10 @@
 
   .capacityGrid li:last-child .capacityLabel {
     margin-top: 5px;
+  }
+
+  .capacityGrid li:last-child > p:last-child {
+    margin-top: 1px;
   }
 
   .capacityGrid li:nth-child(-n + 2) > p:last-child,
@@ -3042,8 +3047,33 @@
     font-size: 32px;
   }
 
+  :is(.celebrations, .corporate, .weddings) .heroImage {
+    height: clamp(160px, 28svh, 240px);
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy {
+    padding-block: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroTitle {
+    margin-bottom: 16px;
+    white-space: normal;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroDescription {
+    line-height: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy .action {
+    margin-top: 20px;
+  }
+
   .enquiryForm .heading {
     font-size: 30px;
+  }
+
+  .enquiryForm {
+    scroll-margin-top: 80px;
   }
 
   .weddingSteps h3,

@@ -189,6 +189,9 @@ body:has(.page) {
   }
 
   .groupCopy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 48px 72px 48px 48px;
   }
 
