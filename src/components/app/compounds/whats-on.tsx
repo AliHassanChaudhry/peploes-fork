@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
+import styles from "@/components/app/compounds/whats-on.module.css";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, ROUTES, WHATS_ON_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -47,7 +48,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
     <article
       data-image-card
       className={cn(
-        browseStyles.card,
+        styles.card,
         "min-w-0 max-sm:border-b max-sm:border-warm-cream/30 max-sm:pb-6",
         featured
           ? "flex flex-col gap-[14px] sm:gap-4"
@@ -85,7 +86,10 @@ function EventCard({ event, featured = false }: IEventCardProps) {
         </span>
       </Link>
 
-      <div data-scroll-reveal className="flex min-w-0 flex-col gap-2">
+      <div
+        data-scroll-reveal
+        className={cn(styles.copy, "flex min-w-0 flex-col gap-2")}
+      >
         <p className="text-xs leading-4 font-medium tracking-[0.1em] uppercase">
           {event.category}
         </p>
@@ -93,8 +97,8 @@ function EventCard({ event, featured = false }: IEventCardProps) {
           className={cn(
             ebGaramond.className,
             featured
-              ? "text-[28px] leading-8 font-normal sm:text-[42px] sm:leading-[48px]"
-              : "text-[28px] leading-[29px] font-normal sm:text-2xl sm:leading-[30px] sm:font-medium",
+              ? "text-[26px] leading-8 font-normal sm:text-[42px] sm:leading-[48px]"
+              : "text-[26px] leading-8 font-normal sm:text-2xl sm:leading-[30px] sm:font-medium",
           )}
         >
           {event.title}
@@ -171,16 +175,14 @@ export function WhatsOn({ events }: IWhatsOnProps) {
 
         <div
           className={cn(
-            browseStyles.row,
+            styles.cards,
             browseStyles.hideScrollbar,
             "grid items-start gap-6 max-sm:-mr-4 sm:gap-12 xl:grid-cols-[minmax(0,635fr)_minmax(0,613fr)]",
           )}
         >
           <EventCard event={featuredEvent} featured />
           {otherEvents.length > 0 && (
-            <div
-              className={cn(browseStyles.group, "flex min-w-0 flex-col gap-6")}
-            >
+            <div className={cn(styles.group, "flex min-w-0 flex-col gap-6")}>
               {otherEvents.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}

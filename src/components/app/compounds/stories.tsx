@@ -87,7 +87,7 @@ export function Stories() {
           className={cn(
             browseStyles.row,
             browseStyles.hideScrollbar,
-            "grid items-start gap-[18px] text-warm-cream max-sm:-mr-4 max-sm:[--browse-card-min-height:400px] sm:gap-7 xl:grid-cols-2",
+            "grid items-start gap-[18px] text-warm-cream max-sm:-mr-4 max-sm:[--browse-card-min-height:370px] sm:gap-7 xl:grid-cols-2",
           )}
         >
           <StoryCard
@@ -124,7 +124,7 @@ export function Stories() {
                 <h3
                   className={cn(
                     ebGaramond.className,
-                    "text-[30px] leading-[31px] font-normal sm:text-[38px] sm:leading-[44px]",
+                    "text-[26px] leading-[31px] font-normal sm:text-[38px] sm:leading-[44px]",
                   )}
                 >
                   <span data-story-text>
@@ -193,7 +193,7 @@ export function Stories() {
                   <h3
                     className={cn(
                       ebGaramond.className,
-                      "text-[30px] leading-[31px] font-normal sm:text-2xl sm:leading-[30px]",
+                      "text-[26px] leading-[31px] font-normal sm:text-2xl sm:leading-[30px]",
                     )}
                   >
                     <span data-story-text>
@@ -266,7 +266,7 @@ export function Stories() {
                     <h3
                       className={cn(
                         ebGaramond.className,
-                        "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
+                        "text-[26px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
                       )}
                     >
                       <span data-story-text className="sm:hidden">
@@ -332,7 +332,7 @@ export function Stories() {
                     <h3
                       className={cn(
                         ebGaramond.className,
-                        "text-[30px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
+                        "text-[26px] leading-[31px] font-normal sm:text-xl sm:leading-[26px]",
                       )}
                     >
                       <span data-story-text>{STORIES_CONTENT.art.heading}</span>

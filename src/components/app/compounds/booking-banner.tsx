@@ -17,7 +17,7 @@ export function BookingBanner() {
         "isolate scroll-mt-20 overflow-hidden bg-button-primary-pressed text-warm-cream",
       )}
     >
-      <div className="site-container-inset relative min-h-[410px] py-[54px] sm:min-h-0 sm:py-[72px]">
+      <div className="site-container-inset relative py-[54px] sm:min-h-0 sm:py-[72px]">
         <Image
           src={BOOKING_BANNER_CONTENT.image.src}
           alt={BOOKING_BANNER_CONTENT.image.alt}
@@ -36,7 +36,7 @@ export function BookingBanner() {
               id="booking-banner-heading"
               className={cn(
                 ebGaramond.className,
-                "text-[30px] leading-[40px] font-normal sm:text-[48px] sm:leading-[54px]",
+                "text-[30px] leading-[40px] font-normal max-sm:[text-box:trim-start_cap_alphabetic] sm:text-[48px] sm:leading-[54px]",
               )}
             >
               {BOOKING_BANNER_CONTENT.heading}{" "}

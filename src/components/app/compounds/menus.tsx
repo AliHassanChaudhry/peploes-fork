@@ -89,7 +89,7 @@ export function Menus() {
                   aria-disabled={href ? undefined : true}
                   className={cn(
                     ebGaramond.className,
-                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
+                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline max-sm:text-lg sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
                   )}
                 >
                   {href ? (

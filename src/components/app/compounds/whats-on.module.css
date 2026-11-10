@@ -1,0 +1,39 @@
+@media (width < 40rem) {
+  .cards {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 88%;
+    grid-template-rows: repeat(5, auto);
+    align-items: stretch;
+    gap: 10px 16px;
+    overflow-x: auto;
+    padding-block: 4px 16px;
+  }
+
+  .group {
+    display: contents;
+  }
+
+  .card {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    align-items: stretch;
+    row-gap: 10px;
+  }
+
+  .card > a {
+    margin-bottom: 4px;
+  }
+
+  .card [data-card-action] {
+    font-size: 15px;
+  }
+
+  .copy {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    row-gap: 10px;
+  }
+}
