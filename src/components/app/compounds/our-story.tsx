@@ -32,7 +32,7 @@ function StoryHero() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="relative pt-10 pb-12 lg:w-[535px] lg:max-w-[55%] lg:py-20 xl:max-w-none"
+          className="relative pt-10 pb-12 max-sm:pb-10 lg:w-[535px] lg:max-w-[55%] lg:py-20 xl:max-w-none"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:shrink-0 before:bg-current">
             {hero.eyebrow}
@@ -43,7 +43,7 @@ function StoryHero() {
           >
             {hero.heading}
           </h1>
-          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:text-[16px]">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:mt-[22px] max-sm:text-[16px]">
             {hero.description}
           </p>
           <p className="mt-6 text-xs leading-4 font-semibold text-peploe-burgundy">
@@ -81,7 +81,7 @@ function StoryTimeline() {
               key={milestone.year}
               className="relative min-w-0 pl-[30px] before:absolute before:top-[14px] before:bottom-[-42px] before:left-[6.5px] before:w-px before:bg-peploe-burgundy last:before:hidden sm:pl-0 sm:before:hidden"
             >
-              <p className="text-[28px] leading-[37px] font-normal text-peploe-burgundy max-sm:text-[26px]">
+              <p className="text-[28px] leading-[37px] font-normal text-peploe-burgundy max-sm:text-[24px]">
                 {milestone.year}
               </p>
               <span
@@ -186,7 +186,7 @@ function StoryFounder() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="pt-10 pb-12 lg:ml-auto lg:min-h-[390px] lg:w-[44%] lg:py-[51px] xl:w-[490px]"
+          className="pt-10 pb-12 max-sm:py-[38px] lg:ml-auto lg:min-h-[390px] lg:w-[44%] lg:py-[51px] xl:w-[490px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {founder.eyebrow}
@@ -197,7 +197,7 @@ function StoryFounder() {
           >
             {founder.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:text-[16px]">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:mt-[21px] max-sm:text-[16px]">
             {founder.description}
           </p>
         </div>
@@ -225,7 +225,7 @@ function StoryMural() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="relative z-1 py-12 lg:min-h-[444px] lg:w-[470px]"
+          className="relative z-1 py-12 max-sm:flex max-sm:flex-col max-sm:pt-[72px] max-sm:pb-6 lg:min-h-[444px] lg:w-[470px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {mural.eyebrow}
@@ -236,7 +236,7 @@ function StoryMural() {
           >
             {mural.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7 max-sm:text-[16px]">
+          <p className="mt-6 text-lg leading-7 max-sm:invisible max-sm:order-first max-sm:text-[16px]">
             {mural.description}
           </p>
           <Button
@@ -323,7 +323,7 @@ function StoryNextChapter() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="pt-10 pb-12 lg:ml-auto lg:min-h-[340px] lg:w-[44%] lg:py-12 xl:w-[527px]"
+          className="pt-10 pb-12 max-sm:pb-10 lg:ml-auto lg:min-h-[340px] lg:w-[44%] lg:py-12 xl:w-[527px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
             {nextChapter.eyebrow}
