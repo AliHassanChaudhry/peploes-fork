@@ -43,12 +43,33 @@ export function PrivateDiningHero({ hero, variant }: IPrivateDiningHeroProps) {
             {hero.description}
           </p>
           {hero.action ? (
-            <Button asChild variant="brand-primary" className={styles.action}>
-              <a href="#enquire">
-                {hero.action}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </a>
-            </Button>
+            <>
+              {variant !== "overview" && (
+                <Button
+                  asChild
+                  variant="brand-primary"
+                  className={cn(styles.action, "sm:hidden")}
+                >
+                  <a href="#enquiry-form">
+                    {hero.action}
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </a>
+                </Button>
+              )}
+              <Button
+                asChild
+                variant="brand-primary"
+                className={cn(
+                  styles.action,
+                  variant !== "overview" && "hidden sm:inline-flex",
+                )}
+              >
+                <a href="#enquire">
+                  {hero.action}
+                  <ArrowRight aria-hidden="true" className="size-4" />
+                </a>
+              </Button>
+            </>
           ) : (
             <span aria-hidden="true" className={styles.heroRule} />
           )}

@@ -530,7 +530,11 @@ body:has(.page) {
 @media (width < 40rem) {
   .heroCopy {
     min-height: calc(100svh - 72px);
-    padding-block: 40px 80px;
+    padding-block: 56px 64px;
+  }
+
+  .terrace {
+    margin-bottom: 0;
   }
 
   .heroCopy h1,

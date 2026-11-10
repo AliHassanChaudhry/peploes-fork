@@ -900,6 +900,13 @@
 .terms input {
   cursor: pointer;
 }
+@media (width >= 64rem) {
+  .returnNotice label,
+  .terms label,
+  label.terms {
+    cursor: pointer;
+  }
+}
 .returnNotice input,
 .terms input {
   width: 18px;

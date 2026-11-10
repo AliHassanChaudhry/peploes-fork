@@ -180,7 +180,7 @@
     max-width: 613px;
     flex-direction: column;
     justify-content: flex-end;
-    padding-block: 40px 80px;
+    padding-block: 40px 32px;
   }
 
   .overview .eyebrow {
@@ -288,6 +288,11 @@
   font-size: 28px;
   line-height: 34px;
   margin-bottom: 8px;
+}
+@media (width < 40rem) {
+  .gatheringCopy h3 {
+    font-size: 24px;
+  }
 }
 .cardDescription {
   font-size: 18px;
@@ -572,8 +577,7 @@
   resize: vertical;
 }
 .messageField {
-  --message-resize-grip:
-    linear-gradient(
+  --message-resize-grip: linear-gradient(
       135deg,
       transparent 50%,
       var(--peploe-burgundy) 50% 55%,
@@ -1091,6 +1095,10 @@
     line-height: 26px;
   }
 
+  .celebrationPlanning .featureHeading {
+    font-size: 18px;
+  }
+
   :is(.celebrationOccasions, .personalDetails, .celebrationPlanning)
     :is(.features p, .occasionList) {
     line-height: 24px;
@@ -1098,6 +1106,10 @@
 
   .celebrationOccasions .occasionList {
     white-space: normal;
+  }
+
+  :where(.celebrationOccasions .occasionList) > li:last-child {
+    padding-bottom: 0;
   }
 
   .personalDetailsContainer {
@@ -1165,6 +1177,7 @@
 
   .capacityGrid > li:last-child {
     padding-bottom: 0;
+    row-gap: 6px;
   }
 
   .capacityGrid .illustration {
@@ -1212,6 +1225,18 @@
   .capacityGrid li:nth-child(n + 3) .capacityFigure {
     font-size: 24px;
     line-height: 30px;
+  }
+
+  .capacityGrid li:nth-child(3) .capacityFigure {
+    line-height: 31px;
+  }
+
+  .capacityGrid li:last-child .capacityLabel {
+    margin-top: 5px;
+  }
+
+  .capacityGrid li:last-child > p:last-child {
+    margin-top: 1px;
   }
 
   .capacityGrid li:nth-child(-n + 2) > p:last-child,
@@ -1298,7 +1323,7 @@
   .celebrations .heroImage {
     left: calc(
       var(--events-content-edge) +
-      min(var(--events-content-width) * 0.4075, 528px)
+        min(var(--events-content-width) * 0.4075, 528px)
     );
   }
   :where(.celebrations .heroImage) .cover {
@@ -1351,13 +1376,14 @@
     inset: 0
       calc(
         max(
-          var(--corporate-gutter),
-          (100% - var(--site-content-max-width)) /
-          2
-        ) +
-        min(100% - var(--corporate-gutter) * 2, var(--site-content-max-width)) *
-        var(--corporate-copy-share) +
-        48px
+            var(--corporate-gutter),
+            (100% - var(--site-content-max-width)) / 2
+          ) +
+          min(
+            100% - var(--corporate-gutter) * 2,
+            var(--site-content-max-width)
+          ) *
+          var(--corporate-copy-share) + 48px
       )
       0 0;
   }
@@ -1406,9 +1432,7 @@
   }
   .weddings .heroImage {
     left: calc(
-      var(--events-content-edge) +
-      var(--events-content-width) *
-      0.57716
+      var(--events-content-edge) + var(--events-content-width) * 0.57716
     );
   }
   :where(.weddings .heroImage) .cover {
@@ -2876,7 +2900,7 @@
     text-align: center;
   }
   .corporatePage .location .featureHeading {
-    font-size: 23px;
+    font-size: 22px;
   }
   .corporatePage .location .features p {
     font-size: 15px;
@@ -2953,7 +2977,7 @@
     gap: 24px 16px;
   }
   .benefits .featureHeading {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 26px;
     white-space: normal;
   }
@@ -3017,7 +3041,58 @@
     font-size: 36px;
   }
 
+  .corporate .heroTitle {
+    font-size: 32px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroImage {
+    height: clamp(160px, 28svh, 240px);
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy {
+    padding-block: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroTitle {
+    margin-bottom: 16px;
+    white-space: normal;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroDescription {
+    line-height: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy .action {
+    margin-top: 20px;
+  }
+
   .enquiryForm .heading {
+    font-size: 30px;
+  }
+
+  .enquiryForm {
+    scroll-margin-top: 80px;
+  }
+
+  .weddingSteps h3,
+  .weddingTouches .featureHeading {
+    font-size: 26px;
+  }
+
+  .weddingTouches > li {
+    padding-block: 28px;
+  }
+
+  .weddingTouches > li:last-child {
+    padding-bottom: 0;
+  }
+
+  .weddingHireCopy .description,
+  .weddingDetails > .sectionHeading .description {
+    margin-top: 22px;
+  }
+
+  .celebrationOccasions .heading {
     font-size: 30px;
   }
 }

@@ -33,7 +33,7 @@ export function Menus() {
 
       <div
         data-scroll-reveal
-        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20"
+        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20 lg:pb-12"
       >
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
@@ -89,7 +89,7 @@ export function Menus() {
                   aria-disabled={href ? undefined : true}
                   className={cn(
                     ebGaramond.className,
-                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
+                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline max-sm:text-lg sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
                   )}
                 >
                   {href ? (

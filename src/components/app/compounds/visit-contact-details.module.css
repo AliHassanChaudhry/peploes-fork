@@ -287,11 +287,12 @@
   }
 
   .practicalities {
-    gap: 32px;
+    gap: 29px;
+    padding-block: 29px;
   }
 
   .gatherings {
-    padding-top: 32px;
+    padding-top: 29px;
   }
 }
 
@@ -430,6 +431,10 @@
 }
 
 @media (width < 40rem) {
+  .dining {
+    padding-bottom: 24px;
+  }
+
   .serviceDetail {
     font-size: 16px;
   }

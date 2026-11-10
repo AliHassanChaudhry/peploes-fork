@@ -120,7 +120,7 @@ export function PrivateDining() {
             alt=""
             width={106}
             height={222}
-            className={styles.botanical}
+            className={cn(styles.botanical, "max-sm:mx-auto")}
           />
         </div>
       </section>

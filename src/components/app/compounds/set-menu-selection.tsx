@@ -56,7 +56,7 @@ export function SetMenuSelection({ menu, children }: ISetMenuSelectionProps) {
               tabIndex={-1}
               className={cn(
                 ebGaramond.className,
-                "text-[38px] leading-[44px] focus:outline-none xl:text-[42px] xl:leading-[50px]",
+                "text-[38px] leading-[44px] focus:outline-none max-sm:text-[36px] xl:text-[42px] xl:leading-[50px]",
               )}
             >
               {selected.title}
@@ -132,12 +132,12 @@ export function SetMenuSelection({ menu, children }: ISetMenuSelectionProps) {
                 <h2
                   className={cn(
                     ebGaramond.className,
-                    "text-[25px] leading-8 xl:text-[26px]",
+                    "text-[25px] leading-8 max-sm:text-[24px] xl:text-[26px]",
                   )}
                 >
                   {set.title}
                 </h2>
-                <p className="mt-1 text-[13px] leading-[18px] text-text-secondary xl:text-sm">
+                <p className="mt-1 text-[13px] leading-[18px] text-text-secondary max-sm:text-[12px] xl:text-sm">
                   {formatMenuPrice(set.price)} per person
                   <span aria-hidden="true" className="px-2">
                     |
@@ -145,7 +145,7 @@ export function SetMenuSelection({ menu, children }: ISetMenuSelectionProps) {
                   {set.serviceTimes ?? set.cardDescription ?? set.summary}
                 </p>
               </div>
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-peploe-burgundy">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-peploe-burgundy max-sm:size-[40px]">
                 <ArrowRight aria-hidden="true" className="size-4" />
               </span>
             </a>
