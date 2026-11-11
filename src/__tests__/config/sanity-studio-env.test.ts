@@ -25,7 +25,7 @@ beforeEach(() => {
   symlinkSync(
     path.resolve("studio/node_modules"),
     path.join(fixture, "studio/node_modules"),
-    "dir",
+    process.platform === "win32" ? "junction" : "dir",
   );
   writeFileSync(
     path.join(fixture, ".env"),

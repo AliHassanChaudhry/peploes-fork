@@ -11,7 +11,11 @@ import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
 import styles from "@/components/app/molecules/mobile-navigation.module.css";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { DESKTOP_NAVIGATION_QUERY, FOCUS_RING } from "@/lib/constants";
+import {
+  DESKTOP_NAVIGATION_QUERY,
+  FOCUS_RING,
+  GIFT_VOUCHERS_LINK,
+} from "@/lib/constants";
 import { MOBILE_NAVIGATION_CONTENT } from "@/lib/constants/mobile-navigation";
 import type {
   IMobileNavigationItem,
@@ -215,6 +219,20 @@ export function MobileNavigation({
               className="h-12 w-full leading-[22px]"
               label={MOBILE_NAVIGATION_CONTENT.bookingLabel}
             />
+            <Button
+              asChild
+              variant="brand-contact"
+              className="h-12 w-full rounded-[4px] border-peploe-burgundy px-6 py-[13px] text-base leading-[22px] font-medium"
+            >
+              <a
+                href={GIFT_VOUCHERS_LINK.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+              >
+                {GIFT_VOUCHERS_LINK.label}
+              </a>
+            </Button>
             <p
               className={cn(
                 brandPhraseClassName,

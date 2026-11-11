@@ -2,6 +2,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import { HTML_LIMITED_BOT_UA_RE } from "next/dist/shared/lib/router/utils/html-bots";
 import { HTML_LIMITED_AI_FETCHERS } from "./src/lib/constants/crawlers";
+import { isSearchIndexableSite } from "./src/lib/seo/indexing";
 
 const emailBrowserFixture = process.env.EMAIL_E2E_BUILD === "1";
 
@@ -57,6 +58,7 @@ const nextConfig: NextConfig = {
       }
     : {}),
   env: Object.fromEntries([
+    ["NEXT_PUBLIC_SENTRY_DSN", process.env.NEXT_PUBLIC_SENTRY_DSN || ""],
     [
       "NEXT_PUBLIC_SENTRY_RELEASE",
       process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA || "",
@@ -199,6 +201,14 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      ...(isSearchIndexableSite(process.env.NEXT_PUBLIC_SITE_URL)
+        ? []
+        : [
+            {
+              source: "/(.*)",
+              headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+            },
+          ]),
       {
         source: "/:path*",
         has: [

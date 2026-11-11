@@ -88,6 +88,11 @@ export const RESTAURANT_CONTACT = {
   email: "reception@peploes.com",
 } as const;
 
+export const GIFT_VOUCHERS_LINK = {
+  label: "Gift Vouchers",
+  href: "https://peploes.voucherconnect.com/",
+} as const;
+
 export const RESTAURANT_ADDRESS = {
   streetAddress: "16 St Stephen's Green",
   locality: "Dublin 2",
@@ -139,6 +144,7 @@ export const ROUTES = {
 
 export const SITEMAP_STATIC_ROUTES = [
   ROUTES.HOME,
+  ROUTES.BOOK_A_TABLE,
   ROUTES.WHATS_ON,
   ROUTES.OUR_STORY,
   ROUTES.JOURNAL,

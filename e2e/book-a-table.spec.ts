@@ -505,7 +505,7 @@ for (const newsletterOptIn of [false, true]) {
     await expect(previewNotice).toHaveCount(0);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
-      /noindex/,
+      "index, follow",
     );
 
     await chooseDate(reservations, laterFreeDate());

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import styles from "@/components/app/compounds/groups-occasions.module.css";
 import { Button } from "@/components/ui/button";
-import { FOCUS_RING, ROUTES } from "@/lib/constants";
+import { FOCUS_RING, MOBILE_HOME_CONTENT, ROUTES } from "@/lib/constants";
 import { GROUPS_OCCASIONS_CONTENT } from "@/lib/constants/groups-occasions";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -54,7 +54,12 @@ export function GroupsOccasions() {
             </div>
 
             <p className="w-full text-base leading-6 text-warm-cream/90">
-              {GROUPS_OCCASIONS_CONTENT.description}
+              <span className="sm:hidden">
+                {MOBILE_HOME_CONTENT.groupsDescription}
+              </span>
+              <span className="hidden sm:inline">
+                {GROUPS_OCCASIONS_CONTENT.description}
+              </span>
             </p>
 
             <Button

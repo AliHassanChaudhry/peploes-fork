@@ -30,7 +30,6 @@ import type {
   BOOKING_UNSUPPORTED_SETTINGS,
 } from "@/lib/constants/booking";
 import type { buttonVariants } from "@/lib/constants/button";
-import type { cookiePreferencesSchema } from "@/lib/cookie-consent";
 import type { ErrorCode, GA4Event, HttpVerb, LogLevel } from "@/lib/enums";
 import type {
   journalArticleCardSchema,
@@ -982,7 +981,11 @@ export interface ICookieConsentRecord {
   timestamp: string;
 }
 
-export type ICookiePreferences = InferSchema<typeof cookiePreferencesSchema>;
+export interface ICookiePreferences {
+  analytics: boolean;
+  performance: boolean;
+  marketing: boolean;
+}
 
 // ─── Homepage Content ───────────────────────────────────────────────────
 
@@ -1622,6 +1625,7 @@ export interface IStoryCardProps {
 export interface IEventActionProps {
   label: string;
   mobileLabel?: string;
+  eventTitle?: string;
   href?: Route<`/seasonal/${string}`>;
 }
 

@@ -5,7 +5,7 @@ import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
 import { DesktopNavigation } from "@/components/app/molecules/desktop-navigation";
 import { MobileNavigation } from "@/components/app/molecules/mobile-navigation";
 import { Button } from "@/components/ui/button";
-import { NAVBAR_CONTENT, ROUTES } from "@/lib/constants";
+import { GIFT_VOUCHERS_LINK, NAVBAR_CONTENT, ROUTES } from "@/lib/constants";
 import { dmSans, ebGaramondItalic } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +57,20 @@ export function Navbar() {
             <Link href={ROUTES.VISIT_CONTACT}>
               {NAVBAR_CONTENT.visitContactLabel}
             </Link>
+          </Button>
+          <Button
+            asChild
+            data-navigation-id="gift-vouchers"
+            variant="brand-nav"
+            className="hidden h-11 rounded-sm p-0 text-base leading-[22px] font-medium text-peploe-burgundy xl:inline-flex"
+          >
+            <a
+              href={GIFT_VOUCHERS_LINK.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {GIFT_VOUCHERS_LINK.label}
+            </a>
           </Button>
           <NavbarBookingButton />
           <MobileNavigation brandPhraseClassName={ebGaramondItalic.className} />

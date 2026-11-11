@@ -16,7 +16,12 @@ import { FooterMeta } from "@/components/app/compounds/footer-meta";
 import { MobileFooterNavigation } from "@/components/app/compounds/mobile-footer-navigation";
 import { NewsletterSignup } from "@/components/app/molecules/newsletter-signup";
 import { Button } from "@/components/ui/button";
-import { FOCUS_RING, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
+import {
+  FOCUS_RING,
+  GIFT_VOUCHERS_LINK,
+  RESTAURANT_CONTACT,
+  ROUTES,
+} from "@/lib/constants";
 import {
   FOOTER_CONTENT,
   FOOTER_STYLES,
@@ -59,7 +64,7 @@ export function Footer() {
             >
               <span
                 aria-hidden="true"
-                className="block h-full w-full bg-ink mask-[url('/peploes-logo.webp')] mask-contain mask-center mask-no-repeat"
+                className="block h-full w-full bg-ink mask-[url('/peploes-logo-mask.webp')] mask-contain mask-center mask-no-repeat"
               />
             </Link>
             <div className="space-y-0 xl:space-y-2">
@@ -140,6 +145,25 @@ export function Footer() {
                   </Button>
                 </li>
               ))}
+              <li className="border-b border-soft-stone xl:border-0">
+                <Button
+                  asChild
+                  variant="brand-nav"
+                  className="flex h-12 w-full justify-between rounded-none p-0 text-sm leading-[21px] font-normal text-ink has-[>svg]:px-0 xl:h-auto xl:justify-start"
+                >
+                  <a
+                    href={GIFT_VOUCHERS_LINK.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {GIFT_VOUCHERS_LINK.label}
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 text-peploe-burgundy xl:hidden"
+                    />
+                  </a>
+                </Button>
+              </li>
             </ul>
           </nav>
 

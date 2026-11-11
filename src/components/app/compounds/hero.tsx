@@ -27,7 +27,8 @@ export function Hero() {
           alt={HERO_CONTENT.backgroundImage.alt}
           fill
           sizes="(min-width: 1024px) 100vw, (min-width: 640px) 1080px, 990px"
-          preload
+          fetchPriority="high"
+          loading="eager"
           className="object-cover object-[center_-64px] sm:object-center"
         />
         <div
@@ -141,7 +142,7 @@ export function Hero() {
             alt={HERO_CONTENT.entranceImage.alt}
             fill
             sizes="100vw"
-            className="object-fill"
+            className="object-cover"
           />
         </div>
         <figcaption
