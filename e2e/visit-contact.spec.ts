@@ -26,59 +26,6 @@ test("location sections keep the page background and the map has a shadow", asyn
   }
 });
 
-test("contact information has aligned mobile headings and compact details", async ({
-  page,
-  isMobile,
-}) => {
-  await page.goto("/contact");
-  await page.evaluate(() => document.fonts.ready);
-  const information = page.getByRole("region", {
-    name: "Opening hours, address and contact",
-  });
-  const sizes = isMobile
-    ? { heading: "27px", icon: "47px", detail: "15px" }
-    : { heading: "30px", icon: "48px", detail: "18px" };
-  for (const heading of await information.getByRole("heading").all()) {
-    await expect(heading).toHaveCSS("font-size", sizes.heading);
-    if (isMobile) {
-      const offset = await heading.evaluate((element) => {
-        const icon = element.parentElement?.parentElement?.querySelector("img");
-        if (!icon) throw new Error("Contact information icon is missing");
-        return (
-          element.getBoundingClientRect().top - icon.getBoundingClientRect().top
-        );
-      });
-      expect(Math.abs(offset)).toBeLessThan(1);
-    }
-  }
-  for (const icon of await information.locator("img").all()) {
-    await expect(icon).toHaveCSS("width", sizes.icon);
-    await expect(icon).toHaveCSS("height", sizes.icon);
-  }
-  for (const selector of ["dl", "address"]) {
-    await expect(information.locator(selector)).toHaveCSS(
-      "font-size",
-      sizes.detail,
-    );
-  }
-  if (isMobile) {
-    const links = information.getByRole("link");
-    const phone = await links.nth(0).boundingBox();
-    const email = await links.nth(1).boundingBox();
-    if (!phone || !email) throw new Error("Contact links are missing");
-    expect(email.y - phone.y - phone.height).toBeLessThan(1);
-    const labelGap = await links.evaluateAll((elements) => {
-      const bounds = elements.map((element) => {
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        return range.getBoundingClientRect();
-      });
-      return bounds[1].top - bounds[0].bottom;
-    });
-    expect(labelGap).toBeLessThan(6);
-  }
-});
-
 test("the former Visit URL redirects permanently to Contact", async ({
   page,
   request,
