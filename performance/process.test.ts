@@ -109,14 +109,25 @@ describe("audit process lifecycle", () => {
     }
   });
 
-  it("aborts an active collector and waits for its process to exit", async () => {
+  it("aborts a collector tree and waits for inherited output pipes to close", async () => {
     const dir = await mkdtemp(join(tmpdir(), "perf-cancel-"));
     const controller = new AbortController();
     let pid = 0;
+    let workerPid = 0;
     const server = createServer((socket) => {
+      let message = "";
       socket.on("data", (data) => {
-        pid = Number(data.toString());
-        controller.abort();
+        message += data.toString();
+      });
+      socket.on("end", () => {
+        [pid, workerPid] = JSON.parse(message);
+        const commandPath = process.env.PATH ?? "";
+        process.env.PATH = "";
+        try {
+          controller.abort();
+        } finally {
+          process.env.PATH = commandPath;
+        }
       });
     });
     await new Promise<void>((done) => server.listen(0, "127.0.0.1", done));
@@ -124,7 +135,7 @@ describe("audit process lifecycle", () => {
       const address = server.address();
       if (!address || typeof address === "string")
         throw new Error("Missing test server address");
-      const script = `require("node:net").connect(${address.port},"127.0.0.1").end(String(process.pid));setInterval(()=>{},1000)`;
+      const script = `const worker=require("node:child_process").spawn(process.execPath,["-e","setInterval(()=>{},1000)"],{stdio:"inherit",windowsHide:true});worker.once("spawn",()=>require("node:net").connect(${address.port},"127.0.0.1").end(JSON.stringify([process.pid,worker.pid])));setInterval(()=>{},1000)`;
       const result = runCommand([process.execPath, "-e", script], {
         cwd: dir,
         log: join(dir, "collector.txt"),
@@ -134,8 +145,11 @@ describe("audit process lifecycle", () => {
       });
       await expect(result).rejects.toThrow(/aborted or timed out/);
       expect(pid).toBeGreaterThan(0);
+      expect(workerPid).toBeGreaterThan(0);
       expect(() => process.kill(pid, 0)).toThrow();
     } finally {
+      killCollector(pid);
+      killCollector(workerPid);
       await new Promise<void>((done) => server.close(() => done()));
       await rm(dir, { recursive: true });
     }

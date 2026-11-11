@@ -1,3 +1,7 @@
+export const SEASONAL_UI = {
+  upcomingEventsAction: "See Upcoming Events",
+} as const;
+
 export const SEASONAL_CONTENT = {
   title: "What’s On | Seasonal Events",
   seoDescription:

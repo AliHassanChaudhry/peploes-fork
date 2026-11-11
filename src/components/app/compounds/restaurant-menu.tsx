@@ -45,7 +45,7 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
               <h1
                 className={cn(
                   ebGaramond.className,
-                  "mt-2 text-[46px] leading-[56px] tracking-[-0.6px] after:mt-[10px] after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:mt-[14px] xl:text-[54px] xl:leading-none xl:tracking-[-1px] xl:after:mt-[14px] xl:after:w-[72px]",
+                  "mt-2 text-[36px] sm:text-[46px] leading-[56px] tracking-[-0.6px] after:mt-[10px] after:block after:h-px after:w-14 after:bg-text-secondary/70 xl:text-[54px] xl:leading-none xl:tracking-[-1px] xl:after:mt-[14px] xl:after:w-[72px]",
                 )}
               >
                 {menu.title}

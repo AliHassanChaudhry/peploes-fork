@@ -44,7 +44,7 @@ export function MenuCourse({
         id={headingId}
         className={cn(
           ebGaramond.className,
-          "text-[38px] leading-[42px] tracking-[-0.4px] before:mb-2 before:block before:h-0.5 before:w-[42px] before:bg-peploe-burgundy xl:pr-9 xl:text-[42px] xl:leading-[0.98] xl:tracking-[-0.7px] xl:before:mb-3 xl:before:w-11",
+          "text-[30px] sm:text-[38px] leading-[42px] tracking-[-0.4px] before:mb-2 before:block before:h-0.5 before:w-[42px] before:bg-peploe-burgundy xl:pr-9 xl:text-[42px] xl:leading-[0.98] xl:tracking-[-0.7px] xl:before:mb-3 xl:before:w-11",
           compact &&
             "xl:text-[34px] xl:leading-[1.1] xl:before:mb-2 xl:before:w-9",
         )}

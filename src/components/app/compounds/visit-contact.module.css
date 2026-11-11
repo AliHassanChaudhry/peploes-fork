@@ -95,7 +95,7 @@ body:has(.page) [data-navbar-visit] {
   padding-block: 40px 48px;
 }
 .heroCopy h1 {
-  margin-top: 24px;
+  margin-top: 8px;
   font-size: 56px;
   line-height: 60px;
   white-space: pre-line;
@@ -131,7 +131,9 @@ body:has(.page) [data-navbar-visit] {
   min-width: 0;
 }
 .contactItem h2 {
-  text-box: trim-start cap alphabetic;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
   font-size: 30px;
   line-height: 39px;
 }
@@ -188,7 +190,7 @@ body:has(.page) [data-navbar-visit] {
   gap: 40px;
 }
 .messageGrid .heading {
-  margin-block: 20px;
+  margin-block: 8px 20px;
 }
 .messageForm {
   display: grid;
@@ -272,7 +274,7 @@ body:has(.page) [data-navbar-visit] {
   gap: 32px;
 }
 .locationCopy .heading {
-  margin-block: 24px;
+  margin-block: 8px 24px;
 }
 .map {
   position: relative;
@@ -339,7 +341,7 @@ body:has(.page) [data-navbar-visit] {
   color: inherit;
 }
 .closingCopy .heading {
-  margin-block: 28px;
+  margin-block: 8px 28px;
 }
 .closingCopy > p:not(.eyebrow) {
   font-size: 21px;
@@ -369,7 +371,7 @@ body:has(.page) [data-navbar-visit] {
     padding-block: 32px 40px;
   }
   .heroCopy h1 {
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: clamp(40px, 12vw, 48px);
     line-height: 1.08;
   }
@@ -407,7 +409,7 @@ body:has(.page) [data-navbar-visit] {
     height: 47px;
   }
   .contactItem > div {
-    align-self: start;
+    display: contents;
   }
   .contactItem + .contactItem {
     padding-top: 24px;
@@ -415,15 +417,19 @@ body:has(.page) [data-navbar-visit] {
   }
   .contactItem h2 {
     align-self: start;
+    min-height: 47px;
     font-size: 27px;
     line-height: 33px;
   }
-  .contactItem:first-child > div {
-    display: contents;
-  }
-  .contactItem:first-child .hours {
+  .contactItem .hours,
+  .contactItem address,
+  .contactItem .contactLinks {
     grid-column: 1 / -1;
     margin: 0;
+  }
+  .contactItem .contactLinks {
+    /* Offset the empty edges of the 44px tap areas around 24px text. */
+    margin-block: -20px;
   }
   .hours {
     gap: 12px;
@@ -445,7 +451,6 @@ body:has(.page) [data-navbar-visit] {
   }
   .contactLinks {
     gap: 0;
-    margin-top: 8px;
     font-size: 16px;
     line-height: 24px;
   }
@@ -462,7 +467,7 @@ body:has(.page) [data-navbar-visit] {
     line-height: 44px;
   }
   .locationCopy .heading {
-    margin-block: 16px;
+    margin-block: 8px 16px;
   }
   .map {
     aspect-ratio: auto;
@@ -496,7 +501,7 @@ body:has(.page) [data-navbar-visit] {
     padding-block: 48px;
   }
   .closingCopy .heading {
-    margin-block: 16px;
+    margin-block: 8px 16px;
   }
   .closingCopy > p:not(.eyebrow) {
     font-size: 18px;
@@ -632,5 +637,25 @@ body:has(.page) [data-navbar-visit] {
 @media (prefers-reduced-motion: reduce) {
   .contactLinks a {
     transition: none;
+  }
+}
+
+@media (width < 40rem) {
+  .heroCopy h1 {
+    font-size: 36px;
+  }
+
+  .heading {
+    font-size: 30px;
+  }
+
+  .contactItem h2 {
+    font-size: 24px;
+  }
+}
+
+@media (width < 40rem) {
+  .closingCopy > p:not(.eyebrow) {
+    font-size: 16px;
   }
 }

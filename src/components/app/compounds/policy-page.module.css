@@ -85,7 +85,7 @@
 }
 
 .page h1 {
-  margin-top: 20px;
+  margin-top: 8px;
   font-size: 44px;
   font-weight: 500;
   line-height: 48px;
@@ -213,7 +213,7 @@
 }
 
 .help h2 {
-  margin-top: 12px;
+  margin-top: 8px;
   font-size: 36px;
   line-height: 42px;
 }
@@ -250,7 +250,7 @@
   }
 
   .page h1 {
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: clamp(40px, 11.8vw, 46px);
     font-weight: 400;
     line-height: 1.08;
@@ -485,5 +485,11 @@
     width: 1px;
     height: 20px;
     background: color-mix(in srgb, var(--peploe-burgundy) 50%, transparent);
+  }
+}
+
+@media (width < 40rem) {
+  .page h1 {
+    font-size: 36px;
   }
 }

@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/app/atoms/scroll-reveal";
 import revealStyles from "@/components/app/atoms/site-scroll-reveal.module.css";
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/hero.module.css";
 import { Button } from "@/components/ui/button";
-import { RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
+import { NAVBAR_CONTENT, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import { HERO_CONTENT } from "@/lib/constants/hero";
 import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -43,27 +44,34 @@ export function Hero() {
             "site-container relative flex flex-col gap-[22px] sm:gap-7",
           )}
         >
-          <div className="flex max-w-[720px] flex-col gap-[14px] sm:gap-7">
-            <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase sm:tracking-normal">
-              <span
-                aria-hidden="true"
-                className="h-0.5 w-12 shrink-0 bg-current"
-              />
-              {HERO_CONTENT.eyebrow}
-            </p>
-
+          <div className="max-w-[720px]">
             <div className="flex flex-col gap-5">
-              <h1
-                id="hero-heading"
-                className={cn(
-                  ebGaramond.className,
-                  "text-[36px] leading-[40px] font-medium tracking-[-1px] sm:text-[clamp(40px,5.278vw,76px)] sm:leading-[1.079] sm:tracking-normal lg:text-[76px] lg:leading-[82px]",
-                )}
-              >
-                <span className="lg:block">{HERO_CONTENT.headingLines[0]}</span>{" "}
-                <span className="lg:block">{HERO_CONTENT.headingLines[1]}</span>{" "}
-                <span className="lg:block">{HERO_CONTENT.headingLines[2]}</span>
-              </h1>
+              <div className="flex flex-col gap-2">
+                <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase sm:tracking-normal">
+                  <span
+                    aria-hidden="true"
+                    className="h-0.5 w-12 shrink-0 bg-current"
+                  />
+                  {HERO_CONTENT.eyebrow}
+                </p>
+                <h1
+                  id="hero-heading"
+                  className={cn(
+                    ebGaramond.className,
+                    "text-[36px] leading-[40px] font-medium tracking-[-1px] sm:text-[clamp(40px,5.278vw,76px)] sm:leading-[1.079] sm:tracking-normal lg:text-[76px] lg:leading-[82px]",
+                  )}
+                >
+                  <span className="lg:block">
+                    {HERO_CONTENT.headingLines[0]}
+                  </span>{" "}
+                  <span className="lg:block">
+                    {HERO_CONTENT.headingLines[1]}
+                  </span>{" "}
+                  <span className="lg:block">
+                    {HERO_CONTENT.headingLines[2]}
+                  </span>
+                </h1>
+              </div>
               <p className="hidden text-base leading-[23px] text-warm-cream/92 sm:block sm:text-lg sm:leading-7 sm:text-warm-cream/90">
                 {HERO_CONTENT.description}
               </p>
@@ -106,6 +114,13 @@ export function Hero() {
               </TrackedAnchor>
             </Button>
           </div>
+          <Link
+            href={ROUTES.MENUS}
+            className="inline-flex min-h-11 items-center justify-center gap-2 text-lg underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 sm:hidden"
+          >
+            {NAVBAR_CONTENT.menusLabel}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
       </div>
 

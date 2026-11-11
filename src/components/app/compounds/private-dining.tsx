@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
 import styles from "@/components/app/compounds/private-dining.module.css";
 import { PrivateDiningEnquiry } from "@/components/app/compounds/private-dining-enquiry";
 import { PrivateDiningClosing } from "@/components/app/molecules/private-dining-closing";
@@ -24,9 +25,16 @@ export function PrivateDining() {
       <PrivateDiningHero hero={PRIVATE_DINING.hero} variant="overview" />
       <section className={cn("site-container", styles.gatherings)}>
         <PrivateDiningHeading {...PRIVATE_DINING_GATHERINGS} />
-        <ul className={styles.gatheringCards}>
+        <ul
+          className={cn(
+            styles.gatheringCards,
+            browseStyles.row,
+            browseStyles.hideScrollbar,
+            "max-sm:-mr-4",
+          )}
+        >
           {PRIVATE_DINING_GATHERINGS.items.map((item, index) => (
-            <li key={item._key}>
+            <li key={item._key} className={browseStyles.card}>
               <Link
                 href={item.href}
                 aria-label={item.title}
@@ -112,7 +120,7 @@ export function PrivateDining() {
             alt=""
             width={106}
             height={222}
-            className={styles.botanical}
+            className={cn(styles.botanical, "max-sm:mx-auto")}
           />
         </div>
       </section>

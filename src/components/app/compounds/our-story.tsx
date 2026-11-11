@@ -32,18 +32,18 @@ function StoryHero() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="relative pt-10 pb-12 lg:w-[535px] lg:max-w-[55%] lg:py-20 xl:max-w-none"
+          className="relative pt-10 pb-12 max-sm:pb-10 lg:w-[535px] lg:max-w-[55%] lg:py-20 xl:max-w-none"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase before:h-0.5 before:w-12 before:shrink-0 before:bg-current">
             {hero.eyebrow}
           </p>
           <h1
             id="story-title"
-            className="mt-6 text-[38px] leading-[42px] text-balance max-[360px]:text-[35px] max-[360px]:leading-10 sm:max-w-[600px] sm:text-[60px] sm:leading-[58px] lg:mt-7 lg:text-[64px] lg:whitespace-pre-line"
+            className="mt-2 text-[38px] max-sm:text-[36px] leading-[42px] text-balance max-[360px]:leading-10 sm:max-w-[600px] sm:text-[60px] sm:leading-[58px] lg:text-[64px] lg:whitespace-pre-line"
           >
             {hero.heading}
           </h1>
-          <p className="mt-6 text-lg leading-7 text-text-secondary">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:mt-[22px] max-sm:text-[16px]">
             {hero.description}
           </p>
           <p className="mt-6 text-xs leading-4 font-semibold text-peploe-burgundy">
@@ -67,7 +67,7 @@ function StoryTimeline() {
         <h2
           data-scroll-reveal
           id="story-philosophy"
-          className="text-[38px] leading-[42px] after:mt-6 after:block after:h-0.5 after:w-12 after:bg-peploe-burgundy max-sm:text-[34px] max-[360px]:leading-10 sm:leading-10 lg:text-[46px] lg:leading-[48px] xl:text-[clamp(46px,calc(5vw_-_18px),54px)] xl:leading-[clamp(48px,3.75vw,54px)] xl:whitespace-pre-line"
+          className="text-[38px] max-sm:text-[26px] leading-[42px] after:mt-6 after:block after:h-0.5 after:w-12 after:bg-peploe-burgundy max-[360px]:leading-10 sm:leading-10 lg:text-[46px] lg:leading-[48px] xl:text-[clamp(46px,calc(5vw_-_18px),54px)] xl:leading-[clamp(48px,3.75vw,54px)] xl:whitespace-pre-line"
         >
           {philosophy.heading}
         </h2>
@@ -81,14 +81,14 @@ function StoryTimeline() {
               key={milestone.year}
               className="relative min-w-0 pl-[30px] before:absolute before:top-[14px] before:bottom-[-42px] before:left-[6.5px] before:w-px before:bg-peploe-burgundy last:before:hidden sm:pl-0 sm:before:hidden"
             >
-              <p className="text-[28px] leading-[37px] font-normal text-peploe-burgundy">
+              <p className="text-[28px] leading-[37px] font-normal text-peploe-burgundy max-sm:text-[24px]">
                 {milestone.year}
               </p>
               <span
                 className="absolute top-3 left-0 size-3.5 rounded-full bg-peploe-burgundy sm:relative sm:top-auto sm:mt-[18px] sm:block"
                 aria-hidden="true"
               />
-              <h3 className="mt-2 text-[25px] leading-[27px] whitespace-nowrap sm:mt-[18px] sm:text-xl sm:leading-[25px] lg:text-lg xl:text-xl min-[90rem]:text-[25px]">
+              <h3 className="mt-2 text-[24px] leading-[27px] whitespace-nowrap sm:mt-[18px] sm:text-xl sm:leading-[25px] lg:text-lg xl:text-xl min-[90rem]:text-[25px]">
                 {milestone.heading}
               </h3>
               <p className="mt-3 text-base leading-6 text-text-secondary sm:mt-[18px]">
@@ -120,12 +120,12 @@ function StoryBuilding() {
           </p>
           <h2
             id="story-building"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-sm:text-[36px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[48px] lg:leading-[48px] lg:text-wrap lg:whitespace-pre-line xl:text-[clamp(52px,4.166667vw,60px)] xl:leading-[52px] xl:whitespace-pre"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[48px] lg:leading-[48px] lg:text-wrap lg:whitespace-pre-line xl:text-[clamp(52px,4.166667vw,60px)] xl:leading-[52px] xl:whitespace-pre"
           >
             <span className="sm:hidden">{building.mobileHeading}</span>
             <span className="hidden sm:inline">{building.heading}</span>
           </h2>
-          <p className="mt-6 text-lg leading-7 text-text-secondary">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:text-[16px]">
             {building.description}
           </p>
           <Button
@@ -186,18 +186,18 @@ function StoryFounder() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="pt-10 pb-12 lg:ml-auto lg:min-h-[390px] lg:w-[44%] lg:py-[51px] xl:w-[490px]"
+          className="pt-10 pb-12 max-sm:py-[38px] lg:ml-auto lg:min-h-[390px] lg:w-[44%] lg:py-[51px] xl:w-[490px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {founder.eyebrow}
           </p>
           <h2
             id="story-founder"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-sm:text-[36px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:leading-[50px] lg:text-wrap lg:whitespace-pre-line"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:leading-[50px] lg:text-wrap lg:whitespace-pre-line"
           >
             {founder.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7 text-text-secondary">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:mt-[21px] max-sm:text-[16px]">
             {founder.description}
           </p>
         </div>
@@ -225,18 +225,20 @@ function StoryMural() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="relative z-1 py-12 lg:min-h-[444px] lg:w-[470px]"
+          className="relative z-1 py-12 max-sm:flex max-sm:flex-col max-sm:pt-[72px] max-sm:pb-6 lg:min-h-[444px] lg:w-[470px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase after:h-0.5 after:w-12 after:shrink-0 after:bg-current">
             {mural.eyebrow}
           </p>
           <h2
             id="story-mural"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-[360px]:text-[35px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line"
           >
             {mural.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7">{mural.description}</p>
+          <p className="mt-6 text-lg leading-7 max-sm:invisible max-sm:order-first max-sm:text-[16px]">
+            {mural.description}
+          </p>
           <Button
             asChild
             variant="brand-secondary-inverse"
@@ -279,11 +281,11 @@ function StoryArchive() {
           </p>
           <h2
             id="story-archive"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-sm:text-[36px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:leading-[50px] lg:text-wrap lg:whitespace-pre-line"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:leading-[50px] lg:text-wrap lg:whitespace-pre-line"
           >
             {archive.heading}
           </h2>
-          <p className="mt-6 text-lg leading-7 text-text-secondary">
+          <p className="mt-6 text-lg leading-7 text-text-secondary max-sm:text-[16px]">
             {archive.description}
           </p>
           <Button
@@ -321,18 +323,18 @@ function StoryNextChapter() {
       <div className="site-container">
         <div
           data-scroll-reveal
-          className="pt-10 pb-12 lg:ml-auto lg:min-h-[340px] lg:w-[44%] lg:py-12 xl:w-[527px]"
+          className="pt-10 pb-12 max-sm:pb-10 lg:ml-auto lg:min-h-[340px] lg:w-[44%] lg:py-12 xl:w-[527px]"
         >
           <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase">
             {nextChapter.eyebrow}
           </p>
           <h2
             id="story-next-chapter"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-[360px]:text-[35px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line xl:whitespace-nowrap"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line xl:whitespace-nowrap"
           >
             {nextChapter.heading}
           </h2>
-          <p className="mt-4 text-lg leading-7 text-text-secondary lg:mt-5">
+          <p className="mt-4 text-lg leading-7 text-text-secondary lg:mt-5 max-sm:text-[16px]">
             {nextChapter.description}
           </p>
         </div>
@@ -368,7 +370,7 @@ function StoryToday() {
           </p>
           <h2
             id="story-today"
-            className="mt-4 text-[38px] leading-[42px] text-balance max-sm:text-[36px] max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line"
+            className="mt-2 text-[38px] max-sm:text-[30px] leading-[42px] text-balance max-[360px]:leading-10 sm:text-[52px] sm:leading-[52px] lg:text-[60px] lg:text-wrap lg:whitespace-pre-line"
           >
             {today.heading}
           </h2>

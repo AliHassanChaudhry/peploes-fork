@@ -216,8 +216,9 @@
 
   .heroCopy {
     gap: 20px;
-    min-height: 520px;
-    padding-block: 72px 48px;
+    min-height: calc(100svh - 72px);
+    justify-content: flex-end;
+    padding-block: 40px 80px;
   }
 
   .heroEyebrow {
@@ -226,6 +227,7 @@
   }
 
   .heroCopy h1 {
+    font-size: 36px;
     line-height: 52px;
     letter-spacing: 0;
   }
@@ -237,9 +239,10 @@
   .hero::after {
     background: linear-gradient(
       180deg,
-      rgb(15 11 10 / 82%),
-      rgb(15 11 10 / 46%) 66%,
-      rgb(15 11 10 / 18%)
+      rgb(15 11 10 / 8%) 0%,
+      rgb(15 11 10 / 35%) 30%,
+      rgb(15 11 10 / 85%) 60%,
+      rgb(15 11 10 / 96%) 100%
     );
   }
 
@@ -268,7 +271,7 @@
   }
 
   .featuredCopy h2 {
-    font-size: 34px;
+    font-size: 30px;
     line-height: 39px;
   }
 
@@ -389,5 +392,13 @@
 
   .closingImage img {
     object-position: center 87.304%;
+  }
+}
+
+@media (width < 40rem) {
+  .description,
+  .standfirst,
+  .featuredDescription {
+    font-size: 16px;
   }
 }

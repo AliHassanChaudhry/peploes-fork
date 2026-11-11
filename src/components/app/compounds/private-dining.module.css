@@ -48,7 +48,7 @@
   height: 2px;
 }
 .sectionHeading .eyebrow {
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 :where(.overview, .personalDetails, .capacity, .weddingHire) .eyebrow {
   color: inherit;
@@ -92,7 +92,7 @@
   line-height: 50px;
   font-weight: 400;
   white-space: pre-line;
-  margin-block: 28px 24px;
+  margin-block: 8px 24px;
 }
 .heroDescription {
   font-size: 18px;
@@ -142,7 +142,7 @@
   padding-block: 40px;
 }
 .overview .heroTitle {
-  margin-block: 16px 20px;
+  margin-block: 8px 20px;
 }
 .overview .eyebrow::before {
   display: none;
@@ -180,7 +180,7 @@
     max-width: 613px;
     flex-direction: column;
     justify-content: flex-end;
-    padding-block: 40px 80px;
+    padding-block: 40px 32px;
   }
 
   .overview .eyebrow {
@@ -189,9 +189,9 @@
   }
 
   .overview .heroTitle {
-    margin-block: 14px 0;
-    font-size: 36px;
-    line-height: 40px;
+    margin-block: 8px 0;
+    font-size: 40px;
+    line-height: 44px;
     letter-spacing: -1px;
     white-space: normal;
   }
@@ -208,7 +208,7 @@
   }
 }
 .gatherings .eyebrow {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .gatherings .eyebrow::before {
   height: 3px;
@@ -288,6 +288,11 @@
   font-size: 28px;
   line-height: 34px;
   margin-bottom: 8px;
+}
+@media (width < 40rem) {
+  .gatheringCopy h3 {
+    font-size: 24px;
+  }
 }
 .cardDescription {
   font-size: 18px;
@@ -397,7 +402,7 @@
   margin-top: 24px;
 }
 .overviewMenuCopy .eyebrow {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 .overviewMenuCopy .eyebrow::before,
 .compactEnquiry .eyebrow::before {
@@ -708,7 +713,7 @@
   margin-top: 16px;
 }
 .compactEnquiry .eyebrow {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .compactEnquiry .enquiryContainer {
   gap: 32px;
@@ -1054,7 +1059,7 @@
 
 @media (width < 40rem) {
   :is(.celebrationOccasions, .personalDetails, .celebrationPlanning) .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
 
   :is(.celebrationOccasions, .celebrationPlanning) .features {
@@ -1091,6 +1096,10 @@
     line-height: 26px;
   }
 
+  .celebrationPlanning .featureHeading {
+    font-size: 18px;
+  }
+
   :is(.celebrationOccasions, .personalDetails, .celebrationPlanning)
     :is(.features p, .occasionList) {
     line-height: 24px;
@@ -1098,6 +1107,10 @@
 
   .celebrationOccasions .occasionList {
     white-space: normal;
+  }
+
+  :where(.celebrationOccasions .occasionList) > li:last-child {
+    padding-bottom: 0;
   }
 
   .personalDetailsContainer {
@@ -1165,6 +1178,7 @@
 
   .capacityGrid > li:last-child {
     padding-bottom: 0;
+    row-gap: 6px;
   }
 
   .capacityGrid .illustration {
@@ -1214,6 +1228,18 @@
     line-height: 30px;
   }
 
+  .capacityGrid li:nth-child(3) .capacityFigure {
+    line-height: 31px;
+  }
+
+  .capacityGrid li:last-child .capacityLabel {
+    margin-top: 5px;
+  }
+
+  .capacityGrid li:last-child > p:last-child {
+    margin-top: 1px;
+  }
+
   .capacityGrid li:nth-child(-n + 2) > p:last-child,
   .capacityGrid li:last-child > p:last-child {
     font-size: 14px;
@@ -1256,7 +1282,7 @@
 
 @media (width >= 64rem) {
   .sectionHeading .eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
   }
   .heading {
     font-size: 48px;
@@ -1283,7 +1309,7 @@
   .heroTitle {
     font-size: 56px;
     line-height: 55px;
-    margin-block: 16px;
+    margin-block: 8px 16px;
   }
   .heroDescription {
     font-size: 18px;
@@ -1333,7 +1359,7 @@
   .overview .heroTitle {
     font-size: 62px;
     line-height: 61px;
-    margin-block: 16px 20px;
+    margin-block: 8px 20px;
   }
   .overview .heroDescription {
     line-height: 24px;
@@ -1430,7 +1456,7 @@
     line-height: 52px;
   }
   .gatherings .eyebrow {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .gatherings .eyebrow::before {
     height: 2px;
@@ -1865,7 +1891,7 @@
     line-height: 23px;
   }
   .compactEnquiry .eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
   }
   .compactEnquiry .sendButton {
     margin-top: 16px;
@@ -2103,7 +2129,7 @@
     margin-top: 48px;
   }
   .capacity .eyebrow {
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
   .capacity .heading {
     font-size: 52px;
@@ -2230,7 +2256,7 @@
     margin-top: 28px;
   }
   .location .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
   .location .features > li {
     position: relative;
@@ -2528,7 +2554,7 @@
     padding: 48px 26px;
   }
   .weddingTasting .eyebrow {
-    margin-bottom: 18px;
+    margin-bottom: 8px;
   }
   .weddingTasting .eyebrow::before {
     display: none;
@@ -2876,7 +2902,7 @@
     text-align: center;
   }
   .corporatePage .location .featureHeading {
-    font-size: 23px;
+    font-size: 22px;
   }
   .corporatePage .location .features p {
     font-size: 15px;
@@ -2922,5 +2948,171 @@
   }
   .enquiry .enquiryFields input[type="date"]:invalid:not(:focus) {
     color: transparent;
+  }
+}
+
+@media (width < 40rem) {
+  .gatheringImage {
+    height: 220px;
+  }
+  .gatherings {
+    /* The 44px action includes 10px below its 24px text line. */
+    padding-block: 48px 22px;
+  }
+  .gatheringCards > li {
+    display: flex;
+    flex-direction: column;
+  }
+  .gatheringCopy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .gatheringCopy .cardDescription {
+    flex: 1;
+  }
+  .gatheringCopy .cardLink {
+    align-self: flex-start;
+  }
+  .benefits .features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+  .benefits .featureHeading {
+    font-size: 18px;
+    line-height: 26px;
+    white-space: normal;
+  }
+  .weddingHireImage {
+    height: 220px;
+  }
+
+  .promoImage,
+  .spaceImage {
+    height: 200px;
+  }
+
+  .celebrations .heroImage {
+    height: 320px;
+  }
+
+  .celebrationMenus .promoImage {
+    height: 290px;
+  }
+
+  .corporatePage .heroImage {
+    height: 320px;
+  }
+
+  .corporatePage :is(.promoImage, .spaceImage) {
+    height: 290px;
+  }
+
+  .corporatePage :is(.heroCopy, .promoCopy, .paleSection, .enquiry) {
+    padding-block: 48px;
+  }
+
+  .heroCopy,
+  .promoCopy,
+  .benefits,
+  .paleSection,
+  .personalDetails,
+  .enquiry,
+  .weddingDetails {
+    padding-block: 32px;
+  }
+
+  .overviewMenuCopy,
+  .weddingHireCopy {
+    padding-block: 32px;
+  }
+}
+
+@media (width < 40rem) {
+  .heading,
+  .celebrationClosing .heading,
+  .capacity .heading,
+  .celebrationOccasions .heading,
+  .celebrations .heroTitle,
+  .corporate .heroTitle,
+  .weddings .heroTitle {
+    font-size: 30px;
+  }
+
+  .overview .heroTitle {
+    font-size: 36px;
+  }
+
+  .corporate .heroTitle {
+    font-size: 32px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroImage {
+    height: clamp(160px, 28svh, 240px);
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy {
+    padding-block: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroTitle {
+    margin-bottom: 16px;
+    white-space: normal;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroDescription {
+    line-height: 24px;
+  }
+
+  :is(.celebrations, .corporate, .weddings) .heroCopy .action {
+    margin-top: 20px;
+  }
+
+  .enquiryForm .heading {
+    font-size: 30px;
+  }
+
+  .enquiryForm {
+    scroll-margin-top: 80px;
+  }
+
+  .weddingSteps h3,
+  .weddingTouches .featureHeading {
+    font-size: 26px;
+  }
+
+  .weddingTouches > li {
+    padding-block: 28px;
+  }
+
+  .weddingTouches > li:last-child {
+    padding-bottom: 0;
+  }
+
+  .weddingHireCopy .description,
+  .weddingDetails > .sectionHeading .description {
+    margin-top: 22px;
+  }
+
+  .celebrationOccasions .heading {
+    font-size: 30px;
+  }
+}
+
+@media (width < 40rem) {
+  .description,
+  .heroDescription,
+  .cardDescription,
+  .menuDescription,
+  .menuDescriptions,
+  .personalFeatures p,
+  .corporateOccasionList p,
+  .closing p,
+  .corporateClosing p,
+  .weddingSteps p,
+  .weddingTouches p,
+  .capacityGrid li:last-child > p:last-child,
+  .corporatePage .location .features p {
+    font-size: 16px;
   }
 }

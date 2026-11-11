@@ -46,7 +46,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                       <p
                         className={cn(
                           ebGaramond.className,
-                          "col-start-1 row-start-2 text-[15px] leading-[23px] text-text-secondary xl:col-start-2 xl:row-start-1 xl:text-sm xl:text-[#505050]",
+                          "col-start-1 row-start-2 text-[15px] leading-[23px] text-text-secondary xl:col-start-2 xl:row-start-1 xl:text-sm xl:text-[#505050] max-sm:text-[16px]",
                         )}
                       >
                         {dish.description}
@@ -80,7 +80,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
             {menu.spiritsDescription && (
               <p
                 data-scroll-reveal
-                className="mt-4 text-[15px] leading-6 text-text-secondary xl:text-base xl:text-[#505050]"
+                className="mt-4 text-[15px] leading-6 text-text-secondary xl:text-base xl:text-[#505050] max-sm:text-[16px]"
               >
                 {menu.spiritsDescription}
               </p>
@@ -154,7 +154,7 @@ export function DrinksMenu({ menu }: IDrinksMenuProps) {
                                   >
                                     {dish.name}
                                     {dish.description && (
-                                      <span className="mt-1 block text-sm text-text-secondary">
+                                      <span className="mt-1 block text-sm text-text-secondary max-sm:text-[16px]">
                                         {dish.description}
                                       </span>
                                     )}

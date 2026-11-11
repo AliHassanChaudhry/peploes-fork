@@ -68,6 +68,12 @@
   overflow-wrap: anywhere;
 }
 
+@media (width < 40rem) {
+  .title {
+    font-size: 30px;
+  }
+}
+
 .action {
   justify-content: flex-start;
   height: auto;

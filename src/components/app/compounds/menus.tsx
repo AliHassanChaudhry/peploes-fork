@@ -14,7 +14,7 @@ export function Menus() {
       aria-labelledby="menus-heading"
       className={cn(dmSans.className, "bg-warm-cream text-ink")}
     >
-      <div className="relative h-[238px] sm:h-[300px] lg:h-[370px]">
+      <div className="relative h-[200px] sm:h-[300px] lg:h-[370px]">
         <Image
           src={MENUS_CONTENT.image.src}
           alt={MENUS_CONTENT.image.alt}
@@ -27,32 +27,33 @@ export function Menus() {
           alt={MENUS_CONTENT.image.alt}
           fill
           sizes="100vw"
-          className="object-cover sm:hidden"
+          className="object-cover object-[center_calc(100%_+_12px)] sm:hidden"
         />
       </div>
 
       <div
         data-scroll-reveal
-        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20"
+        className="site-container flex flex-col gap-5 pt-10 pb-12 sm:gap-7 sm:pt-12 sm:pb-20 lg:pb-12"
       >
-        <p className="flex items-center gap-2.5 text-xs leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:text-sm">
-          <span
-            aria-hidden="true"
-            className="h-0.5 w-10 shrink-0 bg-current sm:w-12"
-          />
-          {MENUS_CONTENT.eyebrow}
-        </p>
-
         <div className="flex flex-col gap-5">
-          <h2
-            id="menus-heading"
-            className={cn(
-              ebGaramond.className,
-              "text-[36px] leading-10 font-medium tracking-[-0.4px] text-balance text-peploe-burgundy sm:text-[52px] sm:text-wrap sm:leading-[56px] sm:tracking-normal lg:text-[60px] lg:leading-[48px]",
-            )}
-          >
-            {MENUS_CONTENT.heading}
-          </h2>
+          <div className="flex flex-col gap-2">
+            <p className="flex items-center gap-2.5 text-xs leading-4 font-medium tracking-[0.1em] text-peploe-burgundy uppercase sm:text-sm">
+              <span
+                aria-hidden="true"
+                className="h-0.5 w-10 shrink-0 bg-current sm:w-12"
+              />
+              {MENUS_CONTENT.eyebrow}
+            </p>
+            <h2
+              id="menus-heading"
+              className={cn(
+                ebGaramond.className,
+                "text-[30px] leading-10 font-medium tracking-[-0.4px] text-balance text-peploe-burgundy sm:text-[52px] sm:text-wrap sm:leading-[56px] sm:tracking-normal lg:text-[60px] lg:leading-[48px]",
+              )}
+            >
+              {MENUS_CONTENT.heading}
+            </h2>
+          </div>
           <p className="text-base leading-6 text-pretty text-text-secondary sm:text-lg sm:text-wrap">
             {MENUS_CONTENT.description}
           </p>
@@ -60,7 +61,7 @@ export function Menus() {
 
         <ul
           aria-label={MENUS_CONTENT.categoriesLabel}
-          className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
+          className="grid grid-cols-2 gap-x-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-6 md:grid-cols-3 xl:grid-cols-6 xl:gap-x-[72px]"
         >
           {MENUS_CONTENT.categories.map(({ label, href }) => {
             const content = (
@@ -88,7 +89,7 @@ export function Menus() {
                   aria-disabled={href ? undefined : true}
                   className={cn(
                     ebGaramond.className,
-                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
+                    "group h-[51px] w-full flex-col items-stretch justify-center gap-1.5 rounded-none border-b border-soft-stone p-0 text-xl leading-[26px] font-medium hover:no-underline max-sm:text-lg sm:h-[72px] sm:justify-start sm:border-0 sm:pt-4",
                   )}
                 >
                   {href ? (

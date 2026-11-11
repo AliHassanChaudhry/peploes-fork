@@ -16,7 +16,7 @@ export function GroupsOccasions() {
       aria-labelledby="groups-occasions-heading"
       className={cn(dmSans.className, "scroll-mt-20 bg-warm-cream text-ink")}
     >
-      <div className="relative isolate flex min-h-[560px] items-end bg-ink text-warm-cream sm:block sm:min-h-0 lg:flex lg:min-h-[600px] lg:items-center">
+      <div className="relative isolate flex min-h-[560px] items-end bg-ink text-warm-cream sm:block sm:min-h-0 lg:flex lg:min-h-[410px] lg:items-center">
         <Image
           src={GROUPS_OCCASIONS_CONTENT.image.src}
           alt={GROUPS_OCCASIONS_CONTENT.image.alt}
@@ -34,23 +34,24 @@ export function GroupsOccasions() {
             data-scroll-reveal
             className="flex max-w-[720px] flex-col items-start gap-5 sm:gap-7"
           >
-            <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase">
-              <span
-                aria-hidden="true"
-                className="h-0.5 w-12 shrink-0 bg-current"
-              />
-              {GROUPS_OCCASIONS_CONTENT.eyebrow}
-            </p>
-
-            <h2
-              id="groups-occasions-heading"
-              className={cn(
-                ebGaramond.className,
-                "text-[36px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
-              )}
-            >
-              {GROUPS_OCCASIONS_CONTENT.heading}
-            </h2>
+            <div className="flex flex-col gap-2">
+              <p className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="h-0.5 w-12 shrink-0 bg-current"
+                />
+                {GROUPS_OCCASIONS_CONTENT.eyebrow}
+              </p>
+              <h2
+                id="groups-occasions-heading"
+                className={cn(
+                  ebGaramond.className,
+                  "text-[30px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] lg:text-[60px] lg:leading-[66px]",
+                )}
+              >
+                {GROUPS_OCCASIONS_CONTENT.heading}
+              </h2>
+            </div>
 
             <p className="w-full text-base leading-6 text-warm-cream/90">
               <span className="sm:hidden">

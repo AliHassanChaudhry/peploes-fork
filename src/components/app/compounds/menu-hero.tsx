@@ -26,8 +26,12 @@ export function MenuHero({ content }: IMenuHeroProps) {
       />
       <div
         data-scroll-reveal
-        className="site-container py-[54px] xl:pt-[68px] xl:pb-[52px]"
+        className="site-container py-[54px] max-sm:relative max-sm:pb-8 xl:pt-[68px] xl:pb-[52px]"
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-4 top-7 bottom-0 -z-10 bg-[linear-gradient(180deg,rgba(24,20,19,0)_0px,rgba(24,20,19,0.82)_32px,rgba(24,20,19,0.82)_100%)] sm:hidden"
+        />
         <div className="max-w-[720px]">
           <p className="text-sm leading-5 font-medium tracking-[0.08em] uppercase">
             {content.eyebrow}
@@ -36,16 +40,16 @@ export function MenuHero({ content }: IMenuHeroProps) {
             id="menus-hero-heading"
             className={cn(
               ebGaramond.className,
-              "whitespace-pre-line text-[46px] leading-[44px] tracking-[-0.6px] xl:mt-4 xl:text-[62px] xl:leading-[0.96] xl:tracking-[-1.5px]",
+              "mt-2 whitespace-pre-line text-[36px] sm:text-[46px] leading-[44px] tracking-[-0.6px] xl:text-[62px] xl:leading-[0.96] xl:tracking-[-1.5px]",
             )}
           >
             {content.heading}
           </p>
           <span
             aria-hidden="true"
-            className="mt-5 block xl:mt-4 h-px w-[58px] bg-peploe-burgundy"
+            className="mt-5 block max-sm:mt-2 xl:mt-4 h-px w-[58px] bg-peploe-burgundy"
           />
-          <p className="mt-3 xl:mt-4 text-base leading-[23px] xl:text-lg xl:leading-[1.35]">
+          <p className="mt-3 max-sm:mt-2 xl:mt-4 text-base leading-[23px] xl:text-lg xl:leading-[1.35]">
             {content.description}
           </p>
         </div>

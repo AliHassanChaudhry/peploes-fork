@@ -900,6 +900,13 @@
 .terms input {
   cursor: pointer;
 }
+@media (width >= 64rem) {
+  .returnNotice label,
+  .terms label,
+  label.terms {
+    cursor: pointer;
+  }
+}
 .returnNotice input,
 .terms input {
   width: 18px;
@@ -1030,8 +1037,8 @@
   background: none;
   font: inherit;
   text-align: inherit;
-  cursor: default;
-  color: var(--booking-accent);
+  cursor: pointer;
+  color: inherit;
   font-weight: 600;
   text-decoration: underline;
 }
@@ -1351,6 +1358,40 @@ body:has(.termsDialog[open]) {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .termsDialog {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--duration-base) var(--ease-organic),
+      transform var(--duration-base) var(--ease-organic),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+  .termsDialog[open] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .termsDialog::backdrop {
+    opacity: 0;
+    transition:
+      opacity var(--duration-base) var(--ease-organic),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+  .termsDialog[open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    .termsDialog[open] {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    .termsDialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
 .termsText {
   margin-top: 16px;
   color: var(--text-secondary);
@@ -1359,4 +1400,11 @@ body:has(.termsDialog[open]) {
 }
 .termsText p + p {
   margin-top: 12px;
+}
+
+@media (width < 40rem) {
+  .flowDescription,
+  .supportDescription {
+    font-size: 16px;
+  }
 }

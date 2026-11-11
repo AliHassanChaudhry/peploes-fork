@@ -38,7 +38,7 @@
 .categoryLinks a {
   position: relative;
   display: flex;
-  min-height: 40px;
+  min-height: 44px;
   align-items: center;
   padding-block: 7px 13px;
   font-size: 14px;
@@ -186,14 +186,14 @@
   }
 
   .eyebrow {
-    margin-bottom: 28px;
+    margin-bottom: 8px;
     font-size: 10px;
     line-height: 15px;
     letter-spacing: 1.25px;
   }
 
   .introduction h2 {
-    font-size: 32px;
+    font-size: 30px;
     line-height: 37px;
   }
 

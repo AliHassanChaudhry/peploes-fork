@@ -20,6 +20,8 @@ export default defineConfig({
     ],
     environment: "node",
     env: {
+      // Node subprocesses need Bun's executable directory, not its npm shim.
+      PATH: `${path.dirname(process.env.npm_execpath ?? process.execPath)}${path.delimiter}${process.env.PATH ?? ""}`,
       SANITY_PROJECT_ID: "testproject",
       SANITY_DATASET: "development",
       SANITY_API_VERSION: "2026-10-06",

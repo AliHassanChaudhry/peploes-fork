@@ -8,7 +8,7 @@
   line-height: 16px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 
 .eyebrow::before {
@@ -202,7 +202,7 @@
 
 @media (width < 640px) {
   .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     font-size: 12px;
     line-height: 18px;
   }
@@ -287,11 +287,12 @@
   }
 
   .practicalities {
-    gap: 32px;
+    gap: 29px;
+    padding-block: 29px;
   }
 
   .gatherings {
-    padding-top: 32px;
+    padding-top: 29px;
   }
 }
 
@@ -335,7 +336,7 @@
 
   .reservation .eyebrow,
   .practicalities .eyebrow {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
   }
 
   .reservation .description,
@@ -344,7 +345,7 @@
   }
 
   .dining .eyebrow {
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   }
 
   .reservation {
@@ -420,5 +421,21 @@
     left: -48px;
     width: 1px;
     background: var(--soft-stone);
+  }
+}
+
+@media (width < 40rem) {
+  .heading {
+    font-size: 30px;
+  }
+}
+
+@media (width < 40rem) {
+  .dining {
+    padding-bottom: 24px;
+  }
+
+  .serviceDetail {
+    font-size: 16px;
   }
 }

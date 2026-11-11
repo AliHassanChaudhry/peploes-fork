@@ -5,6 +5,7 @@ import { TrackedLink } from "@/components/app/atoms/tracked-link";
 import styles from "@/components/app/compounds/seasonal.module.css";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
+import { SEASONAL_UI } from "@/lib/constants/seasonal";
 import { GA4Event } from "@/lib/enums";
 import { dmSans, ebGaramond } from "@/lib/fonts";
 import { seasonalPath } from "@/lib/seasonal-data";
@@ -99,6 +100,17 @@ function SeasonalHero(hero: TWhatsOnPage["hero"]) {
           <p className={styles.eyebrow}>{hero.eyebrow}</p>
           <h1 id="seasonal-title">{hero.heading}</h1>
           <p className={styles.description}>{hero.description}</p>
+          <Button
+            asChild
+            variant="brand-primary"
+            size="cta"
+            className="mt-6 w-full whitespace-normal sm:hidden"
+          >
+            <a href="#upcoming-events">
+              {SEASONAL_UI.upcomingEventsAction}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -109,7 +121,11 @@ function SeasonalDiary({ content, months }: ISeasonalProps) {
   const { diary } = content;
 
   return (
-    <section className={styles.diary} aria-labelledby="seasonal-diary">
+    <section
+      id="upcoming-events"
+      className={styles.diary}
+      aria-labelledby="seasonal-diary"
+    >
       <div className="site-container">
         <div data-scroll-reveal className={styles.diaryIntroduction}>
           <div>

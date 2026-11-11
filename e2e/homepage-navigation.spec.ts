@@ -2,7 +2,7 @@ import { rm, writeFile } from "node:fs/promises";
 import { expect, test } from "./menu-test";
 import { announceSanityPublish } from "./sanity-webhook";
 
-test("mobile hero fills the first screen and keeps the desktop entrance artwork", async ({
+test("mobile hero keeps dining actions visible and retains the entrance artwork", async ({
   page,
   viewport,
 }) => {
@@ -40,7 +40,10 @@ test("mobile hero fills the first screen and keeps the desktop entrance artwork"
     await expect(
       hero.getByRole("link", { name: "Call Peploe's", exact: true }),
     ).toBeInViewport();
-    await expect(entrance).not.toBeInViewport();
+    await expect(booking).toBeInViewport();
+    await expect(
+      hero.getByRole("link", { name: "Menus", exact: true }),
+    ).toBeInViewport();
     await entrance.scrollIntoViewIfNeeded();
     await expect(entrance).toBeVisible();
     await expect(entrance).not.toHaveJSProperty("naturalWidth", 0);

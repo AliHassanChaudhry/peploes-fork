@@ -1,0 +1,39 @@
+@media (width < 40rem) {
+  .row.row {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    overflow-x: auto;
+    padding-block: 4px 16px;
+  }
+
+  .hideScrollbar {
+    scrollbar-width: none;
+  }
+
+  .hideScrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .row .group {
+    display: contents;
+  }
+
+  .row .card {
+    flex: 0 0 88%;
+    min-width: 0;
+    min-height: var(--browse-card-min-height, 340px);
+  }
+
+  /* Phone browsing keeps story actions visible without a hover or reveal. */
+  .row.row [data-story-copy],
+  .row.row [data-story-details] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .row.row [data-story-details] :is([data-story-text], a, button) {
+    pointer-events: auto;
+  }
+}

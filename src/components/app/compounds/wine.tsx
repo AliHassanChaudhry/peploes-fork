@@ -34,28 +34,33 @@ export function Wine() {
       />
 
       <div className="site-container relative">
-        <div className="flex min-h-[600px] w-full max-w-[748px] flex-col justify-end gap-5 pt-[210px] pb-[52px] sm:min-h-0 sm:justify-start sm:gap-8 sm:py-20">
-          <p
-            data-scroll-reveal
-            className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase"
-          >
-            <span
-              aria-hidden="true"
-              className="h-0.5 w-12 shrink-0 bg-current"
-            />
-            {WINE_CONTENT.eyebrow}
-          </p>
-
-          <h2
-            data-scroll-reveal
-            id="wine-heading"
-            className={cn(
-              ebGaramond.className,
-              "text-[36px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] sm:tracking-[-0.5px] lg:text-[60px] lg:leading-[66px]",
-            )}
-          >
-            {WINE_CONTENT.heading}
-          </h2>
+        <div className="flex min-h-[600px] w-full max-w-[748px] flex-col justify-end gap-5 pt-[210px] pb-[52px] max-sm:relative max-sm:isolate sm:min-h-0 sm:justify-start sm:gap-8 sm:py-20">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-4 top-[190px] bottom-0 -z-10 bg-[linear-gradient(180deg,rgba(24,20,19,0)_0px,rgba(24,20,19,0.55)_32px,rgba(24,20,19,0.55)_100%)] sm:hidden"
+          />
+          <div className="flex flex-col gap-2">
+            <p
+              data-scroll-reveal
+              className="flex items-center gap-2.5 text-sm leading-4 font-medium tracking-[0.1em] uppercase"
+            >
+              <span
+                aria-hidden="true"
+                className="h-0.5 w-12 shrink-0 bg-current"
+              />
+              {WINE_CONTENT.eyebrow}
+            </p>
+            <h2
+              data-scroll-reveal
+              id="wine-heading"
+              className={cn(
+                ebGaramond.className,
+                "text-[30px] leading-[40px] font-medium sm:text-[52px] sm:leading-[58px] sm:tracking-[-0.5px] lg:text-[60px] lg:leading-[66px]",
+              )}
+            >
+              {WINE_CONTENT.heading}
+            </h2>
+          </div>
 
           <p
             data-scroll-reveal
@@ -85,7 +90,7 @@ export function Wine() {
             <Button
               asChild
               variant="brand-text"
-              className="h-11 w-full gap-2 rounded-[4px] border border-warm-cream/70 px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium sm:leading-6 text-warm-cream max-sm:[--text-action-pointer-events:auto] max-sm:hover:bg-peploe-burgundy max-sm:hover:no-underline sm:w-auto sm:rounded-none sm:border-0 sm:px-0 sm:has-[>svg]:px-0"
+              className="h-11 w-full gap-2 rounded-[4px] border border-warm-cream/70 px-5 has-[>svg]:px-5 text-base leading-[22px] font-medium sm:leading-6 text-warm-cream max-sm:[--text-action-pointer-events:auto] max-sm:hover:bg-peploe-burgundy max-sm:hover:no-underline sm:w-auto sm:rounded-none sm:border-0 sm:px-0 sm:has-[>svg]:px-0 lg:h-6 lg:py-0"
             >
               <Link href={getJournalCategoryPath("food-wine")}>
                 {WINE_CONTENT.secondaryCtaLabel}

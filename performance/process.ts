@@ -1,6 +1,23 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { createWriteStream } from "node:fs";
+import { join } from "node:path";
 import { PerformanceError } from "./manifest";
+
+function terminateWindowsProcessTree(pid: number, executable: string): void {
+  // Windows has no POSIX process groups; wait for the whole tree to stop.
+  const result = spawnSync(executable, ["/pid", String(pid), "/t", "/f"], {
+    windowsHide: true,
+    stdio: "ignore",
+    timeout: 10000,
+  });
+  if (result.error) throw result.error;
+  if (result.status === 0) return;
+  // A collector can exit between cancellation and taskkill.
+  process.kill(pid, 0);
+  throw new PerformanceError(
+    `Audit process tree termination failed (${result.status}).`,
+  );
+}
 
 export function runCommand(
   args: readonly string[],
@@ -16,11 +33,19 @@ export function runCommand(
     const [command, ...argv] = args;
     if (!command) return reject(new PerformanceError("Missing executable."));
     options.signal.throwIfAborted();
+    const windowsDirectory = process.env.SystemRoot;
+    const taskkill =
+      process.platform === "win32" && windowsDirectory
+        ? join(windowsDirectory, "System32", "taskkill.exe")
+        : undefined;
+    if (process.platform === "win32" && !taskkill)
+      return reject(new PerformanceError("Windows SystemRoot is required."));
     const output = createWriteStream(options.log, { flags: "wx" });
     const child = spawn(command, argv, {
       cwd: options.cwd,
       env: options.env,
-      detached: true,
+      detached: process.platform !== "win32",
+      windowsHide: true,
       stdio: ["ignore", "pipe", "pipe"],
     });
     child.stdout.pipe(output, { end: false });
@@ -31,6 +56,10 @@ export function runCommand(
     const killGroup = (signal: NodeJS.Signals) => {
       if (!child.pid) return;
       try {
+        if (taskkill) {
+          terminateWindowsProcessTree(child.pid, taskkill);
+          return;
+        }
         process.kill(-child.pid, signal);
       } catch (error) {
         if (
@@ -43,6 +72,7 @@ export function runCommand(
       if (stopped) return;
       stopped = true;
       killGroup("SIGTERM");
+      if (process.platform === "win32") return;
       escalation = setTimeout(() => {
         killGroup("SIGKILL");
       }, 3000);
