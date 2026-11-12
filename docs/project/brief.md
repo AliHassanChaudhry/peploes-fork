@@ -96,10 +96,10 @@ enquiry immediately before the closing section. It replaces the general contact
 form. Enquiry delivery follows the private-dining contract.
 
 Phone, email, directions and booking links must work on phones and desktops.
-Mapbox loads automatically and keeps a local preview and directions when
-unconfigured or unavailable. Set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to the
-client's URL-restricted public token before launch. An optional
-`NEXT_PUBLIC_MAPBOX_STYLE_URL` selects a custom style. Keep attribution visible,
+Mapbox loads without a click as visitors scroll near the map, and keeps a
+local preview and directions until then or when unconfigured or unavailable.
+Set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to the client's URL-restricted public
+token before launch. An optional `NEXT_PUBLIC_MAPBOX_STYLE_URL` selects a custom style. Keep attribution visible,
 scroll-wheel zoom disabled, and zoom, fullscreen and recenter controls usable.
 Opening-hours and location links support `#opening-hours` and `#find-us`.
 

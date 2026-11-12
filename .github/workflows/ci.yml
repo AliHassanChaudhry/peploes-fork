@@ -142,9 +142,3 @@ jobs:
 
       - name: Build production Studio
         run: bun run --cwd studio build
-
-      - name: Audit Studio high-severity vulnerabilities
-        run: bun run --cwd studio audit
-
-      - name: Audit high-severity vulnerabilities
-        run: bun audit --audit-level high

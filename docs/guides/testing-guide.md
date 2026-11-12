@@ -137,7 +137,7 @@ fixtures on one Dublin date, including when the host crosses midnight.
 
 Browser suites use synthetic reporting settings or blank provider credentials
 to avoid sending test events to configured accounts. Payment key acceptance
-and page indexing do not depend on deployment labels. SEO checks run alongside
+does not depend on deployment labels. SEO checks run alongside
 the analytics suite.
 
 The build and test server use a fake Sanity project. The test-only
@@ -250,8 +250,8 @@ project uses the approved live credentials and production reporting accounts.
 No staging/live mode variable is required. Local development uses
 `NODE_ENV=development`, with reporting off. Do not set `NODE_ENV=staging`;
 Next.js supports only `development`, `production` and `test`. The configured provider determines
-payment mode; analytics and Sentry run when configured and `NODE_ENV=production`. Deployment labels do
-not override page indexing. Keep `NODE_ENV=production` for both builds.
+payment mode; analytics and Sentry run when configured and `NODE_ENV=production`. Both projects'
+production deployments are indexable; see the SEO guide. Keep `NODE_ENV=production` for both builds.
 
 Set `SENTRY_ENVIRONMENT=staging` and the staging ingestion credentials in the
 fork. Reporting uses only `NODE_ENV=production` and configured credentials;

@@ -5,6 +5,7 @@ import {
   userAgents,
 } from "lighthouse/core/config/constants.js";
 import { z } from "zod";
+import { VISIT_CONTACT_CONTENT } from "../src/lib/constants/visit-contact";
 import { PerformanceError, type TManifest, type TRoute } from "./manifest";
 
 export const profiles = ["mobile", "desktop"] as const;
@@ -72,7 +73,21 @@ const reportSchema = z.object({
   }),
 });
 
-export function checkContent(input: unknown, route: TRoute) {
+function checkMap(
+  snapshot: z.infer<typeof snapshotSchema>,
+  route: TRoute,
+  profile: TProfile,
+) {
+  const unavailable = snapshot.text.includes(
+    VISIT_CONTACT_CONTENT.location.map.unavailable,
+  );
+  const started =
+    snapshot.mapLoaded || (profile === "mobile" && snapshot.mapFallbackPresent);
+  if (route.map === "interactive" && (unavailable || !started))
+    throw new PerformanceError("Configured map unavailable.");
+}
+
+export function checkContent(input: unknown, route: TRoute, profile: TProfile) {
   const snapshot = snapshotSchema.parse(input);
   if (
     snapshot.heading !== route.heading ||
@@ -92,8 +107,7 @@ export function checkContent(input: unknown, route: TRoute) {
     throw new PerformanceError(`Hero failed: ${route.path}`);
   if (route.path === "/book-a-table" && !snapshot.bookingAvailable)
     throw new PerformanceError("Booking unavailable.");
-  if (route.map === "interactive" && !snapshot.mapLoaded)
-    throw new PerformanceError("Configured map unavailable.");
+  checkMap(snapshot, route, profile);
   if (route.map === "static" && !snapshot.mapFallbackPresent)
     throw new PerformanceError("Normal static map fallback missing.");
   if (snapshot.consentStored)
@@ -154,7 +168,11 @@ export function validateReport(
     throw new PerformanceError(
       `Failed image, font or map request: ${route.path}`,
     );
-  checkContent(report.audits["representative-content"].details.snapshot, route);
+  checkContent(
+    report.audits["representative-content"].details.snapshot,
+    route,
+    profile,
+  );
   return report;
 }
 
