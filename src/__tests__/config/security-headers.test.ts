@@ -45,24 +45,19 @@ describe("security headers", function securityHeaderTests() {
     vi.unstubAllEnvs();
   });
 
-  it.each(["production", "preview", "development", ""])(
-    "does not add an indexing override for deployment %s",
-    async (deployment) => {
+  it.each([
+    ["production", undefined],
+    ["", undefined],
+    ["preview", "noindex"],
+    ["development", "noindex"],
+  ])(
+    "sets the indexing header for deployment %s",
+    async (deployment, expected) => {
       vi.stubEnv("VERCEL_ENV", deployment);
-      expect((await getGlobalHeaders()).has("X-Robots-Tag")).toBe(false);
+      vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://peploes-fork.vercel.app");
+      expect((await getGlobalHeaders()).get("X-Robots-Tag")).toBe(expected);
     },
   );
-
-  it.each([
-    ["https://deploy-preview-12--peploes.netlify.app", "noindex"],
-    ["https://deploy-preview-12--peploes.netlify.app./", "noindex"],
-    ["https://peploes-git-dev-truedevs.vercel.app", "noindex"],
-    ["https://peploes.netlify.app", undefined],
-    ["https://peploes.com", undefined],
-  ])("sets the indexing header for site %s", async (siteUrl, expected) => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", siteUrl);
-    expect((await getGlobalHeaders()).get("X-Robots-Tag")).toBe(expected);
-  });
 
   it("allows configured Mapbox across documents for client navigation", async function mapboxPolicyTest() {
     vi.stubEnv("NODE_ENV", "production");

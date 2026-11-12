@@ -127,31 +127,22 @@ describe("page indexing metadata", () => {
   afterEach(() => vi.unstubAllEnvs());
   const config = { title: "Page", description: "Page.", url: "/page" };
 
-  it.each(["production", "preview", "development", ""])(
-    "uses the page setting regardless of deployment %s",
-    async (deployment) => {
-      vi.resetModules();
-      vi.stubEnv("VERCEL_ENV", deployment);
-      const { buildSeoMetadata: metadata } = await import("@/lib/seo");
-      expect(metadata(config).robots).toEqual({ index: true, follow: true });
-      expect(metadata({ ...config, noIndex: true }).robots).toEqual({
-        index: false,
-        follow: true,
-      });
-    },
-  );
-
   it.each([
-    ["https://deploy-preview-12--peploes.netlify.app", false],
-    ["https://peploes-git-dev-truedevs.vercel.app", false],
-    ["https://peploes.netlify.app", true],
-    ["https://peploes.com", true],
-  ])("indexes pages on site %s: %s", async (siteUrl, indexable) => {
+    ["production", true],
+    ["", true],
+    ["preview", false],
+    ["development", false],
+  ])("indexes pages on deployment %s: %s", async (deployment, indexable) => {
     vi.resetModules();
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", siteUrl);
+    vi.stubEnv("VERCEL_ENV", deployment);
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://peploes-fork.vercel.app");
     const { buildSeoMetadata: metadata } = await import("@/lib/seo");
     expect(metadata(config).robots).toEqual({
       index: indexable,
+      follow: true,
+    });
+    expect(metadata({ ...config, noIndex: true }).robots).toEqual({
+      index: false,
       follow: true,
     });
   });

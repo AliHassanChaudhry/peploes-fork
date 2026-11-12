@@ -48,18 +48,15 @@ describes.
 
 ## Robots and sitemap
 
-Indexing follows each page's `noIndex` metadata setting. Deployment labels
-do not change indexing, because a staging project may also be labelled
-`production`. A site whose `NEXT_PUBLIC_SITE_URL` is on a platform host
-(`*.netlify.app` or `*.vercel.app`, listed in `src/lib/seo/indexing.ts`) is a
-non-production copy: every page has `noindex` metadata and every response
-carries `X-Robots-Tag: noindex`. Any other site URL, including the public
-domain and local builds, stays indexable. `peploes.netlify.app` is a temporary
-exception so its Lighthouse SEO results can be tested before the public domain
-is connected; remove it from `INDEXABLE_PLATFORM_HOSTS_UNTIL_DOMAIN_LAUNCH`
-when `peploes.com` goes live. The module has no imports so
-`next.config.ts` and `buildSeoMetadata()` share one rule. Both read the value
-at build time. `robots.txt` stays permissive on those hosts so crawlers can
+Indexing follows each page's `noIndex` metadata setting and the Vercel
+deployment type. When `VERCEL_ENV` is `preview` or `development`, every page
+has `noindex` metadata and every response carries `X-Robots-Tag: noindex`.
+Production deployments, builds outside Vercel and local builds stay
+indexable, whatever their host. A staging project's production deployment is
+therefore indexable; remove it or give it a noindex policy before the public
+domain launches. The rule lives in `src/lib/seo/indexing.ts`, which has no
+imports so `next.config.ts` and `buildSeoMetadata()` share it. Both read the
+value at build time. `robots.txt` stays permissive on previews so crawlers can
 read the noindex signal; see
 [Block search indexing](https://developers.google.com/search/docs/crawling-indexing/block-indexing).
 Requests with `x-presentation: admin` receive a `noindex` header from
@@ -144,9 +141,9 @@ and the CSP.
 
 - Titles and descriptions match visible content.
 - Canonical URLs point to the public deployment.
-- Deployment labels do not change indexing; page-specific `noIndex` remains effective.
-- A platform-host deployment serves `X-Robots-Tag: noindex`; the public domain
-  and hosts in `INDEXABLE_PLATFORM_HOSTS_UNTIL_DOMAIN_LAUNCH` do not.
+- Page-specific `noIndex` remains effective on every deployment.
+- Vercel preview and development deployments serve `X-Robots-Tag: noindex`;
+  production deployments do not.
 - JSON-LD contains real names, URLs, images, prices, and dates.
 - Sitemap contains canonical public pages only.
 - Search, training, and mixed-use crawler rules match product policy.
