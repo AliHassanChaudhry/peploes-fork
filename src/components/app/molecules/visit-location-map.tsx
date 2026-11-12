@@ -18,13 +18,29 @@ import { env } from "@/lib/env";
 export function VisitLocationMap() {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
+  const [nearViewport, setNearViewport] = useState(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const copy = VISIT_CONTACT_CONTENT.location.map;
   const token = env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
   useEffect(() => {
-    if (!token || !container.current) return;
+    const element = container.current;
+    if (!token || !element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        observer.disconnect();
+        setNearViewport(true);
+      },
+      { rootMargin: VISIT_MAP.loadAheadMargin },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!nearViewport || !token || !container.current) return;
     let disposed = false;
     let failedToLoad = false;
     let loaded = false;
@@ -168,12 +184,12 @@ export function VisitLocationMap() {
       map?.remove();
       mapRef.current = null;
     };
-  }, []);
+  }, [nearViewport]);
 
   return (
     <div
       className={`${layout.map} ${styles.shell}`}
-      aria-busy={Boolean(token) && !ready && !failed}
+      aria-busy={nearViewport && !ready && !failed}
     >
       <section
         ref={container}

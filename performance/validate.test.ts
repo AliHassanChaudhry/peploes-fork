@@ -1,5 +1,6 @@
 import { screenEmulationMetrics } from "lighthouse/core/config/constants.js";
 import { describe, expect, it } from "vitest";
+import { VISIT_CONTACT_CONTENT } from "../src/lib/constants/visit-contact";
 import {
   manifestInput,
   population,
@@ -136,8 +137,44 @@ describe("measured document validity", () => {
       checkContent(
         { ...snapshot(current), mapLoaded: false, mapFallbackPresent: true },
         current,
+        "mobile",
       ).mapFallbackPresent,
     ).toBe(true);
+  });
+  it("accepts a configured mobile map that waits for the visitor to scroll to it", () => {
+    const current = route("/contact");
+    expect(
+      checkContent(
+        { ...snapshot(current), mapLoaded: false, mapFallbackPresent: true },
+        current,
+        "mobile",
+      ).mapFallbackPresent,
+    ).toBe(true);
+  });
+  it("rejects a configured desktop map that never starts", () => {
+    const current = route("/contact");
+    expect(() =>
+      checkContent(
+        { ...snapshot(current), mapLoaded: false, mapFallbackPresent: true },
+        current,
+        "desktop",
+      ),
+    ).toThrow(/map unavailable/);
+  });
+  it("rejects a configured map that reports itself unavailable", () => {
+    const current = route("/contact");
+    expect(() =>
+      checkContent(
+        {
+          ...snapshot(current),
+          text: `${snapshot(current).text} ${VISIT_CONTACT_CONTENT.location.map.unavailable}`,
+          mapLoaded: false,
+          mapFallbackPresent: true,
+        },
+        current,
+        "mobile",
+      ),
+    ).toThrow(/map unavailable/);
   });
   it("rejects failed image payloads even when the document loads", () => {
     const current = route("/menus?menu=dinner");
@@ -243,7 +280,7 @@ describe("measured document validity", () => {
     ["old consent", { consentStored: true }],
   ])("rejects %s content", (_failure, change) => {
     expect(() =>
-      checkContent({ ...snapshot(current), ...change }, current),
+      checkContent({ ...snapshot(current), ...change }, current, "mobile"),
     ).toThrow();
   });
   it.each([
@@ -253,7 +290,7 @@ describe("measured document validity", () => {
   ])("rejects unavailable integration/hero on %s", (path, change) => {
     const target = route(path);
     expect(() =>
-      checkContent({ ...snapshot(target), ...change }, target),
+      checkContent({ ...snapshot(target), ...change }, target, "mobile"),
     ).toThrow();
   });
 });

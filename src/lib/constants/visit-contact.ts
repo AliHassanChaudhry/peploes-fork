@@ -102,6 +102,7 @@ export const VISIT_MAP = {
   minZoom: 10,
   maxZoom: 19,
   loadTimeoutMs: 20_000,
+  loadAheadMargin: "600px",
   colors: {
     land: "#faf6ed",
     water: "#c3d7dc",

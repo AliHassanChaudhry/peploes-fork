@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("Visit loads the map automatically and its location controls work", async ({
+test("Visit loads the map without a click once visitors reach it and its location controls work", async ({
   page,
   isMobile,
 }) => {
@@ -49,6 +49,11 @@ test("Visit loads the map automatically and its location controls work", async (
       exact: true,
     }),
   ).toHaveCount(0);
+  if (isMobile) {
+    await page.waitForLoadState("networkidle");
+    expect(requests).toBe(0);
+  }
+  await page.locator("#find-us").scrollIntoViewIfNeeded();
   const map = page.getByRole("region", {
     name: "Interactive map showing Peploe’s",
     exact: true,
