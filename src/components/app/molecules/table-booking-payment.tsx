@@ -15,7 +15,6 @@ import {
   useState,
 } from "react";
 
-import styles from "@/components/app/compounds/table-booking-panel.module.css";
 import { TableBookingProcessing } from "@/components/app/molecules/table-booking-processing";
 import { TableBookingPaymentSkeleton } from "@/components/app/molecules/table-booking-skeleton";
 import { Button } from "@/components/ui/button";
@@ -166,14 +165,31 @@ export function TableBookingPayment({
   }, [step, storageBlocked]);
   if (storageBlocked) {
     return (
-      <div className={styles.payment}>
-        <h2 className={styles.flowHeading}>
+      <div
+        className={
+          "booking-payment [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid gap-4"
+        }
+      >
+        <h2
+          className={
+            "booking-flowHeading mt-0 mr-0 mb-0 ml-0 text-[length:30px] lg:text-[length:36px] leading-9 lg:leading-10.5"
+          }
+        >
           {step.kind === "payment" ? copy.depositHeading : copy.cardHeading}
         </h2>
-        <p className={styles.flowDescription}>
+        <p
+          className={
+            "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {description(step, step.amountText)}
         </p>
-        <p role="alert" className={styles.formError}>
+        <p
+          role="alert"
+          className={
+            "booking-formError mt-4 mr-0 mb-0 ml-0 text-[var(--booking-accent)] text-[length:14px] leading-5"
+          }
+        >
           {copy.storageBlocked}
         </p>
       </div>
@@ -379,8 +395,17 @@ function PaymentForm({
 
   if (cantCheck) {
     return (
-      <div className={styles.flowNotice}>
-        <p role="status" className={styles.flowDescription}>
+      <div
+        className={
+          "booking-flowNotice [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid justify-items-start gap-4 text-[var(--booking-accent)]"
+        }
+      >
+        <p
+          role="status"
+          className={
+            "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {copy.cantCheck(step.summary.reference)}
         </p>
         <Button type="button" variant="brand-primary" onClick={onStartAgain}>
@@ -391,43 +416,71 @@ function PaymentForm({
   }
 
   return (
-    <div className={styles.payment}>
-      <h2 className={styles.flowHeading}>
+    <div
+      className={
+        "booking-payment [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid gap-4"
+      }
+    >
+      <h2
+        className={
+          "booking-flowHeading mt-0 mr-0 mb-0 ml-0 text-[length:30px] lg:text-[length:36px] leading-9 lg:leading-10.5"
+        }
+      >
         {step.kind === "payment" ? copy.depositHeading : copy.cardHeading}
       </h2>
       {!loadFailed && (
-        <p role="status" className={styles.flowDescription}>
+        <p
+          role="status"
+          className={
+            "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {description(step, ready?.amount)}
         </p>
       )}
       <div
-        className={styles.paymentElementContainer}
+        className={"booking-paymentElementContainer relative"}
         aria-busy={!ready && !loadFailed}
         hidden={loadFailed}
       >
         <div
           ref={mountPoint}
-          className={styles.paymentElement}
+          className={"booking-paymentElement min-h-50"}
           inert={!ready}
         />
         {!ready && !loadFailed && (
-          <div className={styles.paymentLoading}>
+          <div
+            className={
+              "booking-paymentLoading absolute top-0 right-0 bottom-0 left-0 py-4 bg-[var(--booking-surface)] bg-none pointer-events-none"
+            }
+          >
             <TableBookingPaymentSkeleton />
           </div>
         )}
       </div>
       {paying && <TableBookingProcessing>{copy.paying}</TableBookingProcessing>}
       {error && (
-        <p role="alert" className={styles.formError}>
+        <p
+          role="alert"
+          className={
+            "booking-formError mt-4 mr-0 mb-0 ml-0 text-[var(--booking-accent)] text-[length:14px] leading-5"
+          }
+        >
           {error}
         </p>
       )}
-      <div className={styles.flowActions}>
+      <div
+        className={
+          "booking-flowActions flex items-center justify-between gap-3.5 mt-7.5 pt-6 border-t border-solid border-t-[var(--booking-border)] lg:mt-7 lg:pt-0 lg:border-t-0 lg:border-none lg:border-t-current lg:gap-6"
+        }
+      >
         {loadFailed ? (
           <Button
             type="button"
             variant="brand-primary"
-            className={styles.continueAction}
+            className={
+              "booking-continueAction [&&]:min-w-0 [&&]:flex-1 [&&]:h-12 [&&]:pl-2.5 [&&]:pr-2.5 [&&]:rounded-[4px] [&&]:bg-[var(--booking-accent)] [&&]:bg-none [&&]:text-[length:14px] [&&:disabled]:opacity-40 lg:[&&]:flex-[0_1_50%] lg:[&&]:h-12 lg:[&&]:text-[length:16px] [@media_(max-width:_359px)]:[&&]:text-[length:12px]"
+            }
             onClick={onRetry}
           >
             {copy.tryAgain}
@@ -436,7 +489,9 @@ function PaymentForm({
           <Button
             type="button"
             variant="brand-primary"
-            className={styles.continueAction}
+            className={
+              "booking-continueAction [&&]:min-w-0 [&&]:flex-1 [&&]:h-12 [&&]:pl-2.5 [&&]:pr-2.5 [&&]:rounded-[4px] [&&]:bg-[var(--booking-accent)] [&&]:bg-none [&&]:text-[length:14px] [&&:disabled]:opacity-40 lg:[&&]:flex-[0_1_50%] lg:[&&]:h-12 lg:[&&]:text-[length:16px] [@media_(max-width:_359px)]:[&&]:text-[length:12px]"
+            }
             disabled={!ready || paying}
             onClick={pay}
           >

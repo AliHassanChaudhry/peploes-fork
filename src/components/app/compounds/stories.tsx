@@ -2,8 +2,6 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
-import styles from "@/components/app/compounds/stories.module.css";
 import { StoryCard } from "@/components/app/molecules/story-card";
 import { Button } from "@/components/ui/button";
 import { MOBILE_HOME_CONTENT, ROUTES } from "@/lib/constants";
@@ -85,14 +83,14 @@ export function Stories() {
 
         <div
           className={cn(
-            browseStyles.row,
-            browseStyles.hideScrollbar,
+            "mobile-browse-row max-sm:[&&&]:flex max-sm:[&&&]:items-stretch max-sm:[&&&]:gap-4 max-sm:[&&&]:overflow-x-auto max-sm:[&&&]:pt-1 max-sm:[&&&]:pb-4 max-sm:[&&&_[data-story-copy]]:opacity-100 max-sm:[&&&_[data-story-copy]]:transform-none max-sm:[&&&_[data-story-copy]]:transition-none max-sm:[&&&_[data-story-copy]]:duration-0 max-sm:[&&&_[data-story-copy]]:ease-[ease] max-sm:[&&&_[data-story-copy]]:[transition-delay:0s] max-sm:[&&&_[data-story-copy]]:transition-normal max-sm:[&&&_[data-story-details]]:opacity-100 max-sm:[&&&_[data-story-details]]:transform-none max-sm:[&&&_[data-story-details]]:transition-none max-sm:[&&&_[data-story-details]]:duration-0 max-sm:[&&&_[data-story-details]]:ease-[ease] max-sm:[&&&_[data-story-details]]:[transition-delay:0s] max-sm:[&&&_[data-story-details]]:transition-normal max-sm:[&&&_[data-story-details]_:is([data-story-text],_a,_button)]:pointer-events-auto",
+            "mobile-browse-hideScrollbar max-sm:[scrollbar-width:none] max-sm:[&&::-webkit-scrollbar]:hidden",
             "grid items-start gap-[18px] text-warm-cream max-sm:-mr-4 max-sm:[--browse-card-min-height:370px] sm:gap-7 xl:grid-cols-2",
           )}
         >
           <StoryCard
             className={cn(
-              browseStyles.card,
+              "mobile-browse-card max-sm:[.mobile-browse-row_&&]:flex-[0_0_88%] max-sm:[.mobile-browse-row_&&]:min-w-0 max-sm:[.mobile-browse-row_&&]:min-h-[var(--browse-card-min-height,_340px)]",
               "relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[520px] sm:p-10 xl:min-h-[640px]",
             )}
           >
@@ -105,7 +103,10 @@ export function Stories() {
             />
             <div
               aria-hidden="true"
-              className={cn(styles.familyOverlay, "absolute inset-0")}
+              className={cn(
+                "bg-[linear-gradient(-161.49deg,rgb(var(--overlay-ink-rgb)_/_0%)_13.29%,rgb(var(--overlay-ink-rgb))_92.29%)] bg-transparent max-sm:bg-[linear-gradient(180deg,rgb(var(--overlay-warm-ink-rgb)_/_0%)_20%,rgb(var(--overlay-warm-ink-rgb)_/_60%)_50%,rgb(var(--overlay-warm-ink-rgb)_/_92%)_75%,rgb(var(--overlay-warm-ink-rgb))_100%)] max-sm:bg-transparent",
+                "absolute inset-0",
+              )}
             />
             <Link
               href={ROUTES.OUR_STORY}
@@ -153,13 +154,13 @@ export function Stories() {
 
           <div
             className={cn(
-              browseStyles.group,
+              "mobile-browse-group max-sm:[.mobile-browse-row_&&]:contents",
               "grid min-w-0 gap-[18px] sm:gap-7",
             )}
           >
             <StoryCard
               className={cn(
-                browseStyles.card,
+                "mobile-browse-card max-sm:[.mobile-browse-row_&&]:flex-[0_0_88%] max-sm:[.mobile-browse-row_&&]:min-w-0 max-sm:[.mobile-browse-row_&&]:min-h-[var(--browse-card-min-height,_340px)]",
                 "relative isolate flex min-h-[390px] items-end justify-end overflow-hidden rounded-[4px] bg-ink sm:min-h-[308px] sm:items-center",
               )}
             >
@@ -172,7 +173,10 @@ export function Stories() {
               />
               <div
                 aria-hidden="true"
-                className={cn(styles.produceOverlay, "absolute inset-0")}
+                className={cn(
+                  "max-sm:bg-[linear-gradient(180deg,rgb(var(--overlay-warm-ink-rgb)_/_0%)_20%,rgb(var(--overlay-warm-ink-rgb)_/_60%)_50%,rgb(var(--overlay-warm-ink-rgb)_/_92%)_75%,rgb(var(--overlay-warm-ink-rgb))_100%)] max-sm:bg-transparent sm:bg-[linear-gradient(-90deg,rgb(var(--overlay-ink-rgb))_36.64%,rgb(var(--overlay-ink-rgb)_/_0%)_100%)] sm:bg-transparent",
+                  "absolute inset-0",
+                )}
               />
               <Link
                 href={getJournalArticlePath("rooted-in-good-relationships")}
@@ -217,13 +221,13 @@ export function Stories() {
 
             <div
               className={cn(
-                browseStyles.group,
+                "mobile-browse-group max-sm:[.mobile-browse-row_&&]:contents",
                 "grid gap-[18px] sm:grid-cols-2 sm:gap-7",
               )}
             >
               <StoryCard
                 className={cn(
-                  browseStyles.card,
+                  "mobile-browse-card max-sm:[.mobile-browse-row_&&]:flex-[0_0_88%] max-sm:[.mobile-browse-row_&&]:min-w-0 max-sm:[.mobile-browse-row_&&]:min-h-[var(--browse-card-min-height,_340px)]",
                   "relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]",
                 )}
               >
@@ -236,7 +240,10 @@ export function Stories() {
                 />
                 <div
                   aria-hidden="true"
-                  className={cn(styles.ginaOverlay, "absolute inset-0")}
+                  className={cn(
+                    "bg-[linear-gradient(rgb(var(--overlay-ink-rgb)_/_0%)_0%,rgb(var(--overlay-ink-rgb))_71.34%)] bg-transparent max-sm:bg-[linear-gradient(180deg,rgb(var(--overlay-warm-ink-rgb)_/_0%)_20%,rgb(var(--overlay-warm-ink-rgb)_/_60%)_50%,rgb(var(--overlay-warm-ink-rgb)_/_92%)_75%,rgb(var(--overlay-warm-ink-rgb))_100%)] max-sm:bg-transparent",
+                    "absolute inset-0",
+                  )}
                 />
                 <Link
                   href={getJournalArticlePath("wine-things-just-happen")}
@@ -300,7 +307,7 @@ export function Stories() {
 
               <StoryCard
                 className={cn(
-                  browseStyles.card,
+                  "mobile-browse-card max-sm:[.mobile-browse-row_&&]:flex-[0_0_88%] max-sm:[.mobile-browse-row_&&]:min-w-0 max-sm:[.mobile-browse-row_&&]:min-h-[var(--browse-card-min-height,_340px)]",
                   "relative isolate flex min-h-[330px] flex-col justify-end overflow-hidden rounded-[4px] bg-ink p-6 sm:min-h-[308px]",
                 )}
               >
@@ -313,7 +320,10 @@ export function Stories() {
                 />
                 <div
                   aria-hidden="true"
-                  className={cn(styles.artOverlay, "absolute inset-0")}
+                  className={cn(
+                    "bg-[linear-gradient(rgb(var(--overlay-ink-rgb)_/_0%)_0%,rgb(var(--overlay-ink-rgb))_100%)] bg-transparent max-sm:bg-[linear-gradient(180deg,rgb(var(--overlay-warm-ink-rgb)_/_0%)_20%,rgb(var(--overlay-warm-ink-rgb)_/_60%)_50%,rgb(var(--overlay-warm-ink-rgb)_/_92%)_75%,rgb(var(--overlay-warm-ink-rgb))_100%)] max-sm:bg-transparent",
+                    "absolute inset-0",
+                  )}
                 />
                 <Link
                   href={getJournalArticlePath("the-art-of-peploes")}

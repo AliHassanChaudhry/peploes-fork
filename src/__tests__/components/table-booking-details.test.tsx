@@ -1,19 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { TableBookingDetails } from "@/components/app/molecules/table-booking-details";
 import type { ITableBookingDetailsProps } from "@/lib/types";
-
-vi.mock("@/components/app/compounds/table-booking-panel.module.css", () => ({
-  default: {},
-}));
-vi.mock("@/components/ui/button.module.css", () => ({ default: {} }));
-vi.mock(
-  "@/components/app/molecules/table-booking-processing.module.css",
-  () => ({
-    default: {},
-  }),
-);
 
 const props: ITableBookingDetailsProps = {
   details: {

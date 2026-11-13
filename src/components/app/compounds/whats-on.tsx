@@ -2,8 +2,6 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import browseStyles from "@/components/app/atoms/mobile-browse.module.css";
-import styles from "@/components/app/compounds/whats-on.module.css";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, ROUTES, WHATS_ON_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -54,7 +52,7 @@ function EventCard({ event, featured = false }: IEventCardProps) {
     <article
       data-image-card
       className={cn(
-        styles.card,
+        "whats-on-card max-sm:grid max-sm:row-span-5 max-sm:row-end-auto max-sm:grid-rows-subgrid max-sm:items-stretch max-sm:gap-y-2.5 max-sm:[&&_>_a]:mb-1 max-sm:[&&_[data-card-action]]:text-[length:15px]",
         "min-w-0 max-sm:border-b max-sm:border-warm-cream/30 max-sm:pb-3",
         featured
           ? "flex flex-col gap-[14px] sm:gap-4"
@@ -94,7 +92,10 @@ function EventCard({ event, featured = false }: IEventCardProps) {
 
       <div
         data-scroll-reveal
-        className={cn(styles.copy, "flex min-w-0 flex-col gap-2")}
+        className={cn(
+          "whats-on-copy max-sm:grid max-sm:row-span-4 max-sm:row-end-auto max-sm:grid-rows-subgrid max-sm:gap-y-2.5",
+          "flex min-w-0 flex-col gap-2",
+        )}
       >
         <p className="text-xs leading-4 font-medium tracking-[0.1em] uppercase">
           {event.category}
@@ -182,14 +183,19 @@ export function WhatsOn({ events }: IWhatsOnProps) {
 
         <div
           className={cn(
-            styles.cards,
-            browseStyles.hideScrollbar,
+            "whats-on-cards max-sm:grid max-sm:grid-flow-col max-sm:auto-cols-[88%] max-sm:grid-rows-[repeat(5,_auto)] max-sm:items-stretch max-sm:gap-[10px_16px] max-sm:overflow-x-auto max-sm:pt-1 max-sm:pb-4",
+            "mobile-browse-hideScrollbar max-sm:[scrollbar-width:none] max-sm:[&&::-webkit-scrollbar]:hidden",
             "grid items-start gap-6 max-sm:-mr-4 sm:gap-12 xl:grid-cols-[minmax(0,635fr)_minmax(0,613fr)]",
           )}
         >
           <EventCard event={featuredEvent} featured />
           {otherEvents.length > 0 && (
-            <div className={cn(styles.group, "flex min-w-0 flex-col gap-6")}>
+            <div
+              className={cn(
+                "whats-on-group max-sm:contents",
+                "flex min-w-0 flex-col gap-6",
+              )}
+            >
               {otherEvents.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}

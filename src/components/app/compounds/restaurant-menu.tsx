@@ -40,7 +40,9 @@ export function RestaurantMenu({ menu }: IMenuContentProps) {
                   { name: "Menus", url: ROUTES.MENUS },
                   { name: menu.slug, url: MENU_ROUTES[menu.slug] },
                 ]}
-                className="[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:leading-5 [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy"
+                className={
+                  "[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy [&_ol]:leading-5"
+                }
               />
               <h1
                 className={cn(

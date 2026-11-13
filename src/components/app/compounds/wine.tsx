@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import styles from "@/components/app/compounds/wine.module.css";
 import { Button } from "@/components/ui/button";
 import { MOBILE_HOME_CONTENT, ROUTES, WINE_CONTENT } from "@/lib/constants";
 import { dmSans, ebGaramond } from "@/lib/fonts";
@@ -30,7 +29,10 @@ export function Wine() {
       </div>
       <div
         aria-hidden="true"
-        className={cn(styles.overlay, "absolute inset-0")}
+        className={cn(
+          "bg-[linear-gradient(180deg,rgb(var(--overlay-warm-ink-rgb)_/_3.14%)_0%,rgb(var(--overlay-warm-ink-rgb)_/_78.43%)_44%,rgb(var(--overlay-warm-ink-rgb))_100%)] bg-transparent sm:max-lg:bg-[rgb(var(--overlay-warm-ink-rgb)_/_80%)] sm:max-lg:bg-none lg:bg-[linear-gradient(90.01deg,rgb(var(--overlay-warm-ink-rgb)_/_94.9%)_0.01%,rgb(var(--overlay-warm-ink-rgb)_/_70.2%)_52.24%,rgb(var(--overlay-warm-ink-rgb)_/_0%)_99.99%)] lg:bg-transparent",
+          "absolute inset-0",
+        )}
       />
 
       <div className="site-container relative">

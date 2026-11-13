@@ -3,10 +3,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it, vi } from "vitest";
 import { NewsletterSignup } from "@/components/app/molecules/newsletter-signup";
 
-vi.mock("@/components/app/molecules/newsletter-signup.module.css", () => ({
-  default: {},
-}));
-vi.mock("@/components/ui/button.module.css", () => ({ default: {} }));
 vi.mock("@/actions/newsletter", () => ({ submitNewsletter: vi.fn() }));
 it("gives coexisting newsletter forms distinct associated labels and status IDs", () => {
   const html = renderToStaticMarkup(

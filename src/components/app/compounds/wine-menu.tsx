@@ -2,7 +2,6 @@ import { ChevronDown, Minus, Plus } from "lucide-react";
 
 import { WineIndexCloseButton } from "@/components/app/atoms/wine-index-close-button";
 import { MenuBooking } from "@/components/app/compounds/menu-booking";
-import styles from "@/components/app/compounds/wine-menu.module.css";
 import { MenuEditorialIntro } from "@/components/app/molecules/menu-editorial-intro";
 import { MenuNotes } from "@/components/app/molecules/menu-notes";
 import { WineCategory } from "@/components/app/molecules/wine-category";
@@ -26,7 +25,7 @@ export function WineMenu({ menu }: IWineMenuProps) {
           <details
             open
             className={cn(
-              styles.index,
+              "[&::details-content]:opacity-0 [&::details-content]:transform-[translateY(-8px)] [&::details-content]:transition-[opacity,transform,content-visibility] [&::details-content]:duration-[var(--duration-base),var(--duration-base),var(--duration-base)] [&::details-content]:ease-[ease,ease,ease] [&::details-content]:[transition-delay:0s,0s,0s] [&::details-content]:[transition-behavior:normal,normal,allow-discrete] [&[open]::details-content]:opacity-100 [&[open]::details-content]:transform-[translateY(0)] motion-reduce:[&::details-content]:transition-none motion-reduce:[&::details-content]:duration-0 motion-reduce:[&::details-content]:ease-[ease] motion-reduce:[&::details-content]:[transition-delay:0s] motion-reduce:[&::details-content]:transition-normal",
               "group mb-8 border border-soft-stone bg-[#f1e9e3] px-[17px] py-[5px] xl:relative xl:-translate-x-[9px] xl:mb-8 xl:border-0 xl:bg-transparent xl:p-0",
             )}
           >

@@ -8,21 +8,9 @@ import {
 } from "@/__tests__/fixtures/journal";
 import { Journal } from "@/components/app/compounds/journal";
 
-vi.mock("@/components/ui/button.module.css", () => ({ default: {} }));
-
 vi.mock("@/lib/fonts", () => ({
   dmSans: { className: "" },
   ebGaramond: { variable: "" },
-}));
-
-vi.mock("@/components/app/compounds/journal.module.css", () => ({
-  default: {},
-}));
-vi.mock("@/components/app/compounds/journal-article-list.module.css", () => ({
-  default: {},
-}));
-vi.mock("@/components/app/molecules/journal-story-card.module.css", () => ({
-  default: {},
 }));
 
 const navigation = vi.hoisted(() => ({ search: "" }));

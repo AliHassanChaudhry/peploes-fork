@@ -4,7 +4,6 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import styles from "@/components/app/molecules/menu-navigation.module.css";
 import { Button } from "@/components/ui/button";
 import { FOCUS_RING, MENU_ROUTES } from "@/lib/constants";
 import { getSelectedMenu, selectMenuSection } from "@/lib/menu-selection";
@@ -120,7 +119,7 @@ export function MenuNavigation({
       >
         <ul
           className={cn(
-            styles.tabs,
+            "[&>li>:is(a,button)]:pointer-events-none max-xl:[&>li>:is(a,button)]:pointer-events-auto max-xl:[--visible-tabs:2.5] max-xl:[&>li]:flex-[0_0_calc((100%_+_8px)/var(--visible-tabs))] max-xl:[&>li]:min-w-max max-xl:after:flex-[0_0_8px] max-xl:after:content-[''] max-xl:[&>li>:is(a,button)]:w-full max-xl:[&>li>:is(a,button)]:min-w-0 max-xl:[&>li>:is(a,button)]:min-h-[48px] max-xl:[&>li>:is(a,button)]:gap-[4px] max-xl:[&>li>:is(a,button)]:px-[4px] max-xl:[&>li>:is(a,button)]:text-[18px] max-xl:[&>li>:is(a,button)]:whitespace-nowrap max-xl:[&>li_svg]:shrink-0 max-xl:[&>li>button]:gap-[8px] max-xl:[&>li>button]:px-[22px] min-[360px]:max-xl:[--visible-tabs:3.5] min-[480px]:max-xl:[--visible-tabs:4.5] min-[640px]:max-xl:[--visible-tabs:5.5] min-[900px]:max-xl:[--visible-tabs:6.5] max-xl:[&>li>:is(a,button)]:leading-[20px]",
             "mx-2 flex min-h-12 bg-[#fbf8f2] shadow-[inset_0_-1px_0_var(--soft-stone)] xl:site-container xl:min-w-max",
           )}
         >
@@ -155,7 +154,13 @@ export function MenuNavigation({
                       "flex items-center justify-center gap-2 border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-expanded:text-peploe-burgundy aria-[current=page]:text-[#8a1735]",
                     )}
                   >
-                    <span className={styles.tabLabel}>{item.label}</span>
+                    <span
+                      className={
+                        "pointer-events-auto cursor-pointer [button:disabled_&]:pointer-events-none"
+                      }
+                    >
+                      {item.label}
+                    </span>
                     <ChevronDown
                       aria-hidden="true"
                       className={cn("size-4", isOpen && "rotate-180")}
@@ -174,7 +179,13 @@ export function MenuNavigation({
                       "flex min-w-24 items-center xl:min-w-0 justify-center border-b-2 border-transparent px-[22px] text-xl leading-6 hover:text-[#8a1735] focus-visible:ring-peploe-burgundy aria-[current=page]:text-[#8a1735]",
                     )}
                   >
-                    <span className={styles.tabLabel}>{item.label}</span>
+                    <span
+                      className={
+                        "pointer-events-auto cursor-pointer [button:disabled_&]:pointer-events-none"
+                      }
+                    >
+                      {item.label}
+                    </span>
                   </Link>
                 ) : null}
               </li>
@@ -185,7 +196,9 @@ export function MenuNavigation({
           ref={indicatorRef}
           aria-hidden="true"
           data-menu-indicator
-          className={styles.indicator}
+          className={
+            "absolute bottom-0 left-0 h-[2px] bg-[#8a1735] bg-none pointer-events-none transition-[transform,width] duration-[260ms,260ms] ease-[ease,ease] [transition-delay:0s,0s] transition-normal motion-reduce:transition-none motion-reduce:duration-0 motion-reduce:ease-[ease] motion-reduce:[transition-delay:0s] motion-reduce:transition-normal"
+          }
         />
       </div>
       <div className="xl:site-container xl:relative">

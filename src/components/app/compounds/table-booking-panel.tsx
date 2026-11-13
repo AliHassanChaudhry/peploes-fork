@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import styles from "@/components/app/compounds/table-booking-panel.module.css";
 import { TableBookingChange } from "@/components/app/molecules/table-booking-change";
 import { TableBookingDate } from "@/components/app/molecules/table-booking-date";
 import { TableBookingDetails } from "@/components/app/molecules/table-booking-details";
@@ -109,9 +108,16 @@ export function TableBookingNotice({
     <section
       aria-label={content.label}
       aria-busy={loading}
-      className={styles.panel}
+      className={
+        "booking-panel [--booking-accent:#790e1d] [--booking-surface:#faf8f3] [--booking-control:#fcfaf7] [--booking-border:#ddd9d1] [--booking-muted:#8d8a87] [--booking-label:#111110] [--booking-value:#221a17] [--booking-emblem:#f1e4dd] [--booking-shadow:rgb(64_55_43_/_4.70588%)] [--booking-summary-inset:10px] min-w-0 min-h-0 pt-8 pr-[23px] pb-8 pl-[23px] border border-solid border-[var(--booking-border)] rounded-[16px] bg-[var(--booking-surface)] bg-none text-[var(--booking-label)] lg:[--booking-summary-inset:16px] lg:min-h-0 lg:pt-8 lg:pr-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:pb-10 lg:pl-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:rounded-[6px] lg:shadow-[0_8px_28px_var(--booking-shadow)] scroll-mt-25 [&&:focus]:outline-none [&&:focus]:outline-[length:medium] [&&:focus]:outline-current [&&[aria-busy=true]]:min-h-[715px] lg:[&&[aria-busy=true]]:min-h-[603px] [@media_(max-width:_359px)]:[&&[aria-busy=true]]:min-h-193.5"
+      }
     >
-      <p role={loading ? "status" : undefined} className={styles.panelMessage}>
+      <p
+        role={loading ? "status" : undefined}
+        className={
+          "booking-panelMessage mt-0 mr-0 mb-6 ml-0 text-[var(--booking-accent)]"
+        }
+      >
         {message}
       </p>
       {loading && <TableBookingFormSkeleton />}
@@ -348,7 +354,10 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
         ref={panel}
         tabIndex={-1}
         aria-label={content.label}
-        className={cn(styles.panel, styles.flowPanel)}
+        className={cn(
+          "booking-panel [--booking-accent:#790e1d] [--booking-surface:#faf8f3] [--booking-control:#fcfaf7] [--booking-border:#ddd9d1] [--booking-muted:#8d8a87] [--booking-label:#111110] [--booking-value:#221a17] [--booking-emblem:#f1e4dd] [--booking-shadow:rgb(64_55_43_/_4.70588%)] [--booking-summary-inset:10px] min-w-0 min-h-0 pt-8 pr-[23px] pb-8 pl-[23px] border border-solid border-[var(--booking-border)] rounded-[16px] bg-[var(--booking-surface)] bg-none text-[var(--booking-label)] lg:[--booking-summary-inset:16px] lg:min-h-0 lg:pt-8 lg:pr-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:pb-10 lg:pl-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:rounded-[6px] lg:shadow-[0_8px_28px_var(--booking-shadow)] scroll-mt-25 [&&:focus]:outline-none [&&:focus]:outline-[length:medium] [&&:focus]:outline-current [&&[aria-busy=true]]:min-h-[715px] lg:[&&[aria-busy=true]]:min-h-[603px] [@media_(max-width:_359px)]:[&&[aria-busy=true]]:min-h-193.5",
+          "booking-flowPanel lg:min-h-0",
+        )}
       >
         <BookingProgress step={2} />
         <TableBookingReturn
@@ -367,19 +376,26 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
       tabIndex={-1}
       aria-label={content.label}
       className={cn(
-        styles.panel,
+        "booking-panel [--booking-accent:#790e1d] [--booking-surface:#faf8f3] [--booking-control:#fcfaf7] [--booking-border:#ddd9d1] [--booking-muted:#8d8a87] [--booking-label:#111110] [--booking-value:#221a17] [--booking-emblem:#f1e4dd] [--booking-shadow:rgb(64_55_43_/_4.70588%)] [--booking-summary-inset:10px] min-w-0 min-h-0 pt-8 pr-[23px] pb-8 pl-[23px] border border-solid border-[var(--booking-border)] rounded-[16px] bg-[var(--booking-surface)] bg-none text-[var(--booking-label)] lg:[--booking-summary-inset:16px] lg:min-h-0 lg:pt-8 lg:pr-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:pb-10 lg:pl-[clamp(47px,_calc(25vw_-_241px),_119px)] lg:rounded-[6px] lg:shadow-[0_8px_28px_var(--booking-shadow)] scroll-mt-25 [&&:focus]:outline-none [&&:focus]:outline-[length:medium] [&&:focus]:outline-current [&&[aria-busy=true]]:min-h-[715px] lg:[&&[aria-busy=true]]:min-h-[603px] [@media_(max-width:_359px)]:[&&[aria-busy=true]]:min-h-193.5",
 
-        step > 0 && styles.flowPanel,
-        step === 3 && styles.confirmedPanel,
+        step > 0 && "booking-flowPanel lg:min-h-0",
+        step === 3 && "booking-confirmedPanel",
       )}
     >
       <BookingProgress step={step} />
 
-      <div key={step} className={styles.stepContent}>
+      <div
+        key={step}
+        className={
+          "booking-stepContent [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out]"
+        }
+      >
         {step === 0 && (
           <>
-            <div className={styles.availability}>
-              <div className={styles.fields}>
+            <div className={"booking-availability mt-4.5 lg:mt-8"}>
+              <div
+                className={"booking-fields grid gap-4 lg:grid-cols-2 lg:gap-6"}
+              >
                 <TableBookingDate
                   value={date}
                   calendar={findTable.calendar}
@@ -399,7 +415,9 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
               <Button
                 type="button"
                 variant="brand-primary"
-                className={styles.findTable}
+                className={
+                  "booking-findTable [&&:disabled]:pointer-events-auto [&&:disabled]:cursor-not-allowed [&&:disabled]:opacity-100 [&&]:w-full [&&]:h-12 [&&]:mt-4 [&&]:gap-2 [&&]:rounded-[4px] [&&]:bg-[var(--booking-accent)] [&&]:bg-none [&&]:text-[length:16px] [&&]:font-medium [&&:disabled:hover]:bg-[var(--booking-accent)] [&&:disabled:hover]:bg-none lg:[&&]:h-12 lg:[&&]:mt-6 lg:[&&]:gap-2 lg:[&&]:text-[length:16px] [&&]:leading-6 lg:[&&]:leading-6"
+                }
                 disabled={!date}
                 onClick={() => {
                   const today = dublinToday();
@@ -419,10 +437,20 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
                 }}
               >
                 {content.action}
-                <ArrowRight aria-hidden="true" className={styles.actionArrow} />
+                <ArrowRight
+                  aria-hidden="true"
+                  className={
+                    "booking-actionArrow [.booking-findTable_&&]:w-4 [.booking-findTable_&&]:h-4 lg:[.booking-findTable_&&]:w-4 lg:[.booking-findTable_&&]:h-4"
+                  }
+                />
               </Button>
             </div>
-            <p role="status" className={styles.dateNote}>
+            <p
+              role="status"
+              className={
+                "booking-dateNote mt-2 mr-0 mb-0 ml-0 text-[var(--booking-accent)] text-[length:14px] [&&:empty]:mt-0 [&&:empty]:mr-0 [&&:empty]:mb-0 [&&:empty]:ml-0 leading-5"
+              }
+            >
               {dateFull &&
                 !moveDate &&
                 !waitingForDate &&
@@ -440,7 +468,11 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
 
         {(step === 1 || step === 2) && (
           <>
-            <div className={styles.summary}>
+            <div
+              className={
+                "booking-summary flex items-center gap-2 mt-4.5 mr-0 mb-6 ml-0 pt-3 pr-[var(--booking-summary-inset)] pb-3 pl-[var(--booking-summary-inset)] bg-[#f2eee8] bg-none text-[length:12px] [&&_>_svg]:w-5 [&&_>_svg]:h-5 [&&_>_svg]:shrink-0 [&&_p]:flex-1 [&&_small]:block [&&_small]:text-text-secondary lg:gap-3 lg:mt-6 lg:mr-0 lg:mb-6 lg:ml-0 lg:pt-2.5 lg:pr-[var(--booking-summary-inset)] lg:pb-2.5 lg:pl-[var(--booking-summary-inset)] lg:text-[length:16px] lg:[&&_>_svg]:w-6 lg:[&&_>_svg]:h-6 lg:[&&_small]:text-[length:14px] leading-4.5 lg:leading-6 lg:[&&_small]:leading-5"
+              }
+            >
               <CalendarDays aria-hidden="true" />
               <p>
                 {shortDate}
@@ -517,7 +549,10 @@ export function TableBookingPanel({ findTable }: ITableBookingPanelProps) {
             <TableBookingSupport confirmation />
             <button
               type="button"
-              className={cn(styles.backAction, styles.restart)}
+              className={cn(
+                "booking-backAction [&&:focus-visible]:outline-2 [&&:focus-visible]:outline-solid [&&:focus-visible]:outline-[var(--booking-accent)] [&&:focus-visible]:outline-offset-3 inline-flex items-center gap-1 text-[var(--booking-accent)] text-[length:12px] text-left underline decoration-solid decoration-current decoration-auto cursor-pointer [&&_svg]:w-3.5 [&&_svg]:h-3.5 [&&_svg]:shrink-0 [&&:disabled]:opacity-40 [&&:disabled]:cursor-not-allowed lg:text-[length:16px] lg:[&&_svg]:w-4 lg:[&&_svg]:h-4 [@media_(max-width:_359px)]:text-[length:11px] leading-4.5 lg:leading-6",
+                "booking-restart mt-6",
+              )}
               onClick={() => {
                 setStep(0);
                 setTime(null);
@@ -557,20 +592,38 @@ function BookingConfirmation({
 }: ITableBookingConfirmationProps) {
   const { returnBy } = summary.offer;
   return (
-    <div className={styles.confirmation}>
-      <span className={styles.confirmationCheck}>
+    <div className={"booking-confirmation mt-6 text-center lg:mt-8"}>
+      <span
+        className={
+          "booking-confirmationCheck grid place-items-center w-12 h-12 mt-0 mr-auto mb-5 ml-auto rounded-[50%] bg-[var(--booking-accent)] bg-none text-[var(--booking-surface)] [&&_svg]:w-7.5 [&&_svg]:h-7.5 [&&_svg]:stroke-[1.5] lg:w-16 lg:h-16 lg:mb-5 lg:[&&_svg]:w-8 lg:[&&_svg]:h-8"
+        }
+      >
         <Check aria-hidden="true" />
       </span>
-      <h2 className={styles.flowHeading}>{content.confirmation.heading}</h2>
-      <p className={styles.bookingReference}>
+      <h2
+        className={
+          "booking-flowHeading mt-0 mr-0 mb-0 ml-0 text-[length:30px] lg:text-[length:36px] leading-9 lg:leading-10.5"
+        }
+      >
+        {content.confirmation.heading}
+      </h2>
+      <p
+        className={
+          "booking-bookingReference mt-5 text-text-secondary text-[length:14px] [&&_strong]:text-[var(--booking-value)] [&&_strong]:text-[length:16px] leading-6"
+        }
+      >
         {content.confirmation.referenceLabel}
         <br />
         <strong>{reference}</strong>
       </p>
-      <p className={styles.confirmationSummary}>
+      <p
+        className={
+          "booking-confirmationSummary mt-1 text-[length:13px] lg:mt-4 lg:text-[length:18px] leading-[21px] lg:leading-7"
+        }
+      >
         {summary.dateLabel}
-        <br className={styles.desktopOnly} /> · {summary.timeLabel} ·{" "}
-        {summary.guestsLabel}
+        <br className={"booking-desktopOnly hidden lg:inline"} /> ·{" "}
+        {summary.timeLabel} · {summary.guestsLabel}
         {returnBy && (
           <>
             <br />
@@ -578,10 +631,18 @@ function BookingConfirmation({
           </>
         )}
       </p>
-      <p className={styles.confirmationDisclaimer}>
+      <p
+        className={
+          "booking-confirmationDisclaimer mt-6 mr-auto mb-0 ml-auto max-w-160 text-text-secondary text-[length:13px] lg:mt-4 lg:text-[length:16px] leading-5 lg:leading-6"
+        }
+      >
         {content.confirmation.keepReference}
       </p>
-      <div className={styles.confirmationActions}>
+      <div
+        className={
+          "booking-confirmationActions grid grid-cols-2 gap-2.5 mt-6 [&&_>_*]:min-w-0 [&&_>_*]:h-11 [&&_>_*]:pl-2 [&&_>_*]:pr-2 [&&_>_*]:rounded-[4px] [&&_>_*]:text-[length:13px] [&&_>_:first-child]:col-span-full [&&_>_:disabled]:opacity-60 lg:grid-cols-3 lg:gap-4 lg:mt-6 lg:[&&_>_*]:h-12 lg:[&&_>_*]:text-[length:16px] lg:[&&_>_:first-child]:col-auto [@media_(max-width:_359px)]:grid-cols-[1fr]"
+        }
+      >
         <Button
           type="button"
           variant="brand-contact"
@@ -643,7 +704,12 @@ function DetailsCheck({
 
   return (
     <div aria-busy={check.kind === "checking"}>
-      <p role="status" className={styles.flowDescription}>
+      <p
+        role="status"
+        className={
+          "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+        }
+      >
         {check.kind === "unknown"
           ? content.details.stillConfirming(hold.reference)
           : content.details.checking}
@@ -817,25 +883,51 @@ function returnByOf(time: IBookingTime | null): IReturnBy | null {
 
 function BookingProgress({ step }: ITableBookingProgressProps) {
   return (
-    <ol aria-label={content.progressLabel} className={styles.progress}>
+    <ol
+      aria-label={content.progressLabel}
+      className={
+        "booking-progress grid grid-cols-4 gap-2.5 h-16.5 mt-0 mb-0 ml-[-12px] mr-[-12px] pt-0 pr-0 pb-0 pl-0 list-none lg:h-12 lg:gap-6 lg:ml-0 lg:mr-0 [@media_(min-width:_1024px)_and_(max-width:_1279px)]:gap-4 lg:[.booking-confirmedPanel_&&]:hidden"
+      }
+    >
       {content.steps.map((item, index) => (
         <li
           key={item.number}
           aria-current={index === step ? "step" : undefined}
           data-complete={index < step}
-          className={styles.step}
+          className={
+            "booking-step relative flex min-w-0 flex-col items-center text-[var(--booking-muted)] [&&:not(:last-child)::after]:content-[''] [&&:not(:last-child)::after]:absolute [&&:not(:last-child)::after]:top-4.5 [&&:not(:last-child)::after]:left-[calc(50%_+_18px)] [&&:not(:last-child)::after]:w-[calc(100%_-_26px)] [&&:not(:last-child)::after]:h-px [&&:not(:last-child)::after]:bg-[var(--booking-border)] [&&:not(:last-child)::after]:bg-none [&&:not(:last-child)::after]:opacity-55 [&&[aria-current=step]]:text-[var(--booking-accent)] lg:flex-row lg:items-start lg:gap-2.5 lg:[&&::before]:content-[''] lg:[&&::before]:absolute lg:[&&::before]:right-0 lg:[&&::before]:bottom-px lg:[&&::before]:left-0 lg:[&&::before]:h-px lg:[&&::before]:bg-[var(--booking-border)] lg:[&&::before]:bg-none lg:[&&[aria-current=step]::before]:bottom-0 lg:[&&[aria-current=step]::before]:h-[3px] lg:[&&[aria-current=step]::before]:bg-[var(--booking-accent)] lg:[&&[aria-current=step]::before]:bg-none lg:[&&:not(:last-child)::after]:hidden [@media_(min-width:_1024px)_and_(max-width:_1279px)]:gap-2"
+          }
         >
-          <span className={styles.stepNumber} aria-hidden="true">
+          <span
+            className={
+              "booking-stepNumber grid w-9 h-9 place-items-center border border-solid border-[var(--booking-border)] rounded-[50%] bg-[var(--booking-surface)] bg-none text-[length:16px] font-normal [.booking-step[aria-current=step]_&&]:border-[var(--booking-accent)] [.booking-step[aria-current=step]_&&]:bg-[var(--booking-accent)] [.booking-step[aria-current=step]_&&]:bg-none [.booking-step[aria-current=step]_&&]:text-warm-cream lg:w-8 lg:h-8 lg:shrink-0 lg:border-2 lg:text-[length:14px] lg:font-medium lg:[.booking-step:not([aria-current=step])_&&]:transform-[translateY(1px)] [.booking-step[data-complete=true]_&&]:bg-[var(--booking-label)] [.booking-step[data-complete=true]_&&]:bg-none [.booking-step[data-complete=true]_&&]:text-[var(--booking-surface)] [.booking-step[data-complete=true]_&&]:border-[var(--booking-label)] leading-[1]"
+            }
+            aria-hidden="true"
+          >
             {index < step ? (
-              <Check className={styles.completedIcon} />
+              <Check
+                className={
+                  "booking-completedIcon w-4.5 h-4.5 lg:w-4.5 lg:h-4.5"
+                }
+              />
             ) : (
               <>
-                <span className={styles.desktopNumber}>{item.number}</span>
-                <span className={styles.mobileNumber}>{item.mobileNumber}</span>
+                <span className={"booking-desktopNumber hidden lg:inline"}>
+                  {item.number}
+                </span>
+                <span className={"booking-mobileNumber lg:hidden"}>
+                  {item.mobileNumber}
+                </span>
               </>
             )}
           </span>
-          <span className={styles.stepName}>{item.label}</span>
+          <span
+            className={
+              "booking-stepName mt-2 text-[length:14px] font-medium whitespace-nowrap [.booking-step:not([aria-current=step])_&&]:absolute [.booking-step:not([aria-current=step])_&&]:w-px [.booking-step:not([aria-current=step])_&&]:h-px [.booking-step:not([aria-current=step])_&&]:overflow-hidden [.booking-step:not([aria-current=step])_&&]:[clip-path:inset(50%)] lg:static lg:w-auto lg:h-auto lg:mt-0 lg:overflow-visible lg:[clip-path:none] lg:text-[length:16px] lg:font-normal lg:[.booking-step:not([aria-current=step])_&&]:static lg:[.booking-step:not([aria-current=step])_&&]:w-auto lg:[.booking-step:not([aria-current=step])_&&]:h-auto lg:[.booking-step:not([aria-current=step])_&&]:mt-0 lg:[.booking-step:not([aria-current=step])_&&]:overflow-visible lg:[.booking-step:not([aria-current=step])_&&]:[clip-path:none] lg:[.booking-step:not([aria-current=step])_&&]:text-[length:16px] lg:[.booking-step:not([aria-current=step])_&&]:font-normal lg:[.booking-step[aria-current=step]_&&]:font-semibold lg:[.booking-step:not([aria-current=step])_&&]:transform-[translateY(1px)] [@media_(min-width:_1024px)_and_(max-width:_1279px)]:text-[length:15px] [@media_(min-width:_1024px)_and_(max-width:_1279px)]:[.booking-step:not([aria-current=step])_&&]:text-[length:15px] leading-5 lg:leading-8 lg:[.booking-step:not([aria-current=step])_&&]:leading-8"
+            }
+          >
+            {item.label}
+          </span>
         </li>
       ))}
     </ol>
@@ -851,7 +943,12 @@ function HoldError({
 }) {
   if (!visible || !message) return null;
   return (
-    <p role="alert" className={styles.timesMessage}>
+    <p
+      role="alert"
+      className={
+        "booking-timesMessage mt-0 mr-0 mb-4 ml-0 text-[var(--booking-accent)] text-[length:13px] [&&:empty]:mt-0 [&&:empty]:mr-0 [&&:empty]:mb-0 [&&:empty]:ml-0 lg:text-[length:16px] leading-5 lg:leading-6"
+      }
+    >
       {message}
     </p>
   );
@@ -874,18 +971,36 @@ function BookingTimes({
   const mustAccept = returnBy?.required === true;
   return (
     <div>
-      <h2 className={styles.flowHeading}>{content.timesLabel}</h2>
-      <p className={styles.flowDescription}>
+      <h2
+        className={
+          "booking-flowHeading mt-0 mr-0 mb-0 ml-0 text-[length:30px] lg:text-[length:36px] leading-9 lg:leading-10.5"
+        }
+      >
+        {content.timesLabel}
+      </h2>
+      <p
+        className={
+          "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+        }
+      >
         Showing times for {longDate} · {guests}
       </p>
       <TimesList times={times} time={time} onTimeChange={onTimeChange} />
       {returnBy && !mustAccept && (
-        <p className={styles.returnInfo}>
+        <p
+          className={
+            "booking-returnInfo mt-6 text-text-secondary text-[length:13px] lg:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {content.tableUntil(returnBy.label)}
         </p>
       )}
       {returnBy && mustAccept && (
-        <div className={styles.returnNotice}>
+        <div
+          className={
+            "booking-returnNotice mt-7 text-text-secondary text-[length:13px] [&&_strong]:text-[var(--booking-value)] [&&_strong]:font-semibold [&&_p]:mt-4 [&&_label]:flex [&&_label]:items-start [&&_label]:gap-2.5 [&&_label]:mt-5 [&&_label]:w-fit [&&_label]:cursor-default [&&_input]:cursor-pointer lg:[&&_label]:cursor-pointer [&&_input]:w-4.5 [&&_input]:h-4.5 [&&_input]:shrink-0 [&&_input]:accent-[var(--booking-accent)] lg:mt-6 lg:text-[length:16px] lg:[&&_input]:w-4.5 lg:[&&_input]:h-4.5 lg:[&&_input]:mt-[3px] leading-5 lg:leading-6"
+          }
+        >
           <strong>{content.returnTime.heading}</strong>
           <label>
             <input
@@ -903,10 +1018,16 @@ function BookingTimes({
           {content.holdingMessage}
         </TableBookingProcessing>
       )}
-      <div className={styles.flowActions}>
+      <div
+        className={
+          "booking-flowActions flex items-center justify-between gap-3.5 mt-7.5 pt-6 border-t border-solid border-t-[var(--booking-border)] lg:mt-7 lg:pt-0 lg:border-t-0 lg:border-none lg:border-t-current lg:gap-6"
+        }
+      >
         <button
           type="button"
-          className={styles.backAction}
+          className={
+            "booking-backAction [&&:focus-visible]:outline-2 [&&:focus-visible]:outline-solid [&&:focus-visible]:outline-[var(--booking-accent)] [&&:focus-visible]:outline-offset-3 inline-flex items-center gap-1 text-[var(--booking-accent)] text-[length:12px] text-left underline decoration-solid decoration-current decoration-auto cursor-pointer [&&_svg]:w-3.5 [&&_svg]:h-3.5 [&&_svg]:shrink-0 [&&:disabled]:opacity-40 [&&:disabled]:cursor-not-allowed lg:text-[length:16px] lg:[&&_svg]:w-4 lg:[&&_svg]:h-4 [@media_(max-width:_359px)]:text-[length:11px] leading-4.5 lg:leading-6"
+          }
           disabled={holding}
           onClick={onBack}
         >
@@ -916,7 +1037,9 @@ function BookingTimes({
         <Button
           type="button"
           variant="brand-primary"
-          className={styles.continueAction}
+          className={
+            "booking-continueAction [&&]:min-w-0 [&&]:flex-1 [&&]:h-12 [&&]:pl-2.5 [&&]:pr-2.5 [&&]:rounded-[4px] [&&]:bg-[var(--booking-accent)] [&&]:bg-none [&&]:text-[length:14px] [&&:disabled]:opacity-40 lg:[&&]:flex-[0_1_50%] lg:[&&]:h-12 lg:[&&]:text-[length:16px] [@media_(max-width:_359px)]:[&&]:text-[length:12px]"
+          }
           disabled={!time || holding || (mustAccept && !returnAccepted)}
           onClick={onContinue}
         >
@@ -1021,7 +1144,11 @@ function HeldStep({
   }
   if (!hold.active) {
     return (
-      <div className={styles.flowNotice}>
+      <div
+        className={
+          "booking-flowNotice [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid justify-items-start gap-4 text-[var(--booking-accent)]"
+        }
+      >
         <p role="alert">{BOOKING_MESSAGES.holdExpired}</p>
         <Button type="button" variant="brand-primary" onClick={onBack}>
           {content.chooseAgain}
@@ -1074,7 +1201,9 @@ function TimesList({ times, time, onTimeChange }: TTableBookingTimesListProps) {
       type="button"
       key={`${slot.date} ${slot.time}`}
       aria-pressed={time?.date === slot.date && time.time === slot.time}
-      className={styles.timeSlot}
+      className={
+        "booking-timeSlot cursor-pointer [&&:focus-visible]:outline-2 [&&:focus-visible]:outline-solid [&&:focus-visible]:outline-[var(--booking-accent)] [&&:focus-visible]:outline-offset-3 min-h-11.5 pt-2 pr-2 pb-2 pl-2 border border-solid border-[var(--booking-border)] rounded-[4px] bg-[var(--booking-control)] bg-none text-[length:16px] [&&[aria-pressed=true]]:border-[var(--booking-accent)] [&&[aria-pressed=true]]:bg-[var(--booking-accent)] [&&[aria-pressed=true]]:bg-none [&&[aria-pressed=true]]:text-[var(--booking-surface)] [&&:hover:not([aria-pressed=true])]:bg-[var(--booking-emblem)] [&&:hover:not([aria-pressed=true])]:bg-none lg:min-h-14 lg:text-[length:18px] leading-6 lg:leading-6.5"
+      }
       onClick={() => onTimeChange(slot)}
     >
       {slot.label}
@@ -1082,24 +1211,40 @@ function TimesList({ times, time, onTimeChange }: TTableBookingTimesListProps) {
   );
   return (
     <>
-      <p role="status" className={styles.timesMessage}>
+      <p
+        role="status"
+        className={
+          "booking-timesMessage mt-0 mr-0 mb-4 ml-0 text-[var(--booking-accent)] text-[length:13px] [&&:empty]:mt-0 [&&:empty]:mr-0 [&&:empty]:mb-0 [&&:empty]:ml-0 lg:text-[length:16px] leading-5 lg:leading-6"
+        }
+      >
         {timesMessage(times)}
       </p>
       {times.status === "loading" && <TableBookingTimesSkeleton />}
       {slots.length > 0 && (
         <fieldset id="booking-times" aria-label={content.timesLabel}>
-          <div className={styles.timeGrid}>
+          <div
+            className={
+              "booking-timeGrid [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid grid-cols-2 gap-2.5 mt-6 lg:grid-cols-4 lg:gap-[12px_16px] lg:mt-6"
+            }
+          >
             {slots.slice(0, initialCount).map(renderSlot)}
           </div>
           {remainingSlots.length > 0 && (
             <div
               id="booking-extra-times"
-              className={styles.extraTimes}
+              className={
+                "booking-extraTimes grid grid-rows-[0fr] opacity-0 invisible transition-[grid-template-rows,opacity,visibility] duration-[220ms,180ms,0s] ease-[ease,ease,linear] [transition-delay:0s,0s,220ms] transition-normal [&&[data-expanded=true]]:grid-rows-[1fr] [&&[data-expanded=true]]:opacity-100 [&&[data-expanded=true]]:visible [&&[data-expanded=true]]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-none [@media_(prefers-reduced-motion:_reduce)]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-normal"
+              }
               data-expanded={expanded}
               inert={!expanded}
             >
-              <div className={styles.extraTimesClip}>
-                <div className={cn(styles.timeGrid, styles.extraTimeGrid)}>
+              <div className={"booking-extraTimesClip min-h-0 overflow-hidden"}>
+                <div
+                  className={cn(
+                    "booking-timeGrid [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid grid-cols-2 gap-2.5 mt-6 lg:grid-cols-4 lg:gap-[12px_16px] lg:mt-6",
+                    "booking-extraTimeGrid mt-2.5 lg:[.booking-timeGrid&&]:mt-3",
+                  )}
+                >
                   {remainingSlots.map(renderSlot)}
                 </div>
               </div>
@@ -1110,7 +1255,9 @@ function TimesList({ times, time, onTimeChange }: TTableBookingTimesListProps) {
       {remainingSlots.length > 0 && (
         <button
           type="button"
-          className={styles.showMoreTimes}
+          className={
+            "booking-showMoreTimes [&&:focus-visible]:outline-2 [&&:focus-visible]:outline-solid [&&:focus-visible]:outline-[var(--booking-accent)] [&&:focus-visible]:outline-offset-3 flex items-center justify-center gap-3 min-h-11 mt-4 mr-auto mb-0 ml-auto text-[var(--booking-accent)] text-[length:16px] cursor-pointer [&&_svg]:w-3.5 [&&_svg]:h-3.5 leading-6"
+          }
           aria-controls="booking-extra-times"
           aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}

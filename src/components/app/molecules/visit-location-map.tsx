@@ -7,8 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import layout from "@/components/app/compounds/visit-contact.module.css";
-import styles from "@/components/app/molecules/visit-location-map.module.css";
 import {
   VISIT_CONTACT_CONTENT,
   VISIT_MAP,
@@ -91,17 +89,22 @@ export function VisitLocationMap() {
           customizeDefaultStyle(map);
           const marker = document.createElement("button");
           marker.type = "button";
-          marker.className = styles.marker;
+          // Mapbox otherwise exposes custom markers as images.
+          marker.setAttribute("role", "button");
+          marker.className =
+            "w-[34px] h-11 bg-peploe-burgundy [clip-path:polygon(50%_100%,4%_40%,0_25%,8%_10%,25%_0,75%_0,92%_10%,100%_25%,96%_40%)] cursor-pointer after:content-[''] after:absolute after:top-2 after:left-2.5 after:size-3.5 after:rounded-[50%] after:bg-warm-cream focus-visible:bg-ink";
           marker.setAttribute(
             "aria-label",
             VISIT_CONTACT_CONTENT.location.map.markerLabel,
           );
           const address = document.createElement("p");
-          address.className = styles.popupAddress;
+          address.className =
+            "whitespace-pre-line m-0 pt-5 pr-13 pb-5 pl-5 text-ink font-[family-name:inherit] text-[length:15px] leading-6";
           address.textContent = VISIT_CONTACT_CONTENT.contact.address;
           const close = document.createElement("button");
           close.type = "button";
-          close.className = styles.popupClose;
+          close.className =
+            "absolute top-1 right-1 grid place-items-center size-11 border-0 rounded-[4px] bg-transparent text-peploe-burgundy text-[length:24px] cursor-pointer transition-[background-color] duration-(--duration-base) ease-(--ease-organic) hover:bg-soft-stone focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-peploe-burgundy focus-visible:-outline-offset-4 motion-reduce:transition-none";
           close.setAttribute(
             "aria-label",
             VISIT_CONTACT_CONTENT.location.map.popupCloseLabel,
@@ -112,7 +115,8 @@ export function VisitLocationMap() {
           const popup = new mapbox.Popup({
             anchor: "top",
             offset: 4,
-            className: styles.popup,
+            className:
+              "font-[family-name:inherit] animate-[visit-map-popup-open_var(--duration-base)_var(--ease-organic)_both] drop-shadow-[0_8px_18px_rgb(45_35_30/14%)] [&_.mapboxgl-popup-content]:p-0! [&_.mapboxgl-popup-content]:bg-warm-cream! [&_.mapboxgl-popup-content]:rounded-[8px]! [&_.mapboxgl-popup-content]:shadow-none! [&.mapboxgl-popup-anchor-top_.mapboxgl-popup-tip]:border-b-warm-cream! [&.mapboxgl-popup-anchor-top_.mapboxgl-popup-tip]:border-8! [&.mapboxgl-popup-anchor-top_.mapboxgl-popup-tip]:border-t-0! [&.visit-map-popup-closing]:pointer-events-none [&.visit-map-popup-closing]:animate-[visit-map-popup-close_var(--duration-base)_var(--ease-organic)_both] [&.visit-map-popup-closing_.mapboxgl-popup-content]:pointer-events-none! motion-reduce:[animation-duration:1ms]!",
             closeButton: false,
             closeOnClick: false,
             maxWidth: "260px",
@@ -127,7 +131,7 @@ export function VisitLocationMap() {
             if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
               popup.remove();
             } else {
-              popup.getElement()?.classList.add(styles.popupClosing);
+              popup.getElement()?.classList.add("visit-map-popup-closing");
             }
           }
           marker.addEventListener("click", (event) => {
@@ -140,11 +144,11 @@ export function VisitLocationMap() {
             popup.addTo(map);
             const popupElement = popup.getElement();
             if (!popupElement) return;
-            popupElement.classList.remove(styles.popupClosing);
+            popupElement.classList.remove("visit-map-popup-closing");
             popupElement.onanimationend = (event) => {
               if (
                 event.target === popupElement &&
-                popupElement.classList.contains(styles.popupClosing)
+                popupElement.classList.contains("visit-map-popup-closing")
               ) {
                 popup.remove();
               }
@@ -187,48 +191,62 @@ export function VisitLocationMap() {
   }, [nearViewport]);
 
   return (
-    <div
-      className={`${layout.map} ${styles.shell}`}
-      aria-busy={nearViewport && !ready && !failed}
-    >
-      <section
-        ref={container}
-        className={styles.canvas}
-        aria-label={copy.label}
-        aria-hidden={!ready}
-      />
-      {!ready ? (
-        <Image
-          src={copy.src}
-          alt={copy.alt}
-          fill
-          sizes="(min-width: 1584px) 844px, (min-width: 1024px) 53vw, calc(100vw - 48px)"
-          className={layout.cover}
+    <>
+      <style>
+        {
+          "@keyframes visit-map-popup-open{from{opacity:0}to{opacity:1}}@keyframes visit-map-popup-close{from{opacity:1}to{opacity:0}}"
+        }
+      </style>
+      <div
+        className={`${"relative block aspect-auto h-60 border-[0.2px] border-solid border-soft-stone shadow-[0_4px_18px_5px_color-mix(in_srgb,var(--ink)_6%,transparent)] sm:aspect-[760/333] sm:h-auto sm:shadow-[0_4px_18px_3px_color-mix(in_srgb,var(--ink)_6%,transparent)]"} ${"[&:fullscreen]:w-full [&:fullscreen]:h-full [&:fullscreen]:aspect-auto"}`}
+        aria-busy={nearViewport && !ready && !failed}
+      >
+        <section
+          ref={container}
+          className={"absolute! inset-0"}
+          aria-label={copy.label}
+          aria-hidden={!ready}
         />
-      ) : null}
-      {!token || failed ? (
-        <p className={styles.notice} role="status">
-          {copy.unavailable}
-        </p>
-      ) : null}
-      {ready ? (
-        <Button
-          variant="plain"
-          type="button"
-          className={styles.recenter}
-          aria-label={copy.recenterLabel}
-          onClick={() =>
-            mapRef.current?.flyTo({
-              center: [...VISIT_MAP.center],
-              zoom: VISIT_MAP.zoom,
-              essential: false,
-            })
-          }
-        >
-          <LocateFixed size={18} aria-hidden="true" />
-        </Button>
-      ) : null}
-    </div>
+        {!ready ? (
+          <Image
+            src={copy.src}
+            alt={copy.alt}
+            fill
+            sizes="(min-width: 1584px) 844px, (min-width: 1024px) 53vw, calc(100vw - 48px)"
+            className={"object-cover"}
+          />
+        ) : null}
+        {!token || failed ? (
+          <p
+            className={
+              "absolute z-1 bg-warm-cream text-peploe-burgundy rounded-[2px] py-2 px-3 text-[length:13px] bottom-7 left-3 right-3"
+            }
+            role="status"
+          >
+            {copy.unavailable}
+          </p>
+        ) : null}
+        {ready ? (
+          <Button
+            variant="plain"
+            type="button"
+            className={
+              "absolute z-1 bg-warm-cream text-peploe-burgundy rounded-[2px] py-2 px-3 text-[length:13px] top-3 right-13 min-w-11 min-h-11 grid place-items-center cursor-pointer"
+            }
+            aria-label={copy.recenterLabel}
+            onClick={() =>
+              mapRef.current?.flyTo({
+                center: [...VISIT_MAP.center],
+                zoom: VISIT_MAP.zoom,
+                essential: false,
+              })
+            }
+          >
+            <LocateFixed size={18} aria-hidden="true" />
+          </Button>
+        ) : null}
+      </div>
+    </>
   );
 }
 

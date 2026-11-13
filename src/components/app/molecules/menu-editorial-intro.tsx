@@ -113,9 +113,9 @@ function MenuEditorialHeading({ menu, compact }: IMenuEditorialIntroProps) {
           },
         ]}
         className={cn(
-          "[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:leading-5 [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy",
+          "[&_ol]:gap-4 [&_ol]:text-sm [&_ol]:font-medium [&_ol]:tracking-[0.08em] [&_ol]:text-peploe-burgundy [&_ol]:uppercase [&_li]:gap-4 [&_[aria-current]]:text-peploe-burgundy [&_ol]:leading-5",
           hasCompactDescription &&
-            "xl:[&_ol]:gap-2.5 xl:[&_ol]:text-[10px] xl:[&_ol]:leading-[14px] xl:[&_ol]:tracking-[0.1em] xl:[&_li]:gap-2.5",
+            "xl:[&_ol]:gap-2.5 xl:[&_ol]:text-[10px] xl:[&_ol]:tracking-[0.1em] xl:[&_li]:gap-2.5 xl:[&_ol]:leading-[14px]",
         )}
       />
       <h1

@@ -2,7 +2,6 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import styles from "@/components/app/molecules/menu-content-transition.module.css";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import type { IMenuContentTransitionProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -77,31 +76,56 @@ export function MenuContentTransition({
   }, [phase, displayed.slug, slug, reducedMotion]);
 
   return (
-    <div
-      ref={contentRef}
-      data-menu-content
-      data-menu={displayed.slug}
-      data-phase={phase}
-      aria-busy={displayed.slug !== slug}
-      inert={displayed.slug !== slug}
-      className={cn(
-        phase === "out" && styles.exit,
-        phase === "in" && styles.enter,
-      )}
-      onAnimationEnd={(event) => {
-        if (event.target !== event.currentTarget) return;
-        if (phase === "out") {
-          event.currentTarget.style.removeProperty("--menu-motion-opacity");
-          event.currentTarget.style.removeProperty("--menu-motion-transform");
-          setDisplayed({ slug, children });
-          setPhase("in");
-        } else if (phase === "in") {
-          setPhase("idle");
-        }
-      }}
-    >
-      {displayed.children}
-    </div>
+    <>
+      <style>{`@keyframes peploes-menu-exit {
+  from {
+    opacity: var(--menu-motion-opacity, 1);
+    transform: var(--menu-motion-transform, translateY(0));
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes peploes-menu-enter {
+  from {
+    opacity: var(--menu-motion-opacity, 0);
+    transform: var(--menu-motion-transform, translateY(8px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}`}</style>
+      <div
+        ref={contentRef}
+        data-menu-content
+        data-menu={displayed.slug}
+        data-phase={phase}
+        aria-busy={displayed.slug !== slug}
+        inert={displayed.slug !== slug}
+        className={cn(
+          phase === "out" &&
+            "animate-[peploes-menu-exit_150ms_ease-in_both] motion-reduce:animate-none",
+          phase === "in" &&
+            "animate-[peploes-menu-enter_220ms_ease-out_both] motion-reduce:animate-none",
+        )}
+        onAnimationEnd={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (phase === "out") {
+            event.currentTarget.style.removeProperty("--menu-motion-opacity");
+            event.currentTarget.style.removeProperty("--menu-motion-transform");
+            setDisplayed({ slug, children });
+            setPhase("in");
+          } else if (phase === "in") {
+            setPhase("idle");
+          }
+        }}
+      >
+        {displayed.children}
+      </div>
+    </>
   );
 }
 

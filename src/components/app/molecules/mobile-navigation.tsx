@@ -8,7 +8,6 @@ import { CloseButton } from "@/components/app/atoms/close-button";
 import { MobileNavigationTrigger } from "@/components/app/atoms/mobile-navigation-trigger";
 import { NavbarBookingButton } from "@/components/app/atoms/navbar-booking-button";
 import { NavbarBrand } from "@/components/app/atoms/navbar-brand";
-import styles from "@/components/app/molecules/mobile-navigation.module.css";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
@@ -117,7 +116,7 @@ export function MobileNavigation({
           }
         }}
         className={cn(
-          styles.dialog,
+          "[scrollbar-width:none] transform-[translateX(100%)] transition-[transform] duration-[var(--duration-base)] ease-[cubic-bezier(0.4,0,0.2,1)] [transition-delay:0s] transition-normal [&::-webkit-scrollbar]:hidden [&[open]]:transform-[translateX(0)] [&[open]]:duration-(--duration-slow) [&[open][data-closing]]:transform-[translateX(100%)] [&[open][data-closing]]:duration-(--duration-base) [&::backdrop]:opacity-0 [&::backdrop]:transition-[opacity] [&::backdrop]:duration-[var(--duration-fast)] [&::backdrop]:ease-[ease] [&::backdrop]:[transition-delay:0s] [&::backdrop]:transition-normal [&[open]::backdrop]:opacity-100 [&[open][data-closing]::backdrop]:opacity-0 starting:[&&[open]]:transform-[translateX(100%)] starting:[&&[open]::backdrop]:opacity-0 [@media_(prefers-reduced-motion:_reduce)]:[&[open]]:transition-none [@media_(prefers-reduced-motion:_reduce)]:[&[open]]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:[&[open]]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[&[open]]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:[&[open]]:transition-normal [@media_(prefers-reduced-motion:_reduce)]:[&[open]::backdrop]:transition-none [@media_(prefers-reduced-motion:_reduce)]:[&[open]::backdrop]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:[&[open]::backdrop]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[&[open]::backdrop]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:[&[open]::backdrop]:transition-normal",
           "fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain border-0 bg-warm-cream p-0 text-ink backdrop:bg-ink/40",
         )}
       >

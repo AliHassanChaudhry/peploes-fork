@@ -2,12 +2,10 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/app/atoms/scroll-reveal";
-import revealStyles from "@/components/app/atoms/site-scroll-reveal.module.css";
 import {
   TrackedAnchor,
   TrackedLink,
 } from "@/components/app/atoms/tracked-link";
-import styles from "@/components/app/compounds/hero.module.css";
 import { Button } from "@/components/ui/button";
 import { NAVBAR_CONTENT, RESTAURANT_CONTACT, ROUTES } from "@/lib/constants";
 import { HERO_CONTENT } from "@/lib/constants/hero";
@@ -19,8 +17,9 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className={cn(dmSans.className, styles.hero, "isolate text-warm-cream")}
+      className={cn(dmSans.className, "isolate text-warm-cream")}
     >
+      <style>{`@keyframes homepage-entrance { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }`}</style>
       <div className="relative flex min-h-[calc(100svh-72px)] items-end bg-ink py-8 sm:min-h-[720px] sm:items-center sm:py-20 lg:min-h-[780px] lg:py-[72px]">
         <Image
           src={HERO_CONTENT.backgroundImage.src}
@@ -33,14 +32,17 @@ export function Hero() {
         />
         <div
           aria-hidden="true"
-          className={cn(styles.photoOverlay, "absolute inset-0")}
+          className={cn(
+            "[--photo-overlay-angle:180deg] bg-[linear-gradient(var(--photo-overlay-angle),rgb(var(--hero-overlay-light-rgb)_/_0%)_8.69%,rgb(var(--hero-overlay-soft-rgb)_/_16%)_20.59%,rgb(var(--hero-overlay-mid-rgb)_/_32%)_32.49%,rgb(var(--hero-overlay-dark-rgb)_/_48%)_44.4%,rgb(var(--hero-overlay-deep-rgb)_/_64%)_56.3%,rgb(var(--black-rgb)_/_80%)_68.2%),linear-gradient(180deg,rgb(var(--hero-shadow-rgb)_/_0%)_84.12%,rgb(var(--hero-shadow-rgb)_/_70%)_91.04%,rgb(var(--hero-shadow-rgb))_98.88%)] bg-transparent lg:[--photo-overlay-angle:-101.1deg]",
+            "absolute inset-0",
+          )}
         />
 
         <div
           data-scroll-reveal
           data-scroll-reveal-initial
           className={cn(
-            revealStyles.initial,
+            "[@media_(width_>=_40rem)_and_(prefers-reduced-motion:_no-preference)]:animate-[homepage-entrance_350ms_var(--ease-organic)_both]",
             "site-container relative flex flex-col gap-[22px] sm:gap-7",
           )}
         >
@@ -125,7 +127,11 @@ export function Hero() {
       </div>
 
       <figure className="bg-warm-cream sm:hidden">
-        <div className={styles.mobileEntrancePhoto}>
+        <div
+          className={
+            "relative bg-[rgb(var(--hero-shadow-rgb))] h-[520px] [&::after]:absolute [&::after]:right-[0] [&::after]:bottom-[0] [&::after]:left-0 [&::after]:pointer-events-none [&::after]:content-[''] [&::after]:h-[clamp(100px,14.653vw,211px)] [&::after]:bg-[linear-gradient(0deg,var(--warm-cream)_0%,rgb(var(--overlay-cream-rgb)_/_95%)_30.29%,rgb(var(--overlay-cream-rgb)_/_75.3%)_56.73%,rgb(var(--overlay-cream-rgb)_/_0%)_86.06%)] [&::after]:bg-transparent"
+          }
+        >
           <Image
             src={HERO_CONTENT.entranceBackground.src}
             alt={HERO_CONTENT.entranceBackground.alt}
@@ -135,7 +141,10 @@ export function Hero() {
           />
           <div
             aria-hidden="true"
-            className={cn(styles.entranceOverlay, "absolute inset-0")}
+            className={cn(
+              "bg-[linear-gradient(rgb(var(--hero-shadow-rgb)),rgb(var(--hero-shadow-rgb)_/_50%))] bg-transparent",
+              "absolute inset-0",
+            )}
           />
           <Image
             src={HERO_CONTENT.entranceImage.src}
@@ -155,7 +164,12 @@ export function Hero() {
           {HERO_CONTENT.entranceCaption}
         </figcaption>
       </figure>
-      <div className={cn(styles.entrance, "hidden sm:block")}>
+      <div
+        className={cn(
+          "relative bg-[rgb(var(--hero-shadow-rgb))] aspect-[1440/1307]",
+          "hidden sm:block",
+        )}
+      >
         <Image
           src={HERO_CONTENT.entranceBackground.src}
           alt={HERO_CONTENT.entranceBackground.alt}
@@ -165,9 +179,15 @@ export function Hero() {
         />
         <div
           aria-hidden="true"
-          className={cn(styles.entranceOverlay, "absolute inset-0")}
+          className={cn(
+            "bg-[linear-gradient(rgb(var(--hero-shadow-rgb)),rgb(var(--hero-shadow-rgb)_/_50%))] bg-transparent",
+            "absolute inset-0",
+          )}
         />
-        <Reveal className={styles.entranceArtwork} threshold={0.05}>
+        <Reveal
+          className={"absolute right-[0] bottom-[0] left-0 aspect-[1440/1407]"}
+          threshold={0.05}
+        >
           <figure className="relative h-full">
             <Image
               src={HERO_CONTENT.entranceImage.src}
@@ -179,7 +199,7 @@ export function Hero() {
             <figcaption
               className={cn(
                 ebGaramond.className,
-                styles.entranceCaption,
+                "h-[clamp(100px,14.653vw,211px)] bg-[linear-gradient(0deg,var(--warm-cream)_0%,rgb(var(--overlay-cream-rgb)_/_95%)_30.29%,rgb(var(--overlay-cream-rgb)_/_75.3%)_56.73%,rgb(var(--overlay-cream-rgb)_/_0%)_86.06%)] bg-transparent pb-[clamp(16px,2.639vw,38px)]",
                 "absolute inset-x-0 bottom-0 flex items-end justify-center px-6 text-center text-[clamp(24px,4.167vw,60px)] leading-[1.1] font-medium tracking-[-0.017em] text-peploe-burgundy",
               )}
             >

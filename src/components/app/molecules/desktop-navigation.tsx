@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 import { DesktopNavigationTrigger } from "@/components/app/atoms/desktop-navigation-trigger";
-import styles from "@/components/app/molecules/desktop-navigation.module.css";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   DESKTOP_NAVIGATION_QUERY,
@@ -150,7 +149,7 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
       ref={navigationRef}
       data-navbar-primary
       className={cn(
-        styles.navigation,
+        "[header:has(&)_[data-navigation-id]]:no-underline [header:has(&)_[data-navigation-id]]:decoration-current [header:has(&)_[data-navigation-id]]:decoration-solid [header:has(&)_[data-navigation-id]]:decoration-auto",
         "hidden h-full flex-1 items-center gap-[30px] xl:flex",
       )}
       onClickCapture={(event) => {
@@ -163,14 +162,18 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
         data-navbar-backdrop
         ref={backdropRef}
         data-open={Boolean(openItem) && isDesktop}
-        className={styles.backdrop}
+        className={
+          "absolute inset-x-0 top-full pointer-events-none bg-warm-cream bg-none inset-shadow-[0_-1px_0_var(--soft-stone)] opacity-0 invisible transition-[height,opacity,visibility] duration-[220ms,var(--duration-interaction),0s] ease-[ease,ease,ease] [transition-delay:0s,0s,220ms] transition-normal [&[data-open=true]]:opacity-100 [&[data-open=true]]:visible [&[data-open=true]]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-none [@media_(prefers-reduced-motion:_reduce)]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-normal"
+        }
       />
       <li
         aria-hidden="true"
         data-navbar-indicator
         ref={indicatorRef}
         data-visible={Boolean(currentId) && isDesktop}
-        className={styles.indicator}
+        className={
+          "absolute top-[50px] left-0 h-[2px] pointer-events-none bg-peploe-burgundy bg-none opacity-0 transition-[opacity] duration-[var(--duration-interaction)] ease-[ease] [transition-delay:0s] transition-normal [&[data-ready=true]]:transition-[opacity,transform,width] [&[data-ready=true]]:duration-[var(--duration-interaction),220ms,220ms] [&[data-ready=true]]:ease-[ease,ease,ease] [&[data-ready=true]]:[transition-delay:0s,0s,0s] [&[data-ready=true]]:transition-normal [&[data-visible=true]]:opacity-100 [@media_(prefers-reduced-motion:_reduce)]:transition-none [@media_(prefers-reduced-motion:_reduce)]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-normal [@media_(prefers-reduced-motion:_reduce)]:[&[data-ready=true]]:transition-none [@media_(prefers-reduced-motion:_reduce)]:[&[data-ready=true]]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:[&[data-ready=true]]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[&[data-ready=true]]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:[&[data-ready=true]]:transition-normal"
+        }
       />
       {items.map((item, index) => {
         const { id, href, content } = item;
@@ -239,9 +242,19 @@ export function DesktopNavigation({ items }: IDesktopNavigationProps) {
                 data-direction={index > openIndex ? "right" : "left"}
                 aria-hidden={!isOpen}
                 inert={!isOpen}
-                className={cn(styles.panel, isOpen && styles.open)}
+                className={cn(
+                  "absolute inset-x-0 top-full max-h-[calc(100dvh_-_76px)] overflow-x-hidden overflow-y-auto overscroll-contain pointer-events-none invisible transition-[visibility] duration-[0s] ease-[ease] [transition-delay:220ms] transition-normal [&[data-direction=right]_.site-desktop-nav-content]:transform-[translateX(16px)] [@media_(prefers-reduced-motion:_reduce)]:transition-none [@media_(prefers-reduced-motion:_reduce)]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-normal",
+                  isOpen &&
+                    "z-[1] pointer-events-auto visible [transition-delay:0s] [&_.site-desktop-nav-content]:opacity-100 [&_.site-desktop-nav-content]:transform-[translateX(0)] [&[data-direction=right]_.site-desktop-nav-content]:opacity-100 [&[data-direction=right]_.site-desktop-nav-content]:transform-[translateX(0)]",
+                )}
               >
-                <div className={styles.content}>{content}</div>
+                <div
+                  className={
+                    "site-desktop-nav-content opacity-0 transform-[translateX(-16px)] transition-[opacity,transform] duration-[var(--duration-interaction),220ms] ease-[ease,ease] [transition-delay:0s,0s] transition-normal [@media_(prefers-reduced-motion:_reduce)]:transition-none [@media_(prefers-reduced-motion:_reduce)]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:transition-normal"
+                  }
+                >
+                  {content}
+                </div>
               </div>
             )}
           </li>

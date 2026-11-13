@@ -3,7 +3,6 @@
 import { ArrowRight } from "lucide-react";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { submitNewsletter } from "@/actions/newsletter";
-import styles from "@/components/app/molecules/newsletter-signup.module.css";
 import { Button } from "@/components/ui/button";
 import { FOOTER_CONTENT } from "@/lib/constants/footer";
 import { rememberNewsletterSubscription } from "@/lib/newsletter-subscription";
@@ -52,7 +51,7 @@ export function NewsletterSignup() {
         <label htmlFor={`${id}-email`} className="sr-only">
           {FOOTER_CONTENT.newsletter.emailLabel}
         </label>
-        <div className={styles.field}>
+        <div className={"relative grid min-w-0 flex-1"}>
           <input
             id={`${id}-email`}
             name="email"
@@ -81,7 +80,7 @@ export function NewsletterSignup() {
                   : FOOTER_CONTENT.newsletter.invalidError,
               );
             }}
-            className={`${styles.input} h-[30px] min-w-0 rounded-none border-b border-border-interactive bg-transparent text-sm leading-[21px] text-ink placeholder:text-text-secondary focus:border-peploe-burgundy focus:shadow-[0_1px_0_0_var(--color-peploe-burgundy)] focus:outline-none forced-colors:focus-visible:outline-2 forced-colors:focus-visible:outline-offset-2 forced-colors:focus-visible:outline-solid xl:h-11`}
+            className={`${"row-start-1 row-end-auto col-start-1 col-end-auto w-full"} h-[30px] min-w-0 rounded-none border-b border-border-interactive bg-transparent text-sm leading-[21px] text-ink placeholder:text-text-secondary focus:border-peploe-burgundy focus:shadow-[0_1px_0_0_var(--color-peploe-burgundy)] focus:outline-none forced-colors:focus-visible:outline-2 forced-colors:focus-visible:outline-offset-2 forced-colors:focus-visible:outline-solid xl:h-11`}
           />
         </div>
         <Button

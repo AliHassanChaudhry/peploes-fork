@@ -2,7 +2,6 @@
 
 import { ChevronDown, UserRound, UsersRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import styles from "@/components/app/compounds/table-booking-panel.module.css";
 import { Button } from "@/components/ui/button";
 import { TABLE_BOOKING_CONTENT } from "@/lib/constants/table-booking";
 import type { ITableBookingPartySizeProps } from "@/lib/types";
@@ -56,15 +55,20 @@ export function TableBookingPartySize({
   return (
     <fieldset
       ref={field}
-      className={styles.field}
+      className={"booking-field grid min-w-0 gap-1 lg:gap-2"}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
       }}
     >
-      <span id="booking-party-size-label" className={styles.fieldLabel}>
+      <span
+        id="booking-party-size-label"
+        className={
+          "booking-fieldLabel text-[length:14px] lg:text-[length:16px] lg:font-medium leading-5 lg:leading-6"
+        }
+      >
         {label}
       </span>
-      <div className={styles.selectWrapper}>
+      <div className={"booking-selectWrapper relative min-w-0"}>
         <Button
           variant="plain"
           ref={trigger}
@@ -77,7 +81,9 @@ export function TableBookingPartySize({
           aria-activedescendant={
             open ? `booking-party-option-${active}` : undefined
           }
-          className={styles.selection}
+          className={
+            "booking-selection [&&]:flex [&&]:items-center [&&]:gap-2 [&&]:w-full [&&]:h-12 [&&]:pt-0 [&&]:pr-[13px] [&&]:pb-0 [&&]:pl-[13px] [&&]:border [&&]:border-solid [&&]:border-[var(--booking-border)] [&&]:rounded-[4px] [&&]:bg-[var(--booking-control)] [&&]:bg-none [&&]:text-[var(--booking-value)] [&&]:text-[length:16px] [&&]:font-normal [&&]:text-left [&&:disabled]:pointer-events-auto [&&:disabled]:cursor-not-allowed [&&:disabled]:opacity-100 lg:[&&]:h-13 lg:[&&]:gap-3 lg:[&&]:pt-0 lg:[&&]:pr-4 lg:[&&]:pb-0 lg:[&&]:pl-4 lg:[&&]:text-[length:16px] [@media_(min-width:_1024px)_and_(max-width:_1279px)]:[&&]:gap-3 [@media_(min-width:_1024px)_and_(max-width:_1279px)]:[&&]:pl-4 [@media_(min-width:_1024px)_and_(max-width:_1279px)]:[&&]:pr-4 [@media_(min-width:_1024px)_and_(max-width:_1279px)]:[&&]:text-[length:16px] [&&:not(:disabled)]:cursor-pointer [&&:focus-visible]:outline-2 [&&:focus-visible]:outline-solid [&&:focus-visible]:outline-[var(--booking-accent)] [&&:focus-visible]:outline-offset-3 [&&[aria-expanded=true]]:border-[var(--booking-accent)] [&&]:leading-6 lg:[&&]:leading-6"
+          }
           onClick={() => {
             setActive(value);
             setOpen(!open);
@@ -129,18 +135,30 @@ export function TableBookingPartySize({
             }
           }}
         >
-          <UserRound aria-hidden="true" className={styles.fieldIcon} />
+          <UserRound
+            aria-hidden="true"
+            className={
+              "booking-fieldIcon w-6 h-6 shrink-0 stroke-[1.5] lg:w-6 lg:h-6"
+            }
+          />
           <span>
             {value} {value === "1" ? "guest" : "guests"}
           </span>
-          <ChevronDown aria-hidden="true" className={styles.chevron} />
+          <ChevronDown
+            aria-hidden="true"
+            className={
+              "booking-chevron w-4 h-4 ml-auto shrink-0 stroke-[1.5] lg:w-4 lg:h-4"
+            }
+          />
         </Button>
         {open && (
           <div
             id="booking-party-options"
             role="listbox"
             aria-labelledby="booking-party-size-label"
-            className={styles.partyOptions}
+            className={
+              "booking-partyOptions [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] absolute z-5 top-[calc(100%_-_1px)] left-0 grid w-full max-h-[min(332px,_60svh)] gap-[3px] overflow-y-auto overscroll-contain pt-[9px] pr-[9px] pb-[9px] pl-[9px] border border-solid border-[var(--booking-border)] rounded-[6px] bg-[var(--booking-control)] bg-none shadow-[0_6px_16px_rgb(64_55_43_/_9.41%)]"
+            }
           >
             {options.map((count) => {
               const option = String(count);
@@ -156,11 +174,18 @@ export function TableBookingPartySize({
                   aria-selected={option === value}
                   data-active={option === active}
                   tabIndex={-1}
-                  className={styles.partyOption}
+                  className={
+                    "booking-partyOption [&&]:flex [&&]:items-center [&&]:min-h-10.5 [&&]:gap-3.5 [&&]:pt-0 [&&]:pr-3 [&&]:pb-0 [&&]:pl-3 [&&]:rounded-[4px] [&&]:text-[var(--booking-value)] [&&]:text-[length:14px] [&&]:text-left [&&]:cursor-pointer [&&[aria-selected=true]]:text-[var(--booking-accent)] [&&[aria-selected=true]]:bg-[color-mix(_in_srgb,_var(--peploe-burgundy)_6%,_var(--booking-control)_)] [&&[aria-selected=true]]:bg-none [&&[data-active=true]]:text-[var(--booking-accent)] [&&[data-active=true]]:bg-[color-mix(_in_srgb,_var(--peploe-burgundy)_6%,_var(--booking-control)_)] [&&[data-active=true]]:bg-none [&&:hover]:text-[var(--booking-accent)] [&&:hover]:bg-[color-mix(_in_srgb,_var(--peploe-burgundy)_6%,_var(--booking-control)_)] [&&:hover]:bg-none [&&[data-active=true]:not([aria-selected=true])]:outline-1 [&&[data-active=true]:not([aria-selected=true])]:outline-solid [&&[data-active=true]:not([aria-selected=true])]:outline-[var(--booking-accent)] [&&[data-active=true]:not([aria-selected=true])]:outline-offset-[-1px] [&&]:leading-5"
+                  }
                   onPointerDown={(event) => event.preventDefault()}
                   onClick={() => choose(option)}
                 >
-                  <Icon aria-hidden="true" className={styles.fieldIcon} />
+                  <Icon
+                    aria-hidden="true"
+                    className={
+                      "booking-fieldIcon w-6 h-6 shrink-0 stroke-[1.5] lg:w-6 lg:h-6"
+                    }
+                  />
                   <span>
                     {count} {count === 1 ? "guest" : "guests"}
                   </span>

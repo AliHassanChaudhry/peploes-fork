@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import styles from "@/components/app/compounds/journal-article-list.module.css";
 import { JournalStoryCard } from "@/components/app/molecules/journal-story-card";
 import { Button } from "@/components/ui/button";
 import { JOURNAL_UI } from "@/lib/constants/journal";
@@ -108,17 +107,42 @@ export function JournalArticleList({
 
   return (
     <>
+      <style>
+        {
+          "@keyframes peploes-journal-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}"
+        }
+      </style>
       <nav
-        className={styles.categories}
+        className={
+          "journal-list-categories border-b border-solid border-b-soft-stone bg-warm-cream bg-none"
+        }
         aria-label={JOURNAL_UI.categoriesLabel}
       >
         <div
           data-scroll-reveal
-          className={cn("site-container", styles.categoriesInner)}
+          className={cn(
+            "site-container",
+            "journal-list-categoriesInner flex min-w-0 flex-col gap-3 pt-5 pb-5 max-sm:gap-3.5 max-sm:pt-6 max-sm:pb-6 lg:min-h-22 lg:flex-row lg:items-center lg:gap-7 lg:pt-6 lg:pb-6",
+          )}
         >
-          <p className={styles.categoriesLabel}>{JOURNAL_UI.categoriesLabel}</p>
-          <div ref={categoryScrollRef} className={styles.categoryScroll}>
-            <ul className={styles.categoryLinks}>
+          <p
+            className={
+              "journal-list-categoriesLabel shrink-0 text-text-secondary text-[length:11px] font-medium tracking-[1.3px] uppercase max-sm:text-[length:10px] max-sm:tracking-[1.2px] lg:w-45 leading-4 max-sm:leading-[15px]"
+            }
+          >
+            {JOURNAL_UI.categoriesLabel}
+          </p>
+          <div
+            ref={categoryScrollRef}
+            className={
+              "journal-list-categoryScroll relative min-w-0 overflow-x-auto overscroll-x-contain [&&:not([data-indicator-ready])_a[aria-current]::after]:content-[''] [&&:not([data-indicator-ready])_a[aria-current]::after]:absolute [&&:not([data-indicator-ready])_a[aria-current]::after]:right-0 [&&:not([data-indicator-ready])_a[aria-current]::after]:bottom-[7px] [&&:not([data-indicator-ready])_a[aria-current]::after]:left-0 [&&:not([data-indicator-ready])_a[aria-current]::after]:h-0.5 [&&:not([data-indicator-ready])_a[aria-current]::after]:bg-peploe-burgundy [&&:not([data-indicator-ready])_a[aria-current]::after]:bg-none max-sm:min-h-12 max-sm:[scrollbar-width:none] max-sm:[&&:not([data-indicator-ready])_a[aria-current]::after]:bottom-3.5"
+            }
+          >
+            <ul
+              className={
+                "journal-list-categoryLinks flex gap-7 w-max pl-1 pr-1 [&&_a]:relative [&&_a]:flex [&&_a]:min-h-11 [&&_a]:items-center [&&_a]:pt-[7px] [&&_a]:pb-[13px] [&&_a]:text-[length:14px] [&&_a]:font-medium [&&_a]:whitespace-nowrap [&&_a[aria-current]]:text-peploe-burgundy [&&_a:hover]:text-peploe-burgundy [&&&_a:focus-visible]:-outline-offset-2 max-sm:gap-6 max-sm:pl-0 max-sm:pr-0 max-sm:[&&_a]:min-h-12 max-sm:[&&_a]:pt-2 max-sm:[&&_a]:pb-5 lg:pl-0 lg:pr-0 [&&_a]:leading-5"
+              }
+            >
               <li>
                 <Link
                   href={getJournalCategoryPath()}
@@ -160,15 +184,33 @@ export function JournalArticleList({
               ref={indicatorRef}
               aria-hidden="true"
               data-journal-indicator
-              className={styles.indicator}
+              className={
+                "journal-list-indicator absolute bottom-[7px] left-0 w-px h-0.5 invisible bg-peploe-burgundy bg-none pointer-events-none origin-left [.journal-list-categoryScroll[data-indicator-ready]_&&]:visible [.journal-list-categoryScroll[data-indicator-ready]_&&]:transition-[transform] [.journal-list-categoryScroll[data-indicator-ready]_&&]:duration-[260ms] [.journal-list-categoryScroll[data-indicator-ready]_&&]:ease-[ease] [.journal-list-categoryScroll[data-indicator-ready]_&&]:[transition-delay:0s] [.journal-list-categoryScroll[data-indicator-ready]_&&]:transition-normal [@media_(prefers-reduced-motion:_reduce)]:[.journal-list-categoryScroll[data-indicator-ready]_&&]:transition-none [@media_(prefers-reduced-motion:_reduce)]:[.journal-list-categoryScroll[data-indicator-ready]_&&]:duration-0 [@media_(prefers-reduced-motion:_reduce)]:[.journal-list-categoryScroll[data-indicator-ready]_&&]:ease-[ease] [@media_(prefers-reduced-motion:_reduce)]:[.journal-list-categoryScroll[data-indicator-ready]_&&]:[transition-delay:0s] [@media_(prefers-reduced-motion:_reduce)]:[.journal-list-categoryScroll[data-indicator-ready]_&&]:transition-normal max-sm:bottom-3.5"
+              }
             />
           </div>
         </div>
       </nav>
-      <section className={styles.stream} aria-labelledby="journal-stories">
+      <section
+        className={
+          "journal-list-stream pt-12 pb-12 max-sm:pt-11 max-sm:pb-13 lg:pt-15 lg:pb-15"
+        }
+        aria-labelledby="journal-stories"
+      >
         <div className="site-container">
-          <div data-scroll-reveal className={styles.introduction}>
-            <p className={styles.eyebrow}>{JOURNAL_UI.latestLabel}</p>
+          <div
+            data-scroll-reveal
+            className={
+              "journal-list-introduction mb-9 [&&_h2]:text-[length:36px] [&&_h2_+_p]:mt-4 [&&_h2_+_p]:text-text-secondary [&&_h2_+_p]:text-[length:16px] max-sm:mb-7 max-sm:[&&_h2]:text-[length:30px] lg:[&&_h2]:text-[length:42px] [&&_h2]:leading-10.5 [&&_h2_+_p]:leading-6 max-sm:[&&_h2]:leading-[37px] lg:[&&_h2]:leading-12"
+            }
+          >
+            <p
+              className={
+                "journal-list-eyebrow mb-2 text-peploe-burgundy text-[length:11px] font-medium tracking-[1.35px] uppercase max-sm:mb-2 max-sm:text-[length:10px] max-sm:tracking-[1.25px] leading-4 max-sm:leading-[15px]"
+              }
+            >
+              {JOURNAL_UI.latestLabel}
+            </p>
             <h2 id="journal-stories">{listing.heading}</h2>
             {listing.description && <p>{listing.description}</p>}
           </div>
@@ -246,16 +288,28 @@ function JournalArticleResults({
     <div
       ref={resultsRef}
       data-journal-results
-      className={animate ? styles.resultsEnter : undefined}
+      className={
+        animate
+          ? "journal-list-resultsEnter animate-[peploes-journal-enter_220ms_ease-out_both] [@media_(prefers-reduced-motion:_reduce)]:animate-none"
+          : undefined
+      }
     >
       {articles.length ? (
-        <ul ref={listRef} id="journal-story-list" className={styles.cards}>
+        <ul
+          ref={listRef}
+          id="journal-story-list"
+          className={
+            "journal-list-cards grid gap-[36px_32px] [&&_>_li]:min-w-0 max-sm:gap-y-7 sm:grid-cols-2 lg:grid-cols-3"
+          }
+        >
           {visibleArticles.map((article, index) => (
             <li
               data-scroll-reveal
               key={article._id}
               className={
-                index >= JOURNAL_UI.pageSize ? styles.appended : undefined
+                index >= JOURNAL_UI.pageSize
+                  ? "journal-list-appended [@media_(prefers-reduced-motion:_no-preference)]:[&&_>_article]:animate-[peploes-journal-enter_350ms_var(--ease-organic)_both]"
+                  : undefined
               }
             >
               <JournalStoryCard
@@ -266,7 +320,12 @@ function JournalArticleResults({
           ))}
         </ul>
       ) : (
-        <p data-scroll-reveal className={styles.empty}>
+        <p
+          data-scroll-reveal
+          className={
+            "journal-list-empty text-text-secondary text-[length:16px] leading-6"
+          }
+        >
           {listing.emptyMessage}
         </p>
       )}
@@ -279,12 +338,19 @@ function JournalArticleResults({
         {visibleArticles.length} of {articles.length} stories shown.
       </p>
       {visibleCount < articles.length && (
-        <div data-scroll-reveal className={styles.loadMore}>
+        <div
+          data-scroll-reveal
+          className={
+            "journal-list-loadMore flex justify-center mt-9 max-sm:justify-start max-sm:mt-7"
+          }
+        >
           <Button
             type="button"
             variant="brand-contact"
             size="cta"
-            className={styles.loadMoreButton}
+            className={
+              "journal-list-loadMoreButton [&&]:min-w-44.5 [&&]:min-h-11 [&&]:h-auto [&&]:pt-[9px] [&&]:pr-5 [&&]:pb-[9px] [&&]:pl-5 [&&]:border-peploe-burgundy [&&]:text-[length:16px] [&&]:whitespace-normal [&&]:leading-6"
+            }
             aria-controls="journal-story-list"
             onClick={() => {
               previousHeight.current =

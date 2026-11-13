@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import styles from "@/components/app/compounds/table-booking-panel.module.css";
 import { TableBookingStatusSkeleton } from "@/components/app/molecules/table-booking-skeleton";
 import { Button } from "@/components/ui/button";
 import { useBookingStatus } from "@/hooks/use-booking-status";
@@ -64,8 +63,17 @@ function ReturnNotice({
   onStartAgain: () => void;
 }) {
   return (
-    <div className={styles.flowNotice}>
-      <p role="status" className={styles.flowDescription}>
+    <div
+      className={
+        "booking-flowNotice [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid justify-items-start gap-4 text-[var(--booking-accent)]"
+      }
+    >
+      <p
+        role="status"
+        className={
+          "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+        }
+      >
         {message}
       </p>
       <Button type="button" variant="brand-primary" onClick={onStartAgain}>
@@ -101,19 +109,37 @@ export function PaymentOutcome({
   if (check.kind !== "failed") {
     return (
       <>
-        <p role="status" className={styles.flowDescription}>
+        <p
+          role="status"
+          className={
+            "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {content.payment.checking}
         </p>
         <TableBookingStatusSkeleton />
-        <p className={styles.flowDescription}>
+        <p
+          className={
+            "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+          }
+        >
           {content.confirmation.referenceLabel}: <strong>{reference}</strong>
         </p>
       </>
     );
   }
   return (
-    <div className={styles.flowNotice}>
-      <p role="alert" className={styles.formError}>
+    <div
+      className={
+        "booking-flowNotice [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid justify-items-start gap-4 text-[var(--booking-accent)]"
+      }
+    >
+      <p
+        role="alert"
+        className={
+          "booking-formError mt-4 mr-0 mb-0 ml-0 text-[var(--booking-accent)] text-[length:14px] leading-5"
+        }
+      >
         {content.payment.notConfirmed(reference)}
       </p>
       <Button type="button" variant="brand-primary" onClick={onStartAgain}>
@@ -143,12 +169,18 @@ function StillConfirming({
   }, [warning]);
 
   return (
-    <div className={styles.flowNotice}>
+    <div
+      className={
+        "booking-flowNotice [@media_(prefers-reduced-motion:_no-preference)]:animate-[peploes-booking-open_180ms_ease-out] grid justify-items-start gap-4 text-[var(--booking-accent)]"
+      }
+    >
       <p
         ref={message}
         tabIndex={-1}
         role="status"
-        className={styles.flowDescription}
+        className={
+          "booking-flowDescription mt-2 text-text-secondary text-[length:14px] lg:mt-2 lg:text-[length:16px] max-sm:text-[length:16px] leading-5 lg:leading-6"
+        }
       >
         {warning
           ? copy.startAgainWarning(reference)

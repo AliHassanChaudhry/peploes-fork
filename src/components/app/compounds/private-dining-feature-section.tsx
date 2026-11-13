@@ -1,4 +1,3 @@
-import styles from "@/components/app/compounds/private-dining.module.css";
 import { PrivateDiningFeatures } from "@/components/app/molecules/private-dining-features";
 import { PrivateDiningHeading } from "@/components/app/molecules/private-dining-heading";
 import type { IPrivateDiningFeatureSectionProps } from "@/lib/types";
@@ -10,7 +9,12 @@ export function PrivateDiningFeatureSection({
   featuresClassName,
 }: IPrivateDiningFeatureSectionProps) {
   return (
-    <section className={cn(styles.paleSection, className)}>
+    <section
+      className={cn(
+        "pd-paleSection bg-[var(--events-pale)] bg-none py-12! max-sm:py-8!",
+        className,
+      )}
+    >
       <div className="site-container">
         <PrivateDiningHeading {...content} />
         <PrivateDiningFeatures

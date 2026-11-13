@@ -5,18 +5,9 @@ import { publishedArticle } from "@/__tests__/fixtures/journal";
 import { JournalArticle } from "@/components/app/compounds/journal-article";
 import { journalArticleSchema } from "@/lib/journal-schema";
 
-vi.mock("@/components/ui/button.module.css", () => ({ default: {} }));
-
 vi.mock("@/lib/fonts", () => ({
   dmSans: { className: "" },
   ebGaramond: { variable: "" },
-}));
-
-vi.mock("@/components/app/compounds/journal-article.module.css", () => ({
-  default: {},
-}));
-vi.mock("@/components/app/molecules/journal-story-card.module.css", () => ({
-  default: {},
 }));
 
 describe("Journal article", () => {
@@ -39,7 +30,7 @@ describe("Journal article", () => {
 
     expect(html).toContain("--menu-image-position:center 40%");
     expect(html).toContain("--menu-image-desktop-position:center 95%");
-    expect(html.match(/--menu-image-desktop-position/g)).toHaveLength(1);
+    expect(html.match(/--menu-image-desktop-position:/g)).toHaveLength(1);
     expect(html).not.toMatch(/<img[^>]*(?:desktopPosition|mobilePosition)/i);
   });
 

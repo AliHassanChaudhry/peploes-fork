@@ -2,7 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import styles from "@/components/app/atoms/site-scroll-reveal.module.css";
+
+const targetClasses =
+  'site-reveal-target [@media_(prefers-reduced-motion:_no-preference)]:transition-[opacity,transform] [@media_(prefers-reduced-motion:_no-preference)]:duration-[350ms,350ms] [@media_(prefers-reduced-motion:_no-preference)]:ease-[var(--ease-organic),var(--ease-organic)] [@media_(prefers-reduced-motion:_no-preference)]:[transition-delay:0s,0s] [@media_(prefers-reduced-motion:_no-preference)]:transition-normal [@media_(prefers-reduced-motion:_no-preference)]:[&[data-scroll-reveal-state="pending"]]:opacity-0 [@media_(prefers-reduced-motion:_no-preference)]:[&[data-scroll-reveal-state="pending"]]:transform-[translateY(24px)] [@media_(prefers-reduced-motion:_no-preference)]:[&[data-scroll-reveal-state="visible"]]:opacity-100 [@media_(prefers-reduced-motion:_no-preference)]:[&[data-scroll-reveal-state="visible"]]:transform-[translateY(0)]'.split(
+    " ",
+  );
 
 const targets = "[data-scroll-reveal]";
 
@@ -24,7 +28,7 @@ function PageScrollReveal() {
     const reset = () => {
       observer?.disconnect();
       for (const element of elements) {
-        element.classList.remove(styles.target);
+        element.classList.remove(...targetClasses);
         delete element.dataset.scrollRevealState;
       }
       elements.clear();
@@ -34,7 +38,7 @@ function PageScrollReveal() {
       initiallyVisible: boolean,
     ) => {
       elements.add(element);
-      element.classList.add(styles.target);
+      element.classList.add(...targetClasses);
       if (initiallyVisible) {
         reveal(element);
       } else {
@@ -89,7 +93,7 @@ function PageScrollReveal() {
     };
     const onFocus = (event: FocusEvent) => {
       if (!media.matches || !(event.target instanceof Element)) return;
-      const element = event.target.closest<HTMLElement>(`.${styles.target}`);
+      const element = event.target.closest<HTMLElement>(`.${targetClasses[0]}`);
       if (element) reveal(element);
     };
 

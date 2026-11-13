@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
 
-import styles from "@/components/app/compounds/seasonal-event.module.css";
 import { Button } from "@/components/ui/button";
 import type { ISeasonalEventActionProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,10 @@ export function SeasonalEventAction({
       data-card-action
       asChild
       variant="brand-text"
-      className={cn(styles.textAction, className)}
+      className={cn(
+        "justify-start gap-2 h-auto min-h-11 mt-3 px-0 py-2 rounded-none text-base leading-6 whitespace-normal text-left lg:min-h-10 lg:[article_&]:mt-[9px] max-sm:[[aria-labelledby=event-related]_li_&]:text-[length:15px]",
+        className,
+      )}
     >
       <Link href={href as Route}>{content}</Link>
     </Button>
@@ -33,7 +35,10 @@ export function SeasonalEventAction({
       type="button"
       aria-disabled="true"
       variant="brand-text"
-      className={cn(styles.textAction, className)}
+      className={cn(
+        "justify-start gap-2 h-auto min-h-11 mt-3 px-0 py-2 rounded-none text-base leading-6 whitespace-normal text-left lg:min-h-10 lg:[article_&]:mt-[9px] max-sm:[[aria-labelledby=event-related]_li_&]:text-[length:15px]",
+        className,
+      )}
     >
       {content}
     </Button>

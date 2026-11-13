@@ -882,7 +882,7 @@ test("Edit on the payment step asks first, and Keep My Table leaves the payment 
     .getByRole("button", { name: "Edit date & guests" })
     .click();
   await expect(dialog).toContainText(
-    "We'll let go of your table for 6:00 pm on Sat, 7 Nov 2026 so you can choose another time. It's released automatically in a few minutes, and you haven't been charged. Please don't finish its payment in another tab.",
+    `We'll let go of your table for 6:00 pm on ${shortDayLabel(laterFreeDate())} so you can choose another time. It's released automatically in a few minutes, and you haven't been charged. Please don't finish its payment in another tab.`,
   );
   await expect(keep).toBeFocused();
   await dialog.evaluate(

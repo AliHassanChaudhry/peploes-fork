@@ -36,7 +36,7 @@ export function MenuCourse({
       className={cn(
         "grid gap-5 shadow-[inset_0_1px_0_var(--soft-stone)] py-8 xl:grid-cols-[346fr_950fr] xl:gap-0 xl:py-9",
         compact &&
-          "xl:grid-cols-[310fr_986fr] xl:py-4 [&_ul]:xl:pl-[27px] [&_h3]:xl:text-base [&_h3]:xl:leading-5 [&_ul]:xl:space-y-3",
+          "xl:grid-cols-[310fr_986fr] xl:py-4 [&_ul]:xl:pl-[27px] [&_h3]:xl:text-base [&_ul]:xl:space-y-3 [&_h3]:xl:leading-5",
       )}
     >
       <h2

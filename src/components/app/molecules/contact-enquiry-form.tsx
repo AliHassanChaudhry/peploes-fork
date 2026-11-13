@@ -11,7 +11,6 @@ import {
 } from "react";
 
 import { submitContactEnquiry } from "@/actions/contact-enquiry";
-import styles from "@/components/app/compounds/visit-contact.module.css";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
 import { VISIT_CONTACT_CONTENT } from "@/lib/constants/visit-contact";
@@ -68,27 +67,53 @@ export function ContactEnquiryForm() {
 
   return (
     <section
-      className={styles.messageSection}
+      className={"py-12 sm:py-18"}
       aria-labelledby="contact-message-heading"
     >
-      <div className={`site-container ${styles.messageGrid}`}>
+      <div
+        className={`site-container ${"grid gap-10 [&_.visit-heading]:my-5 lg:grid-cols-2 lg:gap-16"}`}
+      >
         <div data-scroll-reveal>
-          <p className={styles.eyebrow}>{content.eyebrow}</p>
-          <h2 id="contact-message-heading" className={styles.heading}>
+          <p
+            className={
+              "visit-eyebrow flex items-center gap-2.5 text-peploe-burgundy text-[length:14px] font-medium tracking-[0.1em] uppercase [&&::before]:content-[''] [&&::before]:w-12 [&&::before]:h-0.5 [&&::before]:bg-current [&&::before]:bg-none [&&::before]:shrink-0 [.visit-closing_&&]:text-inherit [.visit-closingCopy_>_p:not(&.visit-eyebrow)]:text-[length:21px] max-sm:text-[length:12px] max-sm:[.visit-closingCopy_>_p:not(&.visit-eyebrow)]:text-[length:16px] leading-4 [.visit-closingCopy_>_p:not(&.visit-eyebrow)]:leading-7.5 max-sm:leading-4.5 max-sm:[.visit-closingCopy_>_p:not(&.visit-eyebrow)]:leading-7"
+            }
+          >
+            {content.eyebrow}
+          </p>
+          <h2
+            id="contact-message-heading"
+            className={
+              "visit-heading text-[length:48px] whitespace-pre-line [.visit-messageGrid_&&]:mt-2 [.visit-messageGrid_&&]:mb-5 [.visit-locationCopy_&&]:mt-2 [.visit-locationCopy_&&]:mb-6 [.visit-closingCopy_&&]:mt-2 [.visit-closingCopy_&&]:mb-7 max-sm:[.visit-locationCopy_&&]:mt-2 max-sm:[.visit-locationCopy_&&]:mb-4 max-sm:[.visit-closingCopy_&&]:mt-2 max-sm:[.visit-closingCopy_&&]:mb-4 lg:text-[length:60px] max-sm:text-[length:30px] leading-13 max-sm:leading-11 lg:leading-16"
+            }
+          >
             {content.heading}
           </h2>
-          <p className={styles.description}>{content.description}</p>
+          <p
+            className={
+              "visit-description text-text-secondary text-[length:18px] [.visit-heroCopy_&&]:mt-6 max-sm:text-[length:16px] max-sm:[.visit-heroCopy_&&]:mt-4 leading-6.5 max-sm:leading-6"
+            }
+          >
+            {content.description}
+          </p>
         </div>
         <form
           data-scroll-reveal
           ref={formRef}
-          className={styles.messageForm}
+          className={
+            "grid gap-4 [&_:is(input:not([type=checkbox]),textarea)]:w-full [&_:is(input:not([type=checkbox]),textarea)]:min-w-0 [&_:is(input:not([type=checkbox]),textarea)]:min-h-12 [&_:is(input:not([type=checkbox]),textarea)]:px-4 [&_:is(input:not([type=checkbox]),textarea)]:py-3 [&_:is(input:not([type=checkbox]),textarea)]:border [&_:is(input:not([type=checkbox]),textarea)]:border-solid [&_:is(input:not([type=checkbox]),textarea)]:border-soft-stone [&_:is(input:not([type=checkbox]),textarea)]:rounded-[4px] [&_:is(input:not([type=checkbox]),textarea)]:bg-warm-cream [&_:is(input:not([type=checkbox]),textarea)]:text-ink [&_:is(input:not([type=checkbox]),textarea)]:[font:inherit] [&_textarea]:min-h-36 [&_textarea]:resize-y [&_:is(input,textarea):focus-visible]:outline-2 [&_:is(input,textarea):focus-visible]:outline-solid [&_:is(input,textarea):focus-visible]:outline-peploe-burgundy [&_:is(input,textarea):focus-visible]:outline-offset-2"
+          }
           aria-label="General contact message"
           noValidate
           onSubmit={submit}
           onChange={revise}
         >
-          <fieldset className={styles.messageFields} disabled={pending}>
+          <fieldset
+            className={
+              "grid gap-4 min-w-0 m-0 p-0 border-0 border-none [&>label:not(.visit-message-consent)]:grid [&>label:not(.visit-message-consent)]:gap-2 [&>label:not(.visit-message-consent)]:text-base"
+            }
+            disabled={pending}
+          >
             <input type="hidden" name="notificationId" value={notificationId} />
             <input
               name="website"
@@ -96,7 +121,7 @@ export function ContactEnquiryForm() {
               autoComplete="off"
               tabIndex={-1}
               aria-hidden="true"
-              className={styles.messageHoneypot}
+              className={"absolute left-[-10000px] w-px h-px opacity-0"}
             />
             <label>
               {content.name}
@@ -116,7 +141,11 @@ export function ContactEnquiryForm() {
               {content.message}
               <textarea name="message" maxLength={5000} rows={5} required />
             </label>
-            <label className={styles.messageConsent}>
+            <label
+              className={
+                "visit-message-consent flex items-start gap-2.5 text-sm [&_input]:mt-1 [&_input]:accent-peploe-burgundy [&_a]:text-peploe-burgundy [&_a]:underline leading-[22px]"
+              }
+            >
               <input name="consent" type="checkbox" required />
               <span>
                 I agree to the{" "}
@@ -128,7 +157,9 @@ export function ContactEnquiryForm() {
           <Button
             type="submit"
             variant="brand-primary"
-            className={styles.messageSubmit}
+            className={
+              "justify-self-start min-h-12 min-w-45 gap-2 max-sm:w-full"
+            }
             disabled={
               pending ||
               !notificationId ||
@@ -161,7 +192,7 @@ export function ContactEnquiryForm() {
             className={
               state.status === "idle" && !pending
                 ? "sr-only"
-                : styles.messageFeedback
+                : "text-text-secondary text-sm leading-[21px]"
             }
           >
             {pending ? content.sending : state.message}
